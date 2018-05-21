@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.qiushi.wechatshop.AppContext;
+import com.qiushi.wechatshop.WAppContext;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,7 +29,7 @@ public class Utils {
 
     public static int getVersionCode() {
         try {
-            return AppContext.context.getPackageManager().getPackageInfo(AppContext.application.getPackageName(), 0).versionCode;
+            return WAppContext.context.getPackageManager().getPackageInfo(WAppContext.application.getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             return 0;
         }
@@ -37,7 +37,7 @@ public class Utils {
 
     public static String getVersionName() {
         try {
-            return AppContext.context.getPackageManager().getPackageInfo(AppContext.application.getPackageName(), 0).versionName;
+            return WAppContext.context.getPackageManager().getPackageInfo(WAppContext.application.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             return Build.UNKNOWN;
         }

@@ -6,9 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * Created by Taylor on 2016/1/5.
- */
 public class MD5 {
 
     public static String getMD5(String string) {

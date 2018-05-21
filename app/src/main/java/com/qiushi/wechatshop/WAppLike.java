@@ -13,7 +13,6 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.qiushi.wechatshop.config.Constants;
 import com.qiushi.wechatshop.ui.MainActivity;
 import com.qiushi.wechatshop.util.Utils;
 import com.tencent.bugly.Bugly;
@@ -28,13 +27,13 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 @SuppressWarnings("unused")
-public class AppLike extends DefaultApplicationLike {
-    public AppLike(Application application,
-                   int tinkerFlags,
-                   boolean tinkerLoadVerifyFlag,
-                   long applicationStartElapsedTime,
-                   long applicationStartMillisTime,
-                   Intent tinkerResultIntent) {
+public class WAppLike extends DefaultApplicationLike {
+    public WAppLike(Application application,
+                    int tinkerFlags,
+                    boolean tinkerLoadVerifyFlag,
+                    long applicationStartElapsedTime,
+                    long applicationStartMillisTime,
+                    Intent tinkerResultIntent) {
         super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);
     }
 
@@ -60,7 +59,7 @@ public class AppLike extends DefaultApplicationLike {
         //友盟推送
 //        Push.init();
 
-        if (AppContext.application.getPackageName().equals(Utils.getProcessName()))
+        if (WAppContext.application.getPackageName().equals(Utils.getProcessName()))
             init();
     }
 
@@ -115,25 +114,25 @@ public class AppLike extends DefaultApplicationLike {
             }
         };
 
-        Bugly.setIsDevelopmentDevice(AppContext.context, Constants.IS_DEVELOPER);
-//        Bugly.setAppChannel(AppContext.context, Utils.getWalleChannel());
-        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(AppContext.context);
+        Bugly.setIsDevelopmentDevice(WAppContext.context, Constants.IS_DEVELOPER);
+//        Bugly.setAppChannel(WAppContext.context, Utils.getWalleChannel());
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(WAppContext.context);
         String processName = Utils.getProcessName();
-        strategy.setUploadProcess(processName == null || processName.equals(AppContext.application.getPackageName()));
+        strategy.setUploadProcess(processName == null || processName.equals(WAppContext.application.getPackageName()));
 //        strategy.setAppChannel(Utils.getWalleChannel());
         strategy.setAppVersion(Utils.getVersionName());
-        Bugly.init(AppContext.context, Constants.BUGLY_APPID, Constants.IS_DEVELOPER, strategy);
+        Bugly.init(WAppContext.context, Constants.BUGLY_APPID, Constants.IS_DEVELOPER, strategy);
     }
 
     private void init() {
         //Realm数据库
-        Realm.init(AppContext.context);
+        Realm.init(WAppContext.context);
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
 
-//        Bugly.setUserId(AppContext.context, User.getCurrent() == null ? "0" : String.valueOf(User.getCurrent().getId()));
+//        Bugly.setUserId(WAppContext.context, User.getCurrent() == null ? "0" : String.valueOf(User.getCurrent().getId()));
 
         //Refresh Header
 //        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
@@ -147,7 +146,7 @@ public class AppLike extends DefaultApplicationLike {
 
     @Override
     public void onTrimMemory(int level) {
-        Glide.get(AppContext.context).clearMemory();
+        Glide.get(WAppContext.context).clearMemory();
         super.onTrimMemory(level);
     }
 
@@ -157,8 +156,8 @@ public class AppLike extends DefaultApplicationLike {
         super.onBaseContextAttached(base);
         MultiDex.install(base);
 
-        AppContext.application = getApplication();
-        AppContext.context = getApplication();
+        WAppContext.application = getApplication();
+        WAppContext.context = getApplication();
 
         Beta.installTinker(this);
     }

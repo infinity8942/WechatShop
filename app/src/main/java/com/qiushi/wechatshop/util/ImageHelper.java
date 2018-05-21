@@ -6,7 +6,7 @@ import android.os.Looper;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.qiushi.wechatshop.AppContext;
+import com.qiushi.wechatshop.WAppContext;
 
 /**
  * Created by Rylynn on 2018-03-29.
@@ -110,7 +110,7 @@ public class ImageHelper {
     public static void clearImageMemoryCache() {
         try {
             if (Looper.myLooper() == Looper.getMainLooper()) {
-                Glide.get(AppContext.context).clearMemory();
+                Glide.get(WAppContext.context).clearMemory();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,11 +126,11 @@ public class ImageHelper {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Glide.get(AppContext.context).clearDiskCache();
+                        Glide.get(WAppContext.context).clearDiskCache();
                     }
                 }).start();
             } else {
-                Glide.get(AppContext.context).clearDiskCache();
+                Glide.get(WAppContext.context).clearDiskCache();
             }
         } catch (Exception e) {
             e.printStackTrace();

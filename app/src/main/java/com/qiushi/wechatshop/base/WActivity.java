@@ -9,18 +9,16 @@ import android.view.View;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.gyf.barlibrary.ImmersionBar;
-import com.qiushi.wechatshop.model.Notification;
 import com.qiushi.wechatshop.util.ToastUtils;
 import com.qiushi.wechatshop.view.LoadingDialog;
 
 import java.lang.ref.WeakReference;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
-import rx.Subscription;
-import rx.functions.Action1;
-import rx.subscriptions.CompositeSubscription;
 
-public abstract class WActivity extends SwipeBackActivity implements View.OnClickListener, Action1<Notification> {
+public abstract class WActivity extends SwipeBackActivity implements View.OnClickListener {
 
     private static volatile LongSparseArray<WeakReference<WActivity>> activities = new LongSparseArray<>();
 
@@ -36,8 +34,7 @@ public abstract class WActivity extends SwipeBackActivity implements View.OnClic
     };
 
     private long id;
-    public CompositeSubscription mCompositeSubscription = new CompositeSubscription();//订阅集合
-    public Subscription notification;
+    public CompositeDisposable compositeDisposable = new CompositeDisposable();//订阅集合
 
     public LoadingDialog loadingDialog = null;
     public ImmersionBar mImmersionBar;
@@ -58,7 +55,6 @@ public abstract class WActivity extends SwipeBackActivity implements View.OnClic
                 return false;
             }
         });
-        notification = Notification.register(this);
         activities.put(getId(), new WeakReference<>(this));
         getParams(getIntent());
         setContentView(layoutId());
@@ -69,7 +65,6 @@ public abstract class WActivity extends SwipeBackActivity implements View.OnClic
         super.onPause();
         if (isFinishing()) {
             activities.remove(id);
-            notification.unsubscribe();
             mHandler.removeCallbacksAndMessages(null);
         }
     }
@@ -78,16 +73,12 @@ public abstract class WActivity extends SwipeBackActivity implements View.OnClic
     protected void onDestroy() {
         if (mImmersionBar != null)
             mImmersionBar.destroy();  //不调用该方法，如果界面bar发生改变，在不关闭app的情况下，退出此界面再进入将记忆最后一次bar改变的状态
-        if (null != mCompositeSubscription && mCompositeSubscription.isUnsubscribed()) {
-            mCompositeSubscription.unsubscribe();
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.clear();
         }
         dismissLoading();
         loadingDialog = null;
         super.onDestroy();
-    }
-
-    @Override
-    public void call(Notification notification) {
     }
 
     @Override
@@ -138,6 +129,10 @@ public abstract class WActivity extends SwipeBackActivity implements View.OnClic
     }
 
     public void onClick(View view) {
+    }
+
+    public void addSubscription(Disposable disposable) {
+        compositeDisposable.add(disposable);
     }
 
     /**

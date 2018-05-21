@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.qiushi.wechatshop.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
-
 /**
  * 载入等待布局
  * Created by Rylynn on 2017/12/19.

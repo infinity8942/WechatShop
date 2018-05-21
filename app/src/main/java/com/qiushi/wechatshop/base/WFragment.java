@@ -9,17 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gyf.barlibrary.ImmersionBar;
-import com.qiushi.wechatshop.model.Notification;
 import com.qiushi.wechatshop.view.LoadingDialog;
 
-import rx.Subscription;
-import rx.functions.Action1;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
-public abstract class WFragment extends Fragment implements Action1<Notification> {
+public abstract class WFragment extends Fragment {
 
-    public CompositeSubscription mCompositeSubscription = new CompositeSubscription();
-    public Subscription notification;
+    public CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public ImmersionBar mImmersionBar;
     private LoadingDialog loadingDialog = null;
@@ -27,7 +24,6 @@ public abstract class WFragment extends Fragment implements Action1<Notification
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        notification = Notification.register(this);
         if (getArguments() != null)
             getParams(getArguments());
     }
@@ -53,10 +49,6 @@ public abstract class WFragment extends Fragment implements Action1<Notification
     }
 
     protected void getParams(Bundle args) {
-    }
-
-    @Override
-    public void call(Notification notification) {
     }
 
     protected final void showLoading() {
@@ -91,12 +83,15 @@ public abstract class WFragment extends Fragment implements Action1<Notification
         return stateHeight;
     }
 
+    public void addSubscription(Disposable disposable) {
+        compositeDisposable.add(disposable);
+    }
+
     @Override
     public void onDestroy() {
-        if (null != mCompositeSubscription && mCompositeSubscription.isUnsubscribed()) {
-            mCompositeSubscription.unsubscribe();
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.clear();
         }
-        notification.unsubscribe();
         dismissLoading();
         loadingDialog = null;
         super.onDestroy();

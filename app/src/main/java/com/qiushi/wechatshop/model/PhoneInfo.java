@@ -4,19 +4,16 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-import com.qiushi.wechatshop.AppContext;
+import com.qiushi.wechatshop.WAppContext;
 import com.qiushi.wechatshop.util.Utils;
 
-/**
- * Created by 王冰 on 2017/3/6.
- */
 public class PhoneInfo {
 
     private static PhoneInfo instance;
 
     public static PhoneInfo getInstance() {
         if (instance == null)
-            instance = new PhoneInfo(AppContext.context);
+            instance = new PhoneInfo(WAppContext.context);
         return instance;
     }
 

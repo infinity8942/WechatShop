@@ -16,8 +16,8 @@ import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
-import com.qiushi.wechatshop.AppContext;
-import com.qiushi.wechatshop.config.Constants;
+import com.qiushi.wechatshop.Constants;
+import com.qiushi.wechatshop.WAppContext;
 
 import java.io.File;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import java.util.List;
 public class UploadService extends IntentService implements OSSProgressCallback<PutObjectRequest>, OSSCompletedCallback<PutObjectRequest, PutObjectResult> {
 
     private static final int MAX_REQUEST = 5;
-    private static final String BUCKET_NAME = Constants.DEBUG ? "top6000origtest" : "top6000";
+    private static final String BUCKET_NAME = Constants.DEBUG ? "top6000origtest" : "top6000";//TODO
 
     private OSS oss;
 
@@ -49,15 +49,15 @@ public class UploadService extends IntentService implements OSSProgressCallback<
 
     public static void start() {
         if (!isServiceRunning()) {
-            Intent intent = new Intent(AppContext.context, UploadService.class);
-            AppContext.context.startService(intent);
+            Intent intent = new Intent(WAppContext.context, UploadService.class);
+            WAppContext.context.startService(intent);
         }
     }
 
     private static boolean isServiceRunning() {
         boolean isRunning = false;
         ActivityManager am =
-                (ActivityManager) AppContext.application.getSystemService(Context.ACTIVITY_SERVICE);
+                (ActivityManager) WAppContext.application.getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) return false;
         List<ActivityManager.RunningServiceInfo> serviceList
                 = am.getRunningServices(Integer.MAX_VALUE);

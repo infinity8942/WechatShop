@@ -1,9 +1,7 @@
-package com.qiushi.wechatshop.config
+package com.qiushi.wechatshop
 
 /**
  * Created by Rylynn on 2018-05-18.
- *
- * 常量
  */
 object Constants {
     const val IS_DEVELOPER = true //TODO 开发模式开关,发版时置为false
