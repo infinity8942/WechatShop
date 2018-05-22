@@ -1,10 +1,12 @@
 package com.qiushi.wechatshop.ui.shop
 
 import android.os.Bundle
+import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.LazyLoadFragment
+import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.net.RetrofitManager
-import com.qiushi.wechatshop.net.exception.ExceptionHandle
+import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.ToastUtils.showError
 import com.scwang.smartrefresh.header.MaterialHeader
@@ -44,12 +46,16 @@ class ShopFragment : LazyLoadFragment() {
     private fun getData() {
         val disposable = RetrofitManager.service.getHotWord()
                 .compose(SchedulerUtils.ioToMain())
-                .subscribe({ string ->
+                .subscribeWith(object : BaseObserver<List<Goods>>() {
+                    override fun onHandleSuccess(t: List<Goods>?) {
+                        Logger.e("onHandleSuccess = " + t?.size)
+                    }
 
-                }, { throwable ->
-                    showError(ExceptionHandle.handleException(throwable), ExceptionHandle.errorCode)
+                    override fun onHandleError(msg: String?) {
+                        mRefreshLayout.finishRefresh(false)
+                        showError(msg)
+                    }
                 })
-
         addSubscription(disposable)
     }
 

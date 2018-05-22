@@ -5,4 +5,4 @@ package com.qiushi.wechatshop.model
  *
  * 商品
  */
-data class Goods(var id: Int, var Name: String, var Price: Double)
+data class Goods(var id: Int, var name: String, var price: Double)

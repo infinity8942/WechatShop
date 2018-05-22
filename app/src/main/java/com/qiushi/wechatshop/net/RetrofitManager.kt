@@ -3,6 +3,7 @@ package com.qiushi.wechatshop.net
 import com.qiushi.wechatshop.ApiService
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.WAppContext
+import com.qiushi.wechatshop.model.PhoneInfo
 import com.qiushi.wechatshop.util.NetworkUtil
 import com.qiushi.wechatshop.util.Preference
 import okhttp3.*
@@ -30,9 +31,12 @@ object RetrofitManager {
             val originalRequest = chain.request()
             val request: Request
             val modifiedUrl = originalRequest.url().newBuilder()
-                    // Provide your custom parameter here
-                    .addQueryParameter("phoneSystem", "")
-                    .addQueryParameter("phoneModel", "")
+                    .addQueryParameter("imei", PhoneInfo.getInstance().imei)
+                    .addQueryParameter("model", PhoneInfo.getInstance().model)
+                    .addQueryParameter("brand", PhoneInfo.getInstance().brand)
+                    .addQueryParameter("version", PhoneInfo.getInstance().version)
+                    .addQueryParameter("channel", PhoneInfo.getInstance().channel)
+                    .addQueryParameter("device", "android")
                     .build()
             request = originalRequest.newBuilder().url(modifiedUrl).build()
             chain.proceed(request)
@@ -46,7 +50,8 @@ object RetrofitManager {
         return Interceptor { chain ->
             val originalRequest = chain.request()
             val requestBuilder = originalRequest.newBuilder()
-                    // Provide your custom header here
+//                    .header("client-id", user.getClient())//TODO
+//                    .header("access-token", user.getToken())
                     .header("token", token)
                     .method(originalRequest.method(), originalRequest.body())
             val request = requestBuilder.build()
@@ -89,12 +94,10 @@ object RetrofitManager {
         if (retrofit == null) {
             synchronized(RetrofitManager::class.java) {
                 if (retrofit == null) {
-                    //添加一个log拦截器,打印所有的log
                     val httpLoggingInterceptor = HttpLoggingInterceptor()
-                    //可以设置请求过滤的水平,body,basic,headers
                     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
-                    //设置 请求的缓存的大小跟位置
+                    //设置请求的缓存的大小跟位置
                     val cacheFile = File(WAppContext.context.cacheDir, "cache")
                     val cache = Cache(cacheFile, 1024 * 1024 * 50) //50Mb 缓存的大小
 
