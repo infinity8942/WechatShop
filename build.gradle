@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0-alpha06'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.21"
-        classpath 'io.realm:realm-gradle-plugin:4.3.3'
+        classpath 'io.realm:realm-gradle-plugin:5.1.0'
         classpath "com.tencent.bugly:tinker-support:1.1.1"
     }
 }

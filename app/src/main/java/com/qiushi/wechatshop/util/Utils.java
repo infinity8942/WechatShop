@@ -29,7 +29,7 @@ public class Utils {
 
     public static int getVersionCode() {
         try {
-            return WAppContext.context.getPackageManager().getPackageInfo(WAppContext.application.getPackageName(), 0).versionCode;
+            return WAppContext.INSTANCE.getContext().getPackageManager().getPackageInfo(WAppContext.INSTANCE.getApplication().getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             return 0;
         }
@@ -37,7 +37,7 @@ public class Utils {
 
     public static String getVersionName() {
         try {
-            return WAppContext.context.getPackageManager().getPackageInfo(WAppContext.application.getPackageName(), 0).versionName;
+            return WAppContext.INSTANCE.getContext().getPackageManager().getPackageInfo(WAppContext.INSTANCE.getApplication().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             return Build.UNKNOWN;
         }

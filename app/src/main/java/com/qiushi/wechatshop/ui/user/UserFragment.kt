@@ -2,24 +2,17 @@ package com.qiushi.wechatshop.ui.user
 
 import android.os.Bundle
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.base.LazyLoadFragment
-import kotlinx.android.synthetic.main.fragment_order.*
+import com.qiushi.wechatshop.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_user.*
 
 /**
  * 用户Fragment
  */
-class UserFragment : LazyLoadFragment() {
+class UserFragment : BaseFragment() {
 
     private var mTitle: String? = null
 
-    override fun layoutId(): Int {
-        return R.layout.fragment_user
-    }
-
-    override fun getParams(savedInstanceState: Bundle?) {
-        arguments?.let {
-        }
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_user
 
     override fun initView() {
         text.text = mTitle

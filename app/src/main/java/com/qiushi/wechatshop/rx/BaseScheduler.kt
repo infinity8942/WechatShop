@@ -55,7 +55,7 @@ abstract class BaseScheduler<T> protected constructor(private val subscribeOnSch
     }
 
     private fun isNetworkAvailable() {
-        if (!NetworkUtil.isNetworkAvailable(WAppContext.context)) {
+        if (!NetworkUtil.isNetworkAvailable(WAppContext.context!!)) {
             Toast.makeText(WAppContext.context, R.string.no_network, Toast.LENGTH_SHORT).show();
         }
     }

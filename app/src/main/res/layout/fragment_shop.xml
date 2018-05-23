@@ -43,13 +43,14 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
                 app:contentInsetStart="0dp">
 
                 <RelativeLayout
                     android:id="@+id/rel_toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="44dp">
 
                     <TextView
                         android:id="@+id/tv_header_title"
@@ -57,6 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
+                        android:text="我的产品"
                         android:textColor="@color/color_item_title"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -68,6 +70,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="15dp"
+                        android:src="@mipmap/ic_action_search_black"
                         android:transitionName="@string/search_transition_name"
                         tools:src="@mipmap/ic_action_search_black"
                         tools:targetApi="lollipop" />

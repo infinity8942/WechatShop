@@ -1,10 +1,9 @@
 package com.qiushi.wechatshop.wxapi;
 
 import android.content.Context;
-import android.os.Bundle;
 
 import com.qiushi.wechatshop.R;
-import com.qiushi.wechatshop.base.WActivity;
+import com.qiushi.wechatshop.base.BaseActivity;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -12,12 +11,22 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-public class WXPayEntryActivity extends WActivity implements IWXAPIEventHandler {
+public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandler {
     private static String APP_ID;
 
     @Override
     public int layoutId() {
         return R.layout.activity_wxpay_entry;
+    }
+
+    @Override
+    public void init() {
+        IWXAPI api = WXAPIFactory.createWXAPI(this, APP_ID);
+        api.handleIntent(getIntent(), this);
+    }
+
+    @Override
+    public void getData() {
     }
 
     public static boolean pay(Context context, PayReq payReq) {
@@ -30,13 +39,6 @@ public class WXPayEntryActivity extends WActivity implements IWXAPIEventHandler 
         } else {
             return false;
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        IWXAPI api = WXAPIFactory.createWXAPI(this, APP_ID);
-        api.handleIntent(getIntent(), this);
     }
 
     @Override

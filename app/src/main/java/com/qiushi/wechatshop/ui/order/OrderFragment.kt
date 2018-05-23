@@ -2,24 +2,17 @@ package com.qiushi.wechatshop.ui.order
 
 import android.os.Bundle
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.base.LazyLoadFragment
+import com.qiushi.wechatshop.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_order.*
 
 /**
  * 订单Fragment
  */
-class OrderFragment : LazyLoadFragment() {
+class OrderFragment : BaseFragment() {
 
     private var mTitle: String? = null
 
-    override fun layoutId(): Int {
-        return R.layout.fragment_order
-    }
-
-    override fun getParams(savedInstanceState: Bundle?) {
-        arguments?.let {
-        }
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_order
 
     override fun initView() {
         text.text = mTitle

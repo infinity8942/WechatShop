@@ -36,28 +36,28 @@ public class ToastUtils {
     public static void showMessage(String msg, int type) {
         if (msg == null)
             msg = DEFAULT_ERROR;
-        UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
+        UniversalToast.makeText(WAppContext.INSTANCE.getContext(), msg, UniversalToast.LENGTH_SHORT, type)
                 .setColor(R.color.bg_toast).show();
     }
 
     public static void showSuccess(String msg, int type) {
         if (msg == null)
             msg = DEFAULT_ERROR;
-        UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
+        UniversalToast.makeText(WAppContext.INSTANCE.getContext(), msg, UniversalToast.LENGTH_SHORT, type)
                 .setColor(R.color.bg_toast).showSuccess();
     }
 
     public static void showError(String msg, int type) {
         if (msg == null)
             msg = DEFAULT_ERROR;
-        UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
+        UniversalToast.makeText(WAppContext.INSTANCE.getContext(), msg, UniversalToast.LENGTH_SHORT, type)
                 .setColor(R.color.bg_toast).showError();
     }
 
     public static void showWarning(String msg, int type) {
         if (msg == null)
             msg = DEFAULT_ERROR;
-        UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
+        UniversalToast.makeText(WAppContext.INSTANCE.getContext(), msg, UniversalToast.LENGTH_SHORT, type)
                 .setColor(R.color.bg_toast).showWarning();
     }
 }

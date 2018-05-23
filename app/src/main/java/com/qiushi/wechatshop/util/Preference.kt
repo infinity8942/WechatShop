@@ -17,7 +17,7 @@ class Preference<T>(val name: String, private val default: T) {
     }
 
     private val prefs: SharedPreferences by lazy {
-        WAppContext.context.getSharedPreferences(file_name, Context.MODE_PRIVATE)
+        WAppContext.context!!.getSharedPreferences(file_name, Context.MODE_PRIVATE)
     }
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {

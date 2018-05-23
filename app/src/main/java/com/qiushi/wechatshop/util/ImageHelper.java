@@ -110,7 +110,7 @@ public class ImageHelper {
     public static void clearImageMemoryCache() {
         try {
             if (Looper.myLooper() == Looper.getMainLooper()) {
-                Glide.get(WAppContext.context).clearMemory();
+                Glide.get(WAppContext.INSTANCE.getContext()).clearMemory();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,11 +126,11 @@ public class ImageHelper {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Glide.get(WAppContext.context).clearDiskCache();
+                        Glide.get(WAppContext.INSTANCE.getContext()).clearDiskCache();
                     }
                 }).start();
             } else {
-                Glide.get(WAppContext.context).clearDiskCache();
+                Glide.get(WAppContext.INSTANCE.getContext()).clearDiskCache();
             }
         } catch (Exception e) {
             e.printStackTrace();

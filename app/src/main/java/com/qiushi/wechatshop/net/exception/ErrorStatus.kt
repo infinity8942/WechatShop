@@ -2,12 +2,6 @@ package com.qiushi.wechatshop.net.exception
 
 object ErrorStatus {
     /**
-     * 响应成功
-     */
-    @JvmField
-    val SUCCESS = 0
-
-    /**
      * 未知错误
      */
     @JvmField
@@ -26,8 +20,8 @@ object ErrorStatus {
     val NETWORK_ERROR = 1004
 
     /**
-     * API解析异常（或者第三方数据结构更改）等其他异常
+     * 解析异常
      */
     @JvmField
-    val API_ERROR = 1005
+    val JSON_ERROR = 1005
 }

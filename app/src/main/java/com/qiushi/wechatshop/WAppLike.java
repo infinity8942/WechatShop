@@ -28,6 +28,9 @@ import io.realm.RealmConfiguration;
 
 @SuppressWarnings("unused")
 public class WAppLike extends DefaultApplicationLike {
+
+    private static final String TAG = "WechatShop";
+
     public WAppLike(Application application,
                     int tinkerFlags,
                     boolean tinkerLoadVerifyFlag,
@@ -47,7 +50,8 @@ public class WAppLike extends DefaultApplicationLike {
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
                 .showThreadInfo(false)
                 .methodCount(0)
-                .tag("WechatShop")
+                .methodOffset(7)
+                .tag(TAG)
                 .build();
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
             @Override
@@ -59,7 +63,7 @@ public class WAppLike extends DefaultApplicationLike {
         //友盟推送
 //        Push.init();
 
-        if (WAppContext.application.getPackageName().equals(Utils.getProcessName()))
+        if (WAppContext.INSTANCE.getApplication().getPackageName().equals(Utils.getProcessName()))
             init();
     }
 
@@ -77,12 +81,12 @@ public class WAppLike extends DefaultApplicationLike {
         Beta.betaPatchListener = new BetaPatchListener() {
             @Override
             public void onPatchReceived(String patchFile) {
-                Log.d("WechatShop", "onPatchReceived 补丁下载地址 = " + patchFile);
+                Log.d(TAG, "onPatchReceived 补丁下载地址 = " + patchFile);
             }
 
             @Override
             public void onDownloadReceived(long savedLength, long totalLength) {
-                Log.d("WechatShop", "onDownloadReceived = " +
+                Log.d(TAG, "onDownloadReceived = " +
                         String.format(Locale.getDefault(), "%s %d%%",
                                 Beta.strNotificationDownloading,
                                 (int) (totalLength == 0 ? 0 : savedLength * 100 / totalLength)));
@@ -90,43 +94,43 @@ public class WAppLike extends DefaultApplicationLike {
 
             @Override
             public void onDownloadSuccess(String msg) {
-                Log.d("WechatShop", "onDownloadSuccess 补丁下载成功");
+                Log.d(TAG, "onDownloadSuccess 补丁下载成功");
             }
 
             @Override
             public void onDownloadFailure(String msg) {
-                Log.d("WechatShop", "onDownloadFailure 补丁下载失败");
+                Log.d(TAG, "onDownloadFailure 补丁下载失败");
             }
 
             @Override
             public void onApplySuccess(String msg) {
-                Log.d("WechatShop", "onApplySuccess 补丁应用成功");
+                Log.d(TAG, "onApplySuccess 补丁应用成功");
             }
 
             @Override
             public void onApplyFailure(String msg) {
-                Log.d("WechatShop", "onApplyFailure 补丁应用失败");
+                Log.d(TAG, "onApplyFailure 补丁应用失败");
             }
 
             @Override
             public void onPatchRollback() {
-                Log.d("WechatShop", "onPatchRollback 补丁回滚");
+                Log.d(TAG, "onPatchRollback 补丁回滚");
             }
         };
 
-        Bugly.setIsDevelopmentDevice(WAppContext.context, Constants.IS_DEVELOPER);
+        Bugly.setIsDevelopmentDevice(WAppContext.INSTANCE.getContext(), Constants.IS_DEVELOPER);
 //        Bugly.setAppChannel(WAppContext.context, Utils.getWalleChannel());
-        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(WAppContext.context);
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(WAppContext.INSTANCE.getContext());
         String processName = Utils.getProcessName();
-        strategy.setUploadProcess(processName == null || processName.equals(WAppContext.application.getPackageName()));
+        strategy.setUploadProcess(processName == null || processName.equals(WAppContext.INSTANCE.getApplication().getPackageName()));
 //        strategy.setAppChannel(Utils.getWalleChannel());
         strategy.setAppVersion(Utils.getVersionName());
-        Bugly.init(WAppContext.context, Constants.BUGLY_APPID, Constants.IS_DEVELOPER, strategy);
+        Bugly.init(WAppContext.INSTANCE.getContext(), Constants.BUGLY_APPID, Constants.IS_DEVELOPER, strategy);
     }
 
     private void init() {
         //Realm数据库
-        Realm.init(WAppContext.context);
+        Realm.init(WAppContext.INSTANCE.getContext());
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build();
@@ -146,7 +150,7 @@ public class WAppLike extends DefaultApplicationLike {
 
     @Override
     public void onTrimMemory(int level) {
-        Glide.get(WAppContext.context).clearMemory();
+        Glide.get(WAppContext.INSTANCE.getContext()).clearMemory();
         super.onTrimMemory(level);
     }
 
@@ -156,8 +160,8 @@ public class WAppLike extends DefaultApplicationLike {
         super.onBaseContextAttached(base);
         MultiDex.install(base);
 
-        WAppContext.application = getApplication();
-        WAppContext.context = getApplication();
+        WAppContext.INSTANCE.setApplication(getApplication());
+        WAppContext.INSTANCE.setContext(getApplication());
 
         Beta.installTinker(this);
     }

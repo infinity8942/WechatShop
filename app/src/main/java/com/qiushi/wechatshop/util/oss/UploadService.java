@@ -49,15 +49,15 @@ public class UploadService extends IntentService implements OSSProgressCallback<
 
     public static void start() {
         if (!isServiceRunning()) {
-            Intent intent = new Intent(WAppContext.context, UploadService.class);
-            WAppContext.context.startService(intent);
+            Intent intent = new Intent(WAppContext.INSTANCE.getContext(), UploadService.class);
+            WAppContext.INSTANCE.getContext().startService(intent);
         }
     }
 
     private static boolean isServiceRunning() {
         boolean isRunning = false;
         ActivityManager am =
-                (ActivityManager) WAppContext.application.getSystemService(Context.ACTIVITY_SERVICE);
+                (ActivityManager) WAppContext.INSTANCE.getApplication().getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) return false;
         List<ActivityManager.RunningServiceInfo> serviceList
                 = am.getRunningServices(Integer.MAX_VALUE);

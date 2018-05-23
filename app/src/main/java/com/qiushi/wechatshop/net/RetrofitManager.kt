@@ -65,13 +65,13 @@ object RetrofitManager {
     private fun addCacheInterceptor(): Interceptor {
         return Interceptor { chain ->
             var request = chain.request()
-            if (!NetworkUtil.isNetworkAvailable(WAppContext.context)) {
+            if (!NetworkUtil.isNetworkAvailable(WAppContext.context!!)) {
                 request = request.newBuilder()
                         .cacheControl(CacheControl.FORCE_CACHE)
                         .build()
             }
             val response = chain.proceed(request)
-            if (NetworkUtil.isNetworkAvailable(WAppContext.context)) {
+            if (NetworkUtil.isNetworkAvailable(WAppContext.context!!)) {
                 val maxAge = 0
                 // 有网络时 设置缓存超时时间0个小时 ,意思就是不读取缓存数据,只对get有用,post没有缓冲
                 response.newBuilder()
@@ -98,7 +98,7 @@ object RetrofitManager {
                     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
                     //设置请求的缓存的大小跟位置
-                    val cacheFile = File(WAppContext.context.cacheDir, "cache")
+                    val cacheFile = File(WAppContext.context!!.cacheDir, "cache")
                     val cache = Cache(cacheFile, 1024 * 1024 * 50) //50Mb 缓存的大小
 
                     client = OkHttpClient.Builder()

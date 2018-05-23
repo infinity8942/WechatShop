@@ -1,39 +1,30 @@
 package com.qiushi.wechatshop.ui
 
-import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentTransaction
+import android.view.KeyEvent
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.base.WActivity
+import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.ui.order.OrderFragment
 import com.qiushi.wechatshop.ui.shop.ShopFragment
 import com.qiushi.wechatshop.ui.user.UserFragment
+import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : WActivity() {
+class MainActivity : BaseActivity() {
 
     private var mShopFragment: ShopFragment? = null
     private var mOrderFragment: OrderFragment? = null
     private var mUserFragment: UserFragment? = null
 
-    private var mIndex = 0 //默认起始位置
+    override fun layoutId(): Int = R.layout.activity_main
 
-    override fun layoutId(): Int {
-        return R.layout.activity_main
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        if (savedInstanceState != null) {
-            mIndex = savedInstanceState.getInt("currTabIndex")
-        }
-        super.onCreate(savedInstanceState)
-
-        init()
-    }
-
-    private fun init() {
+    override fun init() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        navigation.selectedItemId = navigation.menu.getItem(mIndex).itemId
+        navigation.selectedItemId = navigation.menu.getItem(0).itemId
+    }
+
+    override fun getData() {
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -84,8 +75,6 @@ class MainActivity : WActivity() {
                 transaction.add(R.id.fl_container, it, "user")
             }
         }
-
-        mIndex = position
         transaction.commitAllowingStateLoss()
     }
 
@@ -99,10 +88,17 @@ class MainActivity : WActivity() {
         mUserFragment?.let { transaction.hide(it) }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        if (navigation != null) {
-            outState.putInt("currTabIndex", mIndex)
+    private var mExitTime: Long = 0
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis().minus(mExitTime) <= 2000) {
+                finish()
+            } else {
+                mExitTime = System.currentTimeMillis()
+                ToastUtils.showMessage("再按一次退出程序")
+            }
+            return true
         }
+        return super.onKeyDown(keyCode, event)
     }
 }
