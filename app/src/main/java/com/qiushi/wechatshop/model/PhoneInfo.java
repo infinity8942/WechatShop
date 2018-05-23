@@ -13,7 +13,7 @@ public class PhoneInfo {
 
     public static PhoneInfo getInstance() {
         if (instance == null)
-            instance = new PhoneInfo(WAppContext.INSTANCE.getContext());
+            instance = new PhoneInfo(WAppContext.context);
         return instance;
     }
 

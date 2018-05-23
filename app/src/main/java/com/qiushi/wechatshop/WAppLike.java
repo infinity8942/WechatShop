@@ -63,7 +63,7 @@ public class WAppLike extends DefaultApplicationLike {
         //友盟推送
 //        Push.init();
 
-        if (WAppContext.INSTANCE.getApplication().getPackageName().equals(Utils.getProcessName()))
+        if (WAppContext.application.getPackageName().equals(Utils.getProcessName()))
             init();
     }
 
@@ -118,19 +118,19 @@ public class WAppLike extends DefaultApplicationLike {
             }
         };
 
-        Bugly.setIsDevelopmentDevice(WAppContext.INSTANCE.getContext(), Constants.IS_DEVELOPER);
+        Bugly.setIsDevelopmentDevice(WAppContext.context, Constants.IS_DEVELOPER);
 //        Bugly.setAppChannel(WAppContext.context, Utils.getWalleChannel());
-        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(WAppContext.INSTANCE.getContext());
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(WAppContext.context);
         String processName = Utils.getProcessName();
-        strategy.setUploadProcess(processName == null || processName.equals(WAppContext.INSTANCE.getApplication().getPackageName()));
+        strategy.setUploadProcess(processName == null || processName.equals(WAppContext.application.getPackageName()));
 //        strategy.setAppChannel(Utils.getWalleChannel());
         strategy.setAppVersion(Utils.getVersionName());
-        Bugly.init(WAppContext.INSTANCE.getContext(), Constants.BUGLY_APPID, Constants.IS_DEVELOPER, strategy);
+        Bugly.init(WAppContext.context, Constants.BUGLY_APPID, Constants.IS_DEVELOPER, strategy);
     }
 
     private void init() {
         //Realm数据库
-        Realm.init(WAppContext.INSTANCE.getContext());
+        Realm.init(WAppContext.context);
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build();
@@ -150,7 +150,7 @@ public class WAppLike extends DefaultApplicationLike {
 
     @Override
     public void onTrimMemory(int level) {
-        Glide.get(WAppContext.INSTANCE.getContext()).clearMemory();
+        Glide.get(WAppContext.context).clearMemory();
         super.onTrimMemory(level);
     }
 
@@ -160,8 +160,8 @@ public class WAppLike extends DefaultApplicationLike {
         super.onBaseContextAttached(base);
         MultiDex.install(base);
 
-        WAppContext.INSTANCE.setApplication(getApplication());
-        WAppContext.INSTANCE.setContext(getApplication());
+        WAppContext.context = getApplication();
+        WAppContext.application = getApplication();
 
         Beta.installTinker(this);
     }

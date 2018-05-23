@@ -1,15 +1,17 @@
 package com.qiushi.wechatshop.ui.shop
 
 import android.os.Bundle
-import com.orhanobut.logger.Logger
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
-import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
-import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.test.Beauty
+import com.qiushi.wechatshop.test.TestAdapter
+import com.qiushi.wechatshop.test.TestObserver
 import com.qiushi.wechatshop.util.StatusBarUtil
 import kotlinx.android.synthetic.main.fragment_shop.*
 
@@ -19,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_shop.*
 class ShopFragment : BaseFragment() {
 
     private var mTitle: String? = null
-//    private var mHomeAdapter: HomeAdapter? = null
+    private var mTestAdapter: TestAdapter? = null
 
     override fun getLayoutId(): Int = R.layout.fragment_shop
 
@@ -38,16 +40,22 @@ class ShopFragment : BaseFragment() {
 
     override fun lazyLoad() {
         showLoadingView()
-        val disposable = RetrofitManager.service.getHotWord()
+        val disposable = RetrofitManager.service.test("7f3a3cee57641229c1b392c2b3911bd8", 1, 15)
                 .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<List<Goods>>() {
+                .subscribeWith(object : TestObserver<ArrayList<Beauty>>() {
                     override fun onComplete() {
                         mRefreshLayout.finishRefresh()
                     }
 
-                    override fun onHandleSuccess(t: List<Goods>) {
+                    override fun onHandleSuccess(t: ArrayList<Beauty>) {
                         mLayoutStatusView?.showContent()
-                        Logger.e("onHandleSuccess = " + t?.size)
+
+                        com.orhanobut.logger.Logger.e("t = " + t.size)
+
+                        mTestAdapter = TestAdapter(activity!!, t)
+                        mRecyclerView.adapter = mTestAdapter
+                        mRecyclerView.layoutManager = linearLayoutManager
+                        mRecyclerView.itemAnimator = DefaultItemAnimator()
                     }
 
                     override fun onHandleError(error: Error) {
@@ -55,6 +63,10 @@ class ShopFragment : BaseFragment() {
                     }
                 })
         addSubscription(disposable)
+    }
+
+    private val linearLayoutManager by lazy {
+        LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
     }
 
     /**

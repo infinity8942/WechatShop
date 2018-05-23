@@ -37,6 +37,11 @@
         </activity>
         <activity android:name=".ui.MainActivity" />
 
+        <!-- Service -->
+        <service
+            android:name=".util.oss.UploadService"
+            android:exported="false" />
+
         <!-- 微信分享回调 -->
         <!-- 8.0只有全屏不透明的才能使用屏幕锁定  android:screenOrientation="portrait" -->
         <activity

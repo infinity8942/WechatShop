@@ -21,7 +21,7 @@ public class DensityUtils {
      * 获得屏幕宽度
      */
     public static int getScreenWidth() {
-        WindowManager wm = (WindowManager) WAppContext.INSTANCE.getApplication().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) WAppContext.application.getSystemService(Context.WINDOW_SERVICE);
         if (null != wm) {
             DisplayMetrics outMetrics = new DisplayMetrics();
             wm.getDefaultDisplay().getMetrics(outMetrics);
@@ -34,7 +34,7 @@ public class DensityUtils {
      * 获得屏幕高度
      */
     public static int getScreenHeight() {
-        WindowManager wm = (WindowManager) WAppContext.INSTANCE.getApplication().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) WAppContext.application.getSystemService(Context.WINDOW_SERVICE);
         if (null != wm) {
             DisplayMetrics outMetrics = new DisplayMetrics();
             wm.getDefaultDisplay().getMetrics(outMetrics);

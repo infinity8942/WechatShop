@@ -1,12 +1,14 @@
 package com.qiushi.wechatshop
 
-import com.qiushi.wechatshop.model.Goods
-import com.qiushi.wechatshop.net.BaseResponse
+import com.qiushi.wechatshop.test.Beauty
+import com.qiushi.wechatshop.test.TestResponse
 import io.reactivex.Observable
-import retrofit2.http.POST
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface ApiService {
 
-    @POST("MobileAppv2/clarity")
-    fun getHotWord(): Observable<BaseResponse<List<Goods>>>
+    @GET("meinv")//TODO test
+    fun test(@Query("key") key: String, @Query("page") page: Int, @Query("num") num: Int)
+            : Observable<TestResponse<ArrayList<Beauty>>>
 }

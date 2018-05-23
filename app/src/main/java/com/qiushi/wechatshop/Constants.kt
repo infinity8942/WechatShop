@@ -8,7 +8,8 @@ object Constants {
     const val DEBUG = false //是否测试环境
 
     @JvmField
-    val HOST = if (DEBUG) "http://top6000.qiushizixun.com/" else "http://wap.top6000.com/"
+//    val HOST = if (DEBUG) "http://top6000.qiushizixun.com/" else "http://wap.top6000.com/"
+    val HOST = "http://api.tianapi.com/"//TODO test
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"
     @JvmField
     val OssCallback = HOST + "OSS/app_response_call_back" //"http://192.168.1.82:81"
