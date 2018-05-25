@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
+    android:background="@color/contentBackground">
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/mRefreshLayout"
@@ -59,7 +59,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:text="我的产品"
-                        android:textColor="@color/color_item_title"
+                        android:textColor="@color/title"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 

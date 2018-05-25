@@ -3,10 +3,22 @@ package com.qiushi.wechatshop.util;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.qiushi.wechatshop.GlideApp;
+import com.qiushi.wechatshop.R;
 import com.qiushi.wechatshop.WAppContext;
+import com.qiushi.wechatshop.model.MyGlideUrl;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by Rylynn on 2018-03-29.
@@ -15,93 +27,68 @@ import com.qiushi.wechatshop.WAppContext;
 public class ImageHelper {
 
     private final static int DEFAULT_AVATAR = 0;//默认头像
-    private final static int DEFAULT_PLACEHOLDER = 0;//默认图片占位颜色
+    private final static int PLACEHOLDER = R.color.imageBackground;//默认图片占位颜色
 
-    public static void loadAvatar(Context context, ImageView view, String url, int width, int height) {
-//        if (!TextUtils.isEmpty(url)) {
-//            GlideApp.with(context).load(new MyGlideUrl(url))
-//                    .format(DecodeFormat.PREFER_ARGB_8888)
-//                    .placeholder(DEFAULT_AVATAR)
-//                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-//                    .override(width, height)
-//                    .error(DEFAULT_AVATAR)
-//                    .transform(new CircleCrop())
-//                    .into(view);
-//        } else {
-//            GlideApp.with(context).load(DEFAULT_AVATAR)
-//                    .transform(new CircleCrop()).into(view);
-//        }
+    public static void loadImage(Context ctx, ImageView view, String url) {
+        if (!TextUtils.isEmpty(url)) {
+            GlideApp.with(ctx).load(new MyGlideUrl(url))
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(view);
+        } else {
+            GlideApp.with(ctx).load(PLACEHOLDER)
+                    .dontAnimate().into(view);
+        }
     }
 
-    //Normal Image
-    public static void loadImage(Context context, ImageView view, String url) {
-//        if (!TextUtils.isEmpty(url)) {
-//            GlideApp.with(context).load(new MyGlideUrl(url))
-//                    .format(DecodeFormat.PREFER_RGB_565)
-//                    .sizeMultiplier(0.9f)
-//                    .placeholder(DEFAULT_PLACEHOLDER)
-//                    .error(DEFAULT_PLACEHOLDER)
-//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                    .transition(DrawableTransitionOptions.withCrossFade())
-//                    .priority(Priority.HIGH)
-//                    .centerCrop()
-//                    .into(view);
-//        } else {
-//            GlideApp.with(context).load(DEFAULT_PLACEHOLDER)
-//                    .format(DecodeFormat.PREFER_RGB_565)
-//                    .dontAnimate()
-//                    .into(view);
-//        }
+    public static void loadImage(Context ctx, ImageView view, String url, int width,
+                                 int height) {
+        if (!TextUtils.isEmpty(url)) {
+            loadImage(ctx, view, url, width, height, PLACEHOLDER);
+        } else {
+            GlideApp.with(ctx).load(PLACEHOLDER)
+                    .dontAnimate().into(view);
+        }
     }
 
-    public static void loadImage(Context context, ImageView view, String url, int width, int height) {
-        loadImage(context, view, url, width, height, DEFAULT_PLACEHOLDER);
+    public static void loadImage(Context ctx, ImageView view, String url, int width,
+                                 int height, int placeHolder) {
+        GlideApp.with(ctx).load(new MyGlideUrl(url))
+                .override(width, height)
+                .placeholder(placeHolder)
+                .error(placeHolder)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(view);
     }
 
-    public static void loadImage(Context context, ImageView view, String url, int width, int height, int placeHolder) {
-//        if (!TextUtils.isEmpty(url)) {
-//            GlideApp.with(context).load(new MyGlideUrl(url))
-//                    .format(DecodeFormat.PREFER_RGB_565)
-//                    .override(width, height)
-//                    .sizeMultiplier(0.9f)
-//                    .placeholder(placeHolder)
-//                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-//                    .error(placeHolder)
-//                    .transition(DrawableTransitionOptions.withCrossFade())
-//                    .priority(Priority.HIGH)
-//                    .centerCrop()
-//                    .into(view);
-//        } else {
-//            GlideApp.with(context).load(placeHolder)
-//                    .format(DecodeFormat.PREFER_RGB_565)
-//                    .dontAnimate()
-//                    .into(view);
-//        }
-    }
-
-    public static void loadResource(Context context, ImageView view, int res, float radius) {
-//        GlideApp.with(context).load(res)
-//                .format(DecodeFormat.PREFER_RGB_565)
-//                .dontAnimate()
-//                .transforms(new CenterCrop(),
-//                        new RoundedCornersTransformation(DensityUtils.dp2px(radius), 0))
-//                .into(view);
+    public static void loadImage(Context ctx, ImageView view, String url, int width,
+                                 int height, float radius) {
+        if (!TextUtils.isEmpty(url)) {
+            GlideApp.with(ctx).load(new MyGlideUrl(url))
+                    .override(width, height)
+                    .transforms(new CenterCrop(),
+                            new RoundedCornersTransformation(DensityUtils.dp2px(radius), 0))
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(view);
+        } else {
+            GlideApp.with(ctx).load(PLACEHOLDER)
+                    .dontAnimate().into(view);
+        }
     }
 
     /**
      * 加载用户主页背景图
      */
-    public static void loadUserBackground(Context context, ImageView view, Uri uri) {
-//        GlideApp.with(context).load(uri)
-//                .format(DecodeFormat.PREFER_RGB_565)
-//                .sizeMultiplier(0.9f)
-//                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-//                .dontAnimate()
-//                .priority(Priority.HIGH)
-//                .transforms(new CenterCrop(),
-//                        new BlurTransformation(6)
-//                )
-//                .into(view);
+    public static void loadUserBackground(Context ctx, ImageView view, Uri uri) {
+        GlideApp.with(ctx).load(uri)
+                .format(DecodeFormat.PREFER_RGB_565)
+                .sizeMultiplier(0.9f)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .dontAnimate()
+                .priority(Priority.HIGH)
+                .transforms(new CenterCrop(),
+                        new BlurTransformation(6)
+                )
+                .into(view);
     }
 
     /**
@@ -135,5 +122,10 @@ public class ImageHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void clear() {
+        clearImageMemoryCache();
+        clearImageDiskCache();
     }
 }

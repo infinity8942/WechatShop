@@ -7,10 +7,12 @@ import com.bumptech.glide.MemoryCategory
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.cache.DiskCache
 import com.bumptech.glide.load.engine.cache.DiskLruCacheWrapper
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
+import com.bumptech.glide.request.RequestOptions
 import com.qiushi.wechatshop.util.FileUtil
 import okhttp3.OkHttpClient
 import java.io.File
@@ -23,6 +25,14 @@ import java.util.concurrent.TimeUnit
  */
 @GlideModule
 class WGlideModule : AppGlideModule() {
+
+    private val mRequestOption: RequestOptions = RequestOptions()
+            .format(DecodeFormat.PREFER_RGB_565)
+            .placeholder(R.color.imageBackground)
+            .error(R.color.imageBackground)
+            .centerCrop()
+            .disallowHardwareConfig()
+
     private val client = OkHttpClient.Builder()
             .connectTimeout(10000, TimeUnit.SECONDS)
             .readTimeout(10000, TimeUnit.SECONDS)
@@ -40,5 +50,8 @@ class WGlideModule : AppGlideModule() {
             val imgFile = File(FileUtil.getRootFile(), "cache")
             DiskLruCacheWrapper.get(imgFile, DiskCache.Factory.DEFAULT_DISK_CACHE_SIZE.toLong())
         }
+        builder.setDefaultRequestOptions(mRequestOption)
     }
+
+    override fun isManifestParsingEnabled(): Boolean = false
 }

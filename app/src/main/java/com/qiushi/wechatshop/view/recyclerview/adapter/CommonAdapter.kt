@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.qiushi.wechatshop.view.recyclerview.MultipleType
 import com.qiushi.wechatshop.view.recyclerview.ViewHolder
 
-abstract class CommonAdapter<T>(var mContext: Context, var mData: ArrayList<T>, //条目布局
+abstract class CommonAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
                                 private var mLayoutId: Int) : RecyclerView.Adapter<ViewHolder>() {
     protected var mInflater: LayoutInflater? = null
     private var mTypeSupport: MultipleType<T>? = null
@@ -25,8 +25,7 @@ abstract class CommonAdapter<T>(var mContext: Context, var mData: ArrayList<T>, 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        if (mTypeSupport != null) {
-            //多布局
+        if (mTypeSupport != null) {//多布局
             mLayoutId = viewType
         }
         //创建view
@@ -35,7 +34,6 @@ abstract class CommonAdapter<T>(var mContext: Context, var mData: ArrayList<T>, 
     }
 
     override fun getItemViewType(position: Int): Int {
-        //多布局
         return mTypeSupport?.getLayoutId(mData[position], position)
                 ?: super.getItemViewType(position)
     }

@@ -19,7 +19,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:singleLine="true"
-        android:textColor="@color/color_item_title"
+        android:textColor="@color/title"
         android:textSize="15sp"
         tools:text="标题" />
 </LinearLayout>

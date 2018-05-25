@@ -7,9 +7,11 @@
     <color name="color_gray">#9a9a9a</color>
 
     <!-- 默认背景色 -->
-    <color name="backgroundColor">#EEEEEE</color>
-    <!-- item 标题颜色 -->
-    <color name="color_item_title">#000000</color>
+    <color name="contentBackground">#EEEEEE</color>
+    <!-- 默认图片背景色 -->
+    <color name="imageBackground">#EEEEEE</color>
+    <!-- 标题颜色 -->
+    <color name="title">#000000</color>
 
     <color name="bg_toast">#99000000</color>
 

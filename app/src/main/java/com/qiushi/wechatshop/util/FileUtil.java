@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
  */
 public class FileUtil {
     public static File getRootFile() {
-        File root = new File(Environment.getExternalStorageDirectory(), "Top6000");
+        File root = new File(Environment.getExternalStorageDirectory(), "WechatShop");
         if (!root.exists()) {
             root.mkdirs();
         }

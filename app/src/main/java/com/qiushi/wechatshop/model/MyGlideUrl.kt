@@ -8,13 +8,16 @@ import com.bumptech.glide.load.model.GlideUrl
  */
 class MyGlideUrl(private val mUrl: String) : GlideUrl(mUrl) {
 
+    private val NONCE = "Signature"
+
     override fun getCacheKey(): String {
         return mUrl.replace(deleteSignature(), "")
     }
 
     private fun deleteSignature(): String {
         var tokenParam = ""
-        val tokenKeyIndex = if (mUrl.contains("?Signature=")) mUrl.indexOf("?Signature=") else mUrl.indexOf("&Signature=")
+        val tokenKeyIndex = if (mUrl.contains(String.format("?%s=", NONCE)))
+            mUrl.indexOf(String.format("?%s=", NONCE)) else mUrl.indexOf(String.format("&%s=", NONCE))
         if (tokenKeyIndex != -1) {
             val nextAndIndex = mUrl.indexOf("&", tokenKeyIndex + 1)
             if (nextAndIndex != -1) {

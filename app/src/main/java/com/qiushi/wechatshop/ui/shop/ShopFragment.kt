@@ -50,8 +50,6 @@ class ShopFragment : BaseFragment() {
                     override fun onHandleSuccess(t: ArrayList<Beauty>) {
                         mLayoutStatusView?.showContent()
 
-                        com.orhanobut.logger.Logger.e("t = " + t.size)
-
                         mTestAdapter = TestAdapter(activity!!, t)
                         mRecyclerView.adapter = mTestAdapter
                         mRecyclerView.layoutManager = linearLayoutManager
