@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#38aae4</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
@@ -11,7 +11,11 @@
     <!-- 默认图片背景色 -->
     <color name="imageBackground">#EEEEEE</color>
     <!-- 标题颜色 -->
-    <color name="title">#000000</color>
+    <color name="title">#FFFFFF</color>
+
+    <!-- 正文颜色 -->
+    <color name="text">#000000</color>
+    <color name="textLight">#9a9a9a</color>
 
     <color name="bg_toast">#99000000</color>
 

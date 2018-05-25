@@ -14,6 +14,8 @@ object Constants {
     @JvmField
     val OssCallback = HOST + "OSS/app_response_call_back" //"http://192.168.1.82:81"
 
+    const val PAGE_NUM = 15 //每页请求数量
+
     //Key
     const val ALI_OSS_APPKEY = "rCbpsTRroEUuf4hS"
     const val ALI_OSS_SECRET = "GvK8xfPJJjiq9eIdpwbJiXoFkOuzbk"

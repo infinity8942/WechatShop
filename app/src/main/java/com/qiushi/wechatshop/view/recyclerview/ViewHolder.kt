@@ -9,10 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 
 @Suppress("UNCHECKED_CAST")
-
 class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    //用于缓存已找的界面
     private var mView: SparseArray<View>? = null
 
     init {
@@ -20,9 +18,7 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun <T : View> getView(viewId: Int): T {
-        //对已有的view做缓存
         var view: View? = mView?.get(viewId)
-        //使用缓存的方式减少findViewById的次数
         if (view == null) {
             view = itemView.findViewById(viewId)
             mView?.put(viewId, view)
@@ -31,9 +27,7 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun <T : ViewGroup> getViewGroup(viewId: Int): T {
-        //对已有的view做缓存
         var view: View? = mView?.get(viewId)
-        //使用缓存的方式减少findViewById的次数
         if (view == null) {
             view = itemView.findViewById(viewId)
             mView?.put(viewId, view)
@@ -42,7 +36,6 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     @SuppressLint("SetTextI18n")
-            //通用的功能进行封装  设置文本 设置条目点击事件  设置图片
     fun setText(viewId: Int, text: CharSequence): ViewHolder {
         val view = getView<TextView>(viewId)
         view.text = "" + text
@@ -58,10 +51,6 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     /**
      * 设置本地图片
-     *
-     * @param viewId
-     * @param resId
-     * @return
      */
     fun setImageResource(viewId: Int, resId: Int): ViewHolder {
         val iv = getView<ImageView>(viewId)
@@ -71,10 +60,6 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     /**
      * 加载图片资源路径
-     *
-     * @param viewId
-     * @param imageLoader
-     * @return
      */
     fun setImagePath(viewId: Int, imageLoader: HolderImageLoader): ViewHolder {
         val iv = getView<ImageView>(viewId)
@@ -83,12 +68,6 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     abstract class HolderImageLoader(val path: String) {
-        /**
-         * 需要去复写这个方法加载图片
-         *
-         * @param iv
-         * @param path
-         */
         abstract fun loadImage(iv: ImageView, path: String)
     }
 

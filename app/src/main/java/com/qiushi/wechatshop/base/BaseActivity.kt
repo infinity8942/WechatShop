@@ -2,10 +2,8 @@ package com.qiushi.wechatshop.base
 
 import android.os.Bundle
 import android.view.View
-
 import com.qiushi.wechatshop.view.LoadingDialog
 import com.qiushi.wechatshop.view.MultipleStatusView
-
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity

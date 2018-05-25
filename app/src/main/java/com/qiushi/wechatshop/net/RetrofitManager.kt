@@ -5,7 +5,6 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.model.PhoneInfo
 import com.qiushi.wechatshop.util.NetworkUtil
-import com.qiushi.wechatshop.util.Preference
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -20,8 +19,6 @@ object RetrofitManager {
     private var retrofit: Retrofit? = null
 
     val service: ApiService by lazy { getRetrofit()!!.create(ApiService::class.java) }
-
-    private var token: String by Preference("token", "")
 
     /**
      * 设置公共参数
@@ -52,7 +49,6 @@ object RetrofitManager {
             val requestBuilder = originalRequest.newBuilder()
 //                    .header("client-id", user.getClient())//TODO
 //                    .header("access-token", user.getToken())
-                    .header("token", token)
                     .method(originalRequest.method(), originalRequest.body())
             val request = requestBuilder.build()
             chain.proceed(request)

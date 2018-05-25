@@ -56,7 +56,7 @@ class MainActivity : BaseActivity() {
             0 // 店铺
             -> mShopFragment?.let {
                 transaction.show(it)
-            } ?: ShopFragment.getInstance("shop").let {
+            } ?: ShopFragment.getInstance().let {
                 mShopFragment = it
                 transaction.add(R.id.fl_container, it, "shop")
             }
@@ -78,10 +78,6 @@ class MainActivity : BaseActivity() {
         transaction.commitAllowingStateLoss()
     }
 
-    /**
-     * 隐藏所有的Fragment
-     * @param transaction transaction
-     */
     private fun hideFragments(transaction: FragmentTransaction) {
         mShopFragment?.let { transaction.hide(it) }
         mOrderFragment?.let { transaction.hide(it) }

@@ -41,7 +41,7 @@ class ExceptionHandler {
                 }
             }
 
-            Logger.e("Error = " + error.code + " " + error.msg)
+            Logger.e("onError = " + error.code + " " + error.msg)
             return error
         }
     }

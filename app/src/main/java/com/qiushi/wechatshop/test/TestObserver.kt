@@ -9,19 +9,18 @@ import io.reactivex.observers.DisposableObserver
  * Created by Rylynn on 2018-05-22.
  */
 abstract class TestObserver<T> : DisposableObserver<TestResponse<T>>() {
+    override fun onStart() {}
+    override fun onComplete() {}
+
     override fun onNext(value: TestResponse<T>) {
         if (value.isSuccess()) {
             val t = value.newslist
             onHandleSuccess(t)
         } else {
             onHandleError(Error(value.code, value.msg))
-            Logger.e("onError = " + value.code + " " + value.msg)
+            Logger.e("onFailed = " + value.code + " " + value.msg)
         }
     }
-
-    override fun onStart() {}
-
-    override fun onComplete() {}
 
     override fun onError(e: Throwable) {
         onHandleError(ExceptionHandler.handleException(e))

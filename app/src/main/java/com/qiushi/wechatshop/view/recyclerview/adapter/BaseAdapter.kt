@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import com.qiushi.wechatshop.view.recyclerview.MultipleType
 import com.qiushi.wechatshop.view.recyclerview.ViewHolder
 
-abstract class CommonAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
-                                private var mLayoutId: Int) : RecyclerView.Adapter<ViewHolder>() {
-    protected var mInflater: LayoutInflater? = null
+abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
+                              private var mLayoutId: Int) : RecyclerView.Adapter<ViewHolder>() {
+    private var mInflater: LayoutInflater? = null
     private var mTypeSupport: MultipleType<T>? = null
 
     private var mItemClickListener: OnItemClickListener? = null
@@ -25,10 +25,9 @@ abstract class CommonAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        if (mTypeSupport != null) {//多布局
+        if (mTypeSupport != null) {
             mLayoutId = viewType
         }
-        //创建view
         val view = mInflater?.inflate(mLayoutId, parent, false)
         return ViewHolder(view!!)
     }
@@ -49,11 +48,6 @@ abstract class CommonAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
         }
     }
 
-    /**
-     * 绑定数据
-     */
-    protected abstract fun bindData(holder: ViewHolder, data: T, position: Int)
-
     override fun getItemCount(): Int {
         return mData.size
     }
@@ -64,5 +58,21 @@ abstract class CommonAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
 
     fun setOnItemLongClickListener(itemLongClickListener: OnItemLongClickListener) {
         this.mItemLongClickListener = itemLongClickListener
+    }
+
+    //绑定数据
+    protected abstract fun bindData(holder: ViewHolder, data: T, position: Int)
+
+    //填充数据
+    fun setData(itemList: ArrayList<T>) {
+        mData.clear()
+        mData = itemList
+        notifyDataSetChanged()
+    }
+
+    //追加数据
+    fun addData(itemList: ArrayList<T>) {
+        this.mData.addAll(itemList)
+        notifyItemRangeChanged(mData.size - itemList.size, itemList.size)
     }
 }
