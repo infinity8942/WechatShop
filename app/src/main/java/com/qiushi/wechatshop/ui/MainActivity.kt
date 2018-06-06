@@ -5,17 +5,17 @@ import android.support.v4.app.FragmentTransaction
 import android.view.KeyEvent
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
-import com.qiushi.wechatshop.ui.order.OrderFragment
-import com.qiushi.wechatshop.ui.shop.ShopFragment
+import com.qiushi.wechatshop.ui.manage.ManageFragment
+import com.qiushi.wechatshop.ui.shop.OrderFragment
 import com.qiushi.wechatshop.ui.user.UserFragment
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
-    private var mShopFragment: ShopFragment? = null
-    private var mOrderFragment: OrderFragment? = null
-    private var mUserFragment: UserFragment? = null
+    private var mManageFragment: ManageFragment? = null // 我的店
+    private var mOrderFragment: OrderFragment? = null   // 串门
+    private var mUserFragment: UserFragment? = null     // 我的
 
     override fun layoutId(): Int = R.layout.activity_main
 
@@ -54,10 +54,10 @@ class MainActivity : BaseActivity() {
         hideFragments(transaction)
         when (position) {
             0 // 店铺
-            -> mShopFragment?.let {
+            -> mManageFragment?.let {
                 transaction.show(it)
-            } ?: ShopFragment.getInstance().let {
-                mShopFragment = it
+            } ?: ManageFragment.getInstance().let {
+                mManageFragment = it
                 transaction.add(R.id.fl_container, it, "shop")
             }
             1 // 订单
@@ -79,7 +79,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun hideFragments(transaction: FragmentTransaction) {
-        mShopFragment?.let { transaction.hide(it) }
+        mManageFragment?.let { transaction.hide(it) }
         mOrderFragment?.let { transaction.hide(it) }
         mUserFragment?.let { transaction.hide(it) }
     }

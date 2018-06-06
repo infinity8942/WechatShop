@@ -1,4 +1,4 @@
-package com.qiushi.wechatshop.ui.shop
+package com.qiushi.wechatshop.ui.manage
 
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
@@ -15,13 +15,12 @@ import com.qiushi.wechatshop.test.TestAdapter
 import com.qiushi.wechatshop.test.TestObserver
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
-import kotlinx.android.synthetic.main.fragment_shop.*
+import kotlinx.android.synthetic.main.fragment_manage.*
 
 /**
- * 店铺Fragment
+ * 我的店Fragment
  */
-
-class ShopFragment : BaseFragment() {
+class ManageFragment : BaseFragment() {
 
     private val mAdapter by lazy { TestAdapter(activity!!, ArrayList()) }
     private val linearLayoutManager by lazy {
@@ -30,7 +29,7 @@ class ShopFragment : BaseFragment() {
 
     private var page = 1
 
-    override fun getLayoutId(): Int = R.layout.fragment_shop
+    override fun getLayoutId(): Int = R.layout.fragment_manage
 
     override fun initView() {
         //状态栏透明和间距处理
@@ -109,8 +108,8 @@ class ShopFragment : BaseFragment() {
     }
 
     companion object {
-        fun getInstance(): ShopFragment {
-            val fragment = ShopFragment()
+        fun getInstance(): ManageFragment {
+            val fragment = ManageFragment()
             val bundle = Bundle()
             fragment.arguments = bundle
             return fragment

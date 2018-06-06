@@ -1,4 +1,4 @@
-package com.qiushi.wechatshop.ui.order
+package com.qiushi.wechatshop.ui.shop
 
 import android.os.Bundle
 import com.qiushi.wechatshop.R
