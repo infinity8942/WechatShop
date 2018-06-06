@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.shop.ShopFragment">
+    tools:context=".ui.shop.ShopListFragment">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.flyco.tablayout.SlidingTabLayout
+        android:id="@+id/tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_tab_layout_top"
+        android:background="@android:color/transparent"
+        tl:tl_indicator_corner_radius="2dp"
+        tl:tl_indicator_height="4dp"
+        tl:tl_indicator_width="4dp" />
 </FrameLayout>
