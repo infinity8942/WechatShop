@@ -96,6 +96,8 @@ abstract class BaseFragment : Fragment() {
     }
 
     protected fun dismissLoading() {
+        if (loadingDialog == null)
+            return
         if (!loadingDialog!!.isShowing)
             loadingDialog!!.dismiss()
     }

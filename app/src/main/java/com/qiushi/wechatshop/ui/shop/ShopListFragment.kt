@@ -11,8 +11,7 @@ import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
-import kotlinx.android.synthetic.main.fragment_manage.*
-import kotlinx.android.synthetic.main.fragment_shop.*
+import kotlinx.android.synthetic.main.fragment_shop_list.*
 
 /**
  * 串门Fragment
@@ -22,17 +21,19 @@ class ShopListFragment : BaseFragment() {
     private val tabList = ArrayList<String>()
     private val fragments = ArrayList<Fragment>()
 
-    override fun getLayoutId(): Int = R.layout.fragment_shop
+    override fun getLayoutId(): Int = R.layout.fragment_shop_list
 
     override fun initView() {
         //状态栏透明和间距处理
-        StatusBarUtil.darkMode(activity!!)
+        StatusBarUtil.immersive(activity!!)
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
 
         tabList.add("我的店")
         tabList.add("店铺1")
         tabList.add("店铺2")
-//        fragments.add(FollowFragment.getInstance("关注"))
+        fragments.add(ShopFragment.getInstance(1))
+        fragments.add(ShopFragment.getInstance(2))
+        fragments.add(ShopFragment.getInstance(3))
 
         viewpager.adapter = BaseFragmentAdapter(childFragmentManager, fragments, tabList)
         tab.setViewPager(viewpager)
