@@ -6,7 +6,7 @@ import android.view.KeyEvent
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.ui.manage.ManageFragment
-import com.qiushi.wechatshop.ui.shop.OrderFragment
+import com.qiushi.wechatshop.ui.shop.ShopFragment
 import com.qiushi.wechatshop.ui.user.UserFragment
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity() {
 
     private var mManageFragment: ManageFragment? = null // 我的店
-    private var mOrderFragment: OrderFragment? = null   // 串门
+    private var mShopFragment: ShopFragment? = null     // 串门
     private var mUserFragment: UserFragment? = null     // 我的
 
     override fun layoutId(): Int = R.layout.activity_main
@@ -45,29 +45,25 @@ class MainActivity : BaseActivity() {
         false
     }
 
-    /**
-     * 切换Fragment
-     * @param position 下标
-     */
     private fun switchFragment(position: Int) {
         val transaction = supportFragmentManager.beginTransaction()
         hideFragments(transaction)
         when (position) {
-            0 // 店铺
+            0
             -> mManageFragment?.let {
                 transaction.show(it)
             } ?: ManageFragment.getInstance().let {
                 mManageFragment = it
                 transaction.add(R.id.fl_container, it, "shop")
             }
-            1 // 订单
-            -> mOrderFragment?.let {
+            1
+            -> mShopFragment?.let {
                 transaction.show(it)
-            } ?: OrderFragment.getInstance("order").let {
-                mOrderFragment = it
+            } ?: ShopFragment.getInstance("order").let {
+                mShopFragment = it
                 transaction.add(R.id.fl_container, it, "order")
             }
-            2 //我的
+            2
             -> mUserFragment?.let {
                 transaction.show(it)
             } ?: UserFragment.getInstance("user").let {
@@ -80,7 +76,7 @@ class MainActivity : BaseActivity() {
 
     private fun hideFragments(transaction: FragmentTransaction) {
         mManageFragment?.let { transaction.hide(it) }
-        mOrderFragment?.let { transaction.hide(it) }
+        mShopFragment?.let { transaction.hide(it) }
         mUserFragment?.let { transaction.hide(it) }
     }
 
