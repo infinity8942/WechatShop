@@ -16,8 +16,8 @@ abstract class BaseObserver<T> : DisposableObserver<BaseResponse<T>>() {
             val t = value.data
             onHandleSuccess(t)
         } else {
-            onHandleError(Error(value.code, value.info))
-            Logger.e("onError = " + value.code + " " + value.info)
+            onHandleError(Error(value.code, value.msg))
+            Logger.e("onError = " + value.code + " " + value.msg)
         }
     }
 

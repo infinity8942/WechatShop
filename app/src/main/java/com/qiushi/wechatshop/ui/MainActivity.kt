@@ -6,7 +6,7 @@ import android.view.KeyEvent
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.ui.manage.ManageFragment
-import com.qiushi.wechatshop.ui.shop.ShopFragment
+import com.qiushi.wechatshop.ui.shop.ShopListFragment
 import com.qiushi.wechatshop.ui.user.UserFragment
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity() {
 
     private var mManageFragment: ManageFragment? = null // 我的店
-    private var mShopFragment: ShopFragment? = null     // 串门
+    private var mShopListFragment: ShopListFragment? = null     // 串门
     private var mUserFragment: UserFragment? = null     // 我的
 
     override fun layoutId(): Int = R.layout.activity_main
@@ -54,14 +54,14 @@ class MainActivity : BaseActivity() {
                 transaction.show(it)
             } ?: ManageFragment.getInstance().let {
                 mManageFragment = it
-                transaction.add(R.id.fl_container, it, "shop")
+                transaction.add(R.id.fl_container, it, "manage")
             }
             1
-            -> mShopFragment?.let {
+            -> mShopListFragment?.let {
                 transaction.show(it)
-            } ?: ShopFragment.getInstance("order").let {
-                mShopFragment = it
-                transaction.add(R.id.fl_container, it, "order")
+            } ?: ShopListFragment.getInstance().let {
+                mShopListFragment = it
+                transaction.add(R.id.fl_container, it, "shop")
             }
             2
             -> mUserFragment?.let {
@@ -76,7 +76,7 @@ class MainActivity : BaseActivity() {
 
     private fun hideFragments(transaction: FragmentTransaction) {
         mManageFragment?.let { transaction.hide(it) }
-        mShopFragment?.let { transaction.hide(it) }
+        mShopListFragment?.let { transaction.hide(it) }
         mUserFragment?.let { transaction.hide(it) }
     }
 

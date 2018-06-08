@@ -38,7 +38,7 @@ class ManageFragment : BaseFragment() {
 
     override fun initView() {
         //状态栏透明和间距处理
-        StatusBarUtil.darkMode(activity!!)
+        StatusBarUtil.immersive(activity!!)
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
 
         mlist!!.add("待办事项")

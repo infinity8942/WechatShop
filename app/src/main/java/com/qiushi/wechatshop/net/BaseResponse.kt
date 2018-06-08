@@ -1,7 +1,7 @@
 package com.qiushi.wechatshop.net
 
 class BaseResponse<out T>(val code: Int,
-                          val info: String,
+                          val msg: String,
                           val data: T) {
 
     fun isSuccess(): Boolean {
