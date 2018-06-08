@@ -2,7 +2,7 @@ package com.qiushi.wechatshop.ui.shop
 
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.GridLayoutManager
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
@@ -11,7 +11,6 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.test.Beauty
-import com.qiushi.wechatshop.test.TestAdapter
 import com.qiushi.wechatshop.test.TestObserver
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.fragment_manage.*
@@ -21,9 +20,9 @@ import kotlinx.android.synthetic.main.fragment_manage.*
  */
 class ShopFragment : BaseFragment() {
 
-    private val mAdapter by lazy { TestAdapter(activity!!, ArrayList(),ArrayList()) }
-    private val linearLayoutManager by lazy {
-        LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+    private val mAdapter by lazy { ShopAdapter(activity!!, ArrayList()) }
+    private val gridLayoutManager by lazy {
+        GridLayoutManager(activity, 2)
     }
 
     private var shopID: Long = 0
@@ -37,8 +36,13 @@ class ShopFragment : BaseFragment() {
 
         //RecyclerView
         mRecyclerView.adapter = mAdapter
-        mRecyclerView.layoutManager = linearLayoutManager
+        mRecyclerView.layoutManager = gridLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (position == 0) gridLayoutManager.spanCount else 1
+            }
+        }
 
         //Listener
         mRefreshLayout.setOnRefreshListener {
