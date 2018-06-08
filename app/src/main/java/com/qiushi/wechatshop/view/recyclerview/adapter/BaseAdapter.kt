@@ -39,12 +39,12 @@ abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
     }
 
     override fun getItemViewType(position: Int): Int {
-        return mTypeSupport?.getLayoutId(mData[position], position)
+        return mTypeSupport?.getLayoutId(position)
                 ?: super.getItemViewType(position)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        bindData(holder, mData[position], position)
+//        bindData(holder, mData[position], position)
 
         mItemClickListener?.let {
             holder.itemView.setOnClickListener { mItemClickListener!!.onItemClick(mData[position], position) }
