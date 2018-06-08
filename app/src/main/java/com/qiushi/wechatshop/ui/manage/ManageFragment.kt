@@ -25,7 +25,7 @@ class ManageFragment : BaseFragment() {
 
 
     private val mAdapter by lazy {
-        ManagerAdapter(activity!!,mShopOrderList, this!!.mShop!!)
+        ManagerAdapter(activity!!, ArrayList(), this!!.mShop!!)
     }
     private val linearLayoutManager by lazy {
         LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
@@ -45,12 +45,21 @@ class ManageFragment : BaseFragment() {
         mLayoutStatusView = multipleStatusView
 
         //RecyclerView
-        var mFunction = Function()
+        var mFunction1 = Function()
+        var mFunction2 = Function()
+        var mFunction3 = Function()
+        var mFunction4 = Function()
+        var mFunction5 = Function()
         var mShopOrder = ShopOrder()
         mShopOrderList.add(mShopOrder)
-        mFunctionList.add(mFunction)
+        mFunctionList.add(mFunction1)
+        mFunctionList.add(mFunction2)
+        mFunctionList.add(mFunction3)
+        mFunctionList.add(mFunction4)
+        mFunctionList.add(mFunction5)
         mShop = MyShop(mFunctionList, mShopOrderList)
         mRecyclerView.adapter = mAdapter
+        mAdapter.setData(mShopOrderList)
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
 

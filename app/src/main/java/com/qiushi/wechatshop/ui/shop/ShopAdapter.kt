@@ -23,13 +23,13 @@ import com.qiushi.wechatshop.view.recyclerview.adapter.OnItemLongClickListener
  */
 class ShopAdapter(context: Context, data: ArrayList<Beauty>)
     : BaseAdapter<Beauty>(context, data ,object : MultipleType<Beauty>{
-
-    override fun getLayoutId(item: Beauty, position: Int): Int {
+    override fun getLayoutId(position: Int): Int {
         return when (position) {
             0 -> R.layout.item_shop_header
             else -> R.layout.item_shop_goods
         }
     }
+
 }) {
     override fun bindData(holder: ViewHolder, data: Beauty, position: Int) {
         when (position) {
@@ -53,6 +53,7 @@ class ShopAdapter(context: Context, data: ArrayList<Beauty>)
         ImageHelper.loadImage(mContext, holder.getView(R.id.cover), "https://static.chiphell.com/portal/201803/08/190549vw5xfonuw4wzfuxu.jpg")
         ImageHelper.loadImage(mContext, holder.getView(R.id.logo), "https://static.chiphell.com/forum/201806/06/111637jjxw8cwnj88xss8k.jpg")
     }
+
 
     private fun setItemData(data: Beauty, holder: ViewHolder) {
         ImageHelper.loadImage(mContext, holder.getView(R.id.iv_cover_feed), data.picUrl)

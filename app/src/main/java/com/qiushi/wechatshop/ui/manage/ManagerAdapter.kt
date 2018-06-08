@@ -19,32 +19,25 @@ class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop
     : BaseAdapter<ShopOrder>(context, goods, data, object : MultipleType<ShopOrder> {
 
 
-    override fun getLayoutId(item: ShopOrder, position: Int): Int {
+    override fun getLayoutId(position: Int): Int {
         return when (position) {
             0 -> R.layout.manager_item_head
             1 -> R.layout.manager_item_icon
             2 -> R.layout.manager_item_orther
-            else -> 1
+            else -> R.layout.manager_item_orther
         }
     }
 
 
 }) {
+
+
     override fun bindData(holder: ViewHolder, data: ShopOrder, position: Int) {
         when (position) {
             0 -> setHeadData(holder, (this!!.mModel as MyShop?)!!)
             1 -> setItemData(holder, (this!!.mModel as MyShop?)!!.function)
             2 -> setOrderData(holder, mData.get(position - 2))
         }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        when (position) {
-            0 -> return 0
-            1 -> return 1
-
-        }
-        return 2
     }
 
     /**

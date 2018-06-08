@@ -7,6 +7,6 @@ class Function(var id: Int,var name: String) {
      */
     constructor() : this(
             1,
-            "zi"
+            "戴白事项"
     )
 }
