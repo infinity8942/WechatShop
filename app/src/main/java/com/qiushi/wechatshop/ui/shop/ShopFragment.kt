@@ -6,13 +6,12 @@ import android.support.v7.widget.GridLayoutManager
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
-import com.qiushi.wechatshop.model.MyShop
+import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
+import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.test.Beauty
-import com.qiushi.wechatshop.test.TestObserver
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.fragment_manage.*
 
@@ -56,22 +55,22 @@ class ShopFragment : BaseFragment() {
 
     override fun lazyLoad() {
         showLoadingView()
-        val disposable = RetrofitManager.service.test("7f3a3cee57641229c1b392c2b3911bd8", page, Constants.PAGE_NUM)
+        val disposable = RetrofitManager.service.shopDetail(shopID)
                 .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : TestObserver<ArrayList<Beauty>>() {
-                    override fun onHandleSuccess(t: ArrayList<Beauty>) {
+                .subscribeWith(object : BaseObserver<Shop>() {
+                    override fun onHandleSuccess(t: Shop) {
                         mLayoutStatusView?.showContent()
 
                         if (page == 1) {
-                            mAdapter.setData(t)
+                            mAdapter.setData(t.goods)
                             mRefreshLayout.finishRefresh(true)
                         } else {
-                            mAdapter.addData(t)
+                            mAdapter.addData(t.goods)
                             mRefreshLayout.finishLoadMore(true)
                         }
 
                         //more
-                        mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
+                        mRefreshLayout.setNoMoreData(t.goods.size < Constants.PAGE_NUM)
                         page++
                     }
 

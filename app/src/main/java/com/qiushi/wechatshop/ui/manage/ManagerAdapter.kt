@@ -16,10 +16,9 @@ import com.qiushi.wechatshop.view.recyclerview.ViewHolder
 import com.qiushi.wechatshop.view.recyclerview.adapter.BaseAdapter
 
 class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop)
-    : BaseAdapter<ShopOrder>(context, goods, data, object : MultipleType<ShopOrder> {
+    : BaseAdapter<ShopOrder>(context, goods, true, object : MultipleType<ShopOrder> {
 
-
-    override fun getLayoutId(position: Int): Int {
+    override fun getLayoutId(item: ShopOrder, position: Int): Int {
         return when (position) {
             0 -> R.layout.manager_item_head
             1 -> R.layout.manager_item_icon
@@ -32,10 +31,10 @@ class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop
 }) {
 
 
-    override fun bindData(holder: ViewHolder, data: ShopOrder, position: Int) {
+    override fun bindData(holder: ViewHolder, data: ShopOrder?, position: Int) {
         when (position) {
-            0 -> setHeadData(holder, (this!!.mModel as MyShop?)!!)
-            1 -> setItemData(holder, (this!!.mModel as MyShop?)!!.function)
+            0 -> setHeadData(holder)
+            1 -> setItemData(holder, myShop.function)
             2 -> setOrderData(holder, mData.get(position - 2))
         }
     }
@@ -55,7 +54,7 @@ class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop
      */
     private fun setItemData(holder: ViewHolder, function: ArrayList<Function>) {
         this.mList = function
-        var mRecyclerview = holder.getView<RecyclerView>(R.id.mRecyclerView)
+        val mRecyclerview = holder.getView<RecyclerView>(R.id.mRecyclerView)
         mRecyclerview.layoutManager = linearLayoutManager
         mRecyclerview.adapter = mAdapter
     }
@@ -63,15 +62,14 @@ class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop
     /**
      * 头部布局
      */
-    private fun setHeadData(holder: ViewHolder, myShop: MyShop) {
+    private fun setHeadData(holder: ViewHolder) {
 
     }
 
     override fun getItemCount(): Int {
-        if (mData == null || mData.size == 0) {
-            return 2
-        } else {
-            return mData.size + 2
+        when (mData.size) {
+            0 -> return 2
+            else -> return mData.size + 2
         }
     }
 
@@ -80,7 +78,7 @@ class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop
     }
 
     private val mAdapter by lazy {
-        MainGridAdapter(context!!, mList)
+        MainGridAdapter(context, mList)
     }
 
 }

@@ -56,13 +56,13 @@ object ImageHelper {
     }
      */
 
-    fun loadAvatar(ctx: Context, view: ImageView, url: String, width: Int, height: Int) {
+    fun loadAvatar(ctx: Context, view: ImageView, url: String, size: Int) {
         if (url.isNotEmpty()) {
             GlideApp.with(ctx).load(MyGlideUrl(url))
                     .format(DecodeFormat.PREFER_ARGB_8888)
                     .placeholder(DEFAULT_AVATAR)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .override(width, height)
+                    .override(DensityUtils.dp2px(size.toFloat()), DensityUtils.dp2px(size.toFloat()))
                     .transform(CircleCrop())
                     .into(view)
         } else {
@@ -85,7 +85,7 @@ object ImageHelper {
     fun loadImage(ctx: Context, view: ImageView, url: String, width: Int,
                   height: Int, placeHolder: Int) {
         GlideApp.with(ctx).load(MyGlideUrl(url))
-                .override(width, height)
+                .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
                 .placeholder(placeHolder)
                 .error(placeHolder)
                 .transition(DrawableTransitionOptions.withCrossFade())
@@ -96,7 +96,7 @@ object ImageHelper {
                   height: Int, radius: Float) {
         if (url.isNotEmpty()) {
             GlideApp.with(ctx).load(MyGlideUrl(url))
-                    .override(width, height)
+                    .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
                     .transforms(CenterCrop(),
                             RoundedCornersTransformation(DensityUtils.dp2px(radius), 0, RoundedCornersTransformation.CornerType.LEFT))
                     .transition(DrawableTransitionOptions.withCrossFade())

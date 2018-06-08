@@ -5,8 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.model.MyShop
+import com.qiushi.wechatshop.model.Goods
+import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.test.Beauty
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
@@ -21,24 +23,25 @@ import com.qiushi.wechatshop.view.recyclerview.adapter.OnItemLongClickListener
  *
  * 串门店铺Adapter
  */
-class ShopAdapter(context: Context, data: ArrayList<Beauty>)
-    : BaseAdapter<Beauty>(context, data ,object : MultipleType<Beauty>{
-    override fun getLayoutId(position: Int): Int {
+class ShopAdapter(context: Context, data: ArrayList<Goods>, shop: Shop)
+    : BaseAdapter<Goods>(context, data, shop, object : MultipleType<Goods> {
+
+    override fun getLayoutId(item: Goods, position: Int): Int {
         return when (position) {
             0 -> R.layout.item_shop_header
             else -> R.layout.item_shop_goods
         }
     }
-
 }) {
-    override fun bindData(holder: ViewHolder, data: Beauty, position: Int) {
-        when (position) {
-            0 -> setHeaderData(data, holder)
-            else -> setItemData(data, holder)
-        }
+    override fun bindHeaderData(holder: ViewHolder, data: Any?, position: Int) {
+        setHeaderData(holder, data as Shop)
     }
 
-    private fun setHeaderData(data: Beauty, holder: ViewHolder) {
+    override fun bindData(holder: ViewHolder, data: Goods?, position: Int) {
+        setItemData(data, holder)
+    }
+
+    private fun setHeaderData(holder: ViewHolder, header: Shop) {
         val lpCover = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 (DensityUtils.getScreenWidth() * 0.48).toInt())
         holder.getView<ImageView>(R.id.cover).layoutParams = lpCover
@@ -51,13 +54,12 @@ class ShopAdapter(context: Context, data: ArrayList<Beauty>)
         )
 
         ImageHelper.loadImage(mContext, holder.getView(R.id.cover), "https://static.chiphell.com/portal/201803/08/190549vw5xfonuw4wzfuxu.jpg")
-        ImageHelper.loadImage(mContext, holder.getView(R.id.logo), "https://static.chiphell.com/forum/201806/06/111637jjxw8cwnj88xss8k.jpg")
+        ImageHelper.loadAvatar(mContext, holder.getView(R.id.logo), "https://static.chiphell.com/forum/201806/06/111637jjxw8cwnj88xss8k.jpg", 48)
     }
 
-
-    private fun setItemData(data: Beauty, holder: ViewHolder) {
-        ImageHelper.loadImage(mContext, holder.getView(R.id.iv_cover_feed), data.picUrl)
-        holder.setText(R.id.tv_title, data.title)
+    private fun setItemData(data: Goods?, holder: ViewHolder) {
+        ImageHelper.loadImage(mContext, holder.getView(R.id.iv_cover_feed), Constants.IMAGE1)
+        holder.setText(R.id.tv_title, "商品" + holder.adapterPosition)
 
         setOnItemLongClickListener(object : OnItemLongClickListener {
             override fun onItemLongClick(obj: Any?, position: Int): Boolean {

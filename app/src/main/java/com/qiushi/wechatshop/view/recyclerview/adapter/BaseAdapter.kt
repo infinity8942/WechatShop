@@ -8,10 +8,10 @@ import com.qiushi.wechatshop.view.recyclerview.MultipleType
 import com.qiushi.wechatshop.view.recyclerview.ViewHolder
 
 abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
-                              var mDol: Any?, private var mLayoutId: Int) : RecyclerView.Adapter<ViewHolder>() {
+                              private var mLayoutId: Int) : RecyclerView.Adapter<ViewHolder>() {
     private var mInflater: LayoutInflater? = null
     private var mTypeSupport: MultipleType<T>? = null
-    var mModel: Any? = null
+    private var header: Any? = null
     private var mItemClickListener: OnItemClickListener? = null
     private var mItemLongClickListener: OnItemLongClickListener? = null
 
@@ -19,15 +19,13 @@ abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
         mInflater = LayoutInflater.from(mContext)
     }
 
-    //多布局
-    constructor(context: Context, data: ArrayList<T>, mDol: Any?, typeSupport: MultipleType<T>) : this(context, data, mDol, -1) {
+    constructor(context: Context, data: ArrayList<T>, typeSupport: MultipleType<T>) : this(context, data, -1) {
         this.mTypeSupport = typeSupport
-        this.mModel = mDol
     }
 
-    constructor(context: Context, data: ArrayList<T>, typeSupport: MultipleType<T>) : this(context, data, null, -1) {
+    constructor(context: Context, data: ArrayList<T>, header: Any, typeSupport: MultipleType<T>) : this(context, data, -1) {
+        this.header = header
         this.mTypeSupport = typeSupport
-        this.mModel = null
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,23 +37,42 @@ abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
     }
 
     override fun getItemViewType(position: Int): Int {
-        return mTypeSupport?.getLayoutId(position)
+        return mTypeSupport?.getLayoutId(mData[position], position)
                 ?: super.getItemViewType(position)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        bindData(holder, mData[position], position)
+        if (null != header) {
+            when (position) {
+                0 -> bindHeaderData(holder, header, 0)
+                else -> bindData(holder, mData[position - 1], position)
+            }
+        } else {
+            bindData(holder, mData[position], position)
+        }
+
 
         mItemClickListener?.let {
-            holder.itemView.setOnClickListener { mItemClickListener!!.onItemClick(mData[position], position) }
+            if (null != header) {
+                if (position != 0)
+                    holder.itemView.setOnClickListener { mItemClickListener!!.onItemClick(mData[position - 1], position) }
+            } else {
+                holder.itemView.setOnClickListener { mItemClickListener!!.onItemClick(mData[position], position) }
+            }
+
         }
         mItemLongClickListener?.let {
-            holder.itemView.setOnLongClickListener { mItemLongClickListener!!.onItemLongClick(mData[position], position) }
+            if (null != header) {
+                if (position != 0)
+                    holder.itemView.setOnLongClickListener { mItemLongClickListener!!.onItemLongClick(mData[position - 1], position) }
+            } else {
+                holder.itemView.setOnLongClickListener { mItemLongClickListener!!.onItemLongClick(mData[position], position) }
+            }
         }
     }
 
     override fun getItemCount(): Int {
-        return mData.size
+        return if (null != header) mData.size + 1 else mData.size
     }
 
     fun setOnItemClickListener(itemClickListener: OnItemClickListener) {
@@ -67,7 +84,9 @@ abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
     }
 
     //绑定数据
-    protected abstract fun bindData(holder: ViewHolder, data: T, position: Int)
+    protected abstract fun bindData(holder: ViewHolder, data: T?, position: Int)
+
+    protected abstract fun bindHeaderData(holder: ViewHolder, data: Any?, position: Int)
 
     //填充数据
     fun setData(itemList: ArrayList<T>) {
@@ -79,6 +98,6 @@ abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
     //追加数据
     fun addData(itemList: ArrayList<T>) {
         this.mData.addAll(itemList)
-        notifyItemRangeChanged(mData.size - itemList.size, itemList.size)
+        notifyItemRangeChanged(itemCount - itemList.size, itemList.size)
     }
 }

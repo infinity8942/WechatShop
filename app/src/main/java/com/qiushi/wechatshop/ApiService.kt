@@ -22,6 +22,13 @@ interface ApiService {
     @POST("MobileApp/user/shop")
     fun shopList(): Observable<BaseResponse<ArrayList<Shop>>>
 
+    /**
+     * 用户关注的店铺详情
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/shop")
+    fun shopDetail(@Query("shop_id") page: Long): Observable<BaseResponse<Shop>>
+
 
 //    @FormUrlEncoded
 //    @POST("MobileApp/shop/mine")
