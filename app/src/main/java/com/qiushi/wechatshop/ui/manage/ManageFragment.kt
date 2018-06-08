@@ -3,6 +3,7 @@ package com.qiushi.wechatshop.ui.manage
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Function
@@ -11,6 +12,7 @@ import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.util.StatusBarUtil
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_manage.*
 
 /**
@@ -57,7 +59,9 @@ class ManageFragment : BaseFragment() {
         mFunctionList.add(mFunction3)
         mFunctionList.add(mFunction4)
         mFunctionList.add(mFunction5)
+
         mShop = MyShop(mFunctionList, mShopOrderList)
+        Log.e("tag", "myShop" + mShop!!.function.size)
         mRecyclerView.adapter = mAdapter
         mAdapter.setData(mShopOrderList)
         mRecyclerView.layoutManager = linearLayoutManager

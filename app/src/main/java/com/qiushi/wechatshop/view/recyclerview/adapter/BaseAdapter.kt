@@ -23,11 +23,13 @@ abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
     constructor(context: Context, data: ArrayList<T>, mDol: Any?, typeSupport: MultipleType<T>) : this(context, data, mDol, -1) {
         this.mTypeSupport = typeSupport
         this.mModel = mDol
+
     }
 
     constructor(context: Context, data: ArrayList<T>, typeSupport: MultipleType<T>) : this(context, data, null, -1) {
         this.mTypeSupport = typeSupport
         this.mModel = null
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,6 +46,7 @@ abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
 //        bindData(holder, mData[position], position)
 
         mItemClickListener?.let {

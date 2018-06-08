@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.test.Beauty
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.view.recyclerview.MultipleType
@@ -30,7 +29,7 @@ class ShopAdapter(context: Context, data: ArrayList<Beauty>)
     override fun bindData(holder: ViewHolder, data: Beauty, position: Int) {
         when (position) {
             0 -> setHeaderData(data, holder)
-            else -> setItemData(data, holder)
+            else -> setItemData(data, holder,position)
         }
     }
 
@@ -38,7 +37,8 @@ class ShopAdapter(context: Context, data: ArrayList<Beauty>)
     }
 
 
-    private fun setItemData(data: Beauty, holder: ViewHolder) {
+    private fun setItemData(data: Beauty, holder: ViewHolder, position: Int) {
+        bindData(holder,data,position)
         ImageHelper.loadImage(mContext, holder.getView(R.id.iv_cover_feed), data.picUrl)
         holder.setText(R.id.tv_title, data.title)
 
