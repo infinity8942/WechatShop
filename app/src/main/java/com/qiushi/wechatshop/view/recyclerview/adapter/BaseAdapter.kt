@@ -8,10 +8,10 @@ import com.qiushi.wechatshop.view.recyclerview.MultipleType
 import com.qiushi.wechatshop.view.recyclerview.ViewHolder
 
 abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
-                              private var mLayoutId: Int) : RecyclerView.Adapter<ViewHolder>() {
+                              var mDol: Any?, private var mLayoutId: Int) : RecyclerView.Adapter<ViewHolder>() {
     private var mInflater: LayoutInflater? = null
     private var mTypeSupport: MultipleType<T>? = null
-
+    var mModel: Any? = null
     private var mItemClickListener: OnItemClickListener? = null
     private var mItemLongClickListener: OnItemLongClickListener? = null
 
@@ -20,8 +20,14 @@ abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
     }
 
     //多布局
-    constructor(context: Context, data: ArrayList<T>, typeSupport: MultipleType<T>) : this(context, data, -1) {
+    constructor(context: Context, data: ArrayList<T>, mDol: Any?, typeSupport: MultipleType<T>) : this(context, data, mDol, -1) {
         this.mTypeSupport = typeSupport
+        this.mModel = mDol
+    }
+
+    constructor(context: Context, data: ArrayList<T>, typeSupport: MultipleType<T>) : this(context, data, null, -1) {
+        this.mTypeSupport = typeSupport
+        this.mModel = null
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

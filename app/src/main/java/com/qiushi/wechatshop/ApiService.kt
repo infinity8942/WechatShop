@@ -5,6 +5,7 @@ import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.test.Beauty
 import com.qiushi.wechatshop.test.TestResponse
 import io.reactivex.Observable
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -20,4 +21,9 @@ interface ApiService {
      */
     @POST("MobileApp/user/shop")
     fun shopList(): Observable<BaseResponse<ArrayList<Shop>>>
+
+
+//    @FormUrlEncoded
+//    @POST("MobileApp/shop/mine")
+//    fun managerShop():Observable<>
 }
