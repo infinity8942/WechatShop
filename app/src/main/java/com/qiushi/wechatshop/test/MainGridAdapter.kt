@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.view.recyclerview.ViewHolder
 
-class MainGridAdapter(context: Context, mList: ArrayList<String>) : RecyclerView.Adapter<ViewHolder>() {
+class MainGridAdapter(context: Context, mList: ArrayList<Function>) : RecyclerView.Adapter<ViewHolder>() {
     var mList = mList
     private var mInflater: LayoutInflater? = null
 

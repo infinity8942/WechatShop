@@ -3,19 +3,14 @@ package com.qiushi.wechatshop.ui.manage
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
-import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.model.Function
+import com.qiushi.wechatshop.model.MyShop
+import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
-import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.test.Beauty
-import com.qiushi.wechatshop.test.TestAdapter
-import com.qiushi.wechatshop.test.TestObserver
 import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.ToastUtils
-import com.qiushi.wechatshop.view.recyclerview.MultipleType
 import kotlinx.android.synthetic.main.fragment_manage.*
 
 /**
@@ -23,10 +18,14 @@ import kotlinx.android.synthetic.main.fragment_manage.*
  */
 class ManageFragment : BaseFragment() {
 
-    var mlist= ArrayList<String>()
+
+    var mShop: MyShop? = null
+    var mFunctionList = ArrayList<Function>()
+    var mShopOrderList = ArrayList<ShopOrder>()
+
 
     private val mAdapter by lazy {
-        TestAdapter(activity!!, ArrayList(), this!!.mlist!!)
+        ManagerAdapter(activity!!,mShopOrderList, this!!.mShop!!)
     }
     private val linearLayoutManager by lazy {
         LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
@@ -41,19 +40,16 @@ class ManageFragment : BaseFragment() {
         StatusBarUtil.immersive(activity!!)
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
 
-        mlist!!.add("待办事项")
-        mlist!!.add("待办事项")
-        mlist!!.add("待办事项")
-        mlist!!.add("待办事项")
-        mlist!!.add("待办事项")
-        mlist!!.add("待办事项")
-        mlist!!.add("待办事项")
-        mlist!!.add("待办事项")
-        mlist!!.add("更多")
+
         //设置状态布局
         mLayoutStatusView = multipleStatusView
 
         //RecyclerView
+        var mFunction = Function()
+        var mShopOrder = ShopOrder()
+        mShopOrderList.add(mShopOrder)
+        mFunctionList.add(mFunction)
+        mShop = MyShop(mFunctionList, mShopOrderList)
         mRecyclerView.adapter = mAdapter
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -68,40 +64,44 @@ class ManageFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        showLoadingView()
-        val disposable = RetrofitManager.service.test("7f3a3cee57641229c1b392c2b3911bd8", page, Constants.PAGE_NUM)
-                .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : TestObserver<ArrayList<Beauty>>() {
-                    override fun onHandleSuccess(t: ArrayList<Beauty>) {
-                        mLayoutStatusView?.showContent()
 
-                        if (page == 1) {
-                            mAdapter.setData(t)
-                            mRefreshLayout.finishRefresh(true)
-                        } else {
-                            mAdapter.addData(t)
-                            mRefreshLayout.finishLoadMore(true)
-                        }
-
-                        //more
-                        mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
-                        page++
-                    }
-
-                    override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
-                        if (page == 1) {
-                            mRefreshLayout.finishRefresh(false)
-                        } else {
-                            mRefreshLayout.finishLoadMore(false)
-                        }
-                        if (mAdapter.mData.isEmpty()) {
-                            showErrorView(error)
-                        }
-                    }
-                })
-        addSubscription(disposable)
     }
+
+//    override fun lazyLoad() {
+//        showLoadingView()
+//        val disposable = RetrofitManager.service.test("7f3a3cee57641229c1b392c2b3911bd8", page, Constants.PAGE_NUM)
+//                .compose(SchedulerUtils.ioToMain())
+//                .subscribeWith(object : TestObserver<ArrayList<Beauty>>() {
+//                    override fun onHandleSuccess(t: ArrayList<Beauty>) {
+//                        mLayoutStatusView?.showContent()
+//
+//                        if (page == 1) {
+//                            mAdapter.setData(t)
+//                            mRefreshLayout.finishRefresh(true)
+//                        } else {
+//                            mAdapter.addData(t)
+//                            mRefreshLayout.finishLoadMore(true)
+//                        }
+//
+//                        //more
+//                        mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
+//                        page++
+//                    }
+//
+//                    override fun onHandleError(error: Error) {
+//                        ToastUtils.showError(error.msg)
+//                        if (page == 1) {
+//                            mRefreshLayout.finishRefresh(false)
+//                        } else {
+//                            mRefreshLayout.finishLoadMore(false)
+//                        }
+//                        if (mAdapter.mData.isEmpty()) {
+//                            showErrorView(error)
+//                        }
+//                    }
+//                })
+//        addSubscription(disposable)
+//    }
 
     /**
      * 显示 Loading （下拉刷新的时候不需要显示 Loading）

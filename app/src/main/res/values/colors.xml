@@ -28,4 +28,5 @@
 
     <color name="color_more">#999999</color>
     <color name="color_item_text">#333333</color>
+    <color name="translate">#00000000</color>
 </resources>

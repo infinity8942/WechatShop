@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.test.Beauty
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.view.recyclerview.MultipleType
@@ -17,7 +18,7 @@ import com.qiushi.wechatshop.view.recyclerview.adapter.OnItemLongClickListener
  * 串门店铺Adapter
  */
 class ShopAdapter(context: Context, data: ArrayList<Beauty>)
-    : BaseAdapter<Beauty>(context, data, object : MultipleType<Beauty> {
+    : BaseAdapter<Beauty>(context, data ,object : MultipleType<Beauty>{
 
     override fun getLayoutId(item: Beauty, position: Int): Int {
         return when (position) {
