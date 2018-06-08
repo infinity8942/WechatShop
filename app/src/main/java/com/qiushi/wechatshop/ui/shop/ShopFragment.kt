@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_manage.*
  */
 class ShopFragment : BaseFragment() {
 
-    private val mAdapter by lazy { TestAdapter(activity!!, ArrayList()) }
+    private val mAdapter by lazy { TestAdapter(activity!!, ArrayList(),ArrayList()) }
     private val linearLayoutManager by lazy {
         LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
     }

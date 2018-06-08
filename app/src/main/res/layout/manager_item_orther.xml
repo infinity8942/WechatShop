@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="94dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/manager_item_shape_10dp">
+
+
+    <ImageView
+        android:id="@+id/iv_shop"
+        android:layout_width="93dp"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/tv_shop_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="7dp"
+        android:layout_toRightOf="@+id/iv_shop"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="面包店主题"
+        android:textColor="@color/color_item_text"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_shop_name"
+        android:layout_marginLeft="14.5dp"
+        android:layout_marginTop="6dp"
+        android:layout_toRightOf="@+id/iv_shop"
+        android:text="260浏览"
+        android:textColor="@color/color_more"
+        android:textSize="12sp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="7dp"
+        android:layout_marginLeft="13dp"
+        android:layout_toRightOf="@+id/iv_shop"
+        android:text="52"
+        android:textColor="@color/color_item_price"
+        android:textSize="17sp" />
+
+
+    <ImageView
+        android:id="@+id/iv_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:paddingBottom="3dp"
+        android:paddingRight="3dp"
+        android:src="@mipmap/ic_more_item" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="21dp"
+        android:layout_toLeftOf="@+id/iv_more"
+        android:paddingBottom="3dp"
+        android:paddingRight="3dp"
+        android:src="@mipmap/ic_bj_item" />
+
+</RelativeLayout>
