@@ -48,6 +48,7 @@ abstract class BaseAdapter<T>(var mContext: Context, var mData: ArrayList<T>,
         }
     }
 
+
     override fun getItemCount(): Int {
         return mData.size
     }

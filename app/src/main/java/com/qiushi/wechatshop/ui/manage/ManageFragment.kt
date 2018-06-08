@@ -15,6 +15,7 @@ import com.qiushi.wechatshop.test.TestAdapter
 import com.qiushi.wechatshop.test.TestObserver
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.view.recyclerview.MultipleType
 import kotlinx.android.synthetic.main.fragment_manage.*
 
 /**
@@ -22,7 +23,11 @@ import kotlinx.android.synthetic.main.fragment_manage.*
  */
 class ManageFragment : BaseFragment() {
 
-    private val mAdapter by lazy { TestAdapter(activity!!, ArrayList()) }
+    var mlist= ArrayList<String>()
+
+    private val mAdapter by lazy {
+        TestAdapter(activity!!, ArrayList(), this!!.mlist!!)
+    }
     private val linearLayoutManager by lazy {
         LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
     }
@@ -36,6 +41,15 @@ class ManageFragment : BaseFragment() {
         StatusBarUtil.darkMode(activity!!)
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
 
+        mlist!!.add("待办事项")
+        mlist!!.add("待办事项")
+        mlist!!.add("待办事项")
+        mlist!!.add("待办事项")
+        mlist!!.add("待办事项")
+        mlist!!.add("待办事项")
+        mlist!!.add("待办事项")
+        mlist!!.add("待办事项")
+        mlist!!.add("更多")
         //设置状态布局
         mLayoutStatusView = multipleStatusView
 

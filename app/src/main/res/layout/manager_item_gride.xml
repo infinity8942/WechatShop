@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawableTop="@mipmap/ic_waitthing"
+    android:textColor="@color/color_item_text"
+    android:gravity="center_horizontal"
+    android:drawablePadding="4dp"
+    android:text="待办事项"
+    >
+
+</TextView>

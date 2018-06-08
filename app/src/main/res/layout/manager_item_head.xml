@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="167dp"
+    android:background="@mipmap/ic_myshop_bg">
+
+    <TextView
+        android:id="@+id/money_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="82dp"
+        android:layout_marginLeft="20dp"
+        android:text="资产总额(元)"
+        android:textColor="@android:color/white"
+        android:textSize="11sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="44dp"
+        android:layout_marginLeft="16dp"
+        android:text="1000000"
+        android:textColor="@android:color/white"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/money_zc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="20dp"
+        android:text="流动金额"
+        android:textColor="@android:color/white"
+        android:textSize="11sp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@+id/money_zc"
+        android:text="10000"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:id="@+id/money_dj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="154dp"
+        android:text="流动金额"
+        android:textColor="@android:color/white"
+        android:textSize="11sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@+id/money_dj"
+        android:text="10000"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:drawablePadding="1.8dp"
+        android:drawableRight="@mipmap/ic_tixian"
+        android:layout_marginBottom="51dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="23dp"
+        android:layout_alignParentRight="true"
+        android:textSize="13sp"
+        android:textColor="@android:color/white"
+        android:text="提现"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

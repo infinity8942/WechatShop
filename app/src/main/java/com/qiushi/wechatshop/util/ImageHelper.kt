@@ -9,6 +9,7 @@ import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.qiushi.wechatshop.GlideApp
 import com.qiushi.wechatshop.R
@@ -36,6 +37,40 @@ object ImageHelper {
                     .dontAnimate().into(view)
         }
     }
+
+
+    /**
+     *     public static void loadAvatar(Context context, ImageView view, String url) {
+    if (!TextUtils.isEmpty(url)) {
+    GlideApp.with(context).load(new TopGlideUrl(url))
+    .format(DecodeFormat.PREFER_ARGB_8888)
+    .placeholder(DEFAULT_AVATAR)
+    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+    .override(64, 64)
+    .error(DEFAULT_PLACEHOLDER)
+    .transform(new CircleCrop())
+    .into(view);
+    } else {
+    loadDefaultAvatar(context, view);
+    }
+    }
+     */
+
+    fun loadAvatar(ctx: Context, view: ImageView, url: String, width: Int, height: Int) {
+        if (url.isNotEmpty()) {
+            GlideApp.with(ctx).load(MyGlideUrl(url))
+                    .format(DecodeFormat.PREFER_ARGB_8888)
+                    .placeholder(DEFAULT_AVATAR)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .override(width, height)
+                    .transform(CircleCrop())
+                    .into(view)
+        } else {
+            GlideApp.with(ctx).load(PLACEHOLDER)
+                    .dontAnimate().into(view)
+        }
+    }
+
 
     fun loadImage(ctx: Context, view: ImageView, url: String, width: Int,
                   height: Int) {
