@@ -97,6 +97,7 @@ object ImageHelper {
         if (url.isNotEmpty()) {
             GlideApp.with(ctx).load(MyGlideUrl(url))
                     .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
+                    .error(PLACEHOLDER)
                     .transforms(CenterCrop(),
                             RoundedCornersTransformation(DensityUtils.dp2px(radius), 0, RoundedCornersTransformation.CornerType.LEFT))
                     .transition(DrawableTransitionOptions.withCrossFade())

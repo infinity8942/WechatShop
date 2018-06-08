@@ -3,6 +3,7 @@ package com.qiushi.wechatshop.ui.manage
 import android.content.Context
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.MyShop
@@ -15,10 +16,12 @@ import com.qiushi.wechatshop.view.recyclerview.MultipleType
 import com.qiushi.wechatshop.view.recyclerview.ViewHolder
 import com.qiushi.wechatshop.view.recyclerview.adapter.BaseAdapter
 
-class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop)
-    : BaseAdapter<ShopOrder>(context, goods, true, object : MultipleType<ShopOrder> {
 
-    override fun getLayoutId(item: ShopOrder, position: Int): Int {
+class ManagerAdapter(var context: Context, goods: ArrayList<ShopOrder>, var data: MyShop)
+    : BaseAdapter<ShopOrder>(context, goods, data, object : MultipleType<ShopOrder> {
+
+
+    override fun getLayoutId(position: Int): Int {
         return when (position) {
             0 -> R.layout.manager_item_head
             1 -> R.layout.manager_item_icon
@@ -30,13 +33,17 @@ class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop
 
 }) {
 
-
-    override fun bindData(holder: ViewHolder, data: ShopOrder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
         when (position) {
-            0 -> setHeadData(holder)
-            1 -> setItemData(holder, myShop.function)
+            0 -> setHeadData(holder, (this!!.data as MyShop?)!!)
+            1 -> setItemData(holder, (this!!.data as MyShop?)!!.function, position)
             2 -> setOrderData(holder, mData.get(position - 2))
         }
+    }
+
+    override fun bindData(holder: ViewHolder, data: ShopOrder, position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     /**
@@ -47,14 +54,15 @@ class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop
 
     }
 
-    private lateinit var mList: ArrayList<Function>
+    private var mList: ArrayList<Function>? = null
 
     /**
      * 列表表格
      */
-    private fun setItemData(holder: ViewHolder, function: ArrayList<Function>) {
+    private fun setItemData(holder: ViewHolder, function: ArrayList<Function>, position: Int) {
+
         this.mList = function
-        val mRecyclerview = holder.getView<RecyclerView>(R.id.mRecyclerView)
+        var mRecyclerview = holder.getView<RecyclerView>(R.id.mRecyclerView)
         mRecyclerview.layoutManager = linearLayoutManager
         mRecyclerview.adapter = mAdapter
     }
@@ -62,14 +70,16 @@ class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop
     /**
      * 头部布局
      */
-    private fun setHeadData(holder: ViewHolder) {
+    private fun setHeadData(holder: ViewHolder, myShop: MyShop) {
 
+        Log.e("tag", "myShop" + myShop.cash_all)
     }
 
     override fun getItemCount(): Int {
-        when (mData.size) {
-            0 -> return 2
-            else -> return mData.size + 2
+        if (mData == null || mData.size == 0) {
+            return 2
+        } else {
+            return mData.size + 2
         }
     }
 
@@ -78,7 +88,7 @@ class ManagerAdapter(context: Context, goods: ArrayList<ShopOrder>, data: MyShop
     }
 
     private val mAdapter by lazy {
-        MainGridAdapter(context, mList)
+        MainGridAdapter(context!!, this!!.mList!!)
     }
 
 }

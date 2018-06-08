@@ -15,7 +15,7 @@ class MyShop(var id: Int, var name: String, var cash_flow: Float, var cash_forze
             3333f,
             34324f,
             23,
-            ArrayList(), ArrayList()
+            function, goods
     )
 
 
