@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="163dp"
+    android:layout_height="64dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="163dp"
+        android:layout_height="64dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_shop_coupon" />
+
+    <TextView
+        android:id="@+id/offset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="7dp"
+        android:textColor="@color/coupon_yellow"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/requirement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/offset"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/color_more"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/requirement"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/color_more"
+        android:textSize="10sp" />
+</RelativeLayout>

@@ -6,11 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.shop.ShopListFragment">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <ImageView
+        android:id="@+id/cover"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" />
+        android:layout_height="250dp" />
+
+    <ImageView
+        android:id="@+id/mask"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/mask_shop_header" />
 
     <RelativeLayout
         android:id="@+id/toolbar"
@@ -18,25 +23,32 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent">
 
-        <Button
+        <ImageView
             android:id="@+id/btn_edit"
             android:layout_width="@dimen/padding_tab_layout_top"
             android:layout_height="@dimen/padding_tab_layout_top"
             android:layout_alignParentRight="true"
-            android:background="@android:drawable/ic_menu_edit"
-            android:button="@null" />
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_more" />
 
         <com.flyco.tablayout.SlidingTabLayout
             android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/padding_tab_layout_top"
             android:layout_toLeftOf="@id/btn_edit"
+            tl:tl_indicator_color="@color/colorPrimary"
             tl:tl_indicator_corner_radius="3.5dp"
             tl:tl_indicator_height="7dp"
             tl:tl_indicator_width="7dp"
             tl:tl_textBold="SELECT"
             tl:tl_textSelectColor="@color/colorPrimary"
-            tl:tl_textUnselectColor="@color/black_80"
-            tl:tl_textsize="14sp" />
+            tl:tl_textUnselectColor="@color/white_80"
+            tl:tl_textsize="16sp" />
     </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar" />
 </RelativeLayout>
