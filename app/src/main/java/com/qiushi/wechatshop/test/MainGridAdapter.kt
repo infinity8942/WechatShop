@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.view.recyclerview.ViewHolder
+import org.w3c.dom.Text
 
 class MainGridAdapter(context: Context, mList: ArrayList<Function>) : RecyclerView.Adapter<ViewHolder>() {
     var mList = mList
@@ -31,6 +33,6 @@ class MainGridAdapter(context: Context, mList: ArrayList<Function>) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        holder.getView<TextView>(R.id.item_name).setText(mList.get(position).name)
     }
 }

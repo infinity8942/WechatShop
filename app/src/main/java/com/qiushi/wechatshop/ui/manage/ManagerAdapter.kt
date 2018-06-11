@@ -38,7 +38,8 @@ class ManagerAdapter(var context: Context, goods: ArrayList<ShopOrder>, var data
         when (position) {
             0 -> setHeadData(holder, (this!!.data as MyShop?)!!)
             1 -> setItemData(holder, (this!!.data as MyShop?)!!.function, position)
-            2 -> setOrderData(holder, mData.get(position - 2))
+            else -> setOrderData(holder, mData.get(position - 2))
+
         }
     }
 
@@ -50,8 +51,8 @@ class ManagerAdapter(var context: Context, goods: ArrayList<ShopOrder>, var data
      * 商品条目
      */
     private fun setOrderData(holder: ViewHolder, data: ShopOrder) {
-        ImageHelper.loadImage(mContext, holder.getView(R.id.iv_shop), data.cover, DensityUtils.dp2px(93f), DensityUtils.dp2px(94f), 10f)
-
+        ImageHelper.loadImage(mContext, holder.getView(R.id.iv_shop), data.cover, DensityUtils.dp2px(94f), DensityUtils.dp2px(94f), 10f)
+        holder.setText(R.id.tv_shop_name,data.name)
     }
 
     private var mList: ArrayList<Function>? = null

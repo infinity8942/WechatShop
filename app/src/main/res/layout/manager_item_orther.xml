@@ -2,19 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="94dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:background="@color/title"
     android:layout_marginTop="8dp">
 
     <RelativeLayout
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/manager_item_shape_10dp">
 
         <ImageView
-            android:background="@color/translate"
             android:id="@+id/iv_shop"
-            android:layout_width="wrap_content"
+            android:layout_width="94dp"
             android:layout_height="match_parent" />
 
         <TextView

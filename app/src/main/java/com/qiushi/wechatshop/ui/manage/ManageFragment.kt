@@ -47,21 +47,25 @@ class ManageFragment : BaseFragment() {
         mLayoutStatusView = multipleStatusView
 
         //RecyclerView
-        var mFunction1 = Function()
-        var mFunction2 = Function()
-        var mFunction3 = Function()
-        var mFunction4 = Function()
-        var mFunction5 = Function()
-        var mShopOrder = ShopOrder()
+        var mFunction1 = Function(1, "待办事项")
+        var mFunction2 = Function(2, "订单管理")
+        var mFunction3 = Function(3, "素材管理")
+        var mFunction4 = Function(4, "知识库")
+        var mFunction5 = Function(5, "用户管理")
+        var mFunction6 = Function(6, "更多")
+        var mShopOrder = ShopOrder(1,"老虎商店","https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1528683174&di=b8a8dae0a7b1f984bc4deb8358b7f812&src=http://dl.ppt123.net/pptbj/201203/2012032518021342.jpg",1)
+        var mShopOrder1=ShopOrder(2,"小孩商店","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528696398065&di=0019a60bd91406628866a1fbd0399b68&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2Fc04adaac9ac46896ab6d4c759385bdbc1ca2aa86.jpg",89)
         mShopOrderList.add(mShopOrder)
+        mShopOrderList.add(mShopOrder1)
+
         mFunctionList.add(mFunction1)
         mFunctionList.add(mFunction2)
         mFunctionList.add(mFunction3)
         mFunctionList.add(mFunction4)
         mFunctionList.add(mFunction5)
+        mFunctionList.add(mFunction6)
 
         mShop = MyShop(mFunctionList, mShopOrderList)
-        Log.e("tag", "myShop" + mShop!!.function.size)
         mRecyclerView.adapter = mAdapter
         mAdapter.setData(mShopOrderList)
         mRecyclerView.layoutManager = linearLayoutManager
