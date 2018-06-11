@@ -9,10 +9,7 @@ import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.model.ShopOrder
-import com.qiushi.wechatshop.net.exception.Error
-import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.util.StatusBarUtil
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_manage.*
 
 /**
@@ -20,15 +17,13 @@ import kotlinx.android.synthetic.main.fragment_manage.*
  */
 class ManageFragment : BaseFragment() {
 
-
     var mShop: MyShop? = null
     var mFunctionList = ArrayList<Function>()
     var mShopOrderList = ArrayList<ShopOrder>()
 
-
-    private val mAdapter by lazy {
-        ManagerAdapter(activity!!, ArrayList(), this!!.mShop!!)
-    }
+    //    private val mAdapter by lazy {
+//        ManagerAdapter(activity!!, ArrayList(), this!!.mShop!!)
+//    }
     private val linearLayoutManager by lazy {
         LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
     }
@@ -41,10 +36,6 @@ class ManageFragment : BaseFragment() {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(activity!!)
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
-
-
-        //设置状态布局
-        mLayoutStatusView = multipleStatusView
 
         //RecyclerView
         var mFunction1 = Function(1, "待办事项")
@@ -66,8 +57,9 @@ class ManageFragment : BaseFragment() {
         mFunctionList.add(mFunction6)
 
         mShop = MyShop(mFunctionList, mShopOrderList)
-        mRecyclerView.adapter = mAdapter
-        mAdapter.setData(mShopOrderList)
+        Log.e("tag", "myShop" + mShop!!.function.size)
+//        mRecyclerView.adapter = mAdapter
+//        mAdapter.setData(mShopOrderList)
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
 
@@ -119,24 +111,6 @@ class ManageFragment : BaseFragment() {
 //                })
 //        addSubscription(disposable)
 //    }
-
-    /**
-     * 显示 Loading （下拉刷新的时候不需要显示 Loading）
-     */
-    private fun showLoadingView() {
-        if (!isRefresh) {
-            mLayoutStatusView?.showLoading()
-        }
-    }
-
-    private fun showErrorView(error: Error) {
-        if (error.code == ErrorStatus.NETWORK_ERROR) {
-            mLayoutStatusView?.showNoNetwork()
-        } else {
-            mLayoutStatusView?.showError()
-        }
-        isRefresh = false
-    }
 
     companion object {
         fun getInstance(): ManageFragment {

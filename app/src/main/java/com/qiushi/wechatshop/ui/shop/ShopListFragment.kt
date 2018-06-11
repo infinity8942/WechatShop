@@ -28,6 +28,7 @@ class ShopListFragment : BaseFragment() {
         StatusBarUtil.immersive(activity!!)
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
 
+        //test
         tabList.add("我的店")
         tabList.add("店铺1")
         tabList.add("店铺2")
@@ -44,8 +45,9 @@ class ShopListFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Shop>>() {
                     override fun onHandleSuccess(t: ArrayList<Shop>) {
-                        mLayoutStatusView?.showContent()
+                        for (i in t) {
 
+                        }
                     }
 
                     override fun onHandleError(error: Error) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#38aae4</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#FBC370</color>
+    <color name="colorPrimaryDark">#FDA553</color>
     <color name="colorAccent">#FF4081</color>
     <color name="color_item_price">#EC5E62</color>
 
@@ -17,6 +17,8 @@
     <!-- 正文颜色 -->
     <color name="text">#000000</color>
     <color name="textLight">#9a9a9a</color>
+
+    <color name="black_80">#CC000000</color>
 
     <color name="bg_toast">#99000000</color>
 

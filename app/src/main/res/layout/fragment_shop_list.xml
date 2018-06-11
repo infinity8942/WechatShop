@@ -31,8 +31,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/padding_tab_layout_top"
             android:layout_toLeftOf="@id/btn_edit"
-            tl:tl_indicator_corner_radius="2dp"
-            tl:tl_indicator_height="4dp"
-            tl:tl_indicator_width="4dp" />
+            tl:tl_indicator_corner_radius="3.5dp"
+            tl:tl_indicator_height="7dp"
+            tl:tl_indicator_width="7dp"
+            tl:tl_textBold="SELECT"
+            tl:tl_textSelectColor="@color/colorPrimary"
+            tl:tl_textUnselectColor="@color/black_80"
+            tl:tl_textsize="14sp" />
     </RelativeLayout>
 </RelativeLayout>

@@ -4,6 +4,11 @@ package com.qiushi.wechatshop
  * Created by Rylynn on 2018-05-18.
  */
 object Constants {
+    //测试图片
+    const val IMAGE1 = "http://image.hnol.net/c/2018-06/04/20/201806042031543551-2053485.jpg"
+    const val IMAGE2 = "http://image.hnol.net/c/2018-05/30/17/201805301706219791-5900080.jpg"
+    const val IMAGE3 = "http://image.hnol.net/c/2018-05/25/20/201805252007168161-2053485.jpg"
+
     const val IS_DEVELOPER = true //TODO 开发模式开关,发版时置为false
     const val DEBUG = false //是否测试环境
 

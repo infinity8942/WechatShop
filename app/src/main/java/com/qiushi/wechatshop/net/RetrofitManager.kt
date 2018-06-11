@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.net
 
+import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.ApiService
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.WAppContext
@@ -24,19 +25,23 @@ object RetrofitManager {
      * 设置公共参数
      */
     private fun addQueryParameterInterceptor(): Interceptor {
-        return Interceptor { chain ->
-            val originalRequest = chain.request()
+        return Interceptor {
+            val originalRequest = it.request()
             val request: Request
-            val modifiedUrl = originalRequest.url().newBuilder()
-                    .addQueryParameter("imei", PhoneInfo.getInstance().imei)
-                    .addQueryParameter("model", PhoneInfo.getInstance().model)
-                    .addQueryParameter("brand", PhoneInfo.getInstance().brand)
-                    .addQueryParameter("version", PhoneInfo.getInstance().version)
-                    .addQueryParameter("channel", PhoneInfo.getInstance().channel)
-                    .addQueryParameter("device", "android")
-                    .build()
+            val modifiedUrl = originalRequest.url().newBuilder().build()
             request = originalRequest.newBuilder().url(modifiedUrl).build()
-            chain.proceed(request)
+            Logger.d("URL = " + request.url().toString())
+            var response = it.proceed(request)
+            val responseBody = response.body()
+            if (null != responseBody) {
+                val content = responseBody.string()
+                Logger.json(content)
+                response = response.newBuilder()
+                        .body(okhttp3.ResponseBody.create(responseBody.contentType(), content))
+                        .build()
+            }
+
+            response
         }
     }
 
@@ -47,6 +52,12 @@ object RetrofitManager {
         return Interceptor { chain ->
             val originalRequest = chain.request()
             val requestBuilder = originalRequest.newBuilder()
+                    .header("imei", PhoneInfo.getInstance().imei)
+                    .header("model", PhoneInfo.getInstance().model)
+                    .header("brand", PhoneInfo.getInstance().brand)
+                    .header("version", PhoneInfo.getInstance().version)
+                    .header("channel", PhoneInfo.getInstance().channel)
+                    .header("device", "android")
 //                    .header("client-id", user.getClient())//TODO
 //                    .header("access-token", user.getToken())
                     .method(originalRequest.method(), originalRequest.body())

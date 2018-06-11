@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_title"
+    <ImageView
+        android:id="@+id/cover"
+        android:layout_width="match_parent"
+        android:layout_height="250dp" />
+
+    <ImageView
+        android:id="@+id/mask"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:singleLine="true"
-        android:text="Header"
-        android:textColor="@color/text"
-        android:textSize="15sp" />
-</LinearLayout>
+        android:background="@drawable/mask_shop_header" />
+
+    <RelativeLayout
+        android:id="@+id/layout_shop_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/bg_shop_header_info"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+    </RelativeLayout>
+</RelativeLayout>
