@@ -45,8 +45,6 @@ class ShopListFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Shop>>() {
                     override fun onHandleSuccess(t: ArrayList<Shop>) {
-                        mLayoutStatusView?.showContent()
-
                         for (i in t) {
 
                         }

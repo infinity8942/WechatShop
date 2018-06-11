@@ -27,13 +27,13 @@ object ImageHelper {
     private const val DEFAULT_AVATAR = 0//默认头像
     private const val PLACEHOLDER = R.color.imageBackground//默认图片占位颜色
 
-    fun loadImage(ctx: Context, view: ImageView, url: String) {
+    fun loadImage(ctx: Context?, view: ImageView, url: String) {
         if (url.isNotEmpty()) {
-            GlideApp.with(ctx).load(MyGlideUrl(url))
+            GlideApp.with(ctx!!).load(MyGlideUrl(url))
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(view)
         } else {
-            GlideApp.with(ctx).load(PLACEHOLDER)
+            GlideApp.with(ctx!!).load(PLACEHOLDER)
                     .dontAnimate().into(view)
         }
     }
@@ -56,9 +56,9 @@ object ImageHelper {
     }
      */
 
-    fun loadAvatar(ctx: Context, view: ImageView, url: String, size: Int) {
+    fun loadAvatar(ctx: Context?, view: ImageView, url: String, size: Int) {
         if (url.isNotEmpty()) {
-            GlideApp.with(ctx).load(MyGlideUrl(url))
+            GlideApp.with(ctx!!).load(MyGlideUrl(url))
                     .format(DecodeFormat.PREFER_ARGB_8888)
                     .placeholder(DEFAULT_AVATAR)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
@@ -66,7 +66,7 @@ object ImageHelper {
                     .transform(CircleCrop())
                     .into(view)
         } else {
-            GlideApp.with(ctx).load(PLACEHOLDER)
+            GlideApp.with(ctx!!).load(PLACEHOLDER)
                     .dontAnimate().into(view)
         }
     }
