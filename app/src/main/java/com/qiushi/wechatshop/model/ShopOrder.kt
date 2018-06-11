@@ -1,5 +1,7 @@
 package com.qiushi.wechatshop.model
 
-class ShopOrder(var id: Int, var name: String, var cover: String, var views: Int) {
+import com.chad.library.adapter.base.entity.MultiItemEntity
+
+class ShopOrder(var id: Int, var name: String, var cover: String, var views: Int){
 
 }

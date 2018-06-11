@@ -92,8 +92,24 @@ object ImageHelper {
                 .into(view)
     }
 
-    fun loadImage(ctx: Context, view: ImageView, url: String, width: Int,
-                  height: Int, radius: Float) {
+    fun loadAvaer(ctx: Context, view: ImageView, url: String, width: Int,
+                  height: Int) {
+        if (url.isNotEmpty()) {
+            GlideApp.with(ctx).load(MyGlideUrl(url))
+                    .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
+                    .placeholder(PLACEHOLDER)
+                    .error(PLACEHOLDER)
+                    .transform(CircleCrop())
+                    .into(view)
+        } else {
+            GlideApp.with(ctx!!).load(PLACEHOLDER)
+                    .dontAnimate().into(view)
+        }
+    }
+
+
+    fun loadImage1(ctx: Context, view: ImageView, url: String, width: Int,
+                   height: Int, radius: Float) {
         if (url.isNotEmpty()) {
             GlideApp.with(ctx).load(MyGlideUrl(url))
                     .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))

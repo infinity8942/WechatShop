@@ -2,15 +2,23 @@ package com.qiushi.wechatshop.ui.manage
 
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.View
+import android.widget.TextView
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.model.ShopOrder
+import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import kotlinx.android.synthetic.main.fragment_manage.*
+import kotlinx.android.synthetic.main.manager_item_gride.*
+import kotlinx.android.synthetic.main.manager_item_icon.view.*
+import org.w3c.dom.Text
 
 /**
  * 我的店Fragment
@@ -21,11 +29,29 @@ class ManageFragment : BaseFragment() {
     var mFunctionList = ArrayList<Function>()
     var mShopOrderList = ArrayList<ShopOrder>()
 
-    //    private val mAdapter by lazy {
-//        ManagerAdapter(activity!!, ArrayList(), this!!.mShop!!)
-//    }
+    /**
+     * 整体recyclerview adapter
+     */
+    private val mAdapter by lazy {
+        ManagerAdapter(mShopOrderList)
+    }
+    /**
+     * 整体recyclerview manager
+     */
     private val linearLayoutManager by lazy {
         LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+    }
+
+    /**
+     * 头布局列表 manager
+     */
+    private val mGrideManager by lazy {
+        GridLayoutManager(activity, 4)
+    }
+
+
+    private val mGrideAdapter by lazy {
+        GrideAdapter(mFunctionList)
     }
 
     private var page = 1
@@ -44,10 +70,23 @@ class ManageFragment : BaseFragment() {
         var mFunction4 = Function(4, "知识库")
         var mFunction5 = Function(5, "用户管理")
         var mFunction6 = Function(6, "更多")
-        var mShopOrder = ShopOrder(1,"老虎商店","https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1528683174&di=b8a8dae0a7b1f984bc4deb8358b7f812&src=http://dl.ppt123.net/pptbj/201203/2012032518021342.jpg",1)
-        var mShopOrder1=ShopOrder(2,"小孩商店","https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528696398065&di=0019a60bd91406628866a1fbd0399b68&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2Fc04adaac9ac46896ab6d4c759385bdbc1ca2aa86.jpg",89)
+        var mShopOrder = ShopOrder(1, "老虎商店", Constants.GOOD0, 1)
+        var mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 89)
+        var mShopOrder2 = ShopOrder(2, "测试老虎2", Constants.GOOD2, 89)
+        var mShopOrder3 = ShopOrder(2, "测试老虎3", Constants.GOOD3, 89)
+        var mShopOrder4 = ShopOrder(2, "测试老虎4", Constants.GOOD4, 89)
+        var mShopOrder5 = ShopOrder(2, "测试老虎5", Constants.GOOD5, 89)
+        var mShopOrder6 = ShopOrder(2, "测试老虎6", Constants.GOOD6, 89)
+        var mShopOrder7 = ShopOrder(2, "测试老虎7", Constants.GOOD7, 89)
+
         mShopOrderList.add(mShopOrder)
         mShopOrderList.add(mShopOrder1)
+        mShopOrderList.add(mShopOrder2)
+        mShopOrderList.add(mShopOrder3)
+        mShopOrderList.add(mShopOrder4)
+        mShopOrderList.add(mShopOrder5)
+        mShopOrderList.add(mShopOrder6)
+        mShopOrderList.add(mShopOrder7)
 
         mFunctionList.add(mFunction1)
         mFunctionList.add(mFunction2)
@@ -57,9 +96,15 @@ class ManageFragment : BaseFragment() {
         mFunctionList.add(mFunction6)
 
         mShop = MyShop(mFunctionList, mShopOrderList)
-        Log.e("tag", "myShop" + mShop!!.function.size)
-//        mRecyclerView.adapter = mAdapter
-//        mAdapter.setData(mShopOrderList)
+
+
+        //设置name,头像
+        tv_header_title.text=mShop?.name
+
+        ImageHelper.loadAvaer(activity!!,iv_avaver,Constants.GOOD0,28,28)
+
+        mAdapter.addHeaderView(getHeadView())
+        mRecyclerView.adapter = mAdapter
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
 
@@ -72,45 +117,21 @@ class ManageFragment : BaseFragment() {
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
     }
 
+    private fun getHeadView(): View {
+        val view = View.inflate(activity, R.layout.manager_item_head, null)
+        view.mRecyclerView.layoutManager = mGrideManager
+        view.mRecyclerView.adapter = mGrideAdapter
+        //头布局数据
+        view.findViewById<TextView>(R.id.cash_all).text = (mShop?.cash_all).toString()
+        view.findViewById<TextView>(R.id.cash_flow).text = mShop?.cash_flow.toString()
+        view.findViewById<TextView>(R.id.cash_forzen).text = mShop?.cash_forzen.toString()
+        return view
+    }
+
     override fun lazyLoad() {
 
     }
 
-//    override fun lazyLoad() {
-//        showLoadingView()
-//        val disposable = RetrofitManager.service.test("7f3a3cee57641229c1b392c2b3911bd8", page, Constants.PAGE_NUM)
-//                .compose(SchedulerUtils.ioToMain())
-//                .subscribeWith(object : TestObserver<ArrayList<Beauty>>() {
-//                    override fun onHandleSuccess(t: ArrayList<Beauty>) {
-//                        mLayoutStatusView?.showContent()
-//
-//                        if (page == 1) {
-//                            mAdapter.setData(t)
-//                            mRefreshLayout.finishRefresh(true)
-//                        } else {
-//                            mAdapter.addData(t)
-//                            mRefreshLayout.finishLoadMore(true)
-//                        }
-//
-//                        //more
-//                        mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
-//                        page++
-//                    }
-//
-//                    override fun onHandleError(error: Error) {
-//                        ToastUtils.showError(error.msg)
-//                        if (page == 1) {
-//                            mRefreshLayout.finishRefresh(false)
-//                        } else {
-//                            mRefreshLayout.finishLoadMore(false)
-//                        }
-//                        if (mAdapter.mData.isEmpty()) {
-//                            showErrorView(error)
-//                        }
-//                    }
-//                })
-//        addSubscription(disposable)
-//    }
 
     companion object {
         fun getInstance(): ManageFragment {
