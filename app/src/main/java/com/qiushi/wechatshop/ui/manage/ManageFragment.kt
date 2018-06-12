@@ -35,7 +35,6 @@ class ManageFragment : BaseFragment() {
     var mShop: MyShop? = null
     var mFunctionList = ArrayList<Function>()
     var mShopOrderList = ArrayList<ShopOrder>()
-    var mItem: View? = null
     var mItemPosition: Int = -1
     var distance: Int = 0
     var argbEvaluator = ArgbEvaluator()
@@ -200,11 +199,11 @@ class ManageFragment : BaseFragment() {
      * 更多管理 条目点击事件
      */
     private val mGrideItemClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        var data = adapter.getItem(position) as Function
+        val data = adapter.getItem(position) as Function
         when (view.id) {
             R.id.item_name -> {
                 when (data.id) {
-                    2 -> ToastUtils.showError("订单管理")
+                    2 -> startActivity(Intent(activity, OrderActivity::class.java))
                     6 -> ManagerMoreActivity.startManagerMoreActivity(this!!.context!!)
                     else -> ToastUtils.showError("其他未做")
                 }

@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop
 
+import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.BaseResponse
 import io.reactivex.Observable
@@ -22,6 +23,11 @@ interface ApiService {
     @POST("MobileApp/shop")
     fun shopDetail(@Field("shop_id") page: Long): Observable<BaseResponse<Shop>>
 
+    /**
+     * 订单列表
+     */
+    @POST("MobileApp/shop/order")
+    fun orderList(): Observable<BaseResponse<ArrayList<Order>>>
 
     @FormUrlEncoded
     @POST
