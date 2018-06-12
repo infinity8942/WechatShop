@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="94dp"
-    android:background="@color/title"
-    android:layout_marginTop="8dp">
+    android:layout_marginTop="8dp"
+    android:background="@color/title">
 
     <RelativeLayout
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/manager_item_shape_10dp">
 
         <ImageView
@@ -63,9 +63,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="3dp"
             android:paddingBottom="3dp"
-            android:paddingRight="3dp"
+            android:paddingRight="5dp"
             android:src="@mipmap/ic_more_item" />
 
 
@@ -79,5 +79,54 @@
             android:paddingBottom="3dp"
             android:paddingRight="3dp"
             android:src="@mipmap/ic_bj_item" />
+
+        <RelativeLayout
+            android:id="@+id/layout_shape"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/manager_item_shape_10dp_50"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_zd"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/manager_item_zd_shape"
+                android:gravity="center"
+                android:text="置顶"
+                android:textColor="@color/title"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="38dp"
+                android:layout_toLeftOf="@+id/tv_zd"
+                android:background="@drawable/shop_item_delete_shape"
+                android:gravity="center"
+                android:text="删除"
+                android:textColor="@color/title"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/tv_xj"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="38dp"
+                android:layout_toRightOf="@+id/tv_zd"
+                android:background="@drawable/manager_item_xj_shape"
+                android:gravity="center"
+                android:text="下架"
+                android:textColor="@color/title"
+                android:textSize="14sp" />
+
+
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
