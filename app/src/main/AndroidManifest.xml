@@ -59,6 +59,7 @@
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
+
         <provider
             android:name=".util.BuglyFileProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -70,5 +71,8 @@
                 android:resource="@xml/provider_paths"
                 tools:replace="name,resource" />
         </provider>
+
+        <activity android:name=".ui.manage.ManagerMoreActivity"></activity>
     </application>
+
 </manifest>

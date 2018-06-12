@@ -17,11 +17,11 @@ class ManagerAdapter(data: List<ShopOrder>) : BaseQuickAdapter<ShopOrder, BaseVi
         ImageHelper.loadImage1(mContext, view!!, item?.cover!!, 93, 94, 10f)
         helper.addOnClickListener(R.id.iv_more)
         Log.e("tag","isCheck"+item.isCheck)
-        if (item.isCheck) {
-            helper.getView<RelativeLayout>(R.id.layout_shape).visibility = View.VISIBLE
-        } else {
-            helper.getView<RelativeLayout>(R.id.layout_shape).visibility = View.GONE
-        }
+//        if (item.isCheck) {
+//            helper.getView<RelativeLayout>(R.id.layout_shape).visibility = View.VISIBLE
+//        } else {
+//            helper.getView<RelativeLayout>(R.id.layout_shape).visibility = View.GONE
+//        }
     }
 
 

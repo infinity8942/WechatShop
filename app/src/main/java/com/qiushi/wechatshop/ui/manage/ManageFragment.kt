@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -27,7 +28,8 @@ class ManageFragment : BaseFragment() {
     var mShop: MyShop? = null
     var mFunctionList = ArrayList<Function>()
     var mShopOrderList = ArrayList<ShopOrder>()
-
+    var mItem: View? = null
+    var mItemPosition: Int = -1
     /**
      * 整体recyclerview adapter
      */
@@ -150,24 +152,32 @@ class ManageFragment : BaseFragment() {
      * 条目点击事件
      */
     private val itemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        var data = adapter.getItem(position) as ShopOrder
-        var dataList = adapter.data as List<ShopOrder>
         when (view.id) {
             R.id.iv_more -> {
-                data.isCheck = !data.isCheck
-                for (i in 0 until dataList.size) {
-                    if (dataList[i].id != data.id) {
-                        if (data.isCheck) {
-                            if (dataList[i].isCheck) {
-                                dataList[i].isCheck = false
-                                adapter.notifyItemChanged(position + 1)
-                                adapter.notifyItemChanged(i + 1)
-                            } else {
-                                adapter.notifyItemChanged(position + 1)
-                            }
+                var item = adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)
+                if (mItemPosition == -1) {
+                    if (item!!.visibility == View.VISIBLE) {
+                        item.visibility = View.GONE
+                    } else {
+                        item.visibility = View.VISIBLE
+                    }
+                    mItemPosition = position + 1
+                } else {
+                    if(mItemPosition==position+1){
+                        if (item!!.visibility == View.VISIBLE) {
+                            item.visibility = View.GONE
                         } else {
-                            adapter.notifyItemChanged(position + 1)
+                            item.visibility = View.VISIBLE
                         }
+                        mItemPosition = position + 1
+                    }else{
+                        adapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
+                        if (item!!.visibility == View.VISIBLE) {
+                            item.visibility = View.GONE
+                        } else {
+                            item.visibility = View.VISIBLE
+                        }
+                        mItemPosition = position + 1
                     }
                 }
             }
