@@ -12,8 +12,12 @@
 
     <color name="color_gray">#9a9a9a</color>
 
+    <color name="divider">#F6F7F9</color>
+    <color name="line">#EFF1F4</color>
+
     <!-- 默认背景色 -->
     <color name="contentBackground">#F6F7F9</color>
+    <color name="contentBackground1">#FAFBFC</color>
     <!-- 默认图片背景色 -->
     <color name="imageBackground">#EEEEEE</color>
     <!-- 标题颜色 -->
@@ -28,6 +32,7 @@
     <color name="coupon_yellow">#FB983C</color>
     <color name="bg_toast">#99000000</color>
 
+    <color name="gray1">#707070</color>
     <color name="color_title_bg">#CCFFFFFF</color>
     <color name="color_light_black">#5000</color>
     <color name="clolor_yellow">#FFC125</color>

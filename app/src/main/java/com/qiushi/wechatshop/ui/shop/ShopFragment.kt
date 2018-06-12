@@ -70,7 +70,7 @@ class ShopFragment : BaseFragment() {
         }
 
         //TODO test
-        ImageHelper.loadAvatar(context, headerView.findViewById(R.id.logo), "https://static.chiphell.com/forum/201806/06/111637jjxw8cwnj88xss8k.jpg", 48)
+        ImageHelper.loadAvatar(context, headerView.findViewById(R.id.logo), Constants.AVATAR, 48)
         headerView.findViewById<TextView>(R.id.name).text = "尼萌手工甜品店"
         headerView.findViewById<TextView>(R.id.name).paint.isFakeBoldText = true
         headerView.findViewById<TextView>(R.id.des).text = "充满爱意的甜点更加美味"

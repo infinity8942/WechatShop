@@ -1,20 +1,20 @@
 package com.qiushi.wechatshop.ui.manage
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.model.ShopOrder
+import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
@@ -29,7 +29,6 @@ class ManageFragment : BaseFragment() {
     var mShop: MyShop? = null
     var mFunctionList = ArrayList<Function>()
     var mShopOrderList = ArrayList<ShopOrder>()
-    var mItem: View? = null
     var mItemPosition: Int = -1
     /**
      * 整体recyclerview adapter
@@ -66,20 +65,20 @@ class ManageFragment : BaseFragment() {
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
 
         //RecyclerView
-        var mFunction1 = Function(1, "待办事项")
-        var mFunction2 = Function(2, "订单管理")
-        var mFunction3 = Function(3, "素材管理")
-        var mFunction4 = Function(4, "知识库")
-        var mFunction5 = Function(5, "用户管理")
-        var mFunction6 = Function(6, "更多")
-        var mShopOrder = ShopOrder(1, "老虎商店", Constants.GOOD0, 1, false)
-        var mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 89, false)
-        var mShopOrder2 = ShopOrder(3, "测试老虎2", Constants.GOOD2, 89, false)
-        var mShopOrder3 = ShopOrder(4, "测试老虎3", Constants.GOOD3, 89, false)
-        var mShopOrder4 = ShopOrder(5, "测试老虎4", Constants.GOOD4, 89, false)
-        var mShopOrder5 = ShopOrder(6, "测试老虎5", Constants.GOOD5, 89, false)
-        var mShopOrder6 = ShopOrder(7, "测试老虎6", Constants.GOOD6, 89, false)
-        var mShopOrder7 = ShopOrder(8, "测试老虎7", Constants.GOOD7, 89, false)
+        val mFunction1 = Function(1, "待办事项")
+        val mFunction2 = Function(2, "订单管理")
+        val mFunction3 = Function(3, "素材管理")
+        val mFunction4 = Function(4, "知识库")
+        val mFunction5 = Function(5, "用户管理")
+        val mFunction6 = Function(6, "更多")
+        val mShopOrder = ShopOrder(1, "老虎商店", Constants.GOOD0, 1, false)
+        val mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 89, false)
+        val mShopOrder2 = ShopOrder(3, "测试老虎2", Constants.GOOD2, 89, false)
+        val mShopOrder3 = ShopOrder(4, "测试老虎3", Constants.GOOD3, 89, false)
+        val mShopOrder4 = ShopOrder(5, "测试老虎4", Constants.GOOD4, 89, false)
+        val mShopOrder5 = ShopOrder(6, "测试老虎5", Constants.GOOD5, 89, false)
+        val mShopOrder6 = ShopOrder(7, "测试老虎6", Constants.GOOD6, 89, false)
+        val mShopOrder7 = ShopOrder(8, "测试老虎7", Constants.GOOD7, 89, false)
 
         mShopOrderList.add(mShopOrder)
         mShopOrderList.add(mShopOrder1)
@@ -110,10 +109,8 @@ class ManageFragment : BaseFragment() {
 
         mAdapter.onItemChildClickListener = itemChildClickListener
 
-
         //Listener
         mRefreshLayout.setOnRefreshListener {
-            //            isRefresh = true
             page = 1
             lazyLoad()
         }
@@ -139,7 +136,6 @@ class ManageFragment : BaseFragment() {
 
     }
 
-
     companion object {
         fun getInstance(): ManageFragment {
             val fragment = ManageFragment()
@@ -155,7 +151,7 @@ class ManageFragment : BaseFragment() {
     private val itemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
         when (view.id) {
             R.id.iv_more -> {
-                var item = adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)
+                val item = adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)
                 if (mItemPosition == -1) {
                     if (item!!.visibility == View.VISIBLE) {
                         item.visibility = View.GONE
@@ -189,11 +185,11 @@ class ManageFragment : BaseFragment() {
      * 更多管理 条目点击事件
      */
     private val mGrideItemClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        var data = adapter.getItem(position) as Function
+        val data = adapter.getItem(position) as Function
         when (view.id) {
             R.id.item_name -> {
                 when (data.id) {
-                    2 -> ToastUtils.showError("订单管理")
+                    2 -> startActivity(Intent(activity, OrderActivity::class.java))
                     6 -> ManagerMoreActivity.startManagerMoreActivity(this!!.context!!)
                     else -> ToastUtils.showError("其他未做")
                 }
