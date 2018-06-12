@@ -6,7 +6,10 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
@@ -15,6 +18,7 @@ import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
+import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.manager_item_gride.*
 import kotlinx.android.synthetic.main.manager_item_icon.view.*
@@ -70,14 +74,14 @@ class ManageFragment : BaseFragment() {
         var mFunction4 = Function(4, "知识库")
         var mFunction5 = Function(5, "用户管理")
         var mFunction6 = Function(6, "更多")
-        var mShopOrder = ShopOrder(1, "老虎商店", Constants.GOOD0, 1)
-        var mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 89)
-        var mShopOrder2 = ShopOrder(2, "测试老虎2", Constants.GOOD2, 89)
-        var mShopOrder3 = ShopOrder(2, "测试老虎3", Constants.GOOD3, 89)
-        var mShopOrder4 = ShopOrder(2, "测试老虎4", Constants.GOOD4, 89)
-        var mShopOrder5 = ShopOrder(2, "测试老虎5", Constants.GOOD5, 89)
-        var mShopOrder6 = ShopOrder(2, "测试老虎6", Constants.GOOD6, 89)
-        var mShopOrder7 = ShopOrder(2, "测试老虎7", Constants.GOOD7, 89)
+        var mShopOrder = ShopOrder(1, "老虎商店", Constants.GOOD0, 1, false)
+        var mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 89, false)
+        var mShopOrder2 = ShopOrder(3, "测试老虎2", Constants.GOOD2, 89, false)
+        var mShopOrder3 = ShopOrder(4, "测试老虎3", Constants.GOOD3, 89, false)
+        var mShopOrder4 = ShopOrder(5, "测试老虎4", Constants.GOOD4, 89, false)
+        var mShopOrder5 = ShopOrder(6, "测试老虎5", Constants.GOOD5, 89, false)
+        var mShopOrder6 = ShopOrder(7, "测试老虎6", Constants.GOOD6, 89, false)
+        var mShopOrder7 = ShopOrder(8, "测试老虎7", Constants.GOOD7, 89, false)
 
         mShopOrderList.add(mShopOrder)
         mShopOrderList.add(mShopOrder1)
@@ -99,14 +103,14 @@ class ManageFragment : BaseFragment() {
 
 
         //设置name,头像
-        tv_header_title.text=mShop?.name
-
-        ImageHelper.loadAvaer(activity!!,iv_avaver,Constants.GOOD0,28,28)
-
-        mAdapter.addHeaderView(getHeadView())
-        mRecyclerView.adapter = mAdapter
+        tv_header_title.text = mShop?.name
+        ImageHelper.loadAvaer(activity!!, iv_avaver, Constants.GOOD0, 28, 28)
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
+        mAdapter.addHeaderView(getHeadView())
+        mRecyclerView.adapter = mAdapter
+        mAdapter.onItemChildClickListener = itemChildClickListener
+
 
         //Listener
         mRefreshLayout.setOnRefreshListener {
@@ -139,6 +143,35 @@ class ManageFragment : BaseFragment() {
             val bundle = Bundle()
             fragment.arguments = bundle
             return fragment
+        }
+    }
+
+    /**
+     * 条目点击事件
+     */
+    private val itemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+        var data = adapter.getItem(position) as ShopOrder
+        var dataList = adapter.data as List<ShopOrder>
+        when (view.id) {
+            R.id.iv_more -> {
+                data.isCheck = !data.isCheck
+
+                for (i in 0 until dataList.size) {
+                    if (dataList[i].id != data.id) {
+                        if (data.isCheck) {
+                            if (dataList[i].isCheck) {
+                                dataList[i].isCheck = false
+                                adapter.notifyItemChanged(position + 1)
+                                adapter.notifyItemChanged(i + 1)
+                            } else {
+                                adapter.notifyItemChanged(position + 1)
+                            }
+                        }else{
+                            adapter.notifyItemChanged(position+1)
+                        }
+                    }
+                }
+            }
         }
     }
 }
