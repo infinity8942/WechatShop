@@ -43,8 +43,12 @@ class ManagerMoreActivity : BaseActivity() {
 
         //假数据
 
-        often_recycler.layoutManager = mGrideManager
-        often_recycler.adapter=mGrideAdapter
+        often_recycler.layoutManager = mNoUseGrideManager
+        often_recycler.adapter = mNoUseGrideAdapter
+
+        //如果接口返回的 不常用工具List为空，则隐藏
+        notuse_recycler.layoutManager = mGrideManager
+        notuse_recycler.adapter = mGrideAdapter
     }
 
     private val mGrideManager by lazy {
@@ -53,6 +57,13 @@ class ManagerMoreActivity : BaseActivity() {
 
 
     private val mGrideAdapter by lazy {
+        ToolsAlwayAdapter(mToolsList)
+    }
+
+    private val mNoUseGrideManager by lazy {
+        GridLayoutManager(this, 4)
+    }
+    private val mNoUseGrideAdapter by lazy {
         ToolsAlwayAdapter(mToolsList)
     }
 

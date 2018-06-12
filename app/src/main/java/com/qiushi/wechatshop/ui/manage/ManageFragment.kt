@@ -1,20 +1,26 @@
 package com.qiushi.wechatshop.ui.manage
 
+import android.animation.ArgbEvaluator
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.model.ShopOrder
+
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
@@ -31,6 +37,13 @@ class ManageFragment : BaseFragment() {
     var mShopOrderList = ArrayList<ShopOrder>()
     var mItem: View? = null
     var mItemPosition: Int = -1
+    var distance: Int = 0
+    var argbEvaluator = ArgbEvaluator()
+    var color1 = 0
+    var color2 = 0
+    var color0 = 0
+
+
     /**
      * 整体recyclerview adapter
      */
@@ -64,7 +77,8 @@ class ManageFragment : BaseFragment() {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(activity!!)
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
-
+        color1 = context!!.resources.getColor(R.color.translate)
+        color2 = context!!.resources.getColor(R.color.colorPrimaryDark)
         //RecyclerView
         var mFunction1 = Function(1, "待办事项")
         var mFunction2 = Function(2, "订单管理")
@@ -107,10 +121,8 @@ class ManageFragment : BaseFragment() {
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         mAdapter.addHeaderView(getHeadView())
         mRecyclerView.adapter = mAdapter
-
         mAdapter.onItemChildClickListener = itemChildClickListener
-
-
+        mRecyclerView.addOnScrollListener(scrollListener)
         //Listener
         mRefreshLayout.setOnRefreshListener {
             //            isRefresh = true
@@ -138,7 +150,6 @@ class ManageFragment : BaseFragment() {
     override fun lazyLoad() {
 
     }
-
 
     companion object {
         fun getInstance(): ManageFragment {
@@ -200,4 +211,58 @@ class ManageFragment : BaseFragment() {
             }
         }
     }
+
+    /**
+     * recyclerview滑动事件
+     */
+
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            distance = mRecyclerView.computeVerticalScrollOffset()
+            Log.e("tag", "color~~~~~~~~~~$dy")
+            if (linearLayoutManager.findFirstVisibleItemPosition() == 0) {
+                if (distance == 0) {
+                    color0 = context!!.resources.getColor(R.color.translate)
+                }
+                if (distance < 50) {
+                    color0 = if (dy > 0) {
+                        //往上滑动  、、渐变
+                        argbEvaluator.evaluate(Math.abs(distance / 1000).toFloat(), color2, color1) as Int
+                    } else {
+                        //往下滑动
+                        argbEvaluator.evaluate(Math.abs(distance / 1000).toFloat(), color1, color2) as Int
+                    }
+                } else {
+                    color0 = color2
+                }
+            }
+            toolbar.setBackgroundColor(color0)
+        }
+    }
+
+
+    /**
+     * 置顶商品
+     */
+    fun setTop(goods_id: Long) {
+        val disposable = RetrofitManager.service.setTop(goods_id)
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<Boolean>() {
+                    override fun onHandleSuccess(t: Boolean) {
+                        if (t) {
+                            ToastUtils.showSuccess("置顶成功")
+                        } else {
+                            ToastUtils.showSuccess("取消置顶")
+
+                        }
+                    }
+
+                    override fun onHandleError(error: Error) {
+                        ToastUtils.showError(error.msg)
+                    }
+                })
+        addSubscription(disposable)
+    }
+
 }

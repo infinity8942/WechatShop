@@ -23,7 +23,7 @@ interface ApiService {
     fun shopDetail(@Field("shop_id") page: Long): Observable<BaseResponse<Shop>>
 
 
-//    @FormUrlEncoded
-//    @POST("MobileApp/shop/mine")
-//    fun managerShop():Observable<>
+    @FormUrlEncoded
+    @POST
+    fun setTop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
 }
