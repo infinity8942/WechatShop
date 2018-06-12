@@ -56,7 +56,7 @@ class OrderFragment : BaseFragment() {
 
         //TODO test
         val list = ArrayList<Order>()
-        for (i in 1..10) {
+        for (i in 1..5) {
             list.add(Order())
         }
         mAdapter.setNewData(list)

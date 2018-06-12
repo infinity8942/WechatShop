@@ -101,7 +101,7 @@ class ManageFragment : BaseFragment() {
 
         //设置name,头像
         tv_header_title.text = mShop?.name
-        ImageHelper.loadAvaer(activity!!, iv_avaver, Constants.GOOD0, 28, 28)
+        ImageHelper.loadAvatar(activity!!, iv_avaver, Constants.GOOD0, 28)
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         mAdapter.addHeaderView(getHeadView())

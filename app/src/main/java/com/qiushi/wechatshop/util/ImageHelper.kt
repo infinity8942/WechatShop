@@ -74,17 +74,19 @@ object ImageHelper {
                 .into(view)
     }
 
-    fun loadAvaer(ctx: Context, view: ImageView, url: String, width: Int,
-                  height: Int) {
+    fun loadImageWithCorner(ctx: Context, view: ImageView, url: String, width: Int,
+                            height: Int, radius: Float) {
         if (url.isNotEmpty()) {
             GlideApp.with(ctx).load(MyGlideUrl(url))
                     .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
-                    .placeholder(PLACEHOLDER)
                     .error(PLACEHOLDER)
-                    .transform(CircleCrop())
+                    .placeholder(R.color.translate)
+                    .transforms(CenterCrop(),
+                            RoundedCornersTransformation(DensityUtils.dp2px(radius), 0))
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into(view)
         } else {
-            GlideApp.with(ctx!!).load(PLACEHOLDER)
+            GlideApp.with(ctx).load(PLACEHOLDER)
                     .dontAnimate().into(view)
         }
     }
@@ -96,23 +98,6 @@ object ImageHelper {
                     .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
                     .error(PLACEHOLDER)
                     .transforms(CenterCrop(), corner)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(view)
-        } else {
-            GlideApp.with(ctx).load(PLACEHOLDER)
-                    .dontAnimate().into(view)
-        }
-    }
-
-    fun loadImage1(ctx: Context, view: ImageView, url: String, width: Int,
-                   height: Int, radius: Float) {
-        if (url.isNotEmpty()) {
-            GlideApp.with(ctx).load(MyGlideUrl(url))
-                    .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
-                    .error(PLACEHOLDER)
-                    .placeholder(R.color.translate)
-                    .transforms(CenterCrop(),
-                            RoundedCornersTransformation(DensityUtils.dp2px(radius), 0, RoundedCornersTransformation.CornerType.LEFT))
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(view)
         } else {
