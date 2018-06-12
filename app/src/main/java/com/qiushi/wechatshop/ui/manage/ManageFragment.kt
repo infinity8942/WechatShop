@@ -188,10 +188,16 @@ class ManageFragment : BaseFragment() {
     /**
      * 更多管理 条目点击事件
      */
-    private val mGrideItemClickListener = BaseQuickAdapter.OnItemChildClickListener {
-        adapter, view, position ->
-        when(view.id){
-            R.id.item_name->ManagerMoreActivity.startManagerMoreActivity(this!!.context!!)
+    private val mGrideItemClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+        var data = adapter.getItem(position) as Function
+        when (view.id) {
+            R.id.item_name -> {
+                when (data.id) {
+                    2 -> ToastUtils.showError("订单管理")
+                    6 -> ManagerMoreActivity.startManagerMoreActivity(this!!.context!!)
+                    else -> ToastUtils.showError("其他未做")
+                }
+            }
         }
     }
 }

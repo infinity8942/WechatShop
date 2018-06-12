@@ -33,10 +33,18 @@ class ManagerMoreActivity : BaseActivity() {
         var mTool6 = Tools(6, "账户管理", Constants.GOOD5)
         var mTool7 = Tools(7, "优惠卷管理", Constants.GOOD6)
 
+        mToolsList.add(mTool1)
+        mToolsList.add(mTool2)
+        mToolsList.add(mTool3)
+        mToolsList.add(mTool4)
+        mToolsList.add(mTool5)
+        mToolsList.add(mTool6)
+        mToolsList.add(mTool7)
 
         //假数据
 
         often_recycler.layoutManager = mGrideManager
+        often_recycler.adapter=mGrideAdapter
     }
 
     private val mGrideManager by lazy {
@@ -45,7 +53,7 @@ class ManagerMoreActivity : BaseActivity() {
 
 
     private val mGrideAdapter by lazy {
-
+        ToolsAlwayAdapter(mToolsList)
     }
 
     /**
