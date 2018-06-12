@@ -32,7 +32,9 @@ class ShopListFragment : BaseFragment() {
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
 
         val lpCover = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                (DensityUtils.getScreenWidth() * 0.48).toInt())
+//                (DensityUtils.getScreenWidth() * 0.48).toInt())
+                (DensityUtils.getScreenWidth() * 0.6).toInt())
+
         cover.layoutParams = lpCover
         mask.layoutParams = lpCover
 
