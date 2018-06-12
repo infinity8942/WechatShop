@@ -1,9 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.manage.ManagerMoreActivity">
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_toolbar"
+        app:contentInsetStart="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="24dp"
+            android:text="完成"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="全部工具"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20.3dp"
+                android:text="常用工具"
+                android:textColor="@color/color_30_black" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/often_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="8dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/color_line" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

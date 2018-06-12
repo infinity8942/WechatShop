@@ -6,6 +6,8 @@
     <color name="color_item_price">#EC5E62</color>
     <color name="color_item_xiajia">#88B5FB </color>
     <color name="color_50_black">#80000000</color>
+    <color name="color_30_black">#FF333333</color>
+    <color name="color_line">#F6F7F9</color>
 
     <color name="color_gray">#9a9a9a</color>
 

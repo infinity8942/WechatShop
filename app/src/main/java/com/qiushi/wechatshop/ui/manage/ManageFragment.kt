@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
@@ -107,7 +108,6 @@ class ManageFragment : BaseFragment() {
         mAdapter.addHeaderView(getHeadView())
         mRecyclerView.adapter = mAdapter
 
-//        mRecyclerView.addOnScrollListener(  RecyclerView.OnScrollListener!)
         mAdapter.onItemChildClickListener = itemChildClickListener
 
 
@@ -127,6 +127,7 @@ class ManageFragment : BaseFragment() {
         val view = View.inflate(activity, R.layout.manager_item_head, null)
         view.mRecyclerView.layoutManager = mGrideManager
         view.mRecyclerView.adapter = mGrideAdapter
+        mGrideAdapter.onItemChildClickListener = mGrideItemClickListener
         //头布局数据
         view.findViewById<TextView>(R.id.cash_all).text = (mShop?.cash_all).toString()
         view.findViewById<TextView>(R.id.cash_flow).text = mShop?.cash_flow.toString()
@@ -149,7 +150,7 @@ class ManageFragment : BaseFragment() {
     }
 
     /**
-     * 条目点击事件
+     * 商品条目点击事件
      */
     private val itemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
         when (view.id) {
@@ -163,14 +164,14 @@ class ManageFragment : BaseFragment() {
                     }
                     mItemPosition = position + 1
                 } else {
-                    if(mItemPosition==position+1){
+                    if (mItemPosition == position + 1) {
                         if (item!!.visibility == View.VISIBLE) {
                             item.visibility = View.GONE
                         } else {
                             item.visibility = View.VISIBLE
                         }
                         mItemPosition = position + 1
-                    }else{
+                    } else {
                         adapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
                         if (item!!.visibility == View.VISIBLE) {
                             item.visibility = View.GONE
@@ -185,7 +186,12 @@ class ManageFragment : BaseFragment() {
     }
 
     /**
-     * 滑动监听 改变toolbar 颜色状态
+     * 更多管理 条目点击事件
      */
-//    private val scrollListener=OnScrollListener{_,}
+    private val mGrideItemClickListener = BaseQuickAdapter.OnItemChildClickListener {
+        adapter, view, position ->
+        when(view.id){
+            R.id.item_name->ManagerMoreActivity.startManagerMoreActivity(this!!.context!!)
+        }
+    }
 }
