@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#FBC370</color>
     <color name="colorPrimaryDark">#FDA553</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#FF5B60</color>
     <color name="color_item_price">#EC5E62</color>
     <color name="color_item_xiajia">#88B5FB </color>
     <color name="color_50_black">#80000000</color>
@@ -21,7 +21,8 @@
     <color name="textLight">#9a9a9a</color>
 
     <color name="black_80">#CC000000</color>
-
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="coupon_yellow">#FB983C</color>
     <color name="bg_toast">#99000000</color>
 
     <color name="color_title_bg">#CCFFFFFF</color>

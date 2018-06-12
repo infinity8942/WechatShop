@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.OnScrollListener
 import android.view.View
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -19,9 +17,7 @@ import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.fragment_manage.*
-import kotlinx.android.synthetic.main.manager_item_gride.*
 import kotlinx.android.synthetic.main.manager_item_icon.view.*
-import org.w3c.dom.Text
 
 /**
  * 我的店Fragment
@@ -115,7 +111,7 @@ class ManageFragment : BaseFragment() {
 
         //Listener
         mRefreshLayout.setOnRefreshListener {
-            isRefresh = true
+            //            isRefresh = true
             page = 1
             lazyLoad()
         }

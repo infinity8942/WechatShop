@@ -21,7 +21,6 @@ abstract class BaseFragment : Fragment() {
      * 数据是否加载过了
      */
     private var hasLoadData = false
-    protected var isRefresh = false
 
     protected var loadingDialog: LoadingDialog? = null
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()

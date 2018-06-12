@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
+    <com.qiushi.wechatshop.view.SquareImageView
         android:id="@+id/iv_cover_feed"
         android:layout_width="match_parent"
         android:layout_height="250dp"
@@ -15,11 +15,11 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:singleLine="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:textColor="@color/text"
-        android:textSize="15sp"
+        android:textSize="14sp"
         tools:text="标题" />
 </LinearLayout>

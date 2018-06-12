@@ -4,23 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/contentBackground"
     tools:context=".ui.shop.ShopFragment">
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/mRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:background="@android:color/white"
-        app:srlAccentColor="@android:color/white"
         app:srlPrimaryColor="@color/colorPrimary">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/mRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/padding_tab_layout_bottom" />
+            android:paddingTop="10dp" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </RelativeLayout>

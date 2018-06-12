@@ -1,16 +1,17 @@
 package com.qiushi.wechatshop.ui.shop
 
 import android.os.Bundle
-import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RelativeLayout
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
+import com.qiushi.wechatshop.model.Coupon
 import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -18,11 +19,11 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
-import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
-import kotlinx.android.synthetic.main.fragment_manage.*
+import com.qiushi.wechatshop.view.GridSpaceItemDecoration
+import com.qiushi.wechatshop.view.SpaceItemDecoration
+import kotlinx.android.synthetic.main.fragment_shop.*
 
 /**
  * 店铺Fragment
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.fragment_manage.*
 class ShopFragment : BaseFragment() {
 
     private lateinit var mAdapter: ShopAdapter
+    private lateinit var mCouponAdapter: ShopCouponAdapter
     private lateinit var headerView: View
     private lateinit var notDataView: View
     private lateinit var errorView: View
@@ -42,9 +44,9 @@ class ShopFragment : BaseFragment() {
     override fun initView() {
         //RecyclerView
         mRecyclerView.layoutManager = GridLayoutManager(activity, 2)
-        mRecyclerView.itemAnimator = DefaultItemAnimator()
         mAdapter = ShopAdapter()
         mAdapter.openLoadAnimation()
+        mRecyclerView.addItemDecoration(SpaceItemDecoration(9))
         mRecyclerView.adapter = mAdapter
 
         notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
@@ -55,40 +57,36 @@ class ShopFragment : BaseFragment() {
         //Header
         headerView = layoutInflater.inflate(R.layout.item_shop_header, mRecyclerView.parent as ViewGroup, false)
         mAdapter.addHeaderView(headerView)
-        val lpCover = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                (DensityUtils.getScreenWidth() * 0.48).toInt())
-        headerView.findViewById<ImageView>(R.id.cover).layoutParams = lpCover
-        headerView.findViewById<ImageView>(R.id.mask).layoutParams = lpCover
-        val layoutParams: RelativeLayout.LayoutParams = headerView.findViewById<RelativeLayout>(R.id.layout_shop_info).layoutParams as RelativeLayout.LayoutParams
-        layoutParams.setMargins(DensityUtils.dp2px(16.toFloat()),
-                StatusBarUtil.getStatusBarHeight(context!!) + activity!!.resources.getDimension(R.dimen.padding_tab_layout_top).toInt(),
-                DensityUtils.dp2px(16.toFloat()),
-                DensityUtils.dp2px(20.toFloat())
-        )
-
-//        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-//            override fun getSpanSize(position: Int): Int {
-//                return if (position == 0) gridLayoutManager.spanCount else 1
-//            }
-//        }
 
         //Listener
         mRefreshLayout.setOnRefreshListener {
-            isRefresh = true
             page = 1
             lazyLoad()
         }
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
 
         mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-
         }
 
         //TODO test
-        ImageHelper.loadImage(context, headerView.findViewById(R.id.cover), "https://static.chiphell.com/portal/201803/08/190549vw5xfonuw4wzfuxu.jpg")
         ImageHelper.loadAvatar(context, headerView.findViewById(R.id.logo), "https://static.chiphell.com/forum/201806/06/111637jjxw8cwnj88xss8k.jpg", 48)
+        headerView.findViewById<TextView>(R.id.name).text = "尼萌手工甜品店"
+        headerView.findViewById<TextView>(R.id.name).paint.isFakeBoldText = true
+        headerView.findViewById<TextView>(R.id.des).text = "充满爱意的甜点更加美味"
+
+        val listCoupon = ArrayList<Coupon>()
+        for (i in 1..5) {
+            listCoupon.add(Coupon(50))
+        }
+        headerView.findViewById<RecyclerView>(R.id.rv_coupon).layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        mCouponAdapter = ShopCouponAdapter()
+        mCouponAdapter.openLoadAnimation()
+        headerView.findViewById<RecyclerView>(R.id.rv_coupon).addItemDecoration(GridSpaceItemDecoration(13))
+        headerView.findViewById<RecyclerView>(R.id.rv_coupon).adapter = mCouponAdapter
+        mCouponAdapter.setNewData(listCoupon)
+
         val list = ArrayList<Goods>()
-        for (i in 1..8) {
+        for (i in 1..10) {
             list.add(Goods("商品" + i))
         }
         mAdapter.setNewData(list)
@@ -126,7 +124,6 @@ class ShopFragment : BaseFragment() {
                             } else {
                                 mAdapter.emptyView = notDataView
                             }
-                            isRefresh = false
                         }
                     }
                 })
@@ -134,8 +131,10 @@ class ShopFragment : BaseFragment() {
     }
 
     private fun setHeaderData(shop: Shop) {
-        ImageHelper.loadImage(context, headerView.findViewById(R.id.cover), "https://static.chiphell.com/portal/201803/08/190549vw5xfonuw4wzfuxu.jpg")
-        ImageHelper.loadAvatar(context, headerView.findViewById(R.id.logo), "https://static.chiphell.com/forum/201806/06/111637jjxw8cwnj88xss8k.jpg", 48)
+        ImageHelper.loadAvatar(context, headerView.findViewById(R.id.logo), shop.logo, 48)
+        headerView.findViewById<TextView>(R.id.name).text = shop.name
+        headerView.findViewById<TextView>(R.id.name).paint.isFakeBoldText = true
+        headerView.findViewById<TextView>(R.id.des).text = shop.des
     }
 
     companion object {
