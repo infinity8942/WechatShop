@@ -8,7 +8,7 @@
     <color name="color_gray">#9a9a9a</color>
 
     <!-- 默认背景色 -->
-    <color name="contentBackground">#EEEEEE</color>
+    <color name="contentBackground">#F6F7F9</color>
     <!-- 默认图片背景色 -->
     <color name="imageBackground">#EEEEEE</color>
     <!-- 标题颜色 -->

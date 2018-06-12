@@ -19,6 +19,7 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.GridSpaceItemDecoration
@@ -46,7 +47,7 @@ class ShopFragment : BaseFragment() {
         mRecyclerView.layoutManager = GridLayoutManager(activity, 2)
         mAdapter = ShopAdapter()
         mAdapter.openLoadAnimation()
-        mRecyclerView.addItemDecoration(SpaceItemDecoration(9))
+        mRecyclerView.addItemDecoration(GridSpaceItemDecoration(DensityUtils.dp2px(9.toFloat()), DensityUtils.dp2px(8.toFloat())))
         mRecyclerView.adapter = mAdapter
 
         notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
@@ -81,7 +82,7 @@ class ShopFragment : BaseFragment() {
         headerView.findViewById<RecyclerView>(R.id.rv_coupon).layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         mCouponAdapter = ShopCouponAdapter()
         mCouponAdapter.openLoadAnimation()
-        headerView.findViewById<RecyclerView>(R.id.rv_coupon).addItemDecoration(GridSpaceItemDecoration(13))
+        headerView.findViewById<RecyclerView>(R.id.rv_coupon).addItemDecoration(SpaceItemDecoration(DensityUtils.dp2px(13.toFloat()), 0))
         headerView.findViewById<RecyclerView>(R.id.rv_coupon).adapter = mCouponAdapter
         mCouponAdapter.setNewData(listCoupon)
 
