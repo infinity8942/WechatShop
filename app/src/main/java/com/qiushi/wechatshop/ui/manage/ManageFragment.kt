@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.RecyclerView.OnScrollListener
 import android.view.View
-import android.view.ViewGroup
-import android.widget.RelativeLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
@@ -109,6 +108,8 @@ class ManageFragment : BaseFragment() {
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         mAdapter.addHeaderView(getHeadView())
         mRecyclerView.adapter = mAdapter
+
+//        mRecyclerView.addOnScrollListener(  RecyclerView.OnScrollListener!)
         mAdapter.onItemChildClickListener = itemChildClickListener
 
 
@@ -121,6 +122,9 @@ class ManageFragment : BaseFragment() {
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
     }
 
+    /**
+     * 头布局 header
+     */
     private fun getHeadView(): View {
         val view = View.inflate(activity, R.layout.manager_item_head, null)
         view.mRecyclerView.layoutManager = mGrideManager
@@ -155,7 +159,6 @@ class ManageFragment : BaseFragment() {
         when (view.id) {
             R.id.iv_more -> {
                 data.isCheck = !data.isCheck
-
                 for (i in 0 until dataList.size) {
                     if (dataList[i].id != data.id) {
                         if (data.isCheck) {
@@ -166,12 +169,17 @@ class ManageFragment : BaseFragment() {
                             } else {
                                 adapter.notifyItemChanged(position + 1)
                             }
-                        }else{
-                            adapter.notifyItemChanged(position+1)
+                        } else {
+                            adapter.notifyItemChanged(position + 1)
                         }
                     }
                 }
             }
         }
     }
+
+    /**
+     * 滑动监听 改变toolbar 颜色状态
+     */
+//    private val scrollListener=OnScrollListener{_,}
 }
