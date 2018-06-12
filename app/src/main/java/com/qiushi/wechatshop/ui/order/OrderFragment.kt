@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.ui.order
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -52,6 +53,9 @@ class OrderFragment : BaseFragment() {
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
 
         mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+            var intent = Intent(activity, OrderDetailActivity::class.java)
+//            intent.putExtra("id",)
+            startActivity(intent)
         }
 
         //TODO test
