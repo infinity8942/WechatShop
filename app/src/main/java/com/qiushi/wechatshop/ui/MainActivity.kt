@@ -21,6 +21,7 @@ class MainActivity : BaseActivity() {
     override fun layoutId(): Int = R.layout.activity_main
 
     override fun init() {
+        setSwipeBackEnable(false)
         mTabEntities.add(TabEntity("我的店", R.mipmap.ic_manage_selected, R.mipmap.ic_manage))
         mTabEntities.add(TabEntity("串门", R.mipmap.ic_shop_selected, R.mipmap.ic_shop))
         mTabEntities.add(TabEntity("我的", R.mipmap.ic_mine_selected, R.mipmap.ic_mine))
