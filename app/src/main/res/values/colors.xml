@@ -34,6 +34,7 @@
     <color name="bg_toast">#99000000</color>
 
     <color name="gray1">#707070</color>
+    <color name="gray2">#C1C1C1</color>
     <color name="color_title_bg">#CCFFFFFF</color>
     <color name="color_light_black">#5000</color>
     <color name="clolor_yellow">#FFC125</color>
