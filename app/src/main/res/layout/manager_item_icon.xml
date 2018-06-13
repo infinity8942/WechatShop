@@ -12,28 +12,29 @@
 
 
     <RelativeLayout
-        android:layout_marginLeft="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
         android:layout_marginTop="32dp">
 
         <TextView
-            android:textColor="@color/text"
-            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的产品" />
+            android:text="我的产品"
+            android:textColor="@color/text"
+            android:textSize="20sp" />
 
         <TextView
-            android:drawablePadding="3.1dp"
-            android:layout_marginRight="20.4dp"
-            android:drawableRight="@mipmap/ic_more_head"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/color_more"
-            android:text="更多"
+            android:id="@+id/shop_more"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20.4dp"
+            android:drawablePadding="3.1dp"
+            android:drawableRight="@mipmap/ic_more_head"
+            android:text="更多"
+            android:textColor="@color/color_more" />
     </RelativeLayout>
 
 </LinearLayout>

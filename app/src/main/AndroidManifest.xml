@@ -77,7 +77,9 @@
                 tools:replace="name,resource" />
         </provider>
 
-        <activity android:name=".ui.manage.ManagerMoreActivity"></activity>
+        <activity android:name=".ui.manage.ManagerMoreActivity" />
+        <activity android:name=".ui.manage.ManagerGoodsActivity" />
+        <activity android:name=".ui.manage.AddGoodsActivity"></activity>
     </application>
 
 </manifest>

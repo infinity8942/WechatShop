@@ -13,16 +13,12 @@ import com.qiushi.wechatshop.util.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_manager_more.*
 
 class ManagerMoreActivity : BaseActivity() {
-    var mToolsList = ArrayList<Tools>()
+    private var mToolsList = ArrayList<Tools>()
 
-    override fun layoutId(): Int {
-        return R.layout.activity_manager_more
-    }
+    override fun layoutId(): Int = R.layout.activity_manager_more
 
     override fun init() {
-
         StatusBarUtil.immersive(this!!)
-
         StatusBarUtil.setPaddingSmart(this!!, toolbar1)
 
         var mTool1 = Tools(1, "待办事项", Constants.GOOD0)

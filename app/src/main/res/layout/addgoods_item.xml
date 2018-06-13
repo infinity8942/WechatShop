@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/add_goods_white_shape"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="倪梦佳独家定制手工制作甜点系列，采用天然4种花生以及天然牛奶采用独特的手法制作出来的牛轧糖，粘稠不粘牙，不可错过的糖果系列之一，店主自留特推产品~"
+        android:visibility="gone" />
+
+
+    <com.qiushi.wechatshop.view.SquareImageView
+        android:id="@+id/iv_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</FrameLayout>

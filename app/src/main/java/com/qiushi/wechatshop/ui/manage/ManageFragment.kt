@@ -94,13 +94,13 @@ class ManageFragment : BaseFragment() {
         var mFunction5 = Function(5, "用户管理")
         var mFunction6 = Function(6, "更多")
         var mShopOrder = ShopOrder(1, "老虎商店", Constants.GOOD0, 1, false)
-        var mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 89, false)
-        var mShopOrder2 = ShopOrder(3, "测试老虎2", Constants.GOOD2, 89, false)
-        var mShopOrder3 = ShopOrder(4, "测试老虎3", Constants.GOOD3, 89, false)
-        var mShopOrder4 = ShopOrder(5, "测试老虎4", Constants.GOOD4, 89, false)
-        var mShopOrder5 = ShopOrder(6, "测试老虎5", Constants.GOOD5, 89, false)
-        var mShopOrder6 = ShopOrder(7, "测试老虎6", Constants.GOOD6, 89, false)
-        var mShopOrder7 = ShopOrder(8, "测试老虎7", Constants.GOOD7, 89, false)
+        var mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 2, false)
+        var mShopOrder2 = ShopOrder(3, "测试老虎2", Constants.GOOD2, 3, false)
+        var mShopOrder3 = ShopOrder(4, "测试老虎3", Constants.GOOD3, 4, false)
+        var mShopOrder4 = ShopOrder(5, "测试老虎4", Constants.GOOD4, 5, false)
+        var mShopOrder5 = ShopOrder(6, "测试老虎5", Constants.GOOD5, 6, false)
+        var mShopOrder6 = ShopOrder(7, "测试老虎6", Constants.GOOD6, 7, false)
+        var mShopOrder7 = ShopOrder(8, "测试老虎7", Constants.GOOD7, 8, false)
 
         mShopOrderList.add(mShopOrder)
         mShopOrderList.add(mShopOrder1)
@@ -151,6 +151,10 @@ class ManageFragment : BaseFragment() {
         view.findViewById<TextView>(R.id.cash_all).text = (mShop?.cash_all).toString()
         view.findViewById<TextView>(R.id.cash_flow).text = mShop?.cash_flow.toString()
         view.findViewById<TextView>(R.id.cash_forzen).text = mShop?.cash_forzen.toString()
+        view.shop_more.setOnClickListener(View.OnClickListener { v: View? ->
+            //跳转 产品管理
+            ManagerGoodsActivity.startManagerGoodsActivity(this!!.context!!)
+        })
         return view
     }
 
@@ -276,7 +280,7 @@ class ManageFragment : BaseFragment() {
             super.onScrollStateChanged(recyclerView, newState)
             if (mItemPosition != -1 && mAdapter != null) {
                 mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
-                mItemPosition=-1
+                mItemPosition = -1
             }
         }
     }
