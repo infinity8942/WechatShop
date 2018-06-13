@@ -53,7 +53,7 @@ class OrderFragment : BaseFragment() {
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
 
         mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-            var intent = Intent(activity, OrderDetailActivity::class.java)
+            val intent = Intent(activity, OrderDetailActivity::class.java)
 //            intent.putExtra("id",)
             startActivity(intent)
         }

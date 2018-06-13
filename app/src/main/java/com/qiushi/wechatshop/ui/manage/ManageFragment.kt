@@ -3,6 +3,7 @@ package com.qiushi.wechatshop.ui.manage
 import android.animation.ArgbEvaluator
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -84,23 +85,23 @@ class ManageFragment : BaseFragment() {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(activity!!)
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
-        color1 = context!!.resources.getColor(R.color.translate)
-        color2 = context!!.resources.getColor(R.color.colorPrimaryDark)
+        color1 = ContextCompat.getColor(context!!, R.color.translate)
+        color2 = ContextCompat.getColor(context!!, R.color.colorPrimaryDark)
         //RecyclerView
-        var mFunction1 = Function(1, "待办事项")
-        var mFunction2 = Function(2, "订单管理")
-        var mFunction3 = Function(3, "素材管理")
-        var mFunction4 = Function(4, "知识库")
-        var mFunction5 = Function(5, "用户管理")
-        var mFunction6 = Function(6, "更多")
-        var mShopOrder = ShopOrder(1, "老虎商店", Constants.GOOD0, 1, false)
-        var mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 89, false)
-        var mShopOrder2 = ShopOrder(3, "测试老虎2", Constants.GOOD2, 89, false)
-        var mShopOrder3 = ShopOrder(4, "测试老虎3", Constants.GOOD3, 89, false)
-        var mShopOrder4 = ShopOrder(5, "测试老虎4", Constants.GOOD4, 89, false)
-        var mShopOrder5 = ShopOrder(6, "测试老虎5", Constants.GOOD5, 89, false)
-        var mShopOrder6 = ShopOrder(7, "测试老虎6", Constants.GOOD6, 89, false)
-        var mShopOrder7 = ShopOrder(8, "测试老虎7", Constants.GOOD7, 89, false)
+        val mFunction1 = Function(1, "待办事项")
+        val mFunction2 = Function(2, "订单管理")
+        val mFunction3 = Function(3, "素材管理")
+        val mFunction4 = Function(4, "知识库")
+        val mFunction5 = Function(5, "用户管理")
+        val mFunction6 = Function(6, "更多")
+        val mShopOrder = ShopOrder(1, "老虎商店", Constants.GOOD0, 1, false)
+        val mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 89, false)
+        val mShopOrder2 = ShopOrder(3, "测试老虎2", Constants.GOOD2, 89, false)
+        val mShopOrder3 = ShopOrder(4, "测试老虎3", Constants.GOOD3, 89, false)
+        val mShopOrder4 = ShopOrder(5, "测试老虎4", Constants.GOOD4, 89, false)
+        val mShopOrder5 = ShopOrder(6, "测试老虎5", Constants.GOOD5, 89, false)
+        val mShopOrder6 = ShopOrder(7, "测试老虎6", Constants.GOOD6, 89, false)
+        val mShopOrder7 = ShopOrder(8, "测试老虎7", Constants.GOOD7, 89, false)
 
         mShopOrderList.add(mShopOrder)
         mShopOrderList.add(mShopOrder1)
@@ -171,10 +172,10 @@ class ManageFragment : BaseFragment() {
      * 商品条目点击事件
      */
     private val itemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        var mData = adapter.getItem(position) as ShopOrder
+        val mData = adapter.getItem(position) as ShopOrder
         when (view.id) {
             R.id.iv_more -> {
-                var item = adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)
+                val item = adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)
                 if (mItemPosition == -1) {
                     if (item!!.visibility == View.VISIBLE) {
                         item.visibility = View.GONE
@@ -219,8 +220,6 @@ class ManageFragment : BaseFragment() {
                 setTop(mData.id.toLong(), type)
                 adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
             }
-
-
         }
     }
 
@@ -234,8 +233,8 @@ class ManageFragment : BaseFragment() {
                 when (data.id) {
                     2 -> startActivity(Intent(activity, OrderActivity::class.java))
                     6 -> {
-                        ManagerMoreActivity.startManagerMoreActivity(this!!.context!!)
-                        if (mItemPosition != -1 && mAdapter != null) {
+                        ManagerMoreActivity.startManagerMoreActivity(this.context!!)
+                        if (mItemPosition != -1) {
                             mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
                         }
                     }
@@ -248,7 +247,6 @@ class ManageFragment : BaseFragment() {
     /**
      * recyclerview滑动事件
      */
-
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -274,19 +272,18 @@ class ManageFragment : BaseFragment() {
 
         override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if (mItemPosition != -1 && mAdapter != null) {
+            if (mItemPosition != -1) {
                 mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
-                mItemPosition=-1
+                mItemPosition = -1
             }
         }
     }
-
 
     /**
      * 置顶 下架 删除
      */
     private fun setTop(goods_id: Long, type: Int) {
-        var observable: Observable<BaseResponse<Boolean>> = when (type) {
+        val observable: Observable<BaseResponse<Boolean>> = when (type) {
             TYPE_ZD -> RetrofitManager.service.setTop(goods_id)
             TYPE_XJ -> RetrofitManager.service.upShop(goods_id)
 //            TYPE_DELETE -> RetrofitManager.service.deleteShop(goods_id)
@@ -302,7 +299,6 @@ class ManageFragment : BaseFragment() {
                                     ToastUtils.showSuccess("置顶成功")
                                 } else {
                                     ToastUtils.showSuccess("取消置顶")
-
                                 }
                             }
                             TYPE_XJ -> {
@@ -317,11 +313,9 @@ class ManageFragment : BaseFragment() {
                                     ToastUtils.showSuccess("删除成功")
                                 } else {
                                     ToastUtils.showSuccess("删除失败")
-
                                 }
                             }
                         }
-
                     }
 
                     override fun onHandleError(error: Error) {
@@ -330,6 +324,4 @@ class ManageFragment : BaseFragment() {
                 })
         addSubscription(disposable)
     }
-
-
 }
