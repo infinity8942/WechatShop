@@ -7,7 +7,6 @@ import android.support.v7.widget.GridLayoutManager
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
-import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.Tools
 import com.qiushi.wechatshop.util.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_manager_more.*
@@ -21,13 +20,13 @@ class ManagerMoreActivity : BaseActivity() {
         StatusBarUtil.immersive(this!!)
         StatusBarUtil.setPaddingSmart(this!!, toolbar1)
 
-        var mTool1 = Tools(1, "待办事项", Constants.GOOD0)
-        var mTool2 = Tools(2, "订单管理", Constants.GOOD1)
-        var mTool3 = Tools(3, "素材管理", Constants.GOOD2)
-        var mTool4 = Tools(4, "知识库", Constants.GOOD3)
-        var mTool5 = Tools(5, "用户管理", Constants.GOOD4)
-        var mTool6 = Tools(6, "账户管理", Constants.GOOD5)
-        var mTool7 = Tools(7, "优惠卷管理", Constants.GOOD6)
+        val mTool1 = Tools(1, "待办事项", Constants.GOOD0)
+        val mTool2 = Tools(2, "订单管理", Constants.GOOD1)
+        val mTool3 = Tools(3, "素材管理", Constants.GOOD2)
+        val mTool4 = Tools(4, "知识库", Constants.GOOD3)
+        val mTool5 = Tools(5, "用户管理", Constants.GOOD4)
+        val mTool6 = Tools(6, "账户管理", Constants.GOOD5)
+        val mTool7 = Tools(7, "优惠卷管理", Constants.GOOD6)
 
         mToolsList.add(mTool1)
         mToolsList.add(mTool2)
@@ -38,7 +37,6 @@ class ManagerMoreActivity : BaseActivity() {
         mToolsList.add(mTool7)
 
         //假数据
-
         often_recycler.layoutManager = mNoUseGrideManager
         often_recycler.adapter = mNoUseGrideAdapter
 
@@ -50,7 +48,6 @@ class ManagerMoreActivity : BaseActivity() {
     private val mGrideManager by lazy {
         GridLayoutManager(this, 4)
     }
-
 
     private val mGrideAdapter by lazy {
         ToolsAlwayAdapter(mToolsList)
@@ -79,6 +76,4 @@ class ManagerMoreActivity : BaseActivity() {
             startActivity(context, intent, null)
         }
     }
-
-
 }

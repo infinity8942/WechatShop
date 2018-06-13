@@ -48,11 +48,11 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="13sp"
-            tools:text="标题" />
+            android:textSize="13sp" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/contentBackground1"
@@ -62,9 +62,38 @@
         android:id="@+id/layout_price"
         android:layout_width="match_parent"
         android:layout_height="38dp"
+        android:gravity="center_vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/black_90"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/title_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/price"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@id/price"
+            android:text="实付总额："
+            android:textColor="@color/gray1"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/price"
+            android:layout_toLeftOf="@id/title_price"
+            android:textColor="@color/gray1"
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <View
@@ -74,13 +103,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp">
+        android:layout_height="42dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:layout_width="74dp"
             android:layout_height="26dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_order_notify"
+            android:gravity="center"
             android:text="提醒发货"
-            android:textColor="@color/coupon_yellow" />
+            android:textColor="@color/coupon_yellow"
+            android:textSize="13sp" />
     </RelativeLayout>
 </LinearLayout>

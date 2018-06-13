@@ -19,5 +19,7 @@ class ShopAdapter : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.item_shop_g
         ImageHelper.loadImageWithCorner(mContext, helper.getView(R.id.iv_cover_feed), Constants.IMAGE1, 150, 150,
                 RoundedCornersTransformation(DensityUtils.dp2px(10f), 0, RoundedCornersTransformation.CornerType.TOP))
         helper.setText(R.id.tv_title, "尼萌特别推出最好吃的蛋糕" + helper.adapterPosition)
+        helper.setText(R.id.price, "￥89.90")
+        helper.setText(R.id.amount, "已售2650")
     }
 }
