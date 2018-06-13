@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v4.content.res.ResourcesCompat
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_login.*
 import me.weyye.hipermission.HiPermission
@@ -18,12 +19,13 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun init() {
+        setSwipeBackEnable(false)
+        StatusBarUtil.immersive(this)
+
         getPermission()
 
         login.setOnClickListener {
-            val intent = Intent()
-            intent.setClass(this, MainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
@@ -31,7 +33,7 @@ class LoginActivity : BaseActivity() {
     override fun getData() {
     }
 
-    fun getPermission() {
+    private fun getPermission() {
         val permissionItems = ArrayList<PermissionItem>()
         permissionItems.add(PermissionItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera))
         permissionItems.add(PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, "存储", R.drawable.permission_ic_storage))

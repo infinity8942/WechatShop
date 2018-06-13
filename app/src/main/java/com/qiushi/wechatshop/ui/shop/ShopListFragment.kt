@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.ui.shop
 
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.widget.RelativeLayout
 import com.qiushi.wechatshop.R
@@ -38,7 +39,12 @@ class ShopListFragment : BaseFragment() {
         cover.layoutParams = lpCover
         mask.layoutParams = lpCover
 
-        //test
+        //Listener
+        btn_edit.setOnClickListener {
+            startActivity(Intent(activity, ShopEditActivity::class.java))
+        }
+
+        //TODO test
         ImageHelper.loadImage(context, cover, "https://static.chiphell.com/portal/201803/08/190549vw5xfonuw4wzfuxu.jpg")
 
         tabList.add("我的店")
