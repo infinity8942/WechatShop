@@ -29,7 +29,24 @@ interface ApiService {
     @POST("MobileApp/shop/order")
     fun orderList(): Observable<BaseResponse<ArrayList<Order>>>
 
+
+    /**
+     * 置顶 取消置顶
+     */
     @FormUrlEncoded
-    @POST
+    @POST("MobileApp/Goods/goods_top")
     fun setTop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 上架下架
+     */
+
+    @FormUrlEncoded
+    @POST("MobileApp/Goods/goods_enable")
+    fun upShop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
+
+
+    @FormUrlEncoded
+    @POST("MobileApp/Goods/goods_del")
+    fun deleteShop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
 }

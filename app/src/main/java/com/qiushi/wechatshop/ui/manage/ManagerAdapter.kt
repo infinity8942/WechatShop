@@ -1,10 +1,7 @@
 package com.qiushi.wechatshop.ui.manage
 
 
-import android.util.Log
-import android.view.View
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.R
@@ -16,7 +13,9 @@ class ManagerAdapter(data: List<ShopOrder>) : BaseQuickAdapter<ShopOrder, BaseVi
         val view = helper?.getView<ImageView>(R.id.iv_shop)
         ImageHelper.loadImage1(mContext, view!!, item?.cover!!, 93, 94, 10f)
         helper.addOnClickListener(R.id.iv_more)
-        Log.e("tag","isCheck"+item.isCheck)
+                .addOnClickListener(R.id.tv_zd)
+                .addOnClickListener(R.id.tv_delete)
+                .addOnClickListener(R.id.tv_xj)
     }
 
 

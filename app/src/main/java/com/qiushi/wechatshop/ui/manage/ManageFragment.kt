@@ -1,12 +1,12 @@
 package com.qiushi.wechatshop.ui.manage
 
 import android.animation.ArgbEvaluator
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -16,25 +16,29 @@ import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.model.ShopOrder
+import com.qiushi.wechatshop.net.BaseResponse
 
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.manager_item_icon.view.*
+import java.util.*
 
 /**
  * 我的店Fragment
  */
 class ManageFragment : BaseFragment() {
 
-    var mShop: MyShop? = null
-    var mFunctionList = ArrayList<Function>()
-    var mShopOrderList = ArrayList<ShopOrder>()
+    private var mShop: MyShop? = null
+    private var mFunctionList = ArrayList<Function>()
+    private var mShopOrderList = ArrayList<ShopOrder>()
     var mItemPosition: Int = -1
     var distance: Int = 0
     var argbEvaluator = ArgbEvaluator()
@@ -42,6 +46,10 @@ class ManageFragment : BaseFragment() {
     var color2 = 0
     var color0 = 0
 
+    var type = 0
+    private val TYPE_ZD = 1// 置顶
+    private val TYPE_DELETE = 2//删除
+    private val TYPE_XJ = 3//下架
 
     /**
      * 整体recyclerview adapter
@@ -163,6 +171,7 @@ class ManageFragment : BaseFragment() {
      * 商品条目点击事件
      */
     private val itemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+        var mData = adapter.getItem(position) as ShopOrder
         when (view.id) {
             R.id.iv_more -> {
                 var item = adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)
@@ -192,6 +201,26 @@ class ManageFragment : BaseFragment() {
                     }
                 }
             }
+            R.id.tv_delete -> {
+                type = TYPE_DELETE
+                setTop(mData.id.toLong(), type)
+                ToastUtils.showError("删除")
+                adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
+            }
+            R.id.tv_xj -> {
+                type = TYPE_XJ
+                setTop(mData.id.toLong(), type)
+                ToastUtils.showError("下架")
+                adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
+            }
+            R.id.tv_zd -> {
+                type = TYPE_ZD
+                ToastUtils.showError("置顶")
+                setTop(mData.id.toLong(), type)
+                adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
+            }
+
+
         }
     }
 
@@ -204,7 +233,12 @@ class ManageFragment : BaseFragment() {
             R.id.item_name -> {
                 when (data.id) {
                     2 -> startActivity(Intent(activity, OrderActivity::class.java))
-                    6 -> ManagerMoreActivity.startManagerMoreActivity(this!!.context!!)
+                    6 -> {
+                        ManagerMoreActivity.startManagerMoreActivity(this!!.context!!)
+                        if (mItemPosition != -1 && mAdapter != null) {
+                            mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
+                        }
+                    }
                     else -> ToastUtils.showError("其他未做")
                 }
             }
@@ -219,42 +253,75 @@ class ManageFragment : BaseFragment() {
         override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             distance = mRecyclerView.computeVerticalScrollOffset()
-            Log.e("tag", "color~~~~~~~~~~$dy")
             if (linearLayoutManager.findFirstVisibleItemPosition() == 0) {
                 if (distance == 0) {
                     color0 = context!!.resources.getColor(R.color.translate)
                 }
-                if (distance < 50) {
-                    color0 = if (dy > 0) {
+                color0 = if (distance < 50) {
+                    if (dy > 0) {
                         //往上滑动  、、渐变
-                        argbEvaluator.evaluate(Math.abs(distance / 1000).toFloat(), color2, color1) as Int
+                        argbEvaluator.evaluate(Math.abs(distance / 500).toFloat(), color2, color1) as Int
                     } else {
                         //往下滑动
-                        argbEvaluator.evaluate(Math.abs(distance / 1000).toFloat(), color1, color2) as Int
+                        argbEvaluator.evaluate(Math.abs(distance / 500).toFloat(), color1, color2) as Int
                     }
                 } else {
-                    color0 = color2
+                    color2
                 }
             }
             toolbar.setBackgroundColor(color0)
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (mItemPosition != -1 && mAdapter != null) {
+                mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
+                mItemPosition=-1
+            }
         }
     }
 
 
     /**
-     * 置顶商品
+     * 置顶 下架 删除
      */
-    fun setTop(goods_id: Long) {
-        val disposable = RetrofitManager.service.setTop(goods_id)
+    private fun setTop(goods_id: Long, type: Int) {
+        var observable: Observable<BaseResponse<Boolean>> = when (type) {
+            TYPE_ZD -> RetrofitManager.service.setTop(goods_id)
+            TYPE_XJ -> RetrofitManager.service.upShop(goods_id)
+//            TYPE_DELETE -> RetrofitManager.service.deleteShop(goods_id)
+            else -> RetrofitManager.service.deleteShop(goods_id)
+        }
+        val disposable = observable
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t) {
-                            ToastUtils.showSuccess("置顶成功")
-                        } else {
-                            ToastUtils.showSuccess("取消置顶")
+                        when (type) {
+                            TYPE_ZD -> {
+                                if (t) {
+                                    ToastUtils.showSuccess("置顶成功")
+                                } else {
+                                    ToastUtils.showSuccess("取消置顶")
 
+                                }
+                            }
+                            TYPE_XJ -> {
+                                if (t) {
+                                    ToastUtils.showSuccess("下架成功")
+                                } else {
+                                    ToastUtils.showSuccess("上架成功")
+                                }
+                            }
+                            else -> {
+                                if (t) {
+                                    ToastUtils.showSuccess("删除成功")
+                                } else {
+                                    ToastUtils.showSuccess("删除失败")
+
+                                }
+                            }
                         }
+
                     }
 
                     override fun onHandleError(error: Error) {
@@ -263,5 +330,6 @@ class ManageFragment : BaseFragment() {
                 })
         addSubscription(disposable)
     }
+
 
 }
