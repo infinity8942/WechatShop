@@ -44,7 +44,7 @@ class ShopFragment : BaseFragment() {
 
     override fun initView() {
         //RecyclerView
-        mRecyclerView.layoutManager = GridLayoutManager(activity, 2)
+        mRecyclerView.layoutManager = GridLayoutManager(context, 2)
         mAdapter = ShopAdapter()
         mAdapter.openLoadAnimation()
         mRecyclerView.addItemDecoration(GridSpaceItemDecoration(DensityUtils.dp2px(9.toFloat()), DensityUtils.dp2px(8.toFloat())))

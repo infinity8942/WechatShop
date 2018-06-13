@@ -66,7 +66,7 @@ class MainActivity : BaseActivity() {
             2
             -> mUserFragment?.let {
                 transaction.show(it)
-            } ?: UserFragment.getInstance("user").let {
+            } ?: UserFragment.getInstance().let {
                 mUserFragment = it
                 transaction.add(R.id.fl_container, it, "user")
             }
