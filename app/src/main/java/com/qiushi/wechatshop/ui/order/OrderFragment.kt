@@ -54,7 +54,7 @@ class OrderFragment : BaseFragment() {
 
         mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
             val intent = Intent(activity, OrderDetailActivity::class.java)
-//            intent.putExtra("id",)
+            intent.putExtra("id", (adapter.data[position] as Order).id)
             startActivity(intent)
         }
 

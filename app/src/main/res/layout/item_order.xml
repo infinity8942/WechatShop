@@ -114,6 +114,7 @@
             android:background="@drawable/bg_order_notify"
             android:gravity="center"
             android:text="提醒发货"
-            android:textColor="@color/coupon_yellow" />
+            android:textColor="@color/coupon_yellow"
+            android:textSize="13sp" />
     </RelativeLayout>
 </LinearLayout>

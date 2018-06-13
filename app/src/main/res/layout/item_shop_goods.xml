@@ -27,5 +27,35 @@
             android:textColor="@color/text"
             android:textSize="14sp"
             tools:text="标题" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/color_item_price"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/price"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/price"
+            android:textColor="@color/color_more"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:id="@+id/cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_cart" />
     </RelativeLayout>
 </LinearLayout>
