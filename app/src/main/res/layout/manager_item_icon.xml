@@ -27,7 +27,7 @@
         <TextView
             android:drawablePadding="3.1dp"
             android:layout_marginRight="20.4dp"
-            android:drawableRight="@mipmap/ic_more"
+            android:drawableRight="@mipmap/ic_more_head"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:textColor="@color/color_more"
