@@ -90,7 +90,7 @@ class ShopFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        val disposable = RetrofitManager.service.shopDetail(shopID)
+        val disposable = RetrofitManager.service.shopDetail(Constants.SHOP_ID)//shopID
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
@@ -132,6 +132,17 @@ class ShopFragment : BaseFragment() {
         headerView.findViewById<TextView>(R.id.name).text = shop.name
         headerView.findViewById<TextView>(R.id.name).paint.isFakeBoldText = true
         headerView.findViewById<TextView>(R.id.des).text = shop.des
+
+        //        val listCoupon = ArrayList<Coupon>()
+//        for (i in 1..5) {
+//            listCoupon.add(Coupon(50))
+//        }
+//        headerView.findViewById<RecyclerView>(R.id.rv_coupon).layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+//        mCouponAdapter = ShopCouponAdapter()
+//        mCouponAdapter.openLoadAnimation()
+//        headerView.findViewById<RecyclerView>(R.id.rv_coupon).addItemDecoration(SpaceItemDecoration(DensityUtils.dp2px(13.toFloat()), 0))
+//        headerView.findViewById<RecyclerView>(R.id.rv_coupon).adapter = mCouponAdapter
+//        mCouponAdapter.setNewData(listCoupon)
     }
 
     companion object {

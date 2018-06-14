@@ -1,16 +1,16 @@
 package com.qiushi.wechatshop.ui.shop
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.heaven7.android.dragflowlayout.ClickToDeleteItemListenerImpl
 import com.heaven7.android.dragflowlayout.DragAdapter
 import com.heaven7.android.dragflowlayout.DragFlowLayout
-import com.heaven7.android.dragflowlayout.IViewObserver
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -20,7 +20,9 @@ import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_shop_edit.*
+import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
 
 /**
  * Created by Rylynn on 2018-06-13.
@@ -28,7 +30,9 @@ import kotlinx.android.synthetic.main.activity_shop_edit.*
 class ShopEditActivity : Activity(), View.OnClickListener {
 
     private var isEdit = false
-    private val list = ArrayList<Shop>()
+    private var isChange = false //是否修改过
+    private var list = ArrayList<Shop>()
+    private var compositeDisposable = CompositeDisposable()//订阅集合
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,15 +42,8 @@ class ShopEditActivity : Activity(), View.OnClickListener {
         StatusBarUtil.darkMode(this)
         StatusBarUtil.setPadding(this, toolbar)
 
-        edit.setOnClickListener(this)
-        btn_close.setOnClickListener(this)
-        commit.setOnClickListener(this)
-
-        drag_flowLayout.setOnItemClickListener(object : ClickToDeleteItemListenerImpl(R.id.close) {
-            override fun onDeleteSuccess(dfl: DragFlowLayout?, child: View?, data: Any?) {
-                //删除成功后的处理
-            }
-        })
+        //getData
+        list = intent.getSerializableExtra("shops") as ArrayList<Shop>
         drag_flowLayout.setDragAdapter(object : DragAdapter<Shop>() {
             override fun getItemLayoutId(): Int {
                 return R.layout.item_drag_flow
@@ -75,22 +72,36 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                 return itemView.tag as Shop
             }
         })
-        drag_flowLayout.addViewObserver(object : IViewObserver {
-            override fun onAddView(child: View, index: Int) {
-                // Logger.i(TAG, "onAddView", "index = " + index);
-            }
-
-            override fun onRemoveView(child: View, index: Int) {
-                // Logger.i(TAG, "onRemoveView", "index = " + index);
-            }
-        })
-
-        //setData
-        list.add(Shop("我的店"))
-        for (i in 1..5) {
-            list.add(Shop("店铺店铺店铺" + i))
-        }
         drag_flowLayout.dragItemManager.addItems(list)
+
+        //Listener
+        edit.setOnClickListener(this)
+        btn_close.setOnClickListener(this)
+        commit.setOnClickListener(this)
+
+        et.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                addShop()
+            }
+            false
+        }
+        drag_flowLayout.setOnDragStateChangeListener { _, dragState ->
+            if (dragState == DragFlowLayout.DRAG_STATE_DRAGGING) {
+                edit.text = "完成"
+                isEdit = true
+            }
+        }
+//        drag_flowLayout.addViewObserver(object : IViewObserver {
+//            override fun onAddView(child: View, index: Int) {
+//            }
+//
+//            override fun onRemoveView(child: View, index: Int) {
+//            }
+//        })
+//        drag_flowLayout . setOnItemClickListener (object : ClickToDeleteItemListenerImpl(R.id.close) {
+//            override fun onDeleteSuccess(dfl: DragFlowLayout?, child: View?, data: Any?) {
+//            }
+//        })
     }
 
     override fun onClick(v: View) {
@@ -101,6 +112,7 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                     drag_flowLayout.beginDrag()
                     true
                 } else {
+                    editShop()
                     edit.text = "编辑"
                     drag_flowLayout.finishDrag()
                     false
@@ -109,32 +121,77 @@ class ShopEditActivity : Activity(), View.OnClickListener {
             R.id.btn_close -> {
                 if (isEdit) {//确认关闭提示
 
-                } else finish()
+                } else {
+                    if (isChange) {
+                        val intent = Intent(this@ShopEditActivity, ShopListFragment::class.java)
+                        intent.putExtra("shops", list)
+                        setResult(RESULT_OK)
+                    }
+                    finish()
+                }
             }
             R.id.commit -> {
                 addShop()
-                for (shop in drag_flowLayout.dragItemManager.getItems<Shop>()) {
-                }
             }
         }
     }
 
+    /**
+     * 添加店铺
+     */
     private fun addShop() {
         val code = et.text.toString().trim()
         if (TextUtils.isEmpty(code)) {
             ToastUtils.showWarning("请填写邀请码")
             return
         }
+        UIUtil.hideKeyboard(this@ShopEditActivity)
         val disposable = RetrofitManager.service.addShop(code)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
+                        et.setText("")
+                        ToastUtils.showMessage("添加成功")
                         drag_flowLayout.dragItemManager.addItem(t)
+                        isChange = true
                     }
 
                     override fun onHandleError(error: Error) {
                         ToastUtils.showError(error.msg)
                     }
                 })
+        compositeDisposable.add(disposable)
+    }
+
+    /**
+     * 编辑关注的店铺
+     */
+    private fun editShop() {
+        val sb = StringBuilder()
+        for (shop in drag_flowLayout.dragItemManager.getItems<Shop>()) {
+            sb.append(shop.id).append(",")
+        }
+        var shopIds = ""
+        if (sb.isNotEmpty()) {
+            shopIds = sb.substring(0, sb.length - 1)
+        }
+        val disposable = RetrofitManager.service.editShop(shopIds)
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<Boolean>() {
+                    override fun onHandleSuccess(t: Boolean) {
+                        ToastUtils.showMessage("修改成功")
+                        isChange = true
+                    }
+
+                    override fun onHandleError(error: Error) {
+                        ToastUtils.showError(error.msg)
+                    }
+                })
+        compositeDisposable.add(disposable)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
     }
 }

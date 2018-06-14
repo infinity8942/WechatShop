@@ -35,7 +35,7 @@ object RetrofitManager {
             val responseBody = response.body()
             if (null != responseBody) {
                 val content = responseBody.string()
-                Logger.json(content)
+                Logger.d("Response = " + content)
                 response = response.newBuilder()
                         .body(okhttp3.ResponseBody.create(responseBody.contentType(), content))
                         .build()
@@ -58,7 +58,7 @@ object RetrofitManager {
                     .header("version", PhoneInfo.getInstance().version)
                     .header("channel", PhoneInfo.getInstance().channel)
                     .header("device", "android")
-                    .header("client-id", Constants.CILIENT)//TODO
+                    .header("client-id", Constants.CILIENT)
                     .header("access-token", Constants.TOKEN)
                     .method(originalRequest.method(), originalRequest.body())
             val request = requestBuilder.build()

@@ -10,6 +10,9 @@ object Constants {
     const val IMAGE3 = "http://image.hnol.net/c/2018-05/25/20/201805252007168161-2053485.jpg"
     const val AVATAR = "https://static.chiphell.com/forum/201806/06/111637jjxw8cwnj88xss8k.jpg"
 
+    //测试店铺ID
+    const val SHOP_ID: Long = 10091
+
     //主页测试图片
     const val GOOD0 = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1528702578&di=a30dcf155043b230465a96ef469c5d41&src=http://pic15.photophoto.cn/20100429/0035035090388467_b.jpg"
     const val GOOD1 = "http://pic29.photophoto.cn/20131010/0035035066575835_b.jpg"

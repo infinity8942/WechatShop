@@ -21,7 +21,7 @@ interface ApiService {
      * 用户关注的店铺详情
      */
     @FormUrlEncoded
-    @POST("shop")
+    @POST("Shop/shop")
     fun shopDetail(@Field("shop_id") page: Long): Observable<BaseResponse<Shop>>
 
     /**
@@ -30,6 +30,13 @@ interface ApiService {
     @FormUrlEncoded
     @POST("user/add_shop")
     fun addShop(@Field("invite_code") code: String): Observable<BaseResponse<Shop>>
+
+    /**
+     * 修改关注的店铺
+     */
+    @FormUrlEncoded
+    @POST("user/edit_shop")
+    fun editShop(@Field("shop_ids") code: String): Observable<BaseResponse<Boolean>>
 
     /**
      * 订单列表
