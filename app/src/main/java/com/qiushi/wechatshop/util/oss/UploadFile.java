@@ -45,7 +45,10 @@ public class UploadFile extends RealmObject {
 
                     @Override
                     protected void onHandleSuccess(UploadFile uploadFile) {
-                        callback.onSuccess(uploadFile);
+                        uploadFile.file = file;
+                        uploadFile.Md5 = md5;
+                        if (callback != null)
+                            callback.onSuccess(uploadFile);
                     }
 
                     @Override

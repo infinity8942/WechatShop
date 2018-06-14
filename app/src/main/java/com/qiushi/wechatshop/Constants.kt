@@ -29,7 +29,7 @@ object Constants {
 //    val HOST = if (DEBUG)"http://wechatshop.qiushizixun.com"else "http://api.tianapi.com/"//TODO test
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"
     @JvmField
-    val OssCallback = HOST + "OSS/app_response_call_back" //"http://192.168.1.82:81"
+    val OssCallback = HOST + "Oss/app_response_call_back" //"http://192.168.1.82:81"
 
     const val PAGE_NUM = 15 //每页请求数量
 

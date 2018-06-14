@@ -210,11 +210,11 @@ class AddGoodsActivity : BaseActivity() {
      */
     private val uploadListener = object : OnUploadListener {
         override fun onFailure(file: File?, error: com.qiushi.wechatshop.util.oss.Error?) {
-            ToastUtils.showError("失败1")
+
         }
 
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
-            ToastUtils.showError("失败" + currentSize / totalSize)
+//            ToastUtils.showError("失败" + currentSize / totalSize)
         }
 
         override fun onSuccess(file: File?, id: Long) {
