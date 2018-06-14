@@ -25,7 +25,7 @@ object Constants {
     const val DEBUG = true //是否测试环境
 
     @JvmField
-    val HOST = if (DEBUG) "http://wechatshop.qiushizixun.com/MobileApp/" else "http://wap.top6000.com/MobileApp/"
+    val HOST = if (DEBUG) "http://wechatshop.qiushizixun.com/" else "http://wap.top6000.com/MobileApp/"
 //    val HOST = if (DEBUG)"http://wechatshop.qiushizixun.com"else "http://api.tianapi.com/"//TODO test
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"
     @JvmField
@@ -51,4 +51,6 @@ object Constants {
     const val ADDIMG_ITEM_REQUEST=1004 //ITEM添加产品相册回调
     const val EDIT_TEXT_REQUEST=1005 //编辑文本的回调
 
+    const val TOKEN="2813c9014ff9581978e3f616e09b1d79"
+    const val CILIENT="9939e296d7e891ef87a2fa7f521b874a"
 }

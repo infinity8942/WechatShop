@@ -54,6 +54,6 @@ interface ApiService {
 
 
     @FormUrlEncoded
-    @POST("get_token")
+    @POST("Oss/get_token")
     fun gUploadFile(@Field("md5") md5: String): Observable<BaseResponse<UploadFile>>
 }

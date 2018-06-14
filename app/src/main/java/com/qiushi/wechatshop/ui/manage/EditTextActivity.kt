@@ -24,12 +24,13 @@ class EditTextActivity : BaseActivity() {
         }
 
         commit?.setOnClickListener(View.OnClickListener { v: View? ->
-            if (et_text.text.equals("")) {
+            if (et_text.text.toString().equals("")) {
                 ToastUtils.showError("请编辑")
             } else {
                 var intent = Intent()
-                intent.putExtra("text", mText)
+                intent.putExtra("text", et_text.text.toString())
                 setResult(1, Intent(intent))
+                finish()
             }
         })
 
