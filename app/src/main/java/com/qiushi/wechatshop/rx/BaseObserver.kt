@@ -1,10 +1,8 @@
 package com.qiushi.wechatshop.rx
 
-import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ExceptionHandler
-
 import io.reactivex.observers.DisposableObserver
 
 /**
@@ -16,9 +14,7 @@ abstract class BaseObserver<T> : DisposableObserver<BaseResponse<T>>() {
             val t = value.data
             onHandleSuccess(t)
         } else {
-            if(value.msg!=null)
-            onHandleError(Error(value?.code, value?.msg))
-//            Logger.e("onError = " + value.code + " " + value.msg)
+            onHandleError(Error(value.code, value.info))
         }
     }
 
