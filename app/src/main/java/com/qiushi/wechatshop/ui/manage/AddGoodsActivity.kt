@@ -115,6 +115,7 @@ class AddGoodsActivity : BaseActivity() {
             }
             R.id.item_add_text -> {
                 //跳转编辑文本 Activity
+                EditTextActivity.startEditTextActivity(this, "")
             }
         }
     }
@@ -182,6 +183,9 @@ class AddGoodsActivity : BaseActivity() {
                     UploadManager.getInstance().add(mFile)
 
                 }
+            }
+            Constants.EDIT_TEXT_REQUEST -> {
+
             }
         }
     }

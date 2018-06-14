@@ -15,20 +15,20 @@ interface ApiService {
     /**
      * 用户关注的店铺
      */
-    @POST("MobileApp/user/shop")
+    @POST("user/shop")
     fun shopList(): Observable<BaseResponse<ArrayList<Shop>>>
 
     /**
      * 用户关注的店铺详情
      */
     @FormUrlEncoded
-    @POST("MobileApp/shop")
+    @POST("shop")
     fun shopDetail(@Field("shop_id") page: Long): Observable<BaseResponse<Shop>>
 
     /**
      * 订单列表
      */
-    @POST("MobileApp/shop/order")
+    @POST("shop/order")
     fun orderList(): Observable<BaseResponse<ArrayList<Order>>>
 
 
@@ -36,7 +36,7 @@ interface ApiService {
      * 置顶 取消置顶
      */
     @FormUrlEncoded
-    @POST("MobileApp/Goods/goods_top")
+    @POST("Goods/goods_top")
     fun setTop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
@@ -44,16 +44,16 @@ interface ApiService {
      */
 
     @FormUrlEncoded
-    @POST("MobileApp/Goods/goods_enable")
+    @POST("Goods/goods_enable")
     fun upShop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
 
 
     @FormUrlEncoded
-    @POST("MobileApp/Goods/goods_del")
+    @POST("Goods/goods_del")
     fun deleteShop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
 
 
     @FormUrlEncoded
-    @POST("MobileAppv/get_token")
+    @POST("get_token")
     fun gUploadFile(@Field("md5") md5: String): Observable<BaseResponse<UploadFile>>
 }
