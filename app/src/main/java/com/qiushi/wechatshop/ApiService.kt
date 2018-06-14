@@ -3,7 +3,9 @@ package com.qiushi.wechatshop
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.BaseResponse
+import com.qiushi.wechatshop.util.oss.UploadFile
 import io.reactivex.Observable
+import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -49,4 +51,9 @@ interface ApiService {
     @FormUrlEncoded
     @POST("MobileApp/Goods/goods_del")
     fun deleteShop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
+
+
+    @FormUrlEncoded
+    @POST("MobileAppv/get_token")
+    fun gUploadFile(@Field("md5") md5: String): Observable<BaseResponse<UploadFile>>
 }

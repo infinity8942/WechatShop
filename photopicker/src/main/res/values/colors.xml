@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="trans">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <color name="textBlack">#424242</color>
+    <color name="textGray">#919191</color>
+    <color name="red">#f84b43</color>
+
+    <color name="line">#E9E9E9</color>
+    <color name="divider">#F5F5F5</color>
+</resources>

@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.base
 
+import android.content.Intent
 import android.os.Bundle
 import com.qiushi.wechatshop.view.LoadingDialog
 import io.reactivex.disposables.CompositeDisposable
@@ -15,6 +16,7 @@ abstract class BaseActivity : SwipeBackActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId())
+        getParams(intent)
         init()
         getData()
     }
@@ -63,5 +65,16 @@ abstract class BaseActivity : SwipeBackActivity() {
 
     fun addSubscription(disposable: Disposable) {
         compositeDisposable.add(disposable)
+    }
+
+    open fun getParams(intent: Intent) {
+
+    }
+
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        getParams(intent!!)
+        setIntent(intent)
     }
 }
