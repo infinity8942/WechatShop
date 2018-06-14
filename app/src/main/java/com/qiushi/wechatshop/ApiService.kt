@@ -63,5 +63,5 @@ interface ApiService {
 
 
     @POST("User/my_shop")
-    fun getMyshop(): Observable<BaseResponse<MyShop>>
+    fun getMyshop(): Observable<BaseResponse<Shop>>
 }
