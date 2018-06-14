@@ -9,6 +9,10 @@
     <color name="color_30_black">#FF333333</color>
     <color name="color_line">#F6F7F9</color>
     <color name="color_tools_bg">#EFF1F4</color>
+    <color name="color_add_goods">#FF999999</color>
+    <color name="color_add_et">#FFF6F7F9</color>
+    <color name="black_15">#FF151515</color>
+    <color name="color_up_img">#FFFDBD5E</color>
 
     <color name="color_gray">#9a9a9a</color>
 
@@ -27,10 +31,13 @@
     <color name="text">#000000</color>
     <color name="textLight">#9a9a9a</color>
 
-    <color name="black_80">#CC000000</color>
     <color name="black_90">#E6000000</color>
+    <color name="black_80">#CC000000</color>
+    <color name="black_6">#0F000000</color>
     <color name="white_80">#CCFFFFFF</color>
     <color name="white_90">#E6FFFFFF</color>
+    <color name="white_100">#FFFFFFFF</color>
+
     <color name="coupon_yellow">#FB983C</color>
     <color name="bg_toast">#99000000</color>
 

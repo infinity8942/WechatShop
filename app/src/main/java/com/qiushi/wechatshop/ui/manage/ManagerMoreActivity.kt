@@ -14,15 +14,11 @@ import kotlinx.android.synthetic.main.activity_manager_more.*
 class ManagerMoreActivity : BaseActivity() {
     private var mToolsList = ArrayList<Tools>()
 
-    override fun layoutId(): Int {
-        return R.layout.activity_manager_more
-    }
+    override fun layoutId(): Int = R.layout.activity_manager_more
 
     override fun init() {
-
-        StatusBarUtil.immersive(this)
-
-        StatusBarUtil.setPaddingSmart(this, toolbar1)
+        StatusBarUtil.immersive(this!!)
+        StatusBarUtil.setPaddingSmart(this!!, toolbar1)
 
         val mTool1 = Tools(1, "待办事项", Constants.GOOD0)
         val mTool2 = Tools(2, "订单管理", Constants.GOOD1)

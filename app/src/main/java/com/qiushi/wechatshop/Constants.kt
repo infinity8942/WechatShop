@@ -47,5 +47,8 @@ object Constants {
     const val COLLECT = 300//收藏
     const val UNCOLLECT = 301//取消收藏
 
+    const val ADDIMG_RESUALT=1003 //foot添加产品相册回调
+    const val ADDIMG_ITEM_REQUEST=1004 //ITEM添加产品相册回调
+
 
 }

@@ -152,6 +152,10 @@ class ManageFragment : BaseFragment() {
         view.findViewById<TextView>(R.id.cash_all).text = (mShop?.cash_all).toString()
         view.findViewById<TextView>(R.id.cash_flow).text = mShop?.cash_flow.toString()
         view.findViewById<TextView>(R.id.cash_forzen).text = mShop?.cash_forzen.toString()
+        view.shop_more.setOnClickListener(View.OnClickListener { v: View? ->
+            //跳转 产品管理
+            ManagerGoodsActivity.startManagerGoodsActivity(this!!.context!!)
+        })
         return view
     }
 
