@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="17dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="18dp"
-    android:layout_marginBottom="17dp"
     android:orientation="vertical">
 
 
@@ -136,6 +136,7 @@
             android:visibility="gone">
 
             <TextView
+                android:id="@+id/item_add_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -153,6 +154,7 @@
 
 
             <TextView
+                android:id="@+id/item_add_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
@@ -178,10 +180,10 @@
             android:paddingTop="6dp">
 
             <android.support.v7.widget.RecyclerView
-                android:nestedScrollingEnabled="false"
                 android:id="@+id/mRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
 
                 />
         </RelativeLayout>
@@ -196,6 +198,7 @@
 
 
         <ImageView
+            android:id="@+id/foot_add_img"
             android:layout_width="20.5dp"
             android:layout_height="16.5dp"
             android:layout_gravity="center_vertical"
@@ -203,6 +206,7 @@
             android:src="@mipmap/ic_up_img" />
 
         <ImageView
+            android:id="@+id/foot_add_text"
             android:layout_width="17.9dp"
             android:layout_height="17.9dp"
             android:layout_gravity="center_vertical|right"

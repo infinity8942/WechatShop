@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="倪梦佳独家定制手工制作甜点系列，采用天然4种花生以及天然牛奶采用独特的手法制作出来的牛轧糖，粘稠不粘牙，不可错过的糖果系列之一，店主自留特推产品~"
+        android:text=""
         android:visibility="gone" />
 
 
