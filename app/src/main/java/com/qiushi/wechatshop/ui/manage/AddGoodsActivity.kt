@@ -79,6 +79,7 @@ class AddGoodsActivity : BaseActivity() {
             mRecyclerView.adapter = mAdapter
             //foot add点击事件
             foot_add_img.setOnClickListener(onclicklistener)
+            foot_add_text.setOnClickListener(onclicklistener)
         } else {
             rl_layout.visibility = View.GONE
             foot_layout.visibility = View.GONE
@@ -115,7 +116,9 @@ class AddGoodsActivity : BaseActivity() {
             }
             R.id.item_add_text -> {
                 //跳转编辑文本 Activity
+                EditTextActivity.startEditTextActivity(this, "")
             }
+            R.id.foot_add_text -> EditTextActivity.startEditTextActivity(this, "")
         }
     }
 
@@ -166,20 +169,36 @@ class AddGoodsActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             Constants.ADDIMG_RESUALT -> {
-                var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
-                if (selected != null && selected.size > 0) {
-                    //去上传
-                    var mShopOrder5 = ShopOrder(0, "测试老虎5", selected[0], 8, false)
+                if (data != null) {
+                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    if (selected != null && selected.size > 0) {
+                        //去上传
+                        var mShopOrder5 = ShopOrder(0, "测试老虎5", selected[0], 8, false)
 //                    mShopOrderList.add(mShopOrder5)
-                    mAdapter.addData(mShopOrder5)
+                        mAdapter.addData(mShopOrder5)
+                    }
                 }
             }
             Constants.ADDIMG_ITEM_REQUEST -> {
-                var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
-                if (selected != null && selected.size > 0) {
-                    //去上传
-                    var mFile = File(selected[0])
-                    UploadManager.getInstance().add(mFile)
+                if (data != null) {
+                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    if (selected != null && selected.size > 0) {
+                        //去上传
+                        var mFile = File(selected[0])
+                        UploadManager.getInstance().add(mFile)
+                    }
+                }
+            }
+            Constants.EDIT_TEXT_REQUEST -> {
+                var mText = data?.getStringExtra("text")
+                if (mText != null && !mText.equals("")) {
+                    var mShopOrder5 = ShopOrder(1, mText, Constants.GOOD7, 8, false)
+                    if (mRecyclerView.adapter == null) {
+                        mShopOrderList.add(mShopOrder5)
+                        isVisible()
+                    } else {
+                        mAdapter.addData(mShopOrder5)
+                    }
 
                 }
             }

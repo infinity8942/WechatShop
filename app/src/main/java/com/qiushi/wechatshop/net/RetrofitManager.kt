@@ -58,8 +58,8 @@ object RetrofitManager {
                     .header("version", PhoneInfo.getInstance().version)
                     .header("channel", PhoneInfo.getInstance().channel)
                     .header("device", "android")
-//                    .header("client-id", user.getClient())//TODO
-//                    .header("access-token", user.getToken())
+                    .header("client-id", Constants.CILIENT)//TODO
+                    .header("access-token", Constants.TOKEN)
                     .method(originalRequest.method(), originalRequest.body())
             val request = requestBuilder.build()
             chain.proceed(request)

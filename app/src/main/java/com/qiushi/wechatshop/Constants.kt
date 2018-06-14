@@ -22,11 +22,11 @@ object Constants {
     const val GOOD7 = "http://pic150.nipic.com/file/20171227/21540071_114434490000_2.jpg"
 
     const val IS_DEVELOPER = true //TODO 开发模式开关,发版时置为false
-    const val DEBUG = false //是否测试环境
+    const val DEBUG = true //是否测试环境
 
     @JvmField
-//    val HOST = if (DEBUG) "http://top6000.qiushizixun.com/" else "http://wap.top6000.com/"
-    val HOST = "http://api.tianapi.com/"//TODO test
+    val HOST = if (DEBUG) "http://wechatshop.qiushizixun.com/" else "http://wap.top6000.com/MobileApp/"
+//    val HOST = if (DEBUG)"http://wechatshop.qiushizixun.com"else "http://api.tianapi.com/"//TODO test
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"
     @JvmField
     val OssCallback = HOST + "OSS/app_response_call_back" //"http://192.168.1.82:81"
@@ -49,6 +49,8 @@ object Constants {
 
     const val ADDIMG_RESUALT=1003 //foot添加产品相册回调
     const val ADDIMG_ITEM_REQUEST=1004 //ITEM添加产品相册回调
+    const val EDIT_TEXT_REQUEST=1005 //编辑文本的回调
 
-
+    const val TOKEN="2813c9014ff9581978e3f616e09b1d79"
+    const val CILIENT="9939e296d7e891ef87a2fa7f521b874a"
 }
