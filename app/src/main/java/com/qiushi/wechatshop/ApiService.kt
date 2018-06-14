@@ -5,7 +5,6 @@ import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.util.oss.UploadFile
 import io.reactivex.Observable
-import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -19,13 +18,6 @@ interface ApiService {
     fun shopList(): Observable<BaseResponse<ArrayList<Shop>>>
 
     /**
-     * 关注新店铺
-     */
-    @FormUrlEncoded
-    @POST("MobileApp/user/add_shop")
-    fun addShop(@Field("invite_code") code: String): Observable<BaseResponse<Shop>>
-
-    /**
      * 用户关注的店铺详情
      */
     @FormUrlEncoded
@@ -33,12 +25,19 @@ interface ApiService {
     fun shopDetail(@Field("shop_id") page: Long): Observable<BaseResponse<Shop>>
 
     /**
+     * 关注新店铺
+     */
+    @FormUrlEncoded
+    @POST("user/add_shop")
+    fun addShop(@Field("invite_code") code: String): Observable<BaseResponse<Shop>>
+
+    /**
      * 订单列表
      */
     @POST("shop/order")
     fun orderList(): Observable<BaseResponse<ArrayList<Order>>>
 
-
+    //==============================================================================================
     /**
      * 置顶 取消置顶
      */
@@ -49,16 +48,13 @@ interface ApiService {
     /**
      * 上架下架
      */
-
     @FormUrlEncoded
     @POST("Goods/goods_enable")
     fun upShop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
 
-
     @FormUrlEncoded
     @POST("Goods/goods_del")
     fun deleteShop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
-
 
     @FormUrlEncoded
     @POST("Oss/get_token")

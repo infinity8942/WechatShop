@@ -18,11 +18,11 @@ import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.net.BaseResponse
-
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.moments.MomentsActivity
 import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
@@ -236,6 +236,7 @@ class ManageFragment : BaseFragment() {
             R.id.item_name -> {
                 when (data.id) {
                     2 -> startActivity(Intent(activity, OrderActivity::class.java))
+                    3 -> startActivity(Intent(activity, MomentsActivity::class.java))
                     6 -> {
                         ManagerMoreActivity.startManagerMoreActivity(this.context!!)
                         if (mItemPosition != -1) {

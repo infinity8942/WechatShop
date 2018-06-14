@@ -14,7 +14,9 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
+import com.previewlibrary.ZoomMediaLoader;
 import com.qiushi.wechatshop.ui.MainActivity;
+import com.qiushi.wechatshop.util.NineImageLoader;
 import com.qiushi.wechatshop.util.Utils;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -163,6 +165,9 @@ public class WAppLike extends DefaultApplicationLike {
                 return new ClassicsFooter(context).setDrawableSize(20);
             }
         });
+
+        //
+        ZoomMediaLoader.getInstance().init(new NineImageLoader());
     }
 
     @Override

@@ -20,7 +20,6 @@ import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_shop_edit.*
 
 /**
@@ -30,8 +29,6 @@ class ShopEditActivity : Activity(), View.OnClickListener {
 
     private var isEdit = false
     private val list = ArrayList<Shop>()
-
-    private lateinit var disposable: Disposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,7 +125,7 @@ class ShopEditActivity : Activity(), View.OnClickListener {
             ToastUtils.showWarning("请填写邀请码")
             return
         }
-        disposable = RetrofitManager.service.addShop(code)
+        val disposable = RetrofitManager.service.addShop(code)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
@@ -139,10 +136,5 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                         ToastUtils.showError(error.msg)
                     }
                 })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        disposable.dispose()
     }
 }
