@@ -46,6 +46,8 @@ class ShopListFragment : BaseFragment() {
 
         tabList.add("我的店")
         tabList.add("店铺1")
+        shopList.add(Shop("我的店"))
+        shopList.add(Shop("店铺1"))
         fragments.add(ShopFragment.getInstance(1))
         fragments.add(ShopFragment.getInstance(2))
         viewpager.adapter = BaseFragmentAdapter(childFragmentManager, fragments, tabList)
