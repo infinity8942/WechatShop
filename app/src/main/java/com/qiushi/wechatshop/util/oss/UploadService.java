@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
@@ -108,6 +109,7 @@ public class UploadService extends IntentService implements OSSProgressCallback<
         String callback = putObjectResult.getServerCallbackReturnBody();
         BaseResponse<Long> top = NetConfig.Companion.getInstance().getGson().fromJson(callback, new TypeToken<BaseResponse<Long>>() {
         }.getType());
+        Log.d("tag","file"+file.getAbsolutePath());
         UploadManager.getInstance().onSuccess(file, top.getData());
     }
 

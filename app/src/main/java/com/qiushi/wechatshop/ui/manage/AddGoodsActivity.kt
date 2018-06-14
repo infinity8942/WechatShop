@@ -8,6 +8,7 @@ import android.os.Environment
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.qiushi.wechatshop.Constants
@@ -51,18 +52,6 @@ class AddGoodsActivity : BaseActivity() {
     override fun init() {
         StatusBarUtil.immersive(this!!)
         StatusBarUtil.setPaddingSmart(this!!, toolbar)
-//        var mShopOrder1 = ShopOrder(0, "测试老虎7", Constants.GOOD7, 8, false)
-//        var mShopOrder2 = ShopOrder(1, "测试老虎7", Constants.GOOD7, 8, false)
-//        var mShopOrder3 = ShopOrder(1, "测试老虎7", Constants.GOOD7, 8, false)
-//        var mShopOrder4 = ShopOrder(8, "测试老虎7", Constants.GOOD7, 8, false)
-//        var mShopOrder5 = ShopOrder(8, "测试老虎7", Constants.GOOD7, 8, false)
-//        mShopOrderList.add(mShopOrder1)
-//        mShopOrderList.add(mShopOrder2)
-//        mShopOrderList.add(mShopOrder3)
-//        mShopOrderList.add(mShopOrder4)
-//        mShopOrderList.add(mShopOrder5)
-
-//      UploadManager.getInstance().add()
         UploadManager.getInstance().register(uploadListener)
         mRecyclerView.layoutManager = linearLayoutManager
 
@@ -173,9 +162,8 @@ class AddGoodsActivity : BaseActivity() {
                     var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
                         //去上传
-                        var mShopOrder5 = ShopOrder(0, "测试老虎5", selected[0], 8, false)
-//                    mShopOrderList.add(mShopOrder5)
-                        mAdapter.addData(mShopOrder5)
+                        var mFile = File(selected[0])
+                        UploadManager.getInstance().add(mFile)
                     }
                 }
             }
@@ -193,7 +181,7 @@ class AddGoodsActivity : BaseActivity() {
                 var mText = data?.getStringExtra("text")
                 if (mText != null && !mText.equals("")) {
                     var mShopOrder5 = ShopOrder(1, mText, Constants.GOOD7, 8, false)
-                    if (mRecyclerView.adapter == null) {
+                    if (mShopOrderList == null||mShopOrderList.size==0) {
                         mShopOrderList.add(mShopOrder5)
                         isVisible()
                     } else {
@@ -218,11 +206,15 @@ class AddGoodsActivity : BaseActivity() {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            ToastUtils.showError("成" + file?.path)
             if (file != null && file.path != null) {
-                var mShopOrder5 = ShopOrder(0, "测试老虎7", file.path, 8, false)
-                mShopOrderList.add(mShopOrder5)
-                isVisible()
+                if (mShopOrderList == null||mShopOrderList.size==0) {
+                    var mShopOrder5 = ShopOrder(0, "老虎", "file://"+file.path, 8, false)
+                    mShopOrderList.add(mShopOrder5)
+                    isVisible()
+                } else {
+                    var mShopOrder5 = ShopOrder(0, "老虎", "file://"+file.path, 8, false)
+                    mAdapter.addData(mShopOrder5)
+                }
             }
         }
     }

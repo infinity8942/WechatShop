@@ -7,7 +7,7 @@ import com.qiushi.wechatshop.model.Function
 
 class GrideAdapter(data: List<Function>) : BaseQuickAdapter<Function, BaseViewHolder>(R.layout.manager_item_gride, data) {
     override fun convert(helper: BaseViewHolder, item: Function?) {
-        helper.setText(R.id.item_name, item?.name)
+        helper.setText(R.id.item_name, item?.menu_name)
         helper.addOnClickListener(R.id.item_name)
     }
 }

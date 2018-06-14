@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.chad.library.adapter.base.entity.MultiItemEntity
 
 class MyShop(var id: Int, var name: String, var cash_flow: Float, var cash_forzen: Float,
-             var cash_all: Float, var todo: Int, var function: ArrayList<Function>, var goods: ArrayList<ShopOrder>) : MultiItemEntity {
+             var cash_all: Float, var todo: Int, var menu_list: ArrayList<Function>, var goods: ArrayList<ShopOrder>) : MultiItemEntity {
     override fun getItemType(): Int {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -14,7 +14,7 @@ class MyShop(var id: Int, var name: String, var cash_flow: Float, var cash_forze
     // cash_forzen:冻结金额
     //cash_all:资产总额
 
-    constructor(function: ArrayList<Function>, goods: ArrayList<ShopOrder>) : this(
+    constructor(menu_list: ArrayList<Function>, goods: ArrayList<ShopOrder>) : this(
 
             1,
             "测试名字",
@@ -22,7 +22,7 @@ class MyShop(var id: Int, var name: String, var cash_flow: Float, var cash_forze
             1000.0f,
             1234.0f,
             4,
-            function, goods
+            menu_list, goods
     )
 
 

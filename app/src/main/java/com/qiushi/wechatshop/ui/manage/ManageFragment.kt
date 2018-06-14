@@ -16,6 +16,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.MyShop
+import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -31,11 +32,13 @@ import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.manager_item_icon.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 我的店Fragment
  */
 class ManageFragment : BaseFragment() {
+
 
     private var mShop: MyShop? = null
     private var mFunctionList = ArrayList<Function>()
@@ -56,7 +59,7 @@ class ManageFragment : BaseFragment() {
      * 整体recyclerview adapter
      */
     private val mAdapter by lazy {
-        ManagerAdapter(mShopOrderList)
+        ManagerAdapter(ArrayList())
     }
     /**
      * 整体recyclerview manager
@@ -74,7 +77,7 @@ class ManageFragment : BaseFragment() {
 
 
     private val mGrideAdapter by lazy {
-        GrideAdapter(mFunctionList)
+        GrideAdapter(ArrayList())
     }
 
     private var page = 1
@@ -88,12 +91,12 @@ class ManageFragment : BaseFragment() {
         color1 = ContextCompat.getColor(context!!, R.color.translate)
         color2 = ContextCompat.getColor(context!!, R.color.colorPrimaryDark)
         //RecyclerView
-        val mFunction1 = Function(1, "待办事项")
-        val mFunction2 = Function(2, "订单管理")
-        val mFunction3 = Function(3, "素材管理")
-        val mFunction4 = Function(4, "知识库")
-        val mFunction5 = Function(5, "用户管理")
-        val mFunction6 = Function(6, "更多")
+        val mFunction1 = Function(1, "待办事项", "", "")
+        val mFunction2 = Function(2, "订单管理", "", "")
+        val mFunction3 = Function(3, "素材管理", "", "")
+        val mFunction4 = Function(4, "知识库", "", "")
+        val mFunction5 = Function(5, "用户管理", "", "")
+        val mFunction6 = Function(6, "更多", "", "")
         val mShopOrder = ShopOrder(1, "老虎商店", Constants.GOOD0, 1, false)
         val mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 89, false)
         val mShopOrder2 = ShopOrder(3, "测试老虎2", Constants.GOOD2, 89, false)
@@ -135,7 +138,7 @@ class ManageFragment : BaseFragment() {
         mRefreshLayout.setOnRefreshListener {
             //            isRefresh = true
             page = 1
-            lazyLoad()
+
         }
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
     }
@@ -160,7 +163,34 @@ class ManageFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+        val subscribeWith: BaseObserver<Shop> = RetrofitManager.service.getMyshop()
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<Shop>() {
+                    override fun onHandleSuccess(t: Shop) {
+                        if (t?.menu_list != null && t.menu_list.size > 0) {
+                            mGrideAdapter.setNewData(t.menu_list)
+                        }
+                        if (page == 1) {
+                            if (t != null) {
+                                if (t.goods != null && t.goods.size != 0) {
+                                    mAdapter.setNewData(t.goods)
+                                }
+                            }
+                        } else {
+                            if (t != null) {
+                                if (t.goods != null && t.goods.size != 0) {
+                                    mAdapter.addData(t.goods)
+                                }
+                            }
+                        }
 
+                    }
+
+                    override fun onHandleError(error: Error) {
+
+                    }
+                })
+        addSubscription(subscribeWith)
     }
 
     companion object {
@@ -234,7 +264,7 @@ class ManageFragment : BaseFragment() {
         val data = adapter.getItem(position) as Function
         when (view.id) {
             R.id.item_name -> {
-                when (data.id) {
+                when (data.menu_id) {
                     2 -> startActivity(Intent(activity, OrderActivity::class.java))
                     3 -> startActivity(Intent(activity, MomentsActivity::class.java))
                     6 -> {

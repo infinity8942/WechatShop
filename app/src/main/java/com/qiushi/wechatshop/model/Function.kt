@@ -1,6 +1,6 @@
 package com.qiushi.wechatshop.model
 
-class Function(var id: Int,var name: String) {
+class Function(var menu_id: Int, var menu_name: String, var icon_url: String, var menu_url: String) {
     /**
      * "id": 1,
     "name": "待办事项"
