@@ -31,5 +31,7 @@ class OrderAdapter : BaseQuickAdapter<Order, BaseViewHolder>(R.layout.item_order
         val recyclerView: RecyclerView = helper.getView(R.id.mRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(mContext)
         recyclerView.adapter = OrderGoodsAdapter(list)
+
+        helper.addOnClickListener(R.id.layout_shop).addOnLongClickListener(R.id.layout_shop)
     }
 }
