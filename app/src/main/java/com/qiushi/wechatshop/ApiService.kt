@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop
 
+import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.BaseResponse
@@ -59,4 +60,8 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Oss/get_token")
     fun gUploadFile(@Field("md5") md5: String): Observable<BaseResponse<UploadFile>>
+
+
+    @POST("User/my_shop")
+    fun getMyshop(): Observable<BaseResponse<MyShop>>
 }

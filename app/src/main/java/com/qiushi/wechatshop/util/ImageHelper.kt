@@ -94,12 +94,22 @@ object ImageHelper {
     fun loadImageWithCorner(ctx: Context, view: ImageView, url: String, width: Int,
                             height: Int, corner: RoundedCornersTransformation) {
         if (url.isNotEmpty()) {
-            GlideApp.with(ctx).load(MyGlideUrl(url))
-                    .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
-                    .error(PLACEHOLDER)
-                    .transforms(CenterCrop(), corner)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(view)
+            if (url.contains("file://")){
+                GlideApp.with(ctx).load(url)
+                        .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
+                        .error(PLACEHOLDER)
+                        .transforms(CenterCrop(), corner)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(view)
+            }else{
+                GlideApp.with(ctx).load(MyGlideUrl(url))
+                        .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
+                        .error(PLACEHOLDER)
+                        .transforms(CenterCrop(), corner)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(view)
+            }
+
         } else {
             GlideApp.with(ctx).load(PLACEHOLDER)
                     .dontAnimate().into(view)

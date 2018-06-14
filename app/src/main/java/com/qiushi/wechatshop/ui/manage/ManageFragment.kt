@@ -37,6 +37,7 @@ import java.util.*
  */
 class ManageFragment : BaseFragment() {
 
+
     private var mShop: MyShop? = null
     private var mFunctionList = ArrayList<Function>()
     private var mShopOrderList = ArrayList<ShopOrder>()
@@ -135,7 +136,7 @@ class ManageFragment : BaseFragment() {
         mRefreshLayout.setOnRefreshListener {
             //            isRefresh = true
             page = 1
-            lazyLoad()
+
         }
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
     }
@@ -160,7 +161,18 @@ class ManageFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+        val subscribeWith: BaseObserver<MyShop> = RetrofitManager.service.getMyshop()
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<MyShop>() {
+                    override fun onHandleSuccess(t: MyShop) {
 
+                    }
+
+                    override fun onHandleError(error: Error) {
+
+                    }
+                })
+        addSubscription(subscribeWith)
     }
 
     companion object {
