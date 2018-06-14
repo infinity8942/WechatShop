@@ -2,8 +2,6 @@ package com.qiushi.wechatshop.ui.shop
 
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -11,7 +9,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
-import com.qiushi.wechatshop.model.Coupon
 import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -23,7 +20,6 @@ import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.GridSpaceItemDecoration
-import com.qiushi.wechatshop.view.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_shop.*
 
 /**
@@ -32,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_shop.*
 class ShopFragment : BaseFragment() {
 
     private lateinit var mAdapter: ShopAdapter
-    private lateinit var mCouponAdapter: ShopCouponAdapter
+    //    private lateinit var mCouponAdapter: ShopCouponAdapter
     private lateinit var headerView: View
     private lateinit var notDataView: View
     private lateinit var errorView: View
@@ -75,16 +71,16 @@ class ShopFragment : BaseFragment() {
         headerView.findViewById<TextView>(R.id.name).paint.isFakeBoldText = true
         headerView.findViewById<TextView>(R.id.des).text = "充满爱意的甜点更加美味"
 
-        val listCoupon = ArrayList<Coupon>()
-        for (i in 1..5) {
-            listCoupon.add(Coupon(50))
-        }
-        headerView.findViewById<RecyclerView>(R.id.rv_coupon).layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        mCouponAdapter = ShopCouponAdapter()
-        mCouponAdapter.openLoadAnimation()
-        headerView.findViewById<RecyclerView>(R.id.rv_coupon).addItemDecoration(SpaceItemDecoration(DensityUtils.dp2px(13.toFloat()), 0))
-        headerView.findViewById<RecyclerView>(R.id.rv_coupon).adapter = mCouponAdapter
-        mCouponAdapter.setNewData(listCoupon)
+//        val listCoupon = ArrayList<Coupon>()
+//        for (i in 1..5) {
+//            listCoupon.add(Coupon(50))
+//        }
+//        headerView.findViewById<RecyclerView>(R.id.rv_coupon).layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+//        mCouponAdapter = ShopCouponAdapter()
+//        mCouponAdapter.openLoadAnimation()
+//        headerView.findViewById<RecyclerView>(R.id.rv_coupon).addItemDecoration(SpaceItemDecoration(DensityUtils.dp2px(13.toFloat()), 0))
+//        headerView.findViewById<RecyclerView>(R.id.rv_coupon).adapter = mCouponAdapter
+//        mCouponAdapter.setNewData(listCoupon)
 
         val list = ArrayList<Goods>()
         for (i in 1..10) {

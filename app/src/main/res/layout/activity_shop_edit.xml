@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.shop.ShopEditActivity">
 
     <RelativeLayout
@@ -11,12 +12,100 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical"
+            android:text="我的浏览店铺"
+            android:textColor="@color/black_90"
+            android:textSize="14sp" />
+
         <ImageView
             android:id="@+id/btn_close"
             android:layout_width="@dimen/padding_tab_layout_top"
             android:layout_height="@dimen/padding_tab_layout_top"
             android:layout_alignParentRight="true"
             android:scaleType="centerInside"
-            android:src="@mipmap/ic_more" />
+            android:src="@mipmap/ic_close" />
+
+        <TextView
+            android:id="@+id/edit"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/btn_close"
+            android:gravity="center_vertical"
+            android:text="编辑"
+            android:textColor="@color/coupon_yellow"
+            android:textSize="14sp" />
     </RelativeLayout>
-</RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_90"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:text="我浏览的店铺"
+            android:textColor="@color/color_item_text"
+            android:textSize="14sp" />
+
+        <com.heaven7.android.dragflowlayout.DragFlowLayout
+            android:id="@+id/drag_flowLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
+            android:text="输入邀请码添加新的店铺"
+            android:textColor="@color/color_item_text"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/et"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/bg_input_invite_code"
+            android:gravity="center"
+            android:hint="输入邀请码"
+            android:textColor="@color/color_item_text"
+            android:textColorHint="@color/color_more"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/commit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/bg_orange_commit"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>

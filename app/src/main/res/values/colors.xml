@@ -30,6 +30,7 @@
     <color name="black_80">#CC000000</color>
     <color name="black_90">#E6000000</color>
     <color name="white_80">#CCFFFFFF</color>
+    <color name="white_90">#E6FFFFFF</color>
     <color name="coupon_yellow">#FB983C</color>
     <color name="bg_toast">#99000000</color>
 

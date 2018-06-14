@@ -17,6 +17,13 @@ interface ApiService {
     fun shopList(): Observable<BaseResponse<ArrayList<Shop>>>
 
     /**
+     * 关注新店铺
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/user/add_shop")
+    fun addShop(@Field("invite_code") code: String): Observable<BaseResponse<Shop>>
+
+    /**
      * 用户关注的店铺详情
      */
     @FormUrlEncoded
