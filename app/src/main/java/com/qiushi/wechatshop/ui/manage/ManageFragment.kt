@@ -287,6 +287,7 @@ class ManageFragment : BaseFragment() {
      * 置顶 下架 删除
      */
     private fun setTop(goods_id: Long, type: Int) {
+
         val observable: Observable<BaseResponse<Boolean>> = when (type) {
             TYPE_ZD -> RetrofitManager.service.setTop(goods_id)
             TYPE_XJ -> RetrofitManager.service.upShop(goods_id)

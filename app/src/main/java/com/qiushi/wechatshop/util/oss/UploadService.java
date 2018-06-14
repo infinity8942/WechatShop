@@ -16,12 +16,15 @@ import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
+import com.google.gson.reflect.TypeToken;
 import com.qiushi.wechatshop.Constants;
 import com.qiushi.wechatshop.WAppContext;
+import com.qiushi.wechatshop.net.BaseResponse;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+
 
 public class UploadService extends IntentService implements OSSProgressCallback<PutObjectRequest>, OSSCompletedCallback<PutObjectRequest, PutObjectResult> {
 
@@ -100,49 +103,49 @@ public class UploadService extends IntentService implements OSSProgressCallback<
 
     @Override
     public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-//        next();
-//        File file = new File(putObjectRequest.getUploadFilePath());
-//        String callback = putObjectResult.getServerCallbackReturnBody();
-//        TopResponse<Long> top = NetConfig.getInstance().getGson().fromJson(callback, new TypeToken<TopResponse<Long>>() {
-//        }.getType());
-//        UploadManager.getInstance().onSuccess(file, top.getData());
+        next();
+        File file = new File(putObjectRequest.getUploadFilePath());
+        String callback = putObjectResult.getServerCallbackReturnBody();
+        BaseResponse<Long> top = NetConfig.Companion.getInstance().getGson().fromJson(callback, new TypeToken<BaseResponse<Long>>() {
+        }.getType());
+        UploadManager.getInstance().onSuccess(file, top.getData());
     }
 
     @Override
     public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
-//        next();
-//        File file = new File(putObjectRequest.getUploadFilePath());
-//        String info = "";
-//        if (e != null) {
-//            info = e.getMessage();
-//            e.printStackTrace();
-//        }
-//        if (e1 != null) {
-//            info = info + e1.getMessage();
-//            e1.printStackTrace();
-//        }
-//        Error error = new Error(2000, info);
-//        UploadManager.getInstance().onFailure(file, error);
+        next();
+        File file = new File(putObjectRequest.getUploadFilePath());
+        String info = "";
+        if (e != null) {
+            info = e.getMessage();
+            e.printStackTrace();
+        }
+        if (e1 != null) {
+            info = info + e1.getMessage();
+            e1.printStackTrace();
+        }
+        Error error = new Error(2000, info);
+        UploadManager.getInstance().onFailure(file, error);
     }
 
     private void uploadFile(final File file) {
-//        UploadFile.create(file, new Callback.SimpleCallback<UploadFile>() {
-//            @Override
-//            public void onSuccess(UploadFile uploadFile) {
-//                if (uploadFile.getOssId() != 0) {
-//                    UploadManager.getInstance().onSuccess(uploadFile.getFile(), uploadFile.getOssId());
-//                    next();
-//                } else {
-//                    upFileToOss(uploadFile);
-//                }
-//            }
-//
-//            @Override
-//            public void onFail(Error error) {
-//                UploadManager.getInstance().onFailure(file, error);
-//                next();
-//            }
-//        });
+        UploadFile.create(file, new Callback.SimpleCallback<UploadFile>() {
+            @Override
+            public void onSuccess(UploadFile uploadFile) {
+                if (uploadFile.getOssId() != 0) {
+                    UploadManager.getInstance().onSuccess(uploadFile.getFile(), uploadFile.getOssId());
+                    next();
+                } else {
+                    upFileToOss(uploadFile);
+                }
+            }
+
+            @Override
+            public void onFail(Error error) {
+                UploadManager.getInstance().onFailure(file, error);
+                next();
+            }
+        });
     }
 
     private void upFileToOss(UploadFile uploadFile) {

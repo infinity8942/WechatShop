@@ -14,23 +14,26 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.ShopOrder
-import com.qiushi.wechatshop.rx.SchedulerUtils
+
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.qiushi.wechatshop.util.oss.OnUploadListener
+import com.qiushi.wechatshop.util.oss.UploadManager
+
 import kotlinx.android.synthetic.main.activity_add_goods.*
 import kotlinx.android.synthetic.main.addgoods_header.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
 import java.io.File
+
 import java.util.*
 
 
 class AddGoodsActivity : BaseActivity() {
     override fun layoutId(): Int = R.layout.activity_add_goods
     private var mShopOrderList = ArrayList<ShopOrder>()
+
     /**
      * 整体recyclerview adapter
      */
@@ -59,10 +62,13 @@ class AddGoodsActivity : BaseActivity() {
 //        mShopOrderList.add(mShopOrder4)
 //        mShopOrderList.add(mShopOrder5)
 
+//      UploadManager.getInstance().add()
+        UploadManager.getInstance().register(uploadListener)
         mRecyclerView.layoutManager = linearLayoutManager
 
         isVisible()
     }
+
 
     private fun isVisible() {
         if (mShopOrderList != null && mShopOrderList.size > 0) {
@@ -79,6 +85,7 @@ class AddGoodsActivity : BaseActivity() {
             fl_addlayout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.GONE
             item_add_img.setOnClickListener(onclicklistener)
+            item_add_text.setOnClickListener(onclicklistener)
         }
     }
 
@@ -105,6 +112,9 @@ class AddGoodsActivity : BaseActivity() {
             }
             R.id.item_add_img -> {
                 choicePhotoWrapper(1, Constants.ADDIMG_ITEM_REQUEST)
+            }
+            R.id.item_add_text -> {
+                //跳转编辑文本 Activity
             }
         }
     }
@@ -158,6 +168,7 @@ class AddGoodsActivity : BaseActivity() {
             Constants.ADDIMG_RESUALT -> {
                 var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                 if (selected != null && selected.size > 0) {
+                    //去上传
                     var mShopOrder5 = ShopOrder(0, "测试老虎5", selected[0], 8, false)
 //                    mShopOrderList.add(mShopOrder5)
                     mAdapter.addData(mShopOrder5)
@@ -166,11 +177,35 @@ class AddGoodsActivity : BaseActivity() {
             Constants.ADDIMG_ITEM_REQUEST -> {
                 var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                 if (selected != null && selected.size > 0) {
-                    var mShopOrder5 = ShopOrder(0, "测试老虎7", selected[0], 8, false)
-                    mShopOrderList.add(mShopOrder5)
-                    isVisible()
+                    //去上传
+                    var mFile = File(selected[0])
+                    UploadManager.getInstance().add(mFile)
+
                 }
             }
         }
     }
+
+    /**
+     * 上传图片的 监听
+     */
+    private val uploadListener = object : OnUploadListener {
+        override fun onFailure(file: File?, error: com.qiushi.wechatshop.util.oss.Error?) {
+            ToastUtils.showError("失败1")
+        }
+
+        override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
+            ToastUtils.showError("失败" + currentSize / totalSize)
+        }
+
+        override fun onSuccess(file: File?, id: Long) {
+            ToastUtils.showError("成" + file?.path)
+            if (file != null && file.path != null) {
+                var mShopOrder5 = ShopOrder(0, "测试老虎7", file.path, 8, false)
+                mShopOrderList.add(mShopOrder5)
+                isVisible()
+            }
+        }
+    }
 }
+

@@ -110,7 +110,7 @@ public class UploadManager implements OnUploadListener {
     }
 
     @Override
-    public void onFailure(File file, Error error) {
+    public void onFailure(File file,Error error) {
         for (OnUploadListener listener : listeners) {
             listener.onFailure(file, error);
         }
