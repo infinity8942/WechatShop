@@ -1,6 +1,7 @@
 package com.qiushi.wechatshop.ui.user
 
 import android.Manifest
+import android.content.Intent
 import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
@@ -55,7 +56,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
-            R.id.layout_info -> {
+            R.id.layout_info -> {//我的资料
 
             }
             R.id.layout_cache -> {
@@ -63,9 +64,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 ToastUtils.showMessage("已清理")
                 cache.text = "0b"
             }
-            R.id.layout_feedback -> {
-
-            }
+            R.id.layout_feedback -> startActivity(Intent(this@SettingActivity, FeedbackActivity::class.java))
             R.id.layout_about_us -> {
 
             }
