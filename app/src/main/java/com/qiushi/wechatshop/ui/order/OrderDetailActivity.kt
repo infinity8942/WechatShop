@@ -26,6 +26,7 @@ class OrderDetailActivity : BaseActivity() {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
+        back.setOnClickListener(this)
 
         //TODO test
         ImageHelper.loadAvatar(this, logo, Constants.AVATAR, 24)

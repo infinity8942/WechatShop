@@ -1,6 +1,5 @@
 package com.qiushi.wechatshop
 
-import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.BaseResponse

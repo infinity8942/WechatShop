@@ -31,8 +31,6 @@ import com.qiushi.wechatshop.util.ToastUtils
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.manager_item_icon.view.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * 我的店Fragment
@@ -265,6 +263,7 @@ class ManageFragment : BaseFragment() {
         when (view.id) {
             R.id.item_name -> {
                 when (data.menu_id) {
+                    1 -> startActivity(Intent(activity, TodoActivity::class.java))
                     2 -> startActivity(Intent(activity, OrderActivity::class.java))
                     3 -> startActivity(Intent(activity, MomentsActivity::class.java))
                     6 -> {

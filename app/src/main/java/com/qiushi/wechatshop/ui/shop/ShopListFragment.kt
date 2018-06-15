@@ -42,8 +42,6 @@ class ShopListFragment : BaseFragment() {
 
 
         //TODO test
-        ImageHelper.loadImage(context, cover, "https://static.chiphell.com/portal/201803/08/190549vw5xfonuw4wzfuxu.jpg")
-
         tabList.add("我的店")
         tabList.add("店铺1")
         shopList.add(Shop("我的店"))
