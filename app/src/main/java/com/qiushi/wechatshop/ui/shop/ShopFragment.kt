@@ -72,7 +72,7 @@ class ShopFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        val disposable = RetrofitManager.service.shopDetail(Constants.SHOP_ID)//TODO shopID
+        val disposable = RetrofitManager.service.shopDetail(shopID)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
@@ -116,7 +116,7 @@ class ShopFragment : BaseFragment() {
         headerView.findViewById<TextView>(R.id.des).text = shop.des
 
         //优惠券
-        //        val listCoupon = ArrayList<Coupon>()
+//        val listCoupon = ArrayList<Coupon>()
 //        for (i in 1..5) {
 //            listCoupon.add(Coupon(50))
 //        }

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".ui.login.BindActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/padding_tab_layout_top"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="绑定手机号"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_logo" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="我的店"
+        android:textColor="@color/color_item_text"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/layout_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp">
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="请输入手机号"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:textColorHint="@color/color_more"
+            android:textSize="14sp" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/phone"
+            android:background="@color/line" />
+
+        <TextView
+            android:id="@+id/auth"
+            android:layout_width="98dp"
+            android:layout_height="32dp"
+            android:layout_below="@+id/line1"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_orange_commit"
+            android:gravity="center"
+            android:text="获取验证码"
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@id/line1"
+            android:layout_toLeftOf="@id/auth"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="请输入验证码"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textColorHint="@color/color_more"
+            android:textSize="14sp" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/password"
+            android:background="@color/line" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/bind"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/layout_input"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="36dp"
+        android:background="@drawable/bg_orange_commit"
+        android:gravity="center"
+        android:text="绑定"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+</RelativeLayout>

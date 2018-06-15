@@ -55,14 +55,14 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                 val tv = itemView.findViewById(R.id.name) as TextView
                 tv.text = data.name
 
-                if (data.name == "我的店") {
+                if (data.is_owner) {
                     itemView.findViewById<RelativeLayout>(R.id.bg).setBackgroundResource(0)
                 } else {
                     itemView.findViewById<RelativeLayout>(R.id.bg).setBackgroundResource(R.drawable.bg_drag_item)
                 }
 
                 itemView.findViewById<ImageView>(R.id.close).visibility =
-                        if (dragState != DragFlowLayout.DRAG_STATE_IDLE && data.name != "我的店")
+                        if (dragState != DragFlowLayout.DRAG_STATE_IDLE && !data.is_owner)
                             View.VISIBLE
                         else
                             View.GONE
@@ -89,6 +89,7 @@ class ShopEditActivity : Activity(), View.OnClickListener {
             if (dragState == DragFlowLayout.DRAG_STATE_DRAGGING) {
                 edit.text = "完成"
                 isEdit = true
+                UIUtil.hideKeyboard(this@ShopEditActivity)
             }
         }
 //        drag_flowLayout.addViewObserver(object : IViewObserver {

@@ -1,18 +1,24 @@
-package com.qiushi.wechatshop.ui
+package com.qiushi.wechatshop.ui.login
 
 import android.Manifest
 import android.content.Intent
 import android.support.v4.content.res.ResourcesCompat
+import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.web.WebActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
 
-class LoginActivity : BaseActivity() {
+/**
+ * 微信登录
+ */
+class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun layoutId(): Int {
         return R.layout.activity_login
@@ -24,13 +30,27 @@ class LoginActivity : BaseActivity() {
 
         getPermission()
 
-        login.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
+        login.setOnClickListener(this)
+        phone.setOnClickListener(this)
+        protocol.setOnClickListener(this)
     }
 
     override fun getData() {
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.login -> loginWx()
+            R.id.phone -> {//手机号登录
+                startActivity(Intent(this, PhoneActivity::class.java))
+            }
+            R.id.protocol -> {//H5协议
+                val intent = Intent(this, WebActivity::class.java)
+                intent.putExtra(WebActivity.PARAM_TITLE, "协议")
+                intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
+                startActivity(intent)
+            }
+        }
     }
 
     private fun getPermission() {
@@ -55,5 +75,10 @@ class LoginActivity : BaseActivity() {
                     override fun onFinish() {
                     }
                 })
+    }
+
+    private fun loginWx() {//TODO 微信授权
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

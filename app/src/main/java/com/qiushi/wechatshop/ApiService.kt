@@ -30,14 +30,14 @@ interface ApiService {
      * 关注新店铺
      */
     @FormUrlEncoded
-    @POST("user/add_shop")
+    @POST("User/add_shop")
     fun addShop(@Field("invite_code") code: String): Observable<BaseResponse<Shop>>
 
     /**
      * 修改关注的店铺
      */
     @FormUrlEncoded
-    @POST("user/edit_shop")
+    @POST("User/edit_shop")
     fun editShop(@Field("shop_ids") code: String): Observable<BaseResponse<Boolean>>
 
     /**
