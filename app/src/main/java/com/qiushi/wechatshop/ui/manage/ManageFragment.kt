@@ -8,7 +8,10 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
@@ -21,6 +24,7 @@ import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.moments.MomentsActivity
@@ -30,7 +34,9 @@ import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_manage.*
+
 import kotlinx.android.synthetic.main.manager_item_icon.view.*
+import kotlin.collections.ArrayList
 
 /**
  * 我的店Fragment
@@ -53,6 +59,9 @@ class ManageFragment : BaseFragment() {
     private val TYPE_DELETE = 2//删除
     private val TYPE_XJ = 3//下架
 
+    private lateinit var headerView: View
+    private lateinit var notDataView: View
+    private lateinit var errorView: View
     /**
      * 整体recyclerview adapter
      */
@@ -89,54 +98,31 @@ class ManageFragment : BaseFragment() {
         color1 = ContextCompat.getColor(context!!, R.color.translate)
         color2 = ContextCompat.getColor(context!!, R.color.colorPrimaryDark)
         //RecyclerView
-        val mFunction1 = Function(1, "待办事项", "", "")
-        val mFunction2 = Function(2, "订单管理", "", "")
-        val mFunction3 = Function(3, "素材管理", "", "")
-        val mFunction4 = Function(4, "知识库", "", "")
-        val mFunction5 = Function(5, "用户管理", "", "")
-        val mFunction6 = Function(6, "更多", "", "")
-        val mShopOrder = ShopOrder(1, "老虎商店", Constants.GOOD0, 1, false)
-        val mShopOrder1 = ShopOrder(2, "测试老虎1", Constants.GOOD1, 89, false)
-        val mShopOrder2 = ShopOrder(3, "测试老虎2", Constants.GOOD2, 89, false)
-        val mShopOrder3 = ShopOrder(4, "测试老虎3", Constants.GOOD3, 89, false)
-        val mShopOrder4 = ShopOrder(5, "测试老虎4", Constants.GOOD4, 89, false)
-        val mShopOrder5 = ShopOrder(6, "测试老虎5", Constants.GOOD5, 89, false)
-        val mShopOrder6 = ShopOrder(7, "测试老虎6", Constants.GOOD6, 89, false)
-        val mShopOrder7 = ShopOrder(8, "测试老虎7", Constants.GOOD7, 89, false)
 
-        mShopOrderList.add(mShopOrder)
-        mShopOrderList.add(mShopOrder1)
-        mShopOrderList.add(mShopOrder2)
-        mShopOrderList.add(mShopOrder3)
-        mShopOrderList.add(mShopOrder4)
-        mShopOrderList.add(mShopOrder5)
-        mShopOrderList.add(mShopOrder6)
-        mShopOrderList.add(mShopOrder7)
+        notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
+        notDataView.setOnClickListener { lazyLoad() }
+        errorView = layoutInflater.inflate(R.layout.error_view, mRecyclerView.parent as ViewGroup, false)
+        errorView.setOnClickListener { lazyLoad() }
 
-        mFunctionList.add(mFunction1)
-        mFunctionList.add(mFunction2)
-        mFunctionList.add(mFunction3)
-        mFunctionList.add(mFunction4)
-        mFunctionList.add(mFunction5)
-        mFunctionList.add(mFunction6)
-
-        mShop = MyShop(mFunctionList, mShopOrderList)
-
+        headerView = layoutInflater.inflate(R.layout.manager_item_head, mRecyclerView.parent as ViewGroup, false)
 
         //设置name,头像
-        tv_header_title.text = mShop?.name
-        ImageHelper.loadAvatar(activity!!, iv_avaver, Constants.GOOD0, 28)
+
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
-        mAdapter.addHeaderView(getHeadView())
         mRecyclerView.adapter = mAdapter
+        mAdapter.addHeaderView(headerView)
+
+        headerView.mRecyclerView.layoutManager = mGrideManager
+        headerView.mRecyclerView.adapter = mGrideAdapter
+        mGrideAdapter.onItemChildClickListener = mGrideItemClickListener
+
+
         mAdapter.onItemChildClickListener = itemChildClickListener
         mRecyclerView.addOnScrollListener(scrollListener)
-        //Listener
         mRefreshLayout.setOnRefreshListener {
-            //            isRefresh = true
             page = 1
-
+            lazyLoad()
         }
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
     }
@@ -144,20 +130,20 @@ class ManageFragment : BaseFragment() {
     /**
      * 头布局 header
      */
-    private fun getHeadView(): View {
-        val view = View.inflate(activity, R.layout.manager_item_head, null)
-        view.mRecyclerView.layoutManager = mGrideManager
-        view.mRecyclerView.adapter = mGrideAdapter
-        mGrideAdapter.onItemChildClickListener = mGrideItemClickListener
+    private fun getHeadView(t: Shop) {
+//        tv_header_title.text = mShop?.name
+//        ImageHelper.loadAvatar(activity!!, iv_avaver, Constants.GOOD0, 28)
         //头布局数据
-        view.findViewById<TextView>(R.id.cash_all).text = (mShop?.cash_all).toString()
-        view.findViewById<TextView>(R.id.cash_flow).text = mShop?.cash_flow.toString()
-        view.findViewById<TextView>(R.id.cash_forzen).text = mShop?.cash_forzen.toString()
-        view.shop_more.setOnClickListener(View.OnClickListener { v: View? ->
+
+
+        headerView.findViewById<TextView>(R.id.cash_all).text = (t?.cash_all).toString()
+        headerView.findViewById<TextView>(R.id.cash_flow).text = t?.cash_flow.toString()
+        headerView.findViewById<TextView>(R.id.cash_forzen).text = t?.cash_forzen.toString()
+        headerView.shop_more.setOnClickListener(View.OnClickListener { v: View? ->
             //跳转 产品管理
             ManagerGoodsActivity.startManagerGoodsActivity(this!!.context!!)
         })
-        return view
+
     }
 
     override fun lazyLoad() {
@@ -165,27 +151,41 @@ class ManageFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
+
                         if (t?.menu_list != null && t.menu_list.size > 0) {
                             mGrideAdapter.setNewData(t.menu_list)
                         }
                         if (page == 1) {
-                            if (t != null) {
-                                if (t.goods != null && t.goods.size != 0) {
-                                    mAdapter.setNewData(t.goods)
-                                }
-                            }
+                            ImageHelper.loadAvatar(activity!!,  iv_avaver, t.logo, 28)
+                            tv_header_title.text = t.name
+                            getHeadView(t)
+                            mAdapter.setNewData(t.goods)
+                            mRefreshLayout.finishRefresh(true)
                         } else {
-                            if (t != null) {
-                                if (t.goods != null && t.goods.size != 0) {
-                                    mAdapter.addData(t.goods)
-                                }
-                            }
+                            mAdapter.addData(t.goods)
+                            mRefreshLayout.finishRefresh(true)
+                        }
+                        if(t.goods!=null){
+                            mRefreshLayout.setNoMoreData(t.goods.size < Constants.PAGE_NUM)
+                            page++
+                        }else{
+                            mRefreshLayout.setNoMoreData(true)
                         }
 
                     }
-
                     override fun onHandleError(error: Error) {
-
+                        if (page == 1) {
+                            mRefreshLayout.finishRefresh(false)
+                        } else {
+                            mRefreshLayout.finishRefresh(false)
+                        }
+                        if (mAdapter.itemCount == 0) {
+                            if (error.code == ErrorStatus.NETWORK_ERROR) {
+                                mAdapter.emptyView = errorView
+                            } else {
+                                mAdapter.emptyView = notDataView
+                            }
+                        }
                     }
                 })
         addSubscription(subscribeWith)
@@ -301,6 +301,7 @@ class ManageFragment : BaseFragment() {
                     color2
                 }
             }
+            Log.e("tag", "distance$distance")
             toolbar.setBackgroundColor(color0)
         }
 
