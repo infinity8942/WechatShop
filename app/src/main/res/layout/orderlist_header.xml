@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:text="全部产品(20)"
+    android:textColor="@color/color_30_black"
+    android:textSize="16sp">
+
+</TextView>

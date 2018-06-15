@@ -95,7 +95,8 @@
         <activity android:name=".ui.manage.AddGoodsActivity" />
         <activity android:name=".ui.manage.EditTextActivity" />
         <activity android:name=".ui.manage.AddGoodsNextActivity" />
-        <activity android:name=".ui.order.AddOrderActivity"></activity>
+        <activity android:name=".ui.order.AddOrderActivity" />
+        <activity android:name=".ui.order.OrderListActivity"></activity>
     </application>
 
 </manifest>

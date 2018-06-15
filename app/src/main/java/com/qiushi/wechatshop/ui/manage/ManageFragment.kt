@@ -29,6 +29,7 @@ import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.moments.MomentsActivity
+import com.qiushi.wechatshop.ui.order.AddOrderActivity
 import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
@@ -274,7 +275,10 @@ class ManageFragment : BaseFragment() {
                             mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
                         }
                     }
-                    else -> ToastUtils.showError("其他未做")
+                    else -> {
+                        //测试 订单选择 入口， 暂时提供入口
+                        AddOrderActivity.startAddOrderActivity(this!!.activity!!)
+                    }
                 }
             }
         }
