@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -120,6 +121,7 @@ class ManageFragment : BaseFragment() {
 
         mAdapter.onItemChildClickListener = itemChildClickListener
         mRecyclerView.addOnScrollListener(scrollListener)
+        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         mRefreshLayout.setOnRefreshListener {
             page = 1
             lazyLoad()
@@ -360,4 +362,7 @@ class ManageFragment : BaseFragment() {
                 })
         addSubscription(disposable)
     }
+
+
+
 }
