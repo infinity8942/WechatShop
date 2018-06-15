@@ -6,6 +6,7 @@ import android.view.View
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
+import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import kotlinx.android.synthetic.main.fragment_user.*
@@ -44,18 +45,11 @@ class UserFragment : BaseFragment(), View.OnClickListener {
             R.id.setting -> {
                 startActivity(Intent(activity, SettingActivity::class.java))
             }
-            R.id.pay -> {
+            R.id.pay -> goToOrder(1)
+            R.id.deliver -> goToOrder(2)
+            R.id.finish -> goToOrder(4)
+            R.id.all -> goToOrder(0)
 
-            }
-            R.id.deliver -> {
-
-            }
-            R.id.finish -> {
-
-            }
-            R.id.all -> {
-
-            }
             R.id.layout_cart -> {
             }
 
@@ -67,6 +61,13 @@ class UserFragment : BaseFragment(), View.OnClickListener {
             R.id.layout_coupon -> {
             }
         }
+    }
+
+    private fun goToOrder(type: Int) {
+        val intent = Intent(activity, OrderActivity::class.java)
+        intent.putExtra("isManage", false)
+        intent.putExtra("type", type)
+        startActivity(intent)
     }
 
     companion object {

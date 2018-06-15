@@ -75,6 +75,10 @@ class OrderFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+        getOrder("")
+    }
+
+    fun getOrder(keyword: String) {
         val disposable = RetrofitManager.service.orderList()//TODO 筛选
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {

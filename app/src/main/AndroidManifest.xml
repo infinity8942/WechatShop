@@ -57,6 +57,9 @@
             android:name=".ui.manage.TodoActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.manage.DecorateActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.user.SettingActivity"
             android:screenOrientation="portrait" />
         <activity

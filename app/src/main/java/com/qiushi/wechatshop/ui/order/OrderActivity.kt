@@ -14,10 +14,11 @@ import kotlinx.android.synthetic.main.activity_order.*
 /**
  * Created by Rylynn on 2018-06-12.
  *
- * 订单管理
+ * 订单管理、我的订单
  */
 class OrderActivity : BaseActivity() {
 
+    private var isManage: Boolean = true
     private val tabList = ArrayList<String>()
     private val mTabEntities = ArrayList<CustomTabEntity>()
     private val fragments = ArrayList<Fragment>()
@@ -30,7 +31,9 @@ class OrderActivity : BaseActivity() {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
-        back.setOnClickListener(this)
+
+        //getData
+        isManage = intent.getBooleanExtra("isManage", true)
 
         tabList.add("全部")
         tabList.add("代付款")
@@ -50,8 +53,10 @@ class OrderActivity : BaseActivity() {
 
         viewpager.adapter = BaseFragmentAdapter(supportFragmentManager, fragments, tabList)
         tab.setTabData(mTabEntities)
+        tab.currentTab = intent.getIntExtra("type", 0)
 
         //Listener
+        back.setOnClickListener(this)
         tab.setOnTabSelectListener(object : OnTabSelectListener {
             override fun onTabSelect(position: Int) {
                 viewpager.currentItem = position
@@ -75,5 +80,12 @@ class OrderActivity : BaseActivity() {
     }
 
     override fun getData() {
+    }
+
+    /**
+     * 关键字搜索订单
+     */
+    private fun searchOrder(keyword: String) {
+        (fragments[viewpager.currentItem] as OrderFragment).getOrder(keyword)
     }
 }
