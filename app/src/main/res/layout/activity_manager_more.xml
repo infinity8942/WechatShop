@@ -14,11 +14,12 @@
         app:contentInsetStart="0dp">
 
         <TextView
+            android:id="@+id/tv_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="24dp"
-            android:text="完成"
+            android:text="编辑"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
@@ -63,11 +64,13 @@
             </android.support.v7.widget.RecyclerView>
 
             <View
+                android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
                 android:background="@color/color_line" />
 
             <TextView
+                android:id="@+id/tv_nouse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"

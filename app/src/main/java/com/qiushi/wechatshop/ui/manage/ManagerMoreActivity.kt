@@ -4,67 +4,83 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.GridLayoutManager
+import android.view.View
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.MenuInfo
+import com.qiushi.wechatshop.model.More
 import com.qiushi.wechatshop.model.Tools
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_manager_more.*
+import java.util.*
 
 class ManagerMoreActivity : BaseActivity() {
-    private var mToolsList = ArrayList<Tools>()
 
+    var isEdit: Boolean = false
     override fun layoutId(): Int = R.layout.activity_manager_more
 
     override fun init() {
         StatusBarUtil.immersive(this!!)
         StatusBarUtil.setPaddingSmart(this!!, toolbar1)
 
-        val mTool1 = Tools(1, "待办事项", Constants.GOOD0)
-        val mTool2 = Tools(2, "订单管理", Constants.GOOD1)
-        val mTool3 = Tools(3, "素材管理", Constants.GOOD2)
-        val mTool4 = Tools(4, "知识库", Constants.GOOD3)
-        val mTool5 = Tools(5, "用户管理", Constants.GOOD4)
-        val mTool6 = Tools(6, "账户管理", Constants.GOOD5)
-        val mTool7 = Tools(7, "优惠卷管理", Constants.GOOD6)
-
-        mToolsList.add(mTool1)
-        mToolsList.add(mTool2)
-        mToolsList.add(mTool3)
-        mToolsList.add(mTool4)
-        mToolsList.add(mTool5)
-        mToolsList.add(mTool6)
-        mToolsList.add(mTool7)
-
-        //假数据
-        often_recycler.layoutManager = mNoUseGrideManager
-        often_recycler.adapter = mNoUseGrideAdapter
+        often_recycler.layoutManager = useGrideManager
+        often_recycler.adapter = useGrideAdapter
 
         //如果接口返回的 不常用工具List为空，则隐藏
-        notuse_recycler.layoutManager = mGrideManager
-        notuse_recycler.adapter = mGrideAdapter
+        notuse_recycler.layoutManager = noUserMnager
+        notuse_recycler.adapter = noUserGrideAdapter
+
+        tv_edit.setOnClickListener(clickListener)
     }
 
-    private val mGrideManager by lazy {
+    private val useGrideManager by lazy {
         GridLayoutManager(this, 4)
     }
 
-    private val mGrideAdapter by lazy {
-        ToolsAlwayAdapter(mToolsList)
+    private val useGrideAdapter by lazy {
+        ToolsAlwayAdapter(ArrayList())
     }
 
-    private val mNoUseGrideManager by lazy {
+    private val noUserMnager by lazy {
         GridLayoutManager(this, 4)
     }
-    private val mNoUseGrideAdapter by lazy {
-        ToolsAlwayAdapter(mToolsList)
+    private val noUserGrideAdapter by lazy {
+        ToolsDownAdapter(ArrayList())
     }
 
     /**
      * 请求接口数据
      */
     override fun getData() {
+        val subscribeWith: BaseObserver<More> = RetrofitManager.service.getMore(Constants.SHOP_ID)
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<More>() {
+                    override fun onHandleSuccess(t: More) {
+                        if (t != null) {
+                            useGrideAdapter.setNewData(t.on_info)
+                            if (t.off_info != null) {
+                                line.visibility = View.VISIBLE
+                                tv_nouse.visibility = View.VISIBLE
+                                noUserGrideAdapter.setNewData(t.off_info)
 
+                            } else {
+                                line.visibility = View.GONE
+                                tv_nouse.visibility = View.GONE
+                            }
+                        }
+                    }
+
+                    override fun onHandleError(error: Error) {
+
+                    }
+
+                })
+        addSubscription(subscribeWith)
     }
 
     companion object {
@@ -74,6 +90,24 @@ class ManagerMoreActivity : BaseActivity() {
             intent.setClass(context, ManagerMoreActivity::class.java)
             // 获取class是使用::反射
             startActivity(context, intent, null)
+        }
+    }
+
+
+    private var clickListener = View.OnClickListener { v ->
+        when (v!!.id) {
+            R.id.tv_edit -> {
+                isEdit = !isEdit
+                if (tv_edit.text == "编辑") {
+                    //编辑
+                    tv_edit.text = "完成"
+                    noUserGrideAdapter.setBackgroud(true)
+                    useGrideAdapter.setBackground(true)
+                } else if (tv_edit.text == "完成") {
+                    //完成
+                    finish()
+                }
+            }
         }
     }
 }

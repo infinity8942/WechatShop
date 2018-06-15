@@ -1,5 +1,7 @@
 package com.qiushi.wechatshop
 
+import com.qiushi.wechatshop.model.MenuInfo
+import com.qiushi.wechatshop.model.More
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.BaseResponse
@@ -64,10 +66,19 @@ interface ApiService {
     fun deleteShop(@Field("goods_id") goods_id: Long): Observable<BaseResponse<Boolean>>
 
     @FormUrlEncoded
+    @POST("Goods/shop_goods")
+    fun getMnagerGoods(@Field("shop_id") shop_id: Long, @Field("state") state: Int, @Field("keyword") keyword: String): Observable<BaseResponse<List<Shop>>>
+
+    @FormUrlEncoded
     @POST("Oss/get_token")
     fun gUploadFile(@Field("md5") md5: String): Observable<BaseResponse<UploadFile>>
 
 
     @POST("User/my_shop")
     fun getMyshop(): Observable<BaseResponse<Shop>>
+
+    @FormUrlEncoded
+    @POST("Menu/get_menu_info")
+    fun getMore(@Field("shop_id")shop_id: Long): Observable<BaseResponse<More>>
+
 }

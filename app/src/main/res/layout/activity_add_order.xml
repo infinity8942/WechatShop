@@ -54,6 +54,7 @@
                 android:textSize="16sp" />
 
             <ImageView
+                android:id="@+id/iv_add"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginLeft="16dp"
@@ -192,7 +193,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
-                android:background="@null"
+                android:background="@drawable/add_goods_et_shape"
                 android:enabled="true"
                 android:gravity="top"
                 android:hint="输入100字以内备注内容"
