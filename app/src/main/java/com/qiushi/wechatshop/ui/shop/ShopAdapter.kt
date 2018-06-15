@@ -2,7 +2,6 @@ package com.qiushi.wechatshop.ui.shop
 
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
-import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.util.DensityUtils
@@ -15,11 +14,13 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
  * 串门店铺详情Adapter
  */
 class ShopAdapter : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.item_shop_goods, null) {
-    override fun convert(helper: BaseViewHolder, item: Goods?) {
-        ImageHelper.loadImageWithCorner(mContext, helper.getView(R.id.iv_cover_feed), Constants.IMAGE1, 150, 150,
+    override fun convert(helper: BaseViewHolder, goods: Goods) {
+        ImageHelper.loadImageWithCorner(mContext, helper.getView(R.id.iv_cover_feed), goods.cover, 150, 150,
                 RoundedCornersTransformation(DensityUtils.dp2px(10f), 0, RoundedCornersTransformation.CornerType.TOP))
-        helper.setText(R.id.tv_title, "尼萌特别推出最好吃的蛋糕" + helper.adapterPosition)
-        helper.setText(R.id.price, "￥89.90")
-        helper.setText(R.id.amount, "已售2650")
+        helper.setText(R.id.tv_title, goods.name)
+        helper.setText(R.id.price, String.format("￥%d", goods.price))
+        helper.setText(R.id.amount, String.format("已售%d", goods.views))
+
+        helper.addOnClickListener(R.id.cart)
     }
 }

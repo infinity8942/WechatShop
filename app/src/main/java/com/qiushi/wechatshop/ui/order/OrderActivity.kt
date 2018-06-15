@@ -30,6 +30,7 @@ class OrderActivity : BaseActivity() {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
+        back.setOnClickListener(this)
 
         tabList.add("全部")
         tabList.add("代付款")

@@ -1,6 +1,5 @@
 package com.qiushi.wechatshop
 
-import com.qiushi.wechatshop.model.MyShop
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.BaseResponse
@@ -15,7 +14,7 @@ interface ApiService {
     /**
      * 用户关注的店铺
      */
-    @POST("user/shop")
+    @POST("User/shop_list")
     fun shopList(): Observable<BaseResponse<ArrayList<Shop>>>
 
     /**

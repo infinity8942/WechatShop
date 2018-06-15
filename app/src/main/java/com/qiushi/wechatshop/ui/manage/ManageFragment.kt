@@ -265,6 +265,7 @@ class ManageFragment : BaseFragment() {
         when (view.id) {
             R.id.item_name -> {
                 when (data.menu_id) {
+                    1 -> startActivity(Intent(activity, TodoActivity::class.java))
                     2 -> startActivity(Intent(activity, OrderActivity::class.java))
                     3 -> startActivity(Intent(activity, MomentsActivity::class.java))
                     6 -> {

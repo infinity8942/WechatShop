@@ -63,34 +63,16 @@ class ShopFragment : BaseFragment() {
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
 
         mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+            when (view.id) {
+                R.id.cart -> {
+                    ToastUtils.showMessage("添加购物车 = " + (adapter.data[position] as Goods).name)
+                }
+            }
         }
-
-        //TODO test
-        ImageHelper.loadAvatar(context, headerView.findViewById(R.id.logo), Constants.AVATAR, 48)
-        headerView.findViewById<TextView>(R.id.name).text = "尼萌手工甜品店"
-        headerView.findViewById<TextView>(R.id.name).paint.isFakeBoldText = true
-        headerView.findViewById<TextView>(R.id.des).text = "充满爱意的甜点更加美味"
-
-//        val listCoupon = ArrayList<Coupon>()
-//        for (i in 1..5) {
-//            listCoupon.add(Coupon(50))
-//        }
-//        headerView.findViewById<RecyclerView>(R.id.rv_coupon).layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-//        mCouponAdapter = ShopCouponAdapter()
-//        mCouponAdapter.openLoadAnimation()
-//        headerView.findViewById<RecyclerView>(R.id.rv_coupon).addItemDecoration(SpaceItemDecoration(DensityUtils.dp2px(13.toFloat()), 0))
-//        headerView.findViewById<RecyclerView>(R.id.rv_coupon).adapter = mCouponAdapter
-//        mCouponAdapter.setNewData(listCoupon)
-
-        val list = ArrayList<Goods>()
-        for (i in 1..10) {
-            list.add(Goods("商品" + i))
-        }
-        mAdapter.setNewData(list)
     }
 
     override fun lazyLoad() {
-        val disposable = RetrofitManager.service.shopDetail(Constants.SHOP_ID)//shopID
+        val disposable = RetrofitManager.service.shopDetail(Constants.SHOP_ID)//TODO shopID
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
@@ -133,6 +115,7 @@ class ShopFragment : BaseFragment() {
         headerView.findViewById<TextView>(R.id.name).paint.isFakeBoldText = true
         headerView.findViewById<TextView>(R.id.des).text = shop.des
 
+        //优惠券
         //        val listCoupon = ArrayList<Coupon>()
 //        for (i in 1..5) {
 //            listCoupon.add(Coupon(50))
