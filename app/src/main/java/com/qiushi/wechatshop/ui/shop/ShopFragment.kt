@@ -72,7 +72,7 @@ class ShopFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        val disposable = RetrofitManager.service.shopDetail(Constants.SHOP_ID)//TODO shopID
+        val disposable = RetrofitManager.service.shopDetail(shopID)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {

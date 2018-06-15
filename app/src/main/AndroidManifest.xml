@@ -26,7 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.FullScreen">
@@ -58,6 +58,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.user.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.login.PhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.login.BindActivity"
             android:screenOrientation="portrait" />
         <!-- Service -->
         <service
@@ -93,12 +99,24 @@
                 tools:replace="name,resource" />
         </provider>
 
-        <activity android:name=".ui.manage.ManagerMoreActivity" />
-        <activity android:name=".ui.manage.ManagerGoodsActivity" />
-        <activity android:name=".ui.manage.AddGoodsActivity" />
-        <activity android:name=".ui.manage.EditTextActivity" />
-        <activity android:name=".ui.manage.AddGoodsNextActivity" />
-        <activity android:name=".ui.order.AddOrderActivity"></activity>
+        <activity
+            android:name=".ui.manage.ManagerMoreActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.manage.ManagerGoodsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.manage.AddGoodsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.manage.EditTextActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.manage.AddGoodsNextActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.order.AddOrderActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

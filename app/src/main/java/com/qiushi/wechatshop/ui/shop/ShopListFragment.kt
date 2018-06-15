@@ -38,6 +38,7 @@ class ShopListFragment : BaseFragment() {
                 (DensityUtils.getScreenWidth() * 0.48).toInt())
         cover.layoutParams = lpCover
         mask.layoutParams = lpCover
+        viewpager.offscreenPageLimit = 5
 
         //Listener
         viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -49,7 +50,7 @@ class ShopListFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 if (!shopList.isEmpty() && position < shopList.size)
-                    ImageHelper.loadImage(context, cover, shopList[position].logo)
+                    ImageHelper.loadImage(context, cover, shopList[position].cover)
             }
         })
         btn_edit.setOnClickListener {
@@ -82,6 +83,7 @@ class ShopListFragment : BaseFragment() {
         }
         viewpager.adapter = BaseFragmentAdapter(childFragmentManager, fragments, tabList)
         tab.setViewPager(viewpager)
+        ImageHelper.loadImage(context, cover, shopList[0].cover)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
