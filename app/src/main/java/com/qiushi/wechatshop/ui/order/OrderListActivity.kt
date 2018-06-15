@@ -1,6 +1,9 @@
 package com.qiushi.wechatshop.ui.order
 
 
+import android.app.Activity
+import android.content.Intent
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
@@ -17,7 +20,7 @@ class OrderListActivity : BaseActivity() {
     private lateinit var headerView: View
     private lateinit var notDataView: View
     private lateinit var errorView: View
-    var mGoods: Goods? = null
+
     var mList: ArrayList<Goods>? = ArrayList()
     private val mGrideManager by lazy {
         GridLayoutManager(this, 2)
@@ -34,8 +37,14 @@ class OrderListActivity : BaseActivity() {
         StatusBarUtil.immersive(this!!)
         StatusBarUtil.setPaddingSmart(this!!, toolbar)
 
-        mGoods = Goods("小商店")
-        mList!!.add(mGoods!!)
+       var mGoods1 = Goods("小商店")
+        var mGoods2 = Goods("小商店1")
+        var mGoods3 = Goods("小商店2")
+        var mGoods4 = Goods("小商店3")
+        mList!!.add(mGoods1!!)
+        mList!!.add(mGoods2!!)
+        mList!!.add(mGoods3!!)
+        mList!!.add(mGoods4!!)
 
 
         notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
@@ -56,5 +65,13 @@ class OrderListActivity : BaseActivity() {
 
     }
 
+
+    companion object {
+        fun startOrderListActivity(context: Activity) {
+            var intent = Intent()
+            intent.setClass(context, OrderListActivity::class.java)
+            ContextCompat.startActivity(context, intent, null)
+        }
+    }
 
 }

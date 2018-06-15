@@ -18,10 +18,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
+import com.qiushi.wechatshop.model.*
 import com.qiushi.wechatshop.model.Function
-import com.qiushi.wechatshop.model.MyShop
-import com.qiushi.wechatshop.model.Shop
-import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -46,9 +44,7 @@ import kotlin.collections.ArrayList
 class ManageFragment : BaseFragment() {
 
 
-    private var mShop: MyShop? = null
-    private var mFunctionList = ArrayList<Function>()
-    private var mShopOrderList = ArrayList<ShopOrder>()
+
     var mItemPosition: Int = -1
     var distance: Int = 0
     var argbEvaluator = ArgbEvaluator()
@@ -144,7 +140,7 @@ class ManageFragment : BaseFragment() {
         headerView.findViewById<TextView>(R.id.cash_forzen).text = t?.cash_forzen.toString()
         headerView.shop_more.setOnClickListener(View.OnClickListener { v: View? ->
             //跳转 产品管理
-            ManagerGoodsActivity.startManagerGoodsActivity(this!!.context!!)
+            ManagerGoodsActivity.startManagerGoodsActivity(this!!.context!!,0)
         })
 
     }
@@ -207,7 +203,7 @@ class ManageFragment : BaseFragment() {
      * 商品条目点击事件
      */
     private val itemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        val mData = adapter.getItem(position) as ShopOrder
+        val mData = adapter.getItem(position) as Goods
         when (view.id) {
             R.id.iv_more -> {
                 val item = adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)

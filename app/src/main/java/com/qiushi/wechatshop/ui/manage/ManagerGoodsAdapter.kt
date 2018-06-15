@@ -4,13 +4,14 @@ import android.widget.ImageView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
-class ManagerGoodsAdapter(data: List<ShopOrder>) : BaseQuickAdapter<ShopOrder, BaseViewHolder>(R.layout.manager_item_orther, data) {
-    override fun convert(helper: BaseViewHolder?, item: ShopOrder?) {
+class ManagerGoodsAdapter(data: List<Shop>) : BaseQuickAdapter<Shop, BaseViewHolder>(R.layout.manager_item_orther, data) {
+    override fun convert(helper: BaseViewHolder?, item: Shop?) {
         val view = helper?.getView<ImageView>(R.id.iv_shop)
 
         ImageHelper.loadImageWithCorner(mContext, view!!, item?.cover!!, 93, 94,

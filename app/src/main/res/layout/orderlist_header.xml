@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:text="全部产品(20)"
     android:textColor="@color/color_30_black"
+    android:layout_marginLeft="4dp"
     android:textSize="16sp">
 
 </TextView>
