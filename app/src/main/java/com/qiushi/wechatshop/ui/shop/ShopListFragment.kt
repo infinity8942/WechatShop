@@ -35,21 +35,9 @@ class ShopListFragment : BaseFragment() {
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
 
         val lpCover = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-//                (DensityUtils.getScreenWidth() * 0.48).toInt())
-                (DensityUtils.getScreenWidth() * 0.6).toInt())
+                (DensityUtils.getScreenWidth() * 0.48).toInt())
         cover.layoutParams = lpCover
         mask.layoutParams = lpCover
-
-
-        //TODO test
-        tabList.add("我的店")
-        tabList.add("店铺1")
-        shopList.add(Shop("我的店"))
-        shopList.add(Shop("店铺1"))
-        fragments.add(ShopFragment.getInstance(1))
-        fragments.add(ShopFragment.getInstance(2))
-        viewpager.adapter = BaseFragmentAdapter(childFragmentManager, fragments, tabList)
-        tab.setViewPager(viewpager)
 
         //Listener
         viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
