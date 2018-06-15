@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.ui.login
 
+import android.content.Intent
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -7,6 +8,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.web.WebActivity
 import kotlinx.android.synthetic.main.activity_phone.*
 
 /**
@@ -41,7 +43,10 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
             R.id.auth -> getAuthCode()
             R.id.login -> login()
             R.id.protocol -> {//H5协议
-
+                val intent = Intent(this, WebActivity::class.java)
+                intent.putExtra(WebActivity.PARAM_TITLE, "协议")
+                intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
+                startActivity(intent)
             }
         }
     }

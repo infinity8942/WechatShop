@@ -65,6 +65,9 @@
         <activity
             android:name=".ui.login.BindActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".util.web.WebActivity"
+            android:screenOrientation="portrait" />
         <!-- Service -->
         <service
             android:name=".util.oss.UploadService"

@@ -9,6 +9,7 @@ import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.web.WebActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
@@ -44,7 +45,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, PhoneActivity::class.java))
             }
             R.id.protocol -> {//H5协议
-
+                val intent = Intent(this, WebActivity::class.java)
+                intent.putExtra(WebActivity.PARAM_TITLE, "协议")
+                intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
+                startActivity(intent)
             }
         }
     }
