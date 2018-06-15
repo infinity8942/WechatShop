@@ -14,7 +14,7 @@ interface ApiService {
     /**
      * 用户关注的店铺
      */
-    @POST("user/shop")
+    @POST("User/shop_list")
     fun shopList(): Observable<BaseResponse<ArrayList<Shop>>>
 
     /**
