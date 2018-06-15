@@ -1,12 +1,10 @@
 package com.qiushi.wechatshop.ui.login
 
-import android.content.Intent
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
-import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_phone.*
@@ -55,12 +53,12 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun login() {//TODO
+    private fun login() {
         if (TextUtils.isEmpty(password.text.toString().trim())) {
             ToastUtils.showWarning("请填写验证码")
             return
         }
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+
+        //TODO
     }
 }

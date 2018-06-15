@@ -1,12 +1,13 @@
 package com.qiushi.wechatshop.ui.login
 
-import android.content.Intent
+import android.text.TextUtils
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
-import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
-import kotlinx.android.synthetic.main.activity_login.*
+import com.qiushi.wechatshop.util.ToastUtils
+import kotlinx.android.synthetic.main.activity_bind.*
 
 /**
  * 手机号绑定
@@ -14,16 +15,21 @@ import kotlinx.android.synthetic.main.activity_login.*
 class BindActivity : BaseActivity(), View.OnClickListener {
 
     override fun layoutId(): Int {
-        return R.layout.activity_login
+        return R.layout.activity_bind
     }
 
     override fun init() {
-        setSwipeBackEnable(false)
         StatusBarUtil.immersive(this)
 
-        login.setOnClickListener(this)
-        login.setOnClickListener(this)
-        protocol.setOnClickListener(this)
+        back.setOnClickListener(this)
+        auth.setOnClickListener(this)
+        bind.setOnClickListener(this)
+        password.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                bind()
+            }
+            false
+        }
     }
 
     override fun getData() {
@@ -31,16 +37,25 @@ class BindActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.login -> {//获取验证码
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
-            R.id.login -> {//登录
-
-            }
-            R.id.protocol -> {//H5协议
-
-            }
+            R.id.auth -> getAuthCode()
+            R.id.bind -> bind()
+            R.id.back -> finish()
         }
+    }
+
+    private fun getAuthCode() {
+        if (TextUtils.isEmpty(phone.text.toString().trim())) {
+            ToastUtils.showWarning("请填写手机号")
+            return
+        }
+    }
+
+    private fun bind() {
+        if (TextUtils.isEmpty(password.text.toString().trim())) {
+            ToastUtils.showWarning("请填写验证码")
+            return
+        }
+
+        //TODO
     }
 }
