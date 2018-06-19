@@ -9,17 +9,16 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
-import com.qiushi.wechatshop.model.*
 import com.qiushi.wechatshop.model.Function
+import com.qiushi.wechatshop.model.Goods
+import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -27,22 +26,18 @@ import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.moments.MomentsActivity
-import com.qiushi.wechatshop.ui.order.AddOrderActivity
 import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_manage.*
-
 import kotlinx.android.synthetic.main.manager_item_icon.view.*
-import kotlin.collections.ArrayList
 
 /**
  * 我的店Fragment
  */
 class ManageFragment : BaseFragment() {
-
 
 
     var mItemPosition: Int = -1
@@ -140,7 +135,7 @@ class ManageFragment : BaseFragment() {
         headerView.findViewById<TextView>(R.id.cash_forzen).text = t?.cash_forzen.toString()
         headerView.shop_more.setOnClickListener(View.OnClickListener { v: View? ->
             //跳转 产品管理
-            ManagerGoodsActivity.startManagerGoodsActivity(this!!.context!!,0)
+            ManagerGoodsActivity.startManagerGoodsActivity(this!!.context!!, 0)
         })
 
     }
@@ -155,7 +150,7 @@ class ManageFragment : BaseFragment() {
                             mGrideAdapter.setNewData(t.menu_list)
                         }
                         if (page == 1) {
-                            ImageHelper.loadAvatar(activity!!,  iv_avaver, t.logo, 28)
+                            ImageHelper.loadAvatar(activity!!, iv_avaver, t.logo, 28)
                             tv_header_title.text = t.name
                             getHeadView(t)
                             mAdapter.setNewData(t.goods)
@@ -164,14 +159,15 @@ class ManageFragment : BaseFragment() {
                             mAdapter.addData(t.goods)
                             mRefreshLayout.finishRefresh(true)
                         }
-                        if(t.goods!=null){
+                        if (t.goods != null) {
                             mRefreshLayout.setNoMoreData(t.goods.size < Constants.PAGE_NUM)
                             page++
-                        }else{
+                        } else {
                             mRefreshLayout.setNoMoreData(true)
                         }
 
                     }
+
                     override fun onHandleError(error: Error) {
                         if (page == 1) {
                             mRefreshLayout.finishRefresh(false)
@@ -271,9 +267,8 @@ class ManageFragment : BaseFragment() {
                             mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
                         }
                     }
-                    else -> {
-                        //测试 订单选择 入口， 暂时提供入口
-                        AddOrderActivity.startAddOrderActivity(this!!.activity!!)
+                    else -> {//TODO
+
                     }
                 }
             }
@@ -362,7 +357,6 @@ class ManageFragment : BaseFragment() {
                 })
         addSubscription(disposable)
     }
-
 
 
 }

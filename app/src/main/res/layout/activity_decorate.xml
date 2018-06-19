@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context=".ui.manage.DecorateActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/padding_tab_layout_top"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="店铺装修"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="41dp">
+
+        <TextView
+            android:id="@+id/star1"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center_vertical"
+            android:text="*"
+            android:textColor="@color/star_red"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_toRightOf="@id/star1"
+            android:gravity="center_vertical"
+            android:text="上传logo"
+            android:textColor="@color/edit_black"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/star1"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/ic_add" />
+
+        <TextView
+            android:id="@+id/star2"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@id/logo"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:text="*"
+            android:textColor="@color/star_red"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@id/logo"
+            android:layout_marginTop="16dp"
+            android:layout_toRightOf="@id/star2"
+            android:gravity="center_vertical"
+            android:text="店铺名称"
+            android:textColor="@color/edit_black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/star2"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_decorate_input"
+            android:gravity="center_vertical"
+            android:hint="请输入店铺名称"
+            android:maxEms="10"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:textColor="@color/color_item_text"
+            android:textColorHint="@color/color_more"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/star3"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@id/name"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:text="*"
+            android:textColor="@color/star_red"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@id/name"
+            android:layout_marginTop="16dp"
+            android:layout_toRightOf="@id/star2"
+            android:gravity="center_vertical"
+            android:text="店铺背景"
+            android:textColor="@color/edit_black"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="match_parent"
+            android:layout_height="178dp"
+            android:layout_below="@id/star3"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/ic_add" />
+
+        <TextView
+            android:id="@+id/commit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_orange_commit"
+            android:gravity="center"
+            android:text="保存"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+</LinearLayout>

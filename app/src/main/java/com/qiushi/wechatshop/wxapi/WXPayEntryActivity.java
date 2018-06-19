@@ -47,7 +47,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     public void onResp(BaseResp resp) {
-//        RxBus.getDefault().post(resp);//TODO
+//        RxBus.getDefault().post(resp);//TODO 微信支付回调
         finish();
     }
 

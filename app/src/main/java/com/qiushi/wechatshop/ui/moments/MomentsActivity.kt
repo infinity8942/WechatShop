@@ -1,7 +1,9 @@
 package com.qiushi.wechatshop.ui.moments
 
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.view.View
 import com.flyco.tablayout.listener.CustomTabEntity
 import com.flyco.tablayout.listener.OnTabSelectListener
 import com.qiushi.wechatshop.R
@@ -16,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_moments.*
  *
  * 素材管理
  */
-class MomentsActivity : BaseActivity() {
+class MomentsActivity : BaseActivity(), View.OnClickListener {
 
     private val tabList = ArrayList<String>()
     private val mTabEntities = ArrayList<CustomTabEntity>()
@@ -30,7 +32,6 @@ class MomentsActivity : BaseActivity() {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
-        back.setOnClickListener(this)
 
         tabList.add("产品素材")
         tabList.add("鸡汤素材")
@@ -66,8 +67,18 @@ class MomentsActivity : BaseActivity() {
             }
         })
         viewpager.currentItem = 0
+
+        back.setOnClickListener(this)
+        add.setOnClickListener(this)
     }
 
     override fun getData() {
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.back -> finish()
+            R.id.add -> startActivity(Intent(this, MomentsTypeActivity::class.java))
+        }
     }
 }

@@ -57,10 +57,22 @@
             android:name=".ui.moments.MomentsActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.moments.MomentsTypeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.moments.CreateMomentsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.manage.TodoActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.manage.DecorateActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.user.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.FeedbackActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.login.PhoneActivity"

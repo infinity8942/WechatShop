@@ -66,7 +66,7 @@ class OrderFragment : BaseFragment() {
             }
         }
 
-        //TODO test
+        //TODO 测试数据
         val list = ArrayList<Order>()
         for (i in 1..5) {
             list.add(Order())
@@ -75,7 +75,11 @@ class OrderFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        val disposable = RetrofitManager.service.orderList()//TODO 筛选
+        getOrder("")
+    }
+
+    fun getOrder(keyword: String) {//TODO 订单筛选接口
+        val disposable = RetrofitManager.service.orderList()
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
                     override fun onHandleSuccess(t: ArrayList<Order>) {

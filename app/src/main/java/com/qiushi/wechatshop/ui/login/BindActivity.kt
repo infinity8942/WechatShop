@@ -56,6 +56,6 @@ class BindActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        //TODO
+        //TODO 绑定手机号接口
     }
 }
