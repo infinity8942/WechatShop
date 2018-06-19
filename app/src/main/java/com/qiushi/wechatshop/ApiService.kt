@@ -83,6 +83,6 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("Menu/menu_edit")
-    fun menuMore(@Field("shop_id") shop_id: Long, @Field("on_ids") on_ids: String): Observable<BaseResponse<Boolean>>
+    fun menuMore(@Field("shop_id") shop_id: Long, @Field("menu_id") menu_id: String, @Field("is_del") is_del: String): Observable<BaseResponse<Boolean>>
 
 }

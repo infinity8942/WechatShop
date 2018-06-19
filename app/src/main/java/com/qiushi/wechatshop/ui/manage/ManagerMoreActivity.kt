@@ -140,17 +140,7 @@ class ManagerMoreActivity : BaseActivity() {
                 when (view.id) {
                     R.id.iv_remove -> {
                         useGrideAdapter.setIsOnclick(false)
-                        if (onList.contains(data)) {
-                            onList.remove(data)
-                            sb.delete(0, sb.length)
-                            for (item in onList) {
-                                if (sb.isNotEmpty()) {
-                                    sb.append(",")
-                                }
-                                sb.append(item.menu_id)
-                            }
-                            menuMore(Constants.SHOP_ID, sb.toString())
-                        }
+                        menuMore(Constants.SHOP_ID,data.menu_id,"0")
                     }
                 }
             }
@@ -165,17 +155,7 @@ class ManagerMoreActivity : BaseActivity() {
                     R.id.iv_add -> {
 //                        ToastUtils.showSuccess("拼接id(增加)")
                         noUserGrideAdapter.setIsOnclick(false)
-                        if (!onList.contains(data)) {
-                            onList.add(data)
-                            sb.delete(0, sb.length)
-                            for (item in onList) {
-                                if (sb.isNotEmpty()) {
-                                    sb.append(",")
-                                }
-                                sb.append(item.menu_id)
-                            }
-                            menuMore(Constants.SHOP_ID, sb.toString())
-                        }
+                        menuMore(Constants.SHOP_ID,data.menu_id,"1")
                     }
                 }
             }
@@ -185,8 +165,8 @@ class ManagerMoreActivity : BaseActivity() {
      * 增加或者移除的请求
      */
 
-    fun menuMore(shopId: Long, on_ids: String) {
-        val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.menuMore(shopId, on_ids)
+    fun menuMore(shopId: Long, menu_id: String, is_del: String) {
+        val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.menuMore(shopId, menu_id, is_del)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {

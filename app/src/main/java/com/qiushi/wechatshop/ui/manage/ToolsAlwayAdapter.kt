@@ -12,15 +12,21 @@ class ToolsAlwayAdapter(data: List<MenuInfo>) : BaseQuickAdapter<MenuInfo, BaseV
     var isOnclick = true
     override fun convert(helper: BaseViewHolder, item: MenuInfo) {
         helper.setText(R.id.item_name, item.menu_name)
-        if (isEdit) {
-            helper.setBackgroundRes(R.id.item_name, R.drawable.tools_shape)
-            helper.setVisible(R.id.iv_remove, true)
-            helper.getView<ImageView>(R.id.iv_remove).isEnabled = isOnclick
-            helper.addOnClickListener(R.id.iv_remove)
-        } else {
+        if (item.is_mark.isNotEmpty() && item.is_mark == "0") {
+            if (isEdit) {
+                helper.setBackgroundRes(R.id.item_name, R.drawable.tools_shape)
+                helper.setVisible(R.id.iv_remove, true)
+                helper.getView<ImageView>(R.id.iv_remove).isEnabled = isOnclick
+                helper.addOnClickListener(R.id.iv_remove)
+            } else {
+                helper.setBackgroundRes(R.id.item_name, 0)
+                helper.setVisible(R.id.iv_remove, false)
+            }
+        }else{
             helper.setBackgroundRes(R.id.item_name, 0)
             helper.setVisible(R.id.iv_remove, false)
         }
+
     }
 
 
