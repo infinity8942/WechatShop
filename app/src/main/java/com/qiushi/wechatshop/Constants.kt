@@ -42,10 +42,11 @@ object Constants {
     const val UMENG_SECRET = "cc5460aaaa313595cd2205650f9f0fbe"//TODO
 
     //Code
+
     const val ADDIMG_RESUALT = 1003 //foot添加产品相册回调
     const val ADDIMG_ITEM_REQUEST = 1004 //ITEM添加产品相册回调
     const val EDIT_TEXT_REQUEST = 1005 //编辑文本的回调
-
+    const val ADDIMG_BG = 1006//背景进入相册回调
     const val TOKEN = "2813c9014ff9581978e3f616e09b1d79"
     const val CILIENT = "9939e296d7e891ef87a2fa7f521b874a"
 }

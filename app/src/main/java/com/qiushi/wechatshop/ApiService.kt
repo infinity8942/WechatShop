@@ -3,13 +3,10 @@ package com.qiushi.wechatshop
 import com.qiushi.wechatshop.model.More
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.model.Shop
-import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.util.oss.UploadFile
-import com.tencent.mm.opensdk.modelpay.PayReq
 import io.reactivex.Observable
 import retrofit2.http.Field
-import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
@@ -117,5 +114,9 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Menu/get_menu_info")
     fun getMore(@Field("shop_id") shop_id: Long): Observable<BaseResponse<More>>
+
+    @FormUrlEncoded
+    @POST("Menu/menu_edit")
+    fun menuMore(@Field("shop_id") shop_id: Long, @Field("on_ids") on_ids: String): Observable<BaseResponse<Boolean>>
 
 }
