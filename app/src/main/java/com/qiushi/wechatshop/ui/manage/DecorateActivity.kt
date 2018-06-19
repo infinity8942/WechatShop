@@ -1,12 +1,31 @@
 package com.qiushi.wechatshop.ui.manage
 
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.os.Environment
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.text.TextUtils
 import android.view.View
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.util.DensityUtils
+import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.oss.Error
+import com.qiushi.wechatshop.util.oss.OnUploadListener
+import com.qiushi.wechatshop.util.oss.UploadManager
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.activity_decorate.*
+import kotlinx.android.synthetic.main.addgoods_header.*
+import me.weyye.hipermission.HiPermission
+import me.weyye.hipermission.PermissionCallback
+import me.weyye.hipermission.PermissionItem
+import java.io.File
 
 /**
  * Created by Rylynn on 2018-06-15.
@@ -15,6 +34,7 @@ import kotlinx.android.synthetic.main.activity_decorate.*
  */
 class DecorateActivity : BaseActivity(), View.OnClickListener {
 
+    var isLogo: Boolean = false
     override fun layoutId(): Int {
         return R.layout.activity_decorate
     }
@@ -23,7 +43,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
-
+        UploadManager.getInstance().register(uploadListener)
         back.setOnClickListener(this)
         logo.setOnClickListener(this)
         cover.setOnClickListener(this)
@@ -34,10 +54,10 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.back -> finish()
             R.id.logo -> {//TODO 店铺装修选图、接口
-
+                choicePhotoWrapper(1, Constants.ADDIMG_LOGO)
             }
             R.id.cover -> {
-
+                choicePhotoWrapper(1, Constants.ADDIMG_GOODS_BG)
             }
             R.id.commit -> commit()
         }
@@ -56,5 +76,106 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showWarning("店铺名不合法，请重新输入")
             return
         }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            Constants.ADDIMG_LOGO -> {
+                if (data != null) {
+                    isLogo = true
+                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    if (selected != null && selected.size > 0) {
+                        var mFile = File(selected[0])
+                        UploadManager.getInstance().add(mFile)
+                    }
+                }
+            }
+            Constants.ADDIMG_GOODS_BG -> {
+                if (data != null) {
+                    isLogo = false
+                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    if (selected != null && selected.size > 0) {
+                        var mFile = File(selected[0])
+                        UploadManager.getInstance().add(mFile)
+                    }
+                }
+            }
+        }
+    }
+
+
+    private val uploadListener = object : OnUploadListener {
+        override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
+        }
+
+        override fun onSuccess(file: File?, id: Long) {
+            when (isLogo) {
+                false -> {
+                    ImageHelper.loadImageWithCorner(application, cover, ("file://" + file!!.path), 343, 178,
+                            RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+                }
+                true -> {
+                    ImageHelper.loadImageWithCorner(application, logo, ("file://" + file!!.path), 64, 64,
+                            RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+                }
+            }
+        }
+
+        override fun onFailure(file: File?, error: Error?) {
+        }
+    }
+
+    companion object {
+        fun startDecorateActivity(context: Context) {
+            val intent = Intent()
+            //获取intent对象
+            intent.setClass(context, DecorateActivity::class.java)
+            // 获取class是使用::反射
+            ContextCompat.startActivity(context, intent, null)
+        }
+    }
+
+    private fun choicePhotoWrapper(count: Int, resultCode: Int) {
+
+
+        getPermission()
+
+        val intent = BGAPhotoPickerActivity.IntentBuilder(this)
+                .cameraFileDir(File(Environment.getExternalStorageDirectory(), "WechatShop"))
+                .maxChooseCount(count) // 图片选择张数的最大值
+                .selectedPhotos(null) // 当前已选中的图片路径集合
+                .pauseOnScroll(true) // 滚动列表时是否暂停加载图片
+                .build()
+        startActivityForResult(intent, resultCode)
+
+    }
+
+    /**
+     * 相册权限
+     */
+    private fun getPermission() {
+        val permissionItems = ArrayList<PermissionItem>()
+        permissionItems.add(PermissionItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera))
+        permissionItems.add(PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, "存储", R.drawable.permission_ic_storage))
+        HiPermission.create(this).permissions(permissionItems).title("权限申请")
+                .filterColor(ResourcesCompat.getColor(resources, R.color.colorPrimary, theme))
+                .checkMutiPermission(object : PermissionCallback {
+                    override fun onGuarantee(permission: String?, position: Int) {
+                    }
+
+                    override fun onDeny(permission: String?, position: Int) {
+                        ToastUtils.showError("拒绝权限")
+                    }
+
+                    override fun onClose() {
+                        ToastUtils.showError("拒绝权限")
+                    }
+
+                    override fun onFinish() {
+
+                    }
+                })
     }
 }

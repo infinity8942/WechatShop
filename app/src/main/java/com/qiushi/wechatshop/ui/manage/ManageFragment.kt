@@ -267,6 +267,10 @@ class ManageFragment : BaseFragment() {
                             mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
                         }
                     }
+                    5 -> {
+                        //店铺装修
+                        DecorateActivity.startDecorateActivity(this.context!!)
+                    }
                     else -> {//TODO
 
                     }
