@@ -44,6 +44,9 @@
             android:name=".ui.shop.ShopEditActivity"
             android:screenOrientation="portrait"
             android:theme="@style/dialogstyle" />
+        <activity android:name=".ui.order.OrderListActivity"
+            android:screenOrientation="portrait"
+            ></activity>
         <activity
             android:name=".ui.order.OrderActivity"
             android:screenOrientation="portrait" />

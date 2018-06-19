@@ -11,36 +11,44 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
+import cn.qqtheme.framework.util.CompatUtils
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.R.mipmap.ic_add_img
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.ShopOrder
+import com.qiushi.wechatshop.util.DensityUtils
+import com.qiushi.wechatshop.util.ImageHelper
 
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.oss.OnUploadListener
 import com.qiushi.wechatshop.util.oss.UploadManager
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 import kotlinx.android.synthetic.main.activity_add_goods.*
 import kotlinx.android.synthetic.main.addgoods_header.*
+import kotlinx.android.synthetic.main.next_layout.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
 import java.io.File
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class AddGoodsActivity : BaseActivity() {
     override fun layoutId(): Int = R.layout.activity_add_goods
     private var mShopOrderList = ArrayList<ShopOrder>()
-
+    var isBg: Boolean = false
     /**
      * 整体recyclerview adapter
      */
     private val mAdapter by lazy {
-        AddGoodsAdapter(mShopOrderList)
+        AddGoodsAdapter(ArrayList())
     }
     /**
      * 整体recyclerview manager
@@ -55,7 +63,9 @@ class AddGoodsActivity : BaseActivity() {
         StatusBarUtil.setPaddingSmart(this!!, toolbar)
         UploadManager.getInstance().register(uploadListener)
         mRecyclerView.layoutManager = linearLayoutManager
-
+        mRecyclerView.adapter = mAdapter
+        ic_bg.setOnClickListener(onclicklistener)
+        rl_next.setOnClickListener(onclicklistener)
         isVisible()
     }
 
@@ -66,7 +76,7 @@ class AddGoodsActivity : BaseActivity() {
             fl_addlayout.visibility = View.GONE
             foot_layout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.VISIBLE
-            mRecyclerView.adapter = mAdapter
+
             //foot add点击事件
             foot_add_img.setOnClickListener(onclicklistener)
             foot_add_text.setOnClickListener(onclicklistener)
@@ -108,7 +118,16 @@ class AddGoodsActivity : BaseActivity() {
                 //跳转编辑文本 Activity
                 EditTextActivity.startEditTextActivity(this, "")
             }
-            R.id.foot_add_text -> EditTextActivity.startEditTextActivity(this, "")
+            R.id.foot_add_text -> {
+                EditTextActivity.startEditTextActivity(this, "")
+            }
+            R.id.ic_bg -> {
+                //背景 进入相册
+                choicePhotoWrapper(1, Constants.ADDIMG_BG)
+            }
+            R.id.rl_next -> {
+                AddGoodsNextActivity.startAddGoodsNextActivity(this)
+            }
         }
     }
 
@@ -160,6 +179,7 @@ class AddGoodsActivity : BaseActivity() {
         when (requestCode) {
             Constants.ADDIMG_RESUALT -> {
                 if (data != null) {
+                    isBg = false
                     var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
                         //去上传
@@ -170,6 +190,7 @@ class AddGoodsActivity : BaseActivity() {
             }
             Constants.ADDIMG_ITEM_REQUEST -> {
                 if (data != null) {
+                    isBg = false
                     var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
                         //去上传
@@ -182,13 +203,23 @@ class AddGoodsActivity : BaseActivity() {
                 var mText = data?.getStringExtra("text")
                 if (mText != null && !mText.equals("")) {
                     var mShopOrder5 = ShopOrder(1, mText, Constants.GOOD7, 8, false)
-                    if (mShopOrderList == null||mShopOrderList.size==0) {
+                    if (mShopOrderList == null || mShopOrderList.size == 0) {
                         mShopOrderList.add(mShopOrder5)
                         isVisible()
+                        mAdapter.setNewData(mShopOrderList)
                     } else {
                         mAdapter.addData(mShopOrder5)
                     }
-
+                }
+            }
+            Constants.ADDIMG_BG -> {
+                if (data != null) {
+                    isBg = true
+                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    if (selected != null && selected.size > 0) {
+                        var mFile = File(selected[0])
+                        UploadManager.getInstance().add(mFile)
+                    }
                 }
             }
         }
@@ -207,14 +238,22 @@ class AddGoodsActivity : BaseActivity() {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            if (file != null && file.path != null) {
-                if (mShopOrderList == null||mShopOrderList.size==0) {
-                    var mShopOrder5 = ShopOrder(0, "老虎", "file://"+file.path, 8, false)
-                    mShopOrderList.add(mShopOrder5)
-                    isVisible()
-                } else {
-                    var mShopOrder5 = ShopOrder(0, "老虎", "file://"+file.path, 8, false)
-                    mAdapter.addData(mShopOrder5)
+            Log.e("tag", "ossId=====$id")
+            if (isBg) {
+                //如果是背景 ,显示背景
+                ImageHelper.loadImageWithCorner(application, ic_bg, ("file://" + file!!.path), 94, 94,
+                        RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+            } else {
+                if (file != null && file.path != null) {
+                    if (mShopOrderList == null || mShopOrderList.size == 0) {
+                        var mShopOrder5 = ShopOrder(0, "老虎", "file://" + file.path, 8, false)
+                        mShopOrderList.add(mShopOrder5)
+                        isVisible()
+                        mAdapter.setNewData(mShopOrderList)
+                    } else {
+                        var mShopOrder5 = ShopOrder(0, "老虎", "file://" + file.path, 8, false)
+                        mAdapter.addData(mShopOrder5)
+                    }
                 }
             }
         }
