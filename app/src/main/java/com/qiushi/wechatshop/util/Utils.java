@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.meituan.android.walle.WalleChannelReader;
 import com.qiushi.wechatshop.WAppContext;
 
 import java.io.BufferedReader;
@@ -71,5 +72,16 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    /**
+     * 获取Walle渠道包
+     */
+    public static String getWalleChannel() {
+        String channel = WalleChannelReader.getChannel(WAppContext.context);
+        if (channel == null || TextUtils.isEmpty(channel)) {
+            channel = "debug";
+        }
+        return channel;
     }
 }

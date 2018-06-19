@@ -1,13 +1,15 @@
 package com.qiushi.wechatshop
 
-import com.qiushi.wechatshop.model.MenuInfo
 import com.qiushi.wechatshop.model.More
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.model.Shop
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.util.oss.UploadFile
+import com.tencent.mm.opensdk.modelpay.PayReq
 import io.reactivex.Observable
 import retrofit2.http.Field
+import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
@@ -46,6 +48,41 @@ interface ApiService {
     @POST("shop/order")
     fun orderList(): Observable<BaseResponse<ArrayList<Order>>>
 
+    /**
+     * 登录
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/user/login")
+    fun login(@Field("phone") phone: String, @Field("password") password: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 微信登录
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/user/register")
+    fun loginWX(@FieldMap params: Map<String, String>): Observable<BaseResponse<User>>
+
+    /**
+     * 绑定手机号
+     */
+    @FormUrlEncoded
+    @POST("User/mobile_bind")
+    fun bindPhone(@Field("phone") phone: String, @Field("verify_code") verify_code: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 支付宝支付
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/order/alipay")
+    fun getAliPay(@Field("number") phone: String): Observable<BaseResponse<String>>
+
+    /**
+     * 微信支付
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/order/wechatpay")
+    fun getWechatPay(@Field("number") phone: String): Observable<BaseResponse<PayReq>>
+
     //==============================================================================================
     /**
      * 置顶 取消置顶
@@ -79,6 +116,6 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("Menu/get_menu_info")
-    fun getMore(@Field("shop_id")shop_id: Long): Observable<BaseResponse<More>>
+    fun getMore(@Field("shop_id") shop_id: Long): Observable<BaseResponse<More>>
 
 }

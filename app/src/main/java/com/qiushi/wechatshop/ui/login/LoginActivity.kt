@@ -4,16 +4,30 @@ import android.Manifest
 import android.content.Intent
 import android.support.v4.content.res.ResourcesCompat
 import android.view.View
+import cn.sharesdk.framework.Platform
+import cn.sharesdk.framework.PlatformActionListener
+import cn.sharesdk.framework.ShareSDK
+import cn.sharesdk.wechat.friends.Wechat
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.User
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
+import com.qiushi.wechatshop.util.Push
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
+import java.util.HashMap
+import kotlin.collections.ArrayList
+import kotlin.collections.set
 
 /**
  * 微信登录
@@ -40,7 +54,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.login -> loginWx()
+            R.id.login -> {
+                //TODO 测试，直接进入首页
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+//                loginWX()
+            }
             R.id.phone -> {//手机号登录
                 startActivity(Intent(this, PhoneActivity::class.java))
             }
@@ -77,8 +96,68 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 })
     }
 
-    private fun loginWx() {//TODO 微信授权登录
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+    private fun loginWX() {//TODO 微信授权注册、登录
+        ShareSDK.initSDK(this)
+
+        val callback: Callback<User> = LoginCallback()
+        callback.onStart()
+        val platform = ShareSDK.getPlatform(Wechat.NAME)
+        if (platform.isAuthValid) {
+            platform.removeAccount(true)
+        }
+        platform.SSOSetting(false)
+        platform.platformActionListener = object : PlatformActionListener {
+            override fun onComplete(platform: Platform, i: Int, hashMap: HashMap<String, Any>) {
+                val platDB = platform.db
+                val params = HashMap<String, String>()
+                params["push"] = Push.getDeviceToken()
+                params["token"] = platDB.token
+                params["username"] = platDB.userName
+                params["uid"] = platDB.userId
+                params["brand"] = "2"
+                params["type"] = "weixin"
+
+                val disposable = RetrofitManager.service.loginWX(params)
+                        .compose(SchedulerUtils.ioToMain())
+                        .subscribeWith(object : BaseObserver<User>() {
+                            override fun onHandleSuccess(t: User) {
+                                callback.onSuccess(t)
+                            }
+
+                            override fun onHandleError(error: Error) {
+                                callback.onFail(error.msg)
+                            }
+                        })
+                addSubscription(disposable)
+            }
+
+            override fun onError(platform: Platform, i: Int, throwable: Throwable) {
+                callback.onFail(throwable.message)
+            }
+
+            override fun onCancel(platform: Platform, i: Int) {
+                callback.onAfter()
+            }
+        }
+    }
+
+    internal inner class LoginCallback : Callback.SimpleCallback<User>() {
+        override fun onStart() {
+            super.onStart()
+            showLoading()
+        }
+
+        override fun onAfter() {
+            super.onAfter()
+            dismissLoading()
+        }
+
+        override fun onSuccess(user: User) {
+            //TODO
+        }
+
+        override fun onFail(error: String) {
+            ToastUtils.showError(error)
+        }
     }
 }

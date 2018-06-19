@@ -17,6 +17,7 @@ import com.orhanobut.logger.PrettyFormatStrategy;
 import com.previewlibrary.ZoomMediaLoader;
 import com.qiushi.wechatshop.ui.MainActivity;
 import com.qiushi.wechatshop.util.NineImageLoader;
+import com.qiushi.wechatshop.util.Push;
 import com.qiushi.wechatshop.util.Utils;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -31,6 +32,7 @@ import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.interfaces.BetaPatchListener;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
+import com.umeng.commonsdk.UMConfigure;
 
 import java.util.Locale;
 
@@ -71,8 +73,11 @@ public class WAppLike extends DefaultApplicationLike {
             }
         });
 
+        //友盟初始化
+        UMConfigure.init(WAppContext.context, Constants.UMENG_APPKEY, Utils.getWalleChannel(),
+                UMConfigure.DEVICE_TYPE_PHONE, Constants.UMENG_SECRET);
         //友盟推送
-//        Push.init();
+        Push.init();
 
         if (WAppContext.application.getPackageName().equals(Utils.getProcessName()))
             init();
@@ -130,11 +135,11 @@ public class WAppLike extends DefaultApplicationLike {
         };
 
         Bugly.setIsDevelopmentDevice(WAppContext.context, Constants.IS_DEVELOPER);
-//        Bugly.setAppChannel(WAppContext.context, Utils.getWalleChannel());
+        Bugly.setAppChannel(WAppContext.context, Utils.getWalleChannel());
         CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(WAppContext.context);
         String processName = Utils.getProcessName();
         strategy.setUploadProcess(processName == null || processName.equals(WAppContext.application.getPackageName()));
-//        strategy.setAppChannel(Utils.getWalleChannel());
+        strategy.setAppChannel(Utils.getWalleChannel());
         strategy.setAppVersion(Utils.getVersionName());
         Bugly.init(WAppContext.context, Constants.BUGLY_APPID, Constants.IS_DEVELOPER, strategy);
     }

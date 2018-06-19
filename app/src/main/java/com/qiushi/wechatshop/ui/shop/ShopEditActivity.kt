@@ -9,8 +9,11 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.heaven7.android.dragflowlayout.ClickToDeleteItemListenerImpl
 import com.heaven7.android.dragflowlayout.DragAdapter
 import com.heaven7.android.dragflowlayout.DragFlowLayout
+import com.heaven7.android.dragflowlayout.IViewObserver
+import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -92,17 +95,20 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                 UIUtil.hideKeyboard(this@ShopEditActivity)
             }
         }
-//        drag_flowLayout.addViewObserver(object : IViewObserver {
-//            override fun onAddView(child: View, index: Int) {
-//            }
-//
-//            override fun onRemoveView(child: View, index: Int) {
-//            }
-//        })
-//        drag_flowLayout . setOnItemClickListener (object : ClickToDeleteItemListenerImpl(R.id.close) {
-//            override fun onDeleteSuccess(dfl: DragFlowLayout?, child: View?, data: Any?) {
-//            }
-//        })
+        drag_flowLayout.addViewObserver(object : IViewObserver {
+            override fun onAddView(child: View, index: Int) {
+                Logger.e("onAddView " + index)
+            }
+
+            override fun onRemoveView(child: View, index: Int) {
+                Logger.e("onRemoveView " + index)
+            }
+        })
+        drag_flowLayout.setOnItemClickListener(object : ClickToDeleteItemListenerImpl(R.id.close) {
+            override fun onDeleteSuccess(dfl: DragFlowLayout?, child: View?, data: Any?) {
+                list.remove(data as Shop)
+            }
+        })
     }
 
     override fun onClick(v: View) {
@@ -121,12 +127,12 @@ class ShopEditActivity : Activity(), View.OnClickListener {
             }
             R.id.btn_close -> {
                 if (isEdit) {//确认关闭提示
-
+                    ToastUtils.showWarning("请编辑完成后再关闭")
                 } else {
                     if (isChange) {
                         val intent = Intent(this@ShopEditActivity, ShopListFragment::class.java)
                         intent.putExtra("shops", list)
-                        setResult(RESULT_OK)
+                        setResult(RESULT_OK, intent)
                     }
                     finish()
                 }
@@ -154,6 +160,7 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                         et.setText("")
                         ToastUtils.showMessage("添加成功")
                         drag_flowLayout.dragItemManager.addItem(t)
+                        list.add(t)
                         isChange = true
                     }
 

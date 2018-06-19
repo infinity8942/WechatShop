@@ -5,6 +5,10 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_bind.*
@@ -56,6 +60,21 @@ class BindActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        //TODO 绑定手机号接口
+        val disposable = RetrofitManager.service.bindPhone(phone.text.toString().trim(),
+                password.text.toString().trim())
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<Boolean>() {
+                    override fun onHandleSuccess(t: Boolean) {
+                        if (t) {
+                            ToastUtils.showMessage("绑定成功")
+                            finish()
+                        }
+                    }
+
+                    override fun onHandleError(error: Error) {
+                        ToastUtils.showError(error.msg)
+                    }
+                })
+        addSubscription(disposable)
     }
 }
