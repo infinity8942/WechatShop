@@ -40,7 +40,8 @@
         android:background="@drawable/bg_todo_item"
         android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
