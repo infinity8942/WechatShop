@@ -33,11 +33,11 @@ import java.io.File
  * 店铺装修
  */
 class DecorateActivity : BaseActivity(), View.OnClickListener {
-
+    var shop_name: String = ""
+    var bgUrl: String = ""
+    var logoUrl: String = ""
     var isLogo: Boolean = false
-    override fun layoutId(): Int {
-        return R.layout.activity_decorate
-    }
+    override fun layoutId(): Int = R.layout.activity_decorate
 
     override fun init() {
         //状态栏透明和间距处理
@@ -48,6 +48,19 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
         logo.setOnClickListener(this)
         cover.setOnClickListener(this)
         commit.setOnClickListener(this)
+
+        if (shop_name.isNotEmpty()) {
+            name.setText(shop_name)
+        }
+        if (bgUrl.isNotEmpty()) {
+            ImageHelper.loadImageWithCorner(application, cover, bgUrl, 343, 178,
+                    RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+
+        }
+        if (logoUrl.isNotEmpty()) {
+            ImageHelper.loadImageWithCorner(application, logo,logoUrl, 64, 64,
+                    RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+        }
     }
 
     override fun onClick(v: View) {
@@ -127,10 +140,21 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+
+    override fun getParams(intent: Intent) {
+        super.getParams(intent)
+        shop_name = intent.getStringExtra("shop_name")
+        logoUrl = intent.getStringExtra("logo")
+        bgUrl = intent.getStringExtra("bg")
+    }
+
     companion object {
-        fun startDecorateActivity(context: Context) {
+        fun startDecorateActivity(context: Context, shop_name: String, logo: String, bg: String) {
             val intent = Intent()
             //获取intent对象
+            intent.putExtra("shop_name", shop_name)
+            intent.putExtra("logo", logo)
+            intent.putExtra("bg", bg)
             intent.setClass(context, DecorateActivity::class.java)
             // 获取class是使用::反射
             ContextCompat.startActivity(context, intent, null)
@@ -178,4 +202,6 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                     }
                 })
     }
+
+
 }

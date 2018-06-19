@@ -28,7 +28,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="44dp"
             android:layout_marginLeft="16dp"
-            android:text="1000000"
+            android:text=""
             android:textColor="@android:color/white"
             android:textSize="32sp" />
 
@@ -52,7 +52,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@+id/money_zc"
-            android:text="10000"
+            android:text=""
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
@@ -76,7 +76,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@+id/money_dj"
-            android:text="10000"
+            android:text=""
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 

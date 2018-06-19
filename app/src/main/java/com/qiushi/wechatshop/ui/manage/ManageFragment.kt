@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
@@ -55,6 +56,8 @@ class ManageFragment : BaseFragment() {
     private lateinit var headerView: View
     private lateinit var notDataView: View
     private lateinit var errorView: View
+    private lateinit var notShop: View //没有店铺的情况
+    var mShop: Shop? = null
     /**
      * 整体recyclerview adapter
      */
@@ -92,6 +95,10 @@ class ManageFragment : BaseFragment() {
         color2 = ContextCompat.getColor(context!!, R.color.colorPrimaryDark)
         //RecyclerView
 
+        notShop = layoutInflater.inflate(R.layout.notshop_view, mRecyclerView.parent as ViewGroup, false)
+        notShop.findViewById<Button>(R.id.empty_view_tv).setOnClickListener {
+            DecorateActivity.startDecorateActivity(this.context!!, "", "", "")
+        }
         notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }
         errorView = layoutInflater.inflate(R.layout.error_view, mRecyclerView.parent as ViewGroup, false)
@@ -104,7 +111,7 @@ class ManageFragment : BaseFragment() {
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         mRecyclerView.adapter = mAdapter
-        mAdapter.addHeaderView(headerView)
+
 
         headerView.mRecyclerView.layoutManager = mGrideManager
         headerView.mRecyclerView.adapter = mGrideAdapter
@@ -113,7 +120,7 @@ class ManageFragment : BaseFragment() {
 
         mAdapter.onItemChildClickListener = itemChildClickListener
         mRecyclerView.addOnScrollListener(scrollListener)
-        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
+//        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         mRefreshLayout.setOnRefreshListener {
             page = 1
             lazyLoad()
@@ -128,7 +135,6 @@ class ManageFragment : BaseFragment() {
 //        tv_header_title.text = mShop?.name
 //        ImageHelper.loadAvatar(activity!!, iv_avaver, Constants.GOOD0, 28)
         //头布局数据
-
 
         headerView.findViewById<TextView>(R.id.cash_all).text = (t?.cash_all).toString()
         headerView.findViewById<TextView>(R.id.cash_flow).text = t?.cash_flow.toString()
@@ -145,26 +151,34 @@ class ManageFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
+                        if (t != null && t.is_boss.isNotEmpty() && t.is_boss == "1") {
+                            mShop = t
+                            mAdapter.removeAllHeaderView()
+                            mAdapter.addHeaderView(headerView)
+                            if (t?.menu_list != null && t.menu_list.size > 0) {
+                                mGrideAdapter.setNewData(t.menu_list)
+                            }
+                            if (page == 1) {
+                                ImageHelper.loadAvatar(activity!!, iv_avaver, t.logo, 28)
+                                tv_header_title.text = t.name
+                                getHeadView(t)
+                                mAdapter.setNewData(t.goods)
+                                mRefreshLayout.finishRefresh(true)
+                            } else {
+                                mAdapter.addData(t.goods)
+                                mRefreshLayout.finishRefresh(true)
+                            }
+                            if (t.goods != null) {
+                                mRefreshLayout.setNoMoreData(t.goods.size < Constants.PAGE_NUM)
+                                page++
+                            } else {
+                                mRefreshLayout.setNoMoreData(true)
+                            }
+                        } else {
+                            mRefreshLayout.finishRefresh(false)
+                            mAdapter.emptyView = notShop
+                        }
 
-                        if (t?.menu_list != null && t.menu_list.size > 0) {
-                            mGrideAdapter.setNewData(t.menu_list)
-                        }
-                        if (page == 1) {
-                            ImageHelper.loadAvatar(activity!!, iv_avaver, t.logo, 28)
-                            tv_header_title.text = t.name
-                            getHeadView(t)
-                            mAdapter.setNewData(t.goods)
-                            mRefreshLayout.finishRefresh(true)
-                        } else {
-                            mAdapter.addData(t.goods)
-                            mRefreshLayout.finishRefresh(true)
-                        }
-                        if (t.goods != null) {
-                            mRefreshLayout.setNoMoreData(t.goods.size < Constants.PAGE_NUM)
-                            page++
-                        } else {
-                            mRefreshLayout.setNoMoreData(true)
-                        }
 
                     }
 
@@ -269,7 +283,10 @@ class ManageFragment : BaseFragment() {
                     }
                     5 -> {
                         //店铺装修
-                        DecorateActivity.startDecorateActivity(this.context!!)
+                        if (mShop?.cover == null) {
+                            mShop?.cover = Constants.GOOD0
+                        }
+                        DecorateActivity.startDecorateActivity(this.context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
                     }
                     else -> {//TODO
 
