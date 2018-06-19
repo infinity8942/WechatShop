@@ -24,6 +24,7 @@ class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_mo
     override fun convert(helper: BaseViewHolder, moment: Moment) {
         ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), Constants.AVATAR, 42)
         helper.setText(R.id.name, "咪蒙韩国代购" + helper.adapterPosition)
+        helper.setText(R.id.content, "YSL圣罗兰纯口红方管豆沙色梅子姨妈色正红色1橘色13裸色官方正品")
 
         val nineGrid = helper.getView<NineGridImageView<NineImage>>(R.id.nine_grid)
         nineGrid.setAdapter(object : NineGridImageViewAdapter<NineImage>() {

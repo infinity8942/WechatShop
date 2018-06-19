@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    android:paddingTop="15dp">
+    android:paddingTop="15dp"
+    android:paddingBottom="16dp">
 
     <ImageView
         android:id="@+id/logo"
@@ -24,15 +25,37 @@
         android:textColor="@color/color_item_text"
         android:textSize="16sp" />
 
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@id/logo"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/color_item_text"
+        android:textSize="16sp" />
+
     <com.jaeger.ninegridimageview.NineGridImageView
         android:id="@+id/nine_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name"
+        android:layout_below="@id/content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/logo"
         app:imgGap="3dp"
         app:showStyle="grid"
         app:singleImgSize="500dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nine_grid"
+        android:layout_toRightOf="@id/logo"
+        android:orientation="horizontal">
+
+    </LinearLayout>
 </RelativeLayout>

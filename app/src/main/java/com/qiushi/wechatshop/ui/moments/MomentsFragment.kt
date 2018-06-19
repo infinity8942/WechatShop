@@ -11,13 +11,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Moment
 import com.qiushi.wechatshop.model.NineImage
-import com.qiushi.wechatshop.model.Order
-import com.qiushi.wechatshop.net.RetrofitManager
-import com.qiushi.wechatshop.net.exception.Error
-import com.qiushi.wechatshop.rx.BaseObserver
-import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
-import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_moments.*
 import java.util.*
@@ -41,7 +35,7 @@ class MomentsFragment : BaseFragment() {
         mRecyclerView.layoutManager = LinearLayoutManager(activity)
         mAdapter = MomentsAdapter()
         mAdapter.openLoadAnimation()
-        mRecyclerView.addItemDecoration(SpaceItemDecoration(0, DensityUtils.dp2px(8.toFloat())))
+        mRecyclerView.addItemDecoration(SpaceItemDecoration(0, DensityUtils.dp2px(3.toFloat())))
         mRecyclerView.adapter = mAdapter
 
         notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
@@ -74,20 +68,6 @@ class MomentsFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        val disposable = RetrofitManager.service.orderList()//TODO 订单筛选接口
-                .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
-                    override fun onHandleSuccess(t: ArrayList<Order>) {
-                        for (i in t) {
-
-                        }
-                    }
-
-                    override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
-                    }
-                })
-        addSubscription(disposable)
     }
 
     companion object {
