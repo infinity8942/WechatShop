@@ -3,10 +3,13 @@ package com.qiushi.wechatshop
 import com.qiushi.wechatshop.model.More
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.model.Shop
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.util.oss.UploadFile
+import com.tencent.mm.opensdk.modelpay.PayReq
 import io.reactivex.Observable
 import retrofit2.http.Field
+import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
