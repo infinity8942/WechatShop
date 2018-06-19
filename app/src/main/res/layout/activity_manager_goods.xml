@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/contentBackground"
     android:orientation="vertical">
-
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -16,11 +14,11 @@
         app:contentInsetStart="0dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="11dp"
-            android:padding="5dp"
-            android:src="@mipmap/ic_goods_back" />
+            android:id="@+id/back"
+            android:layout_width="@dimen/padding_tab_layout_top"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_back" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -42,7 +40,6 @@
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
-
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
@@ -51,17 +48,16 @@
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/mRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@android:color/white"
             app:srlAccentColor="@android:color/white"
-            app:srlPrimaryColor="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            app:srlPrimaryColor="@color/colorPrimary">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/mRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:layout_marginTop="4dp" />
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
@@ -69,9 +65,9 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="34dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginBottom="34dp"
             android:background="@drawable/add_goods_shape">
 
             <TextView
@@ -85,7 +81,6 @@
                 android:textColor="@color/gray1"
                 android:textSize="13sp" />
 
-
             <TextView
                 android:id="@+id/tv_add"
                 android:layout_width="wrap_content"
@@ -98,7 +93,6 @@
                 android:text="新增产品"
                 android:textColor="@color/coupon_yellow"
                 android:textSize="13sp" />
-
         </RelativeLayout>
     </FrameLayout>
 </LinearLayout>

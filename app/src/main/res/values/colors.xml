@@ -18,6 +18,7 @@
 
     <color name="divider">#F6F7F9</color>
     <color name="line">#EFF1F4</color>
+    <color name="line1">#D6D6D6</color>
 
     <!-- 默认背景色 -->
     <color name="contentBackground">#F6F7F9</color>
@@ -51,6 +52,8 @@
     <color name="clolor_yellow">#FFC125</color>
 
     <color name="color_head_manager">#FDBD5E</color>
+
+    <color name="color_filter_item">#1AFDBD5E</color>
 
     <color name="color_more">#999999</color>
     <color name="color_item_text">#333333</color>

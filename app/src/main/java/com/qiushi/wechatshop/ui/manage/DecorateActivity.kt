@@ -33,7 +33,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
-            R.id.logo -> {
+            R.id.logo -> {//TODO 店铺装修选图、接口
 
             }
             R.id.cover -> {

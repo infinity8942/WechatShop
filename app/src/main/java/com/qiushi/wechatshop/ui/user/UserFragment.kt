@@ -32,7 +32,7 @@ class UserFragment : BaseFragment(), View.OnClickListener {
         layout_cart.setOnClickListener(this)
         layout_address.setOnClickListener(this)
 
-        //TODO test
+        //TODO 测试数据
         ImageHelper.loadAvatar(context, avatar, Constants.AVATAR, 48)
         name.text = "尼萌酱"
     }

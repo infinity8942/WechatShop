@@ -77,7 +77,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 })
     }
 
-    private fun loginWx() {//TODO 微信授权
+    private fun loginWx() {//TODO 微信授权登录
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

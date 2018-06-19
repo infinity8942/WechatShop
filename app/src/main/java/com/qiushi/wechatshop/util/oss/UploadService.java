@@ -30,7 +30,7 @@ import java.util.List;
 public class UploadService extends IntentService implements OSSProgressCallback<PutObjectRequest>, OSSCompletedCallback<PutObjectRequest, PutObjectResult> {
 
     private static final int MAX_REQUEST = 5;
-    private static final String BUCKET_NAME = Constants.DEBUG ? "top6000origtest" : "top6000";//TODO
+    private static final String BUCKET_NAME = Constants.DEBUG ? "top6000origtest" : "top6000";
 
     private OSS oss;
 
@@ -109,7 +109,7 @@ public class UploadService extends IntentService implements OSSProgressCallback<
         String callback = putObjectResult.getServerCallbackReturnBody();
         BaseResponse<Long> top = NetConfig.Companion.getInstance().getGson().fromJson(callback, new TypeToken<BaseResponse<Long>>() {
         }.getType());
-        Log.d("tag","file"+file.getAbsolutePath());
+        Log.d("tag", "file" + file.getAbsolutePath());
         UploadManager.getInstance().onSuccess(file, top.getData());
     }
 

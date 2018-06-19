@@ -28,7 +28,7 @@ class OrderDetailActivity : BaseActivity() {
         StatusBarUtil.setPaddingSmart(this, toolbar)
         back.setOnClickListener(this)
 
-        //TODO test
+        //TODO 测试数据
         ImageHelper.loadAvatar(this, logo, Constants.AVATAR, 24)
         shop.text = "咪蒙韩国代购"
 

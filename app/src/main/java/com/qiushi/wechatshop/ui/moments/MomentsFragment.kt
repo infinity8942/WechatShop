@@ -59,7 +59,7 @@ class MomentsFragment : BaseFragment() {
         mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
         }
 
-        //TODO test
+        //TODO 测试数据
         val list = ArrayList<Moment>()
         for (i in 1..5) {
 
@@ -74,7 +74,7 @@ class MomentsFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        val disposable = RetrofitManager.service.orderList()//TODO 筛选
+        val disposable = RetrofitManager.service.orderList()//TODO 订单筛选接口
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
                     override fun onHandleSuccess(t: ArrayList<Order>) {
