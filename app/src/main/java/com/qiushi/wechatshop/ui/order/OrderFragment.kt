@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
@@ -53,7 +52,7 @@ class OrderFragment : BaseFragment() {
         }
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
 
-        mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+        mAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
                 R.id.layout_shop -> {
                     Logger.e("~~~~~~~~~~~~~~~layout_shop")

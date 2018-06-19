@@ -107,7 +107,7 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/bg_orange_commit"
             android:gravity="center"
-            android:text="提交"
+            android:text="添加"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
     </LinearLayout>

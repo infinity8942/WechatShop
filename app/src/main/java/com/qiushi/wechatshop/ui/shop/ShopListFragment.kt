@@ -81,6 +81,7 @@ class ShopListFragment : BaseFragment() {
             tabList.add(shop.name)
             fragments.add(ShopFragment.getInstance(shop.id))
         }
+
         viewpager.adapter = BaseFragmentAdapter(childFragmentManager, fragments, tabList)
         tab.setViewPager(viewpager)
         ImageHelper.loadImage(context, cover, shopList[0].cover)
@@ -91,6 +92,8 @@ class ShopListFragment : BaseFragment() {
             1000 -> {//编辑店铺返回
                 if (null != data) {
                     shopList = data.getSerializableExtra("shops") as ArrayList<Shop>
+                    tabList.clear()
+                    fragments.clear()
                     setDatas()
                 }
             }

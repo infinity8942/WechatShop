@@ -6,6 +6,11 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
@@ -65,5 +70,21 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
         }
 
         //TODO 手机号登录接口
+        val disposable = RetrofitManager.service.login(phone.text.toString().trim(),
+                password.text.toString().trim())
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<Boolean>() {
+                    override fun onHandleSuccess(t: Boolean) {
+                        if (t) {
+                            startActivity(Intent(this@PhoneActivity, MainActivity::class.java))
+                            finish()
+                        }
+                    }
+
+                    override fun onHandleError(error: Error) {
+                        ToastUtils.showError(error.msg)
+                    }
+                })
+        addSubscription(disposable)
     }
 }

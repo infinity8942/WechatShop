@@ -38,6 +38,8 @@ object Constants {
     const val ALI_OSS_APPKEY = "rCbpsTRroEUuf4hS"
     const val ALI_OSS_SECRET = "GvK8xfPJJjiq9eIdpwbJiXoFkOuzbk"
     const val BUGLY_APPID = "86cacb8516"
+    const val UMENG_APPKEY = "5b28cdddb27b0a532e000034"
+    const val UMENG_SECRET = "17c7e39d636a0b8fba2fbeef778aee02"
 
     //Code
 

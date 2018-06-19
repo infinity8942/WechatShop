@@ -15,9 +15,12 @@ import com.flyco.tablayout.listener.OnTabSelectListener
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
+import com.qiushi.wechatshop.util.DateUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.TabEntity
+import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_order.*
+import java.util.*
 
 /**
  * Created by Rylynn on 2018-06-12.
@@ -206,7 +209,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
 
     private fun changeDate(chooseDate: Int) {
         if (date != chooseDate) {
-            date = chooseDate
+
             when (chooseDate) {
                 1 -> {
                     dateWeek!!.setTextColor(ContextCompat.getColor(this, R.color.coupon_yellow))
@@ -233,6 +236,12 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
                     dateYear!!.setBackgroundResource(R.drawable.bg_order_filter_item_selected)
                 }
             }
+            date = chooseDate
+            //重置下单时间区间
+            start_time!!.text = ""
+            startTime = 0L
+            end_time!!.text = ""
+            endTime = 0L
         } else {
             date = 0
             dateWeek!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
@@ -282,13 +291,33 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
                 end_time!!.text = ""
         }
         picker.submitButton.setOnClickListener {
-            //TODO 判断时间先后顺序
-
-            picker.dismiss()
-            if (isStart)
-                start_time!!.text = picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay
-            else
-                end_time!!.text = picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay
+            if (isStart) {
+                if (endTime != 0L && endTime < DateUtil.getMillis(DateUtil.str2Date(
+                                picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay,
+                                DateUtil.FORMAT_YMD))) {
+                    ToastUtils.showError("开始日期不能晚于结束日期")
+                } else {
+                    picker.dismiss()
+                    start_time!!.text = picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay
+                    startTime = DateUtil.getMillis(DateUtil.str2Date(start_time!!.text.toString(), DateUtil.FORMAT_YMD))
+                    //重置下单时间
+                    if (date != 0)
+                        changeDate(date)
+                }
+            } else {
+                if (startTime != 0L && startTime > DateUtil.getMillis(DateUtil.str2Date(
+                                picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay,
+                                DateUtil.FORMAT_YMD))) {
+                    ToastUtils.showError("结束日期不能早于开始日期")
+                } else {
+                    picker.dismiss()
+                    end_time!!.text = picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay
+                    endTime = DateUtil.getMillis(DateUtil.str2Date(end_time!!.text.toString(), DateUtil.FORMAT_YMD))
+                    //重置下单时间
+                    if (date != 0)
+                        changeDate(date)
+                }
+            }
         }
     }
 

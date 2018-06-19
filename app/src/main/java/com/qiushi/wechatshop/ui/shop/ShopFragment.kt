@@ -5,7 +5,6 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
@@ -62,7 +61,7 @@ class ShopFragment : BaseFragment() {
         }
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
 
-        mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+        mAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
                 R.id.cart -> {
                     ToastUtils.showMessage("添加购物车 = " + (adapter.data[position] as Goods).name)
