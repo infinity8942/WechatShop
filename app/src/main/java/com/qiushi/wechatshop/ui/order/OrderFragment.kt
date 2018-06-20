@@ -9,7 +9,6 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Order
-import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
@@ -19,7 +18,6 @@ import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.SpaceItemDecoration
-import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_order.*
 
 /**
@@ -74,20 +72,20 @@ class OrderFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        getOrder("")
+        getOrders()
     }
 
     /**
-     * 获取订单列表（筛选）
+     * 获取订单列表（店铺、用户）
      */
-    fun getOrder(keyword: String) {//TODO 订单筛选接口
-        val observable: Observable<BaseResponse<ArrayList<Order>>> =
-                if ((activity as OrderActivity).isManage)//店铺订单（管理）
-                    RetrofitManager.service.orderList(mAdapter.itemCount, Constants.PAGE_NUM)
-                else//用户订单
-                    RetrofitManager.service.userOrders(status, keyword, mAdapter.itemCount, Constants.PAGE_NUM)
-
-        val disposable = observable.compose(SchedulerUtils.ioToMain())
+    fun getOrders() {
+        val disposable = RetrofitManager.service.getOrders(
+                (activity as OrderActivity).identify, (activity as OrderActivity).orderNumber,
+                (activity as OrderActivity).pay_time, (activity as OrderActivity).keywords,
+                (activity as OrderActivity).startTime, (activity as OrderActivity).endTime,
+                (activity as OrderActivity).from, status,
+                mAdapter.itemCount, Constants.PAGE_NUM)
+                .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
                     override fun onHandleSuccess(t: ArrayList<Order>) {
                         if (page == 1) {

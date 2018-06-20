@@ -40,18 +40,15 @@ interface ApiService {
     fun editShop(@Field("shop_ids") code: String): Observable<BaseResponse<Boolean>>
 
     /**
-     * 订单列表
+     * 店铺、用户订单列表
      */
     @FormUrlEncoded
-    @POST("shop/order")
-    fun orderList(@Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Order>>>
-
-    /**
-     * 用户订单
-     */
-    @FormUrlEncoded
-    @POST("Order/user_order")
-    fun userOrders(@Field("status") status: Int, @Field("keywords") keywords: String, @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Order>>>
+    @POST("Order/shop_order")
+    fun getOrders(@Field("identify") identify: Int, @Field("number") number: String,
+                  @Field("pay_time") pay_time: Int, @Field("keywords") keywords: String,
+                  @Field("start_time") start_time: Long, @Field("end_time") end_time: Long,
+                  @Field("from") from: Int, @Field("state") state: Int,
+                  @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Order>>>
 
     /**
      * 登录
