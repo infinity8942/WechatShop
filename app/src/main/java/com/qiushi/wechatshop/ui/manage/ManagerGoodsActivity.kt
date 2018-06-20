@@ -190,18 +190,15 @@ class ManagerGoodsActivity : BaseActivity() {
             R.id.tv_delete -> {
                 type = TYPE_DELETE
                 setTop(mData.id.toLong(), type)
-                ToastUtils.showError("删除")
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.tv_xj -> {
                 type = TYPE_XJ
                 setTop(mData.id.toLong(), type)
-                ToastUtils.showError("下架")
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.tv_zd -> {
                 type = TYPE_ZD
-                ToastUtils.showError("置顶")
                 setTop(mData.id.toLong(), type)
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
@@ -229,8 +226,9 @@ class ManagerGoodsActivity : BaseActivity() {
                                     ToastUtils.showSuccess("置顶成功")
                                 } else {
                                     ToastUtils.showSuccess("取消置顶")
-
                                 }
+                                page=1
+                                getData()
                             }
                             TYPE_XJ -> {
                                 if (t) {
@@ -238,6 +236,8 @@ class ManagerGoodsActivity : BaseActivity() {
                                 } else {
                                     ToastUtils.showSuccess("上架成功")
                                 }
+                                page = 1
+                                getData()
                             }
                             else -> {
                                 if (t) {
@@ -245,6 +245,8 @@ class ManagerGoodsActivity : BaseActivity() {
                                 } else {
                                     ToastUtils.showSuccess("删除失败")
                                 }
+                                page = 1
+                                getData()
                             }
                         }
 

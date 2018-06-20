@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -245,20 +244,17 @@ class ManageFragment : BaseFragment() {
             }
             R.id.tv_delete -> {
                 type = TYPE_DELETE
-                setTop(mData.id.toLong(), type)
-                ToastUtils.showError("删除")
+                setTop(mData.id.toLong(), type, position + 1)
                 adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.tv_xj -> {
                 type = TYPE_XJ
-                setTop(mData.id.toLong(), type)
-                ToastUtils.showError("下架")
+                setTop(mData.id.toLong(), type, position + 1)
                 adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.tv_zd -> {
                 type = TYPE_ZD
-                ToastUtils.showError("置顶")
-                setTop(mData.id.toLong(), type)
+                setTop(mData.id.toLong(), type, position + 1)
                 adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
             }
         }
@@ -275,7 +271,7 @@ class ManageFragment : BaseFragment() {
                     1 -> startActivity(Intent(activity, TodoActivity::class.java))
                     2 -> startActivity(Intent(activity, OrderActivity::class.java))
                     3 -> startActivity(Intent(activity, MomentsActivity::class.java))
-                    6 -> {
+                    13 -> {
                         ManagerMoreActivity.startManagerMoreActivity(this.context!!)
                         if (mItemPosition != -1) {
                             mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
@@ -289,7 +285,7 @@ class ManageFragment : BaseFragment() {
                         DecorateActivity.startDecorateActivity(this.context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
                     }
                     else -> {//TODO
-
+                        ToastUtils.showError("敬请期待")
                     }
                 }
             }
@@ -319,7 +315,6 @@ class ManageFragment : BaseFragment() {
                     color2
                 }
             }
-            Log.e("tag", "distance$distance")
             toolbar.setBackgroundColor(color0)
         }
 
@@ -335,12 +330,11 @@ class ManageFragment : BaseFragment() {
     /**
      * 置顶 下架 删除
      */
-    private fun setTop(goods_id: Long, type: Int) {
+    private fun setTop(goods_id: Long, type: Int, i: Int) {
 
         val observable: Observable<BaseResponse<Boolean>> = when (type) {
             TYPE_ZD -> RetrofitManager.service.setTop(goods_id)
             TYPE_XJ -> RetrofitManager.service.upShop(goods_id)
-//            TYPE_DELETE -> RetrofitManager.service.deleteShop(goods_id)
             else -> RetrofitManager.service.deleteShop(goods_id)
         }
         val disposable = observable
@@ -354,6 +348,8 @@ class ManageFragment : BaseFragment() {
                                 } else {
                                     ToastUtils.showSuccess("取消置顶")
                                 }
+                                page = 1
+                                lazyLoad()
                             }
                             TYPE_XJ -> {
                                 if (t) {
@@ -361,6 +357,8 @@ class ManageFragment : BaseFragment() {
                                 } else {
                                     ToastUtils.showSuccess("上架成功")
                                 }
+                                page = 1
+                                lazyLoad()
                             }
                             else -> {
                                 if (t) {
@@ -368,6 +366,8 @@ class ManageFragment : BaseFragment() {
                                 } else {
                                     ToastUtils.showSuccess("删除失败")
                                 }
+                                page = 1
+                                lazyLoad()
                             }
                         }
                     }
