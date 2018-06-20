@@ -6,5 +6,5 @@ package br.com.mauker
  * 搜索Content Provider
  */
 object MsvAuthority {
-    const val CONTENT_AUTHORITY: String = "br.com.mauker.materialsearchview.searchhistorydatabase"
+    const val CONTENT_AUTHORITY: String = "com.qiushi.wechatshop.searchhistorydatabase"
 }
