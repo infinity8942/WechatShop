@@ -1,11 +1,8 @@
 package com.qiushi.wechatshop.model
 
-class AddGoods() {
+class AddGoods constructor() {
 
-    /**
-     * shop_id  Number 店铺id（必填）
-    name     String  商品名
-    cover   String 封面图oss_id
-     */
-    lateinit var content:ArrayList<ShopContent>
+    constructor(shop_id: Long, name: String, cover: String, price: Long,
+                stock: Long, brief: String, content: ArrayList<Content>, good_id: Long, is_todo: Boolean) : this()
+
 }

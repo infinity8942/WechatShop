@@ -18,6 +18,7 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.R.mipmap.ic_add_img
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.AddGoods
 import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
@@ -44,6 +45,7 @@ class AddGoodsActivity : BaseActivity() {
     override fun layoutId(): Int = R.layout.activity_add_goods
     private var mShopOrderList = ArrayList<ShopOrder>()
     var isBg: Boolean = false
+    var addGoods = AddGoods()
     /**
      * 整体recyclerview adapter
      */
@@ -76,8 +78,6 @@ class AddGoodsActivity : BaseActivity() {
             fl_addlayout.visibility = View.GONE
             foot_layout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.VISIBLE
-
-            //foot add点击事件
             foot_add_img.setOnClickListener(onclicklistener)
             foot_add_text.setOnClickListener(onclicklistener)
         } else {
@@ -92,6 +92,7 @@ class AddGoodsActivity : BaseActivity() {
 
 
     override fun getData() {
+
     }
 
 
