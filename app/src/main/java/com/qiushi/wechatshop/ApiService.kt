@@ -83,6 +83,13 @@ interface ApiService {
     @POST("MobileApp/order/wechatpay")
     fun getWechatPay(@Field("number") phone: String): Observable<BaseResponse<PayReq>>
 
+    /**
+     * 意见反馈
+     */
+    @FormUrlEncoded
+    @POST("User/feedback")
+    fun feedback(@Field("type") type: Int, @Field("des") des: String, @Field("phone") phone: String): Observable<BaseResponse<Boolean>>
+
     //==============================================================================================
     /**
      * 置顶 取消置顶
