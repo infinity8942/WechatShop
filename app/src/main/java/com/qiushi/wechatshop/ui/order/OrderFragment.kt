@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
@@ -75,23 +77,46 @@ class OrderFragment : BaseFragment() {
         getOrder("")
     }
 
+    /**
+     * 获取订单列表（筛选）
+     */
     fun getOrder(keyword: String) {//TODO 订单筛选接口
         val observable: Observable<BaseResponse<ArrayList<Order>>> =
-                if ((activity as OrderActivity).isManage)
-                    RetrofitManager.service.orderList()
-                else
-                    RetrofitManager.service.userOrders(status, keyword)
+                if ((activity as OrderActivity).isManage)//店铺订单（管理）
+                    RetrofitManager.service.orderList(mAdapter.itemCount, Constants.PAGE_NUM)
+                else//用户订单
+                    RetrofitManager.service.userOrders(status, keyword, mAdapter.itemCount, Constants.PAGE_NUM)
 
         val disposable = observable.compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
                     override fun onHandleSuccess(t: ArrayList<Order>) {
-                        for (i in t) {
-
+                        if (page == 1) {
+                            mAdapter.setNewData(t)
+                            mRefreshLayout.finishRefresh(true)
+                        } else {
+                            mAdapter.addData(t)
+                            mRefreshLayout.finishLoadMore(true)
                         }
+
+                        //more
+                        mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
+                        page++
                     }
 
                     override fun onHandleError(error: Error) {
                         ToastUtils.showError(error.msg)
+                        if (page == 1) {
+                            mRefreshLayout.finishRefresh(false)
+                        } else {
+                            mRefreshLayout.finishLoadMore(false)
+                        }
+                        if (mAdapter.itemCount == 0) {
+                            if (error.code == ErrorStatus.NETWORK_ERROR) {
+                                mAdapter.emptyView = errorView
+                            } else {
+                                mAdapter.emptyView = notDataView
+                            }
+                        }
                     }
                 })
         addSubscription(disposable)

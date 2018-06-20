@@ -102,4 +102,10 @@
             android:textColor="@color/coupon_yellow"
             android:textSize="13sp" />
     </RelativeLayout>
+
+    <br.com.mauker.materialsearchview.MaterialSearchView
+        android:id="@+id/search_view"
+        style="@style/MaterialSearchViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

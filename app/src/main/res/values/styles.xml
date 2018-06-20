@@ -97,4 +97,22 @@
         <item name="android:textSize">14sp</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
+    <!-- SearchView -->
+    <style name="MaterialSearchViewStyle">
+        <item name="searchBackground">@color/white_ish</item>
+        <item name="searchVoiceIcon">@drawable/ic_action_voice_search</item>
+        <item name="searchCloseIcon">@drawable/ic_action_navigation_close</item>
+        <item name="searchBackIcon">@drawable/ic_action_navigation_arrow_back</item>
+        <item name="searchSuggestionBackground">@color/search_layover_bg</item>
+        <item name="historyIcon">@drawable/ic_history_white</item>
+        <item name="suggestionIcon">@mipmap/ic_search</item>
+        <item name="listTextColor">@color/white_ish</item>
+        <item name="searchBarHeight">@dimen/padding_tab_layout_top</item>
+        <item name="voiceHintPrompt">@string/hint_prompt</item>
+        <item name="android:textColor">@color/color_item_text</item>
+        <item name="android:textColorHint">@color/gray1</item>
+        <item name="android:hint">@string/search</item>
+        <item name="android:inputType">textCapWords</item>
+    </style>
 </resources>

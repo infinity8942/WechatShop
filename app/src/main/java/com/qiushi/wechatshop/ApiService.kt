@@ -42,15 +42,16 @@ interface ApiService {
     /**
      * 订单列表
      */
+    @FormUrlEncoded
     @POST("shop/order")
-    fun orderList(): Observable<BaseResponse<ArrayList<Order>>>
+    fun orderList(@Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Order>>>
 
     /**
      * 用户订单
      */
     @FormUrlEncoded
     @POST("Order/user_order")
-    fun userOrders(@Field("status") status: Int, @Field("keywords") keywords: String): Observable<BaseResponse<ArrayList<Order>>>
+    fun userOrders(@Field("status") status: Int, @Field("keywords") keywords: String, @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Order>>>
 
     /**
      * 登录
@@ -164,6 +165,6 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("Goods/goods_edit")
-    fun postGoods(@Field("json") json:String):Observable<BaseResponse<Boolean>>
+    fun postGoods(@Field("json") json: String): Observable<BaseResponse<Boolean>>
 
 }

@@ -44,9 +44,9 @@
             android:name=".ui.shop.ShopEditActivity"
             android:screenOrientation="portrait"
             android:theme="@style/dialogstyle" />
-        <activity android:name=".ui.order.OrderListActivity"
-            android:screenOrientation="portrait"
-            ></activity>
+        <activity
+            android:name=".ui.order.OrderListActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.order.OrderActivity"
             android:screenOrientation="portrait" />
@@ -132,6 +132,13 @@
                 android:resource="@xml/provider_paths"
                 tools:replace="name,resource" />
         </provider>
+
+        <provider
+            android:name="br.com.mauker.materialsearchview.db.HistoryProvider"
+            android:authorities="br.com.mauker.materialsearchview.searchhistorydatabase"
+            android:exported="false"
+            android:protectionLevel="signature"
+            android:syncable="true" />
 
         <activity
             android:name=".ui.manage.ManagerMoreActivity"

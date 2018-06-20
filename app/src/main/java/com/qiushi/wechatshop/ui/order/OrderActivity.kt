@@ -5,11 +5,14 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.text.TextUtils
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import br.com.mauker.materialsearchview.MaterialSearchView
 import cn.qqtheme.framework.picker.DatePicker
 import cn.qqtheme.framework.util.ConvertUtils
+import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
@@ -28,7 +31,7 @@ import kotlinx.android.synthetic.main.activity_order.*
  */
 class OrderActivity : BaseActivity(), View.OnClickListener {
 
-    var isManage: Boolean = true //是否店铺订单管理
+    var isManage: Boolean = true //true店铺订单管理,false用户订单
     private val tabList = ArrayList<String>()
     private val mTabEntities = ArrayList<CustomTabEntity>()
     private val fragments = ArrayList<Fragment>()
@@ -60,6 +63,9 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
+        StatusBarUtil.setPaddingSmart(this, search_view)
+
+        search_view.adjustTintAlpha(0.8f)
 
         //getData
         isManage = intent.getBooleanExtra("isManage", true)
@@ -116,7 +122,25 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         })
         viewpager.currentItem = 0
 
+        search_view.setOnItemClickListener { _, _, position, _ ->
+            val suggestion = search_view.getSuggestionAtPosition(position)
+            search_view.setQuery(suggestion, true)
+        }
+        search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!TextUtils.isEmpty(query))
+                    searchOrderByKeyWords(query!!)
+                return false
+            }
+
+        })
+
         back.setOnClickListener(this)
+        btn_search.setOnClickListener(this)
         if (isManage) {
             filter.setOnClickListener(this)
             add.setOnClickListener(this)
@@ -157,6 +181,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
+            R.id.btn_search -> search_view.openSearch()
             R.id.filter -> {//筛选弹框
                 showBottomFilterDialog()
             }
@@ -328,5 +353,21 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
      */
     private fun searchOrder() {
         (fragments[viewpager.currentItem] as OrderFragment).getOrder("")
+    }
+
+    /**
+     * 关键字搜索订单
+     */
+    private fun searchOrderByKeyWords(keyword: String) {
+        Logger.e(keyword)
+        (fragments[viewpager.currentItem] as OrderFragment).getOrder(keyword)
+    }
+
+    override fun onBackPressed() {
+        if (search_view.isOpen) {
+            search_view.closeSearch()
+        } else {
+            super.onBackPressed()
+        }
     }
 }

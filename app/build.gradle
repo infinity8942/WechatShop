@@ -120,4 +120,5 @@ dependencies {
     implementation 'com.jaeger.ninegridimageview:library:1.1.0'
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
     implementation files('libs/alipaySdk-20180601.jar')
+    implementation 'br.com.mauker.materialsearchview:materialsearchview:1.2.3'
 }
