@@ -22,6 +22,7 @@
             android:background="@drawable/tools_shape" />
 
         <EditText
+            android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -48,6 +49,7 @@
 
 
     <EditText
+        android:id="@+id/et_brief"
         android:layout_width="match_parent"
         android:layout_height="78dp"
         android:layout_marginTop="8dp"
@@ -86,6 +88,8 @@
         android:background="@drawable/add_goods_et_shape">
 
         <EditText
+            android:inputType="number|numberDecimal"
+            android:id="@+id/price"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@null"
@@ -132,6 +136,8 @@
 
 
     <EditText
+        android:id="@+id/stock"
+        android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"

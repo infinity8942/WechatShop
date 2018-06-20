@@ -1,8 +1,21 @@
 package com.qiushi.wechatshop.model
 
-class AddGoods constructor() {
+import java.io.Serializable
 
-    constructor(shop_id: Long, name: String, cover: String, price: Long,
-                stock: Long, brief: String, content: ArrayList<Content>, good_id: Long, is_todo: Boolean) : this()
+class AddGoods : Serializable {
+
+    var shop_id: Long = 0
+    var name: String = ""
+    var cover: String = ""
+    var price: Long = 0
+    var stock: Long = 0
+    var brief: String = ""
+    var content: ArrayList<Content>? = null
+    var good_id: Long = 0
+    var is_todo: Boolean = false
+    var cover_url: String = ""
+    var sales_brief: String = ""
+    var left_todo:Int = 0
+
 
 }

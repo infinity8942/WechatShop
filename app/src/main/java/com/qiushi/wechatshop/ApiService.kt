@@ -1,9 +1,6 @@
 package com.qiushi.wechatshop
 
-import com.qiushi.wechatshop.model.More
-import com.qiushi.wechatshop.model.Order
-import com.qiushi.wechatshop.model.Shop
-import com.qiushi.wechatshop.model.User
+import com.qiushi.wechatshop.model.*
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.util.oss.UploadFile
 import com.tencent.mm.opensdk.modelpay.PayReq
@@ -104,7 +101,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("Goods/shop_goods")
-    fun getMnagerGoods(@Field("shop_id") shop_id: Long, @Field("state") state: Int, @Field("keyword") keyword: String): Observable<BaseResponse<List<Shop>>>
+    fun getMnagerGoods(@Field("shop_id") shop_id: Long, @Field("state") state: Int, @Field("keyword") keyword: String): Observable<BaseResponse<List<Goods>>>
 
     @FormUrlEncoded
     @POST("Oss/get_token")
@@ -121,5 +118,10 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Menu/menu_edit")
     fun menuMore(@Field("shop_id") shop_id: Long, @Field("menu_id") menu_id: String, @Field("is_del") is_del: String): Observable<BaseResponse<Boolean>>
+
+
+    @FormUrlEncoded
+    @POST("Goods/goods_edit")
+    fun postGoods(@Field("json") json:String):Observable<BaseResponse<Boolean>>
 
 }

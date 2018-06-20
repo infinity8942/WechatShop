@@ -16,9 +16,12 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import cn.qqtheme.framework.util.CompatUtils
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.R.id.*
 import com.qiushi.wechatshop.R.mipmap.ic_add_img
+import com.qiushi.wechatshop.WAppContext.application
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.AddGoods
+import com.qiushi.wechatshop.model.Content
 import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
@@ -31,6 +34,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 import kotlinx.android.synthetic.main.activity_add_goods.*
 import kotlinx.android.synthetic.main.addgoods_header.*
+import kotlinx.android.synthetic.main.addgoods_header.view.*
 import kotlinx.android.synthetic.main.next_layout.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
@@ -46,6 +50,8 @@ class AddGoodsActivity : BaseActivity() {
     private var mShopOrderList = ArrayList<ShopOrder>()
     var isBg: Boolean = false
     var addGoods = AddGoods()
+
+    var contentList = ArrayList<Content>()
     /**
      * 整体recyclerview adapter
      */
@@ -73,7 +79,7 @@ class AddGoodsActivity : BaseActivity() {
 
 
     private fun isVisible() {
-        if (mShopOrderList != null && mShopOrderList.size > 0) {
+        if (addGoods != null && addGoods.content != null && addGoods.content!!.size > 0) {
             rl_layout.visibility = View.VISIBLE
             fl_addlayout.visibility = View.GONE
             foot_layout.visibility = View.VISIBLE
@@ -127,9 +133,55 @@ class AddGoodsActivity : BaseActivity() {
                 choicePhotoWrapper(1, Constants.ADDIMG_BG)
             }
             R.id.rl_next -> {
-                AddGoodsNextActivity.startAddGoodsNextActivity(this)
+
+                //判断 数据空值限制
+                isDataNull()
+
             }
         }
+    }
+
+    private fun isDataNull() {
+
+        addGoods.shop_id = Constants.SHOP_ID
+        if (et_brief.text.toString().isNotEmpty()){
+            addGoods.brief=et_brief.text.toString()
+        }
+        if (et_name.text.toString().isNotEmpty()) {
+            addGoods.name = et_name.text.toString()
+        }
+        if (price.text.toString().isNotEmpty()) {
+            addGoods.price = price.text.toString().toLong()
+        }
+        if (stock.text.toString().isNotEmpty()) {
+            addGoods.stock = stock.text.toString().toLong()
+        }
+
+        if (addGoods == null) {
+            ToastUtils.showError("未填写数据")
+            return
+        }
+        if (addGoods.name.isEmpty()) {
+            ToastUtils.showError("产品名称未写")
+            return
+        }
+        if (addGoods.cover_url.isEmpty() && addGoods.cover.isEmpty()) {
+            ToastUtils.showError("封面图未上传")
+            return
+        }
+        if (addGoods.price == 0.toLong()) {
+            ToastUtils.showError("单价未设置")
+            return
+        }
+        if (addGoods.stock == 0.toLong()) {
+            ToastUtils.showError("库存数量为设置")
+            return
+        }
+        if (addGoods.content == null || addGoods.content!!.size <= 0) {
+            ToastUtils.showError("产品详情未设置")
+            return
+        }
+        AddGoodsNextActivity.startAddGoodsNextActivity(this, addGoods)
     }
 
 
@@ -203,14 +255,12 @@ class AddGoodsActivity : BaseActivity() {
             Constants.EDIT_TEXT_REQUEST -> {
                 var mText = data?.getStringExtra("text")
                 if (mText != null && !mText.equals("")) {
-                    var mShopOrder5 = ShopOrder(1, mText, Constants.GOOD7, 8, false)
-                    if (mShopOrderList == null || mShopOrderList.size == 0) {
-                        mShopOrderList.add(mShopOrder5)
-                        isVisible()
-                        mAdapter.setNewData(mShopOrderList)
-                    } else {
-                        mAdapter.addData(mShopOrder5)
-                    }
+                    var content = Content()
+                    content.content = mText
+                    contentList.add(content)
+                    addGoods.content = contentList
+                    isVisible()
+                    mAdapter.setNewData(addGoods.content)
                 }
             }
             Constants.ADDIMG_BG -> {
@@ -235,30 +285,29 @@ class AddGoodsActivity : BaseActivity() {
         }
 
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
-//            ToastUtils.showError("失败" + currentSize / totalSize)
+
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            Log.e("tag", "ossId=====$id")
             if (isBg) {
+                addGoods.cover = id.toString()
                 //如果是背景 ,显示背景
                 ImageHelper.loadImageWithCorner(application, ic_bg, ("file://" + file!!.path), 94, 94,
                         RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
             } else {
+                var content = Content()
+                content.oss_id = id
+                content.img = "file://" + file!!.path
+                contentList.add(content)
+                addGoods.content = contentList
                 if (file != null && file.path != null) {
-                    if (mShopOrderList == null || mShopOrderList.size == 0) {
-                        var mShopOrder5 = ShopOrder(0, "老虎", "file://" + file.path, 8, false)
-                        mShopOrderList.add(mShopOrder5)
-                        isVisible()
-                        mAdapter.setNewData(mShopOrderList)
-                    } else {
-                        var mShopOrder5 = ShopOrder(0, "老虎", "file://" + file.path, 8, false)
-                        mAdapter.addData(mShopOrder5)
-                    }
+                    isVisible()
+                    mAdapter.setNewData(addGoods.content)
                 }
             }
         }
     }
-
 }
+
+
 

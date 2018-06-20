@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.net.BaseResponse
@@ -85,11 +86,11 @@ class ManagerGoodsActivity : BaseActivity() {
 
     override fun getData() {
 
-        val subscribeWith: BaseObserver<List<Shop>> = RetrofitManager.service
+        val subscribeWith: BaseObserver<List<Goods>> = RetrofitManager.service
                 .getMnagerGoods(Constants.SHOP_ID, state, keyword)
                 .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<List<Shop>>() {
-                    override fun onHandleSuccess(t: List<Shop>) {
+                .subscribeWith(object : BaseObserver<List<Goods>>() {
+                    override fun onHandleSuccess(t: List<Goods>) {
                         if (page == 1) {
                             mAdapter.setNewData(t)
                             mRefreshLayout.finishRefresh(true)
@@ -156,7 +157,7 @@ class ManagerGoodsActivity : BaseActivity() {
      * 商品条目点击事件
      */
     private val itemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        var mData = adapter.getItem(position) as Shop
+        var mData = adapter.getItem(position) as Goods
         when (view.id) {
             R.id.iv_more -> {
                 var item = adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)
@@ -188,20 +189,20 @@ class ManagerGoodsActivity : BaseActivity() {
             }
             R.id.tv_delete -> {
                 type = TYPE_DELETE
-                setTop(mData.id, type)
+                setTop(mData.id.toLong(), type)
                 ToastUtils.showError("删除")
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.tv_xj -> {
                 type = TYPE_XJ
-                setTop(mData.id, type)
+                setTop(mData.id.toLong(), type)
                 ToastUtils.showError("下架")
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.tv_zd -> {
                 type = TYPE_ZD
                 ToastUtils.showError("置顶")
-                setTop(mData.id, type)
+                setTop(mData.id.toLong(), type)
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
 
