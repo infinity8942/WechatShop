@@ -9,9 +9,7 @@
         android:id="@+id/mRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        app:srlAccentColor="@android:color/white"
-        app:srlPrimaryColor="@color/colorPrimary">
+        android:background="@android:color/white">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/mRecyclerView"
@@ -52,14 +50,14 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="24dp"
-                android:layout_alignParentRight="true"
-                android:textSize="14sp"
-                android:textColor="@android:color/white"
                 android:text="明细"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 </RelativeLayout>

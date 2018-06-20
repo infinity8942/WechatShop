@@ -54,8 +54,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/nine_grid"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/logo"
         android:orientation="horizontal">
 
+        <TextView
+            android:id="@+id/edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/ic_edit"
+            android:drawablePadding="3.7dp"
+            android:gravity="center_vertical"
+            android:text="编辑"
+            android:textColor="@color/color_more"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="34dp"
+            android:drawableLeft="@mipmap/ic_delete"
+            android:drawablePadding="3.7dp"
+            android:text="删除"
+            android:textColor="@color/color_more"
+            android:textSize="14sp" />
     </LinearLayout>
 </RelativeLayout>

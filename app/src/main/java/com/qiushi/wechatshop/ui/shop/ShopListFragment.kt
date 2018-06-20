@@ -105,4 +105,13 @@ class ShopListFragment : BaseFragment() {
             return ShopListFragment()
         }
     }
+
+    /**
+     * 跳转置顶店铺页面
+     */
+    fun selectShop(shopID: Long) {
+        shopList.indices
+                .filter { shopID == shopList[it].id }
+                .forEach { viewpager.currentItem = it }
+    }
 }

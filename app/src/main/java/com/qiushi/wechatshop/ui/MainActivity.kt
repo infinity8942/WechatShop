@@ -1,15 +1,17 @@
 package com.qiushi.wechatshop.ui
 
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.view.KeyEvent
-import com.flyco.tablayout.listener.CustomTabEntity
+import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.ui.manage.ManageFragment
 import com.qiushi.wechatshop.ui.shop.ShopListFragment
 import com.qiushi.wechatshop.ui.user.UserFragment
-import com.qiushi.wechatshop.util.TabEntity
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
+import com.qiushi.wechatshop.view.tab.listener.TabEntity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -47,5 +49,20 @@ class MainActivity : BaseActivity() {
             return true
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        if (null != intent) {
+            if (intent.hasExtra("jumpToShop")) {//跳转“串门”店铺页
+                Logger.e("跳转店铺 -> " + intent.getLongExtra("jumpToShop", -1))
+                if (navigation.currentTab != 1)
+                    navigation.currentTab = 1
+                (mFragments[1] as ShopListFragment).selectShop(
+                        10088 //TODO 测试数据
+//                        intent.getLongExtra("jumpToShop", -1)
+                )
+            }
+            //
+        }
     }
 }

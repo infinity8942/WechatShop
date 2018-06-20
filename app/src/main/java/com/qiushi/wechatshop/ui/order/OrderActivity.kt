@@ -10,17 +10,16 @@ import android.widget.EditText
 import android.widget.TextView
 import cn.qqtheme.framework.picker.DatePicker
 import cn.qqtheme.framework.util.ConvertUtils
-import com.flyco.tablayout.listener.CustomTabEntity
-import com.flyco.tablayout.listener.OnTabSelectListener
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
 import com.qiushi.wechatshop.util.DateUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.TabEntity
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
+import com.qiushi.wechatshop.view.tab.listener.OnTabSelectListener
+import com.qiushi.wechatshop.view.tab.listener.TabEntity
 import kotlinx.android.synthetic.main.activity_order.*
-import java.util.*
 
 /**
  * Created by Rylynn on 2018-06-12.
@@ -29,7 +28,7 @@ import java.util.*
  */
 class OrderActivity : BaseActivity(), View.OnClickListener {
 
-    private var isManage: Boolean = true
+    var isManage: Boolean = true //是否店铺订单管理
     private val tabList = ArrayList<String>()
     private val mTabEntities = ArrayList<CustomTabEntity>()
     private val fragments = ArrayList<Fragment>()
@@ -65,10 +64,13 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         //getData
         isManage = intent.getBooleanExtra("isManage", true)
 
-        if (isManage)
+        if (isManage) {
+            tv_title.text = "订单管理"
             layout_order.visibility = View.VISIBLE
-        else
+        } else {
+            tv_title.text = "我的订单"
             layout_order.visibility = View.GONE
+        }
 
         tabList.add("全部")
         tabList.add("代付款")

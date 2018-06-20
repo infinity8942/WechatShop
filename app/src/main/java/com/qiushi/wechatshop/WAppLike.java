@@ -159,8 +159,9 @@ public class WAppLike extends DefaultApplicationLike {
             @NonNull
             @Override
             public RefreshHeader createRefreshHeader(@NonNull Context context, @NonNull RefreshLayout layout) {
-                layout.setPrimaryColorsId(R.color.colorPrimary);//全局设置主题颜色
-                return new MaterialHeader(context);
+                MaterialHeader header = new MaterialHeader(context);
+                header.setColorSchemeColors(R.color.colorPrimary);
+                return header;
             }
         });
         SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {

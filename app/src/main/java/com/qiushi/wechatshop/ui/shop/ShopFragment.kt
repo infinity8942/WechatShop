@@ -8,7 +8,6 @@ import android.widget.TextView
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
-import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -63,8 +62,7 @@ class ShopFragment : BaseFragment() {
 
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
-                R.id.cart -> {
-                    ToastUtils.showMessage("添加购物车 = " + (adapter.data[position] as Goods).name)
+                R.id.cart -> {//TODO 添加购物车
                 }
             }
         }

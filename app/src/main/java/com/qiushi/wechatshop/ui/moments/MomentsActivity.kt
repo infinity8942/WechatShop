@@ -4,13 +4,13 @@ import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.View
-import com.flyco.tablayout.listener.CustomTabEntity
-import com.flyco.tablayout.listener.OnTabSelectListener
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
 import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.TabEntity
+import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
+import com.qiushi.wechatshop.view.tab.listener.OnTabSelectListener
+import com.qiushi.wechatshop.view.tab.listener.TabEntity
 import kotlinx.android.synthetic.main.activity_moments.*
 
 /**

@@ -46,6 +46,13 @@ interface ApiService {
     fun orderList(): Observable<BaseResponse<ArrayList<Order>>>
 
     /**
+     * 用户订单
+     */
+    @FormUrlEncoded
+    @POST("Order/user_order")
+    fun userOrders(@Field("status") status: Int, @Field("keywords") keywords: String): Observable<BaseResponse<ArrayList<Order>>>
+
+    /**
      * 登录
      */
     @FormUrlEncoded
@@ -86,6 +93,34 @@ interface ApiService {
     @FormUrlEncoded
     @POST("User/feedback")
     fun feedback(@Field("type") type: Int, @Field("des") des: String, @Field("phone") phone: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 素材列表
+     */
+    @FormUrlEncoded
+    @POST("Shop/moments")
+    fun getMoments(@Field("shop_id") shop_id: Long, @Field("type") type: Int, @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Moment>>>
+
+    /**
+     * 添加素材
+     */
+    @FormUrlEncoded
+    @POST("Shop/moments_edit")
+    fun addMoments(@Field("type") type: Int, @Field("content") content: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 素材编辑
+     */
+    @FormUrlEncoded
+    @POST("Shop/moments_edit")
+    fun editMoments(@Field("id") moments_id: Long, @Field("type") type: Int, @Field("content") content: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 删除素材
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/shop/moments/del")
+    fun delMoments(@Field("moment_id") moment_id: Long): Observable<BaseResponse<Boolean>>
 
     //==============================================================================================
     /**

@@ -5,17 +5,19 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
-import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Order
+import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.SpaceItemDecoration
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_order.*
 
 /**
@@ -55,7 +57,10 @@ class OrderFragment : BaseFragment() {
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
                 R.id.layout_shop -> {
-                    Logger.e("~~~~~~~~~~~~~~~layout_shop")
+                    val intent = Intent(activity, MainActivity::class.java)
+                    intent.putExtra("jumpToShop", (adapter.data[position] as Order).shop.id)
+                    startActivity(intent)
+                    (activity as OrderActivity).finish()
                 }
                 else -> {
                     val intent = Intent(activity, OrderDetailActivity::class.java)
@@ -64,13 +69,6 @@ class OrderFragment : BaseFragment() {
                 }
             }
         }
-
-        //TODO 测试数据
-        val list = ArrayList<Order>()
-        for (i in 1..5) {
-            list.add(Order())
-        }
-        mAdapter.setNewData(list)
     }
 
     override fun lazyLoad() {
@@ -78,8 +76,13 @@ class OrderFragment : BaseFragment() {
     }
 
     fun getOrder(keyword: String) {//TODO 订单筛选接口
-        val disposable = RetrofitManager.service.orderList()
-                .compose(SchedulerUtils.ioToMain())
+        val observable: Observable<BaseResponse<ArrayList<Order>>> =
+                if ((activity as OrderActivity).isManage)
+                    RetrofitManager.service.orderList()
+                else
+                    RetrofitManager.service.userOrders(status, keyword)
+
+        val disposable = observable.compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
                     override fun onHandleSuccess(t: ArrayList<Order>) {
                         for (i in t) {
