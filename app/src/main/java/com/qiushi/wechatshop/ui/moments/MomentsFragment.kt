@@ -101,8 +101,15 @@ class MomentsFragment : BaseFragment() {
                         }
 
                         //more
-                        mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
-                        page++
+                        if (mAdapter.itemCount == 0) {
+                            mAdapter.emptyView = notDataView
+                            return
+                        }
+
+                        if (t.isNotEmpty()) {
+                            mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
+                            page++
+                        }
                     }
 
                     override fun onHandleError(error: Error) {

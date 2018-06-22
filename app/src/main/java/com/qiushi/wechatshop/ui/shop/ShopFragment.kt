@@ -83,8 +83,15 @@ class ShopFragment : BaseFragment() {
                         }
 
                         //more
-                        mRefreshLayout.setNoMoreData(t.goods.size < Constants.PAGE_NUM)
-                        page++
+                        if (mAdapter.itemCount == 0) {
+                            mAdapter.emptyView = notDataView
+                            return
+                        }
+
+                        if (t.goods.isNotEmpty()) {
+                            mRefreshLayout.setNoMoreData(t.goods.size < Constants.PAGE_NUM)
+                            page++
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
