@@ -5,11 +5,9 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
-import android.text.TextUtils
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import br.com.mauker.materialsearchview.MaterialSearchView
 import cn.qqtheme.framework.picker.DatePicker
 import cn.qqtheme.framework.util.ConvertUtils
 import com.qiushi.wechatshop.R
@@ -18,6 +16,7 @@ import com.qiushi.wechatshop.base.BaseFragmentAdapter
 import com.qiushi.wechatshop.util.DateUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.view.search.MaterialSearchView
 import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
 import com.qiushi.wechatshop.view.tab.listener.OnTabSelectListener
 import com.qiushi.wechatshop.view.tab.listener.TabEntity
@@ -31,6 +30,7 @@ import kotlinx.android.synthetic.main.activity_order.*
 class OrderActivity : BaseActivity(), View.OnClickListener {
 
     var isManage: Boolean = true //true店铺订单管理,false用户订单
+    var title = "订单管理" //标题名
     private val tabList = ArrayList<String>()
     private val mTabEntities = ArrayList<CustomTabEntity>()
     private val fragments = ArrayList<Fragment>()
@@ -75,14 +75,15 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         isManage = intent.getBooleanExtra("isManage", true)
 
         if (isManage) {
-            tv_title.text = "订单管理"
+            title = "订单管理"
             layout_order.visibility = View.VISIBLE
             shopID = 10091 //TODO 测试数据
         } else {
-            tv_title.text = "我的订单"
+            title = "我的订单"
             layout_order.visibility = View.GONE
             shopID = 0
         }
+        tv_title.text = title
 
         tabList.add("全部")
         tabList.add("代付款")
@@ -130,6 +131,11 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
 
         search_view.setSearchViewListener(object : MaterialSearchView.SearchViewListener {
             override fun onSearchViewClosed() {
+                if (search_view.currentQuery.isEmpty()) {
+                    keywords = ""
+                    searchOrder()
+                    tv_title.text = title
+                }
                 search_view.setShouldAnimate(true)
             }
 
@@ -143,18 +149,13 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         }
         search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (TextUtils.isEmpty(newText)) {
-                    keywords = ""
-                    searchOrder()
-                }
                 return false
             }
 
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (!TextUtils.isEmpty(query)) {
-                    keywords = query!!
-                    searchOrder()
-                }
+            override fun onQueryTextSubmit(query: String): Boolean {
+                keywords = query
+                searchOrder()
+                tv_title.text = keywords
                 return false
             }
 
@@ -202,10 +203,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
-            R.id.btn_search -> {
-                search_view.openSearch()
-                search_view.setQuery(keywords, false)
-            }
+            R.id.btn_search -> search_view.openSearch()
             R.id.filter -> {//筛选弹框
                 showBottomFilterDialog()
             }

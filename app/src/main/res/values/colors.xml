@@ -60,4 +60,20 @@
     <color name="color_item_text">#333333</color>
     <color name="color_date">#3F3F3F</color>
     <color name="translate">#00000000</color>
+
+    <!-- SearchView -->
+    <color name="search_layover_bg">@color/gray</color>
+    <color name="search_field_bg">@color/white_ish</color>
+
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="gray">#ff888888</color>
+
+    <color name="white_50">#88ffffff</color>
+    <color name="black_50">#88000000</color>
+    <color name="gray_50">#88888888</color>
+
+    <color name="white_ish">#fffefefe</color>
 </resources>

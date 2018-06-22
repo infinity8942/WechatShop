@@ -3,10 +3,10 @@ package com.qiushi.wechatshop.ui.user
 import android.Manifest
 import android.content.Intent
 import android.view.View
-import br.com.mauker.materialsearchview.MaterialSearchView
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.util.*
+import com.qiushi.wechatshop.view.search.MaterialSearchView
 import kotlinx.android.synthetic.main.activity_setting.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback

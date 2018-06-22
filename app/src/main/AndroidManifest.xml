@@ -134,7 +134,7 @@
         </provider>
 
         <provider
-            android:name="br.com.mauker.materialsearchview.db.HistoryProvider"
+            android:name=".view.search.db.HistoryProvider"
             android:authorities="com.qiushi.wechatshop.searchhistorydatabase"
             android:exported="false"
             android:protectionLevel="signature"

@@ -33,7 +33,7 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
         layout_deliver.setOnClickListener(this)
         layout_pay.setOnClickListener(this)
         layout_amount.setOnClickListener(this)
-        layout_chat.setOnClickListener(this)
+//        layout_chat.setOnClickListener(this)
 //        layout_date.setOnClickListener(this)
 //        layout_coupon_amount.setOnClickListener(this)
     }
@@ -53,11 +53,11 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.layout_amount -> {//库存量紧缺
-
+                ManagerGoodsActivity.startManagerGoodsActivity(this, 0)
             }
-            R.id.layout_chat -> {//需沟通人员
-
-            }
+//            R.id.layout_chat -> {//需沟通人员
+//
+//            }
 //            R.id.layout_date -> {//优惠券即将过期
 //
 //            }
