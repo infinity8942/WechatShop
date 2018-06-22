@@ -122,6 +122,10 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("Goods/goods_edit")
-    fun postGoods(@Field("json") json:String):Observable<BaseResponse<Boolean>>
+    fun postGoods(@Field("json") json: String): Observable<BaseResponse<Boolean>>
+
+    @FormUrlEncoded
+    @POST("Goods/edit_goods_info")
+    fun getGoods(@Field("goods_id") goods_id: Long): Observable<BaseResponse<AddGoods>>
 
 }

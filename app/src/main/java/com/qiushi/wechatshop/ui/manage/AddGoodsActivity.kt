@@ -5,24 +5,23 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
+import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
-import cn.qqtheme.framework.util.CompatUtils
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.R.id.*
-import com.qiushi.wechatshop.R.mipmap.ic_add_img
-import com.qiushi.wechatshop.WAppContext.application
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.AddGoods
 import com.qiushi.wechatshop.model.Content
 import com.qiushi.wechatshop.model.ShopOrder
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 
@@ -34,22 +33,22 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 import kotlinx.android.synthetic.main.activity_add_goods.*
 import kotlinx.android.synthetic.main.addgoods_header.*
-import kotlinx.android.synthetic.main.addgoods_header.view.*
 import kotlinx.android.synthetic.main.next_layout.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
 import java.io.File
 
-import java.util.*
 import kotlin.collections.ArrayList
 
 
 class AddGoodsActivity : BaseActivity() {
+    var goods_id: Long = 0
     override fun layoutId(): Int = R.layout.activity_add_goods
     private var mShopOrderList = ArrayList<ShopOrder>()
     var isBg: Boolean = false
     var addGoods = AddGoods()
+    var mHandler = Handler()
 
     var contentList = ArrayList<Content>()
     /**
@@ -74,7 +73,7 @@ class AddGoodsActivity : BaseActivity() {
         mRecyclerView.adapter = mAdapter
         ic_bg.setOnClickListener(onclicklistener)
         rl_next.setOnClickListener(onclicklistener)
-        isVisible()
+
     }
 
 
@@ -97,15 +96,67 @@ class AddGoodsActivity : BaseActivity() {
     }
 
 
+    override fun getParams(intent: Intent) {
+        super.getParams(intent)
+        goods_id = intent.getLongExtra("goods_id", 0)
+    }
+
     override fun getData() {
+        if (goods_id != null && goods_id != 0.toLong()) {
+            val subscribeWith: BaseObserver<AddGoods> = RetrofitManager.service.getGoods(goods_id)
+                    .compose(SchedulerUtils.ioToMain())
+                    .subscribeWith(object : BaseObserver<AddGoods>() {
+                        override fun onHandleSuccess(t: AddGoods) {
+                            addGoods = t
+                            isVisible()
+                            if (addGoods != null && addGoods.content != null && addGoods.content!!.size > 0) {
+                                contentList = addGoods.content!!
+                                //展示数据
+                                setData(addGoods)
+                                mAdapter.setNewData(addGoods.content)
+                            }
+                        }
+
+                        override fun onHandleError(error: Error) {
+
+                        }
+                    })
+            addSubscription(subscribeWith)
+        } else {
+            isVisible()
+        }
+    }
+
+    fun setData(addGoods: AddGoods) {
+        //背景图
+        if (addGoods.cover_url != null && addGoods.cover_url.isNotEmpty()) {
+            ImageHelper.loadImageWithCorner(application, ic_bg, addGoods.cover_url, 94, 94,
+                    RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+        }
+        //名字
+        if (addGoods.name != null && addGoods.name.isNotEmpty()) {
+            et_name.setText(addGoods.name)
+        }
+        //描述
+        if (addGoods.brief != null && addGoods.brief.isNotEmpty()) {
+            et_brief.setText(addGoods.brief)
+        }
+        //单价
+        if (addGoods.price != null && addGoods.price != 0.toLong()) {
+            price.setText(addGoods.price.toString())
+        }
+        //库存
+        if (addGoods.stock != null && addGoods.stock != 0.toLong()) {
+            stock.setText(addGoods.stock.toString())
+        }
 
     }
 
-
     companion object {
-        fun startAddGoodsActivity(context: Context) {
+        fun startAddGoodsActivity(context: Context, goods_id: Long) {
             val intent = Intent()
             //获取intent对象
+            intent.putExtra("goods_id", goods_id)
             intent.setClass(context, AddGoodsActivity::class.java)
             // 获取class是使用::反射
             ContextCompat.startActivity(context, intent, null)
@@ -144,8 +195,8 @@ class AddGoodsActivity : BaseActivity() {
     private fun isDataNull() {
 
         addGoods.shop_id = Constants.SHOP_ID
-        if (et_brief.text.toString().isNotEmpty()){
-            addGoods.brief=et_brief.text.toString()
+        if (et_brief.text.toString().isNotEmpty()) {
+            addGoods.brief = et_brief.text.toString()
         }
         if (et_name.text.toString().isNotEmpty()) {
             addGoods.name = et_name.text.toString()
@@ -289,22 +340,26 @@ class AddGoodsActivity : BaseActivity() {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            if (isBg) {
-                addGoods.cover = id.toString()
-                //如果是背景 ,显示背景
-                ImageHelper.loadImageWithCorner(application, ic_bg, ("file://" + file!!.path), 94, 94,
-                        RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
-            } else {
-                var content = Content()
-                content.oss_id = id
-                content.img = "file://" + file!!.path
-                contentList.add(content)
-                addGoods.content = contentList
-                if (file != null && file.path != null) {
-                    isVisible()
-                    mAdapter.setNewData(addGoods.content)
+
+            mHandler.postDelayed({
+                if (isBg) {
+                    addGoods.cover = id.toString()
+                    //如果是背景 ,显示背景
+                    ImageHelper.loadImageWithCorner(application, ic_bg, ("file://" + file!!.path), 94, 94,
+                            RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+                } else {
+                    var content = Content()
+                    content.oss_id = id
+                    content.img = "file://" + file!!.path
+                    contentList.add(content)
+                    addGoods.content = contentList
+                    if (file != null && file.path != null) {
+                        isVisible()
+                        mAdapter.setNewData(addGoods.content)
+                    }
                 }
-            }
+            }, 500)
+
         }
     }
 }

@@ -13,6 +13,7 @@
     <color name="color_add_et">#FFF6F7F9</color>
     <color name="black_15">#FF151515</color>
     <color name="color_up_img">#FFFDBD5E</color>
+    <color name="filter_color">#FFFB983C</color>
 
     <color name="color_gray">#9a9a9a</color>
 
@@ -46,6 +47,7 @@
     <color name="edit_black">#151515</color>
     <color name="bg_toast">#99000000</color>
 
+    <color name="gray3">#FF707070</color>
     <color name="gray1">#707070</color>
     <color name="gray2">#C1C1C1</color>
     <color name="color_title_bg">#CCFFFFFF</color>

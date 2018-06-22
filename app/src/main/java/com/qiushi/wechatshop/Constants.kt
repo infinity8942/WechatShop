@@ -48,8 +48,8 @@ object Constants {
     const val EDIT_TEXT_REQUEST = 1005 //编辑文本的回调
     const val ADDIMG_BG = 1006//背景进入相册回调
 
-    const val ADDIMG_LOGO=1007//店铺装修logo
-    const val ADDIMG_GOODS_BG=1008//店铺装修背景
+    const val ADDIMG_LOGO = 1007//店铺装修logo
+    const val ADDIMG_GOODS_BG = 1008//店铺装修背景
 
 
     const val TOKEN = "2813c9014ff9581978e3f616e09b1d79"
