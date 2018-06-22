@@ -21,7 +21,8 @@ import kotlinx.android.synthetic.main.activity_add_order.*
  */
 class AddOrderActivity : BaseActivity() {
 
-    var goods_id: Long = 0L
+    var goods_id: Long = 5 //TODO 测试数据
+    //            0L
     var price: Double = 0.00
     var amount: Int = 1
 
@@ -109,7 +110,7 @@ class AddOrderActivity : BaseActivity() {
             return
         }
 
-        if (price != 0.00) {
+        if (price == 0.00) {
             ToastUtils.showWarning("单价不能为0")
             return
         }
@@ -119,7 +120,7 @@ class AddOrderActivity : BaseActivity() {
             return
         }
 
-        if (amount != 0) {
+        if (amount == 0) {
             ToastUtils.showWarning("产品数量不能为0")
             return
         }
