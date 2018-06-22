@@ -98,9 +98,9 @@ class ManageFragment : BaseFragment() {
         notShop.findViewById<Button>(R.id.empty_view_tv).setOnClickListener {
             DecorateActivity.startDecorateActivity(this.context!!, "", "", "")
         }
-        notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
+        notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }
-        errorView = layoutInflater.inflate(R.layout.error_view, mRecyclerView.parent as ViewGroup, false)
+        errorView = layoutInflater.inflate(R.layout.empty_network_view, mRecyclerView.parent as ViewGroup, false)
         errorView.setOnClickListener { lazyLoad() }
 
         headerView = layoutInflater.inflate(R.layout.manager_item_head, mRecyclerView.parent as ViewGroup, false)
@@ -380,6 +380,8 @@ class ManageFragment : BaseFragment() {
     }
 
     fun goToOrderActivity(type: Int) {
-        startActivity(Intent(activity, OrderActivity::class.java))
+        val intent = Intent(activity, OrderActivity::class.java)
+        intent.putExtra("type", type)
+        startActivity(intent)
     }
 }

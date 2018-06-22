@@ -69,6 +69,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         StatusBarUtil.setPaddingSmart(this, search_view)
 
         search_view.adjustTintAlpha(0.8f)
+        search_view.setCloseOnTintClick(true)
 
         //getData
         isManage = intent.getBooleanExtra("isManage", true)
@@ -133,6 +134,10 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         }
         search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
+                if (TextUtils.isEmpty(newText)) {
+                    keywords = ""
+                    searchOrder()
+                }
                 return false
             }
 
@@ -188,7 +193,10 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
-            R.id.btn_search -> search_view.openSearch()
+            R.id.btn_search -> {
+                search_view.openSearch()
+                search_view.setQuery(keywords, false)
+            }
             R.id.filter -> {//筛选弹框
                 showBottomFilterDialog()
             }

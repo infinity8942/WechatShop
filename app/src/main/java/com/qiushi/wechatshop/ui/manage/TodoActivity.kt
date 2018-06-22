@@ -48,7 +48,7 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.layout_pay -> {//待支付
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("jumpToOrder", 3)
+                intent.putExtra("jumpToOrder", 1)
                 startActivity(intent)
                 finish()
             }

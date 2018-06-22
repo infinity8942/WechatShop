@@ -44,9 +44,9 @@ class ShopFragment : BaseFragment() {
         mRecyclerView.addItemDecoration(GridSpaceItemDecoration(DensityUtils.dp2px(9.toFloat()), DensityUtils.dp2px(8.toFloat())))
         mRecyclerView.adapter = mAdapter
 
-        notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
+        notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }
-        errorView = layoutInflater.inflate(R.layout.error_view, mRecyclerView.parent as ViewGroup, false)
+        errorView = layoutInflater.inflate(R.layout.empty_network_view, mRecyclerView.parent as ViewGroup, false)
         errorView.setOnClickListener { lazyLoad() }
 
         //Header

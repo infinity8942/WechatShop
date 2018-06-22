@@ -47,9 +47,9 @@ class OrderListActivity : BaseActivity() {
         mList!!.add(mGoods4!!)
 
 
-        notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
+        notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { getData() }
-        errorView = layoutInflater.inflate(R.layout.error_view, mRecyclerView.parent as ViewGroup, false)
+        errorView = layoutInflater.inflate(R.layout.empty_network_view, mRecyclerView.parent as ViewGroup, false)
         errorView.setOnClickListener { getData() }
 
         headerView = layoutInflater.inflate(R.layout.orderlist_header, mRecyclerView.parent as ViewGroup, false)

@@ -44,7 +44,7 @@ class OrderFragment : BaseFragment() {
 
         notDataView = layoutInflater.inflate(R.layout.empty_order_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }
-        errorView = layoutInflater.inflate(R.layout.error_view, mRecyclerView.parent as ViewGroup, false)
+        errorView = layoutInflater.inflate(R.layout.empty_network_view, mRecyclerView.parent as ViewGroup, false)
         errorView.setOnClickListener { lazyLoad() }
 
         //Listener

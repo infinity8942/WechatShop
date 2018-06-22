@@ -67,7 +67,7 @@ class MainActivity : BaseActivity() {
                 val orderType = intent.getIntExtra("jumpToOrder", -1)
                 Logger.e("跳转订单 -> " + orderType)
                 if (orderType != -1) {
-                    (mFragments[1] as ManageFragment).goToOrderActivity(orderType)
+                    (mFragments[0] as ManageFragment).goToOrderActivity(orderType)
                 }
             }
         }
