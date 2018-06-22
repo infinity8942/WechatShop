@@ -7,11 +7,11 @@
     <string name="error_view_hint">加载失败</string>
     <string name="no_network_view_hint">网络异常</string>
 
-    <string name="notshop_hint">还未开店~</string>
-    <string name="empty_view_hint">暂时木有内容呀~~</string>
+    <string name="notshop_hint">您还没有自己的店铺呦～</string>
+    <string name="empty_view_hint">暂无内容~</string>
     <string name="data_error">数据获取失败(ㄒoㄒ)~~</string>
     <string name="loading_text">加载中&#8230;</string>
-    <string name="no_network">请检查网络后点击重新加载</string>
+    <string name="no_network">没有网络啦 刷新试试吧～</string>
 
     <string name="search_transition_name">transition_reveal</string>
 

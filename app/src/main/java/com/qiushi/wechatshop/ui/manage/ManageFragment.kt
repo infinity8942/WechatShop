@@ -94,7 +94,7 @@ class ManageFragment : BaseFragment() {
         color2 = ContextCompat.getColor(context!!, R.color.colorPrimaryDark)
         //RecyclerView
 
-        notShop = layoutInflater.inflate(R.layout.notshop_view, mRecyclerView.parent as ViewGroup, false)
+        notShop = layoutInflater.inflate(R.layout.empty_shop_view, mRecyclerView.parent as ViewGroup, false)
         notShop.findViewById<Button>(R.id.empty_view_tv).setOnClickListener {
             DecorateActivity.startDecorateActivity(this.context!!, "", "", "")
         }
