@@ -42,7 +42,7 @@ class OrderFragment : BaseFragment() {
         mRecyclerView.addItemDecoration(SpaceItemDecoration(0, DensityUtils.dp2px(8.toFloat())))
         mRecyclerView.adapter = mAdapter
 
-        notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
+        notDataView = layoutInflater.inflate(R.layout.empty_order_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }
         errorView = layoutInflater.inflate(R.layout.error_view, mRecyclerView.parent as ViewGroup, false)
         errorView.setOnClickListener { lazyLoad() }
@@ -80,7 +80,7 @@ class OrderFragment : BaseFragment() {
      */
     fun getOrders() {
         val disposable = RetrofitManager.service.getOrders(
-                (activity as OrderActivity).identify, (activity as OrderActivity).orderNumber,
+                (activity as OrderActivity).shopID, (activity as OrderActivity).orderNumber,
                 (activity as OrderActivity).pay_time, (activity as OrderActivity).keywords,
                 (activity as OrderActivity).startTime, (activity as OrderActivity).endTime,
                 (activity as OrderActivity).from, status,

@@ -48,7 +48,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
     private var cancel: TextView? = null
     private var confirm: TextView? = null
     //
-    var identify = 1
+    var shopID: Long = 0
     var source = 0
     var time = 0
     var from = 0 //订单来源 0不选择、1客户端、2小程序
@@ -76,11 +76,11 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         if (isManage) {
             tv_title.text = "订单管理"
             layout_order.visibility = View.VISIBLE
-            identify = 1
+            shopID = 10091 //TODO 测试数据
         } else {
             tv_title.text = "我的订单"
             layout_order.visibility = View.GONE
-            identify = 2
+            shopID = 0
         }
 
         tabList.add("全部")

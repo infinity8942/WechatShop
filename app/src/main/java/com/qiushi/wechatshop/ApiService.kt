@@ -44,8 +44,8 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("Order/shop_order")
-    fun getOrders(@Field("identify") identify: Int, @Field("number") number: String,
-                  @Field("pay_time") pay_time: Int, @Field("keywords") keywords: String,
+    fun getOrders(@Field("shop_id") shop_id: Long, @Field("number") number: String,
+                  @Field("pay_time") pay_time: Int, @Field("key") key: String,
                   @Field("start_time") start_time: Long, @Field("end_time") end_time: Long,
                   @Field("from") from: Int, @Field("state") state: Int,
                   @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Order>>>
@@ -119,6 +119,13 @@ interface ApiService {
     @FormUrlEncoded
     @POST("MobileApp/shop/moments/del")
     fun delMoments(@Field("moment_id") moment_id: Long): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 待办事项
+     */
+    @FormUrlEncoded
+    @POST("Shop/shop_todo")
+    fun getToDo(@Field("shop_id") shop_id: Long): Observable<BaseResponse<Boolean>>
 
     //==============================================================================================
     /**

@@ -86,7 +86,9 @@ class MomentsFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        val disposable = RetrofitManager.service.getMoments(10091, status, mAdapter.itemCount, Constants.PAGE_NUM)
+        val disposable = RetrofitManager.service.getMoments(
+                10091  //TODO 测试数据
+                , status, mAdapter.itemCount, Constants.PAGE_NUM)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Moment>>() {
                     override fun onHandleSuccess(t: ArrayList<Moment>) {

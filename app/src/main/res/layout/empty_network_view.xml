@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/empty_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="183dp"
+        android:layout_height="124dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="155dp"
+        android:src="@mipmap/bg_empty_network" />
+
+    <TextView
+        style="@style/MultipleStatusView.Content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="@string/no_network" />
+
+    <Button
+        android:id="@+id/retry"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_orange_commit"
+        android:text="刷新"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+</LinearLayout>
