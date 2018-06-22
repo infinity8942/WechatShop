@@ -17,6 +17,7 @@ import com.qiushi.wechatshop.util.ImageHelper
  */
 class OrderAdapter : BaseQuickAdapter<Order, BaseViewHolder>(R.layout.item_order, null) {
     override fun convert(helper: BaseViewHolder, item: Order?) {
+        //TODO 测试数据
         ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), Constants.AVATAR, 24)
         helper.setText(R.id.name, "咪蒙韩国代购" + helper.adapterPosition)
         helper.setText(R.id.status, "等待卖家发货")

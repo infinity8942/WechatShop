@@ -83,9 +83,12 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="16dp"
-                android:background="@drawable/add_goods_et_shape">
+                android:background="@drawable/add_goods_et_shape"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <EditText
+                    android:id="@+id/et_price"
                     style="@style/Edit_style"
                     android:hint="输入价格" />
 
@@ -125,8 +128,10 @@
                 android:background="@drawable/add_goods_et_shape">
 
                 <EditText
+                    android:id="@+id/et_amount"
                     style="@style/Edit_style"
-                    android:hint="产品数量" />
+                    android:hint="产品数量"
+                    android:text="1" />
             </FrameLayout>
 
             <LinearLayout
@@ -156,7 +161,9 @@
                 android:background="@drawable/add_goods_et_shape">
 
                 <EditText
+                    android:id="@+id/et_all"
                     style="@style/Edit_style"
+                    android:focusable="false"
                     android:hint="输入价格" />
 
                 <TextView
@@ -178,6 +185,7 @@
                 android:textSize="14sp" />
 
             <EditText
+                android:id="@+id/et_des"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
                 android:layout_marginLeft="12dp"
@@ -194,6 +202,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/commit"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="16dp"

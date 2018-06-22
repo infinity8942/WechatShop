@@ -80,11 +80,9 @@ public class DateUtil {
     public static Calendar calendar = null;
     private static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-
     public static Date str2Date(String str) {
         return str2Date(str, null);
     }
-
 
     public static Date str2Date(String str, String format) {
         if (str == null || str.length() == 0) {
@@ -103,14 +101,11 @@ public class DateUtil {
         return date;
     }
 
-
     public static Calendar str2Calendar(String str) {
         return str2Calendar(str, null);
     }
 
-
     public static Calendar str2Calendar(String str, String format) {
-
         Date date = str2Date(str, format);
         if (date == null) {
             return null;
@@ -121,11 +116,9 @@ public class DateUtil {
         return c;
     }
 
-
     public static String date2Str(Calendar c) {// yyyy-MM-dd HH:mm:ss
         return date2Str(c, null);
     }
-
 
     public static String date2Str(Calendar c, String format) {
         if (c == null) {
@@ -134,11 +127,9 @@ public class DateUtil {
         return date2Str(c.getTime(), format);
     }
 
-
     public static String date2Str(Date d) {// yyyy-MM-dd HH:mm:ss
         return date2Str(d, null);
     }
-
 
     public static String date2Str(Date d, String format) {// yyyy-MM-dd HH:mm:ss
         if (d == null) {
@@ -152,7 +143,6 @@ public class DateUtil {
         return s;
     }
 
-
     public static String getCurDateStr() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
@@ -161,7 +151,6 @@ public class DateUtil {
                 c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) +
                 ":" + c.get(Calendar.SECOND);
     }
-
 
     /**
      * 获得当前日期的字符串格式
@@ -172,9 +161,7 @@ public class DateUtil {
     public static String getCurDateStr(String format) {
         Calendar c = Calendar.getInstance();
         return date2Str(c, format);
-
     }
-
 
     /**
      * @param time 当前的时间
@@ -182,22 +169,16 @@ public class DateUtil {
      */
     //
     public static String getMillon(long time) {
-
         return new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(time);
-
     }
-
 
     /**
      * @param time 当前的时间
      * @return 当前的天
      */
     public static String getDay(long time) {
-
         return new SimpleDateFormat("yyyy-MM-dd").format(time);
-
     }
-
 
     /**
      * @param time 时间
@@ -205,11 +186,8 @@ public class DateUtil {
      */
     // 格式到毫秒
     public static String getSMillon(long time) {
-
         return new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(time);
-
     }
-
 
     /**
      * 在日期上增加数个整月
@@ -223,9 +201,7 @@ public class DateUtil {
         cal.setTime(date);
         cal.add(Calendar.MONTH, n);
         return cal.getTime();
-
     }
-
 
     /**
      * 在日期上增加天数
@@ -239,9 +215,7 @@ public class DateUtil {
         cal.setTime(date);
         cal.add(Calendar.DATE, n);
         return cal.getTime();
-
     }
-
 
     /**
      * 获取距现在某一小时的时刻
@@ -255,9 +229,7 @@ public class DateUtil {
         Date date = new Date();
         date.setTime(date.getTime() + h * 60 * 60 * 1000);
         return sdf.format(date);
-
     }
-
 
     /**
      * 获取时间戳
@@ -268,9 +240,7 @@ public class DateUtil {
         SimpleDateFormat df = new SimpleDateFormat(FORMAT_FULL);
         Calendar calendar = Calendar.getInstance();
         return df.format(calendar.getTime());
-
     }
-
 
     /**
      * 功能描述：返回月
@@ -284,7 +254,6 @@ public class DateUtil {
         return calendar.get(Calendar.MONTH) + 1;
     }
 
-
     /**
      * 功能描述：返回日
      *
@@ -296,7 +265,6 @@ public class DateUtil {
         calendar.setTime(date);
         return calendar.get(Calendar.DAY_OF_MONTH);
     }
-
 
     /**
      * 功能描述：返回小
@@ -310,7 +278,6 @@ public class DateUtil {
         return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
-
     /**
      * 功能描述：返回分
      *
@@ -323,17 +290,14 @@ public class DateUtil {
         return calendar.get(Calendar.MINUTE);
     }
 
-
     /**
      * 获得默认的 date pattern
      *
      * @return 默认的格式
      */
     public static String getDatePattern() {
-
         return FORMAT_YMDHMS;
     }
-
 
     /**
      * 返回秒钟
@@ -343,11 +307,9 @@ public class DateUtil {
      */
     public static int getSecond(Date date) {
         calendar = Calendar.getInstance();
-
         calendar.setTime(date);
         return calendar.get(Calendar.SECOND);
     }
-
 
     /**
      * 使用预设格式提取字符串日期
@@ -357,9 +319,7 @@ public class DateUtil {
      */
     public static Date parse(String strDate) {
         return parse(strDate, getDatePattern());
-
     }
-
 
     /**
      * 功能描述：返回毫
@@ -370,9 +330,8 @@ public class DateUtil {
     public static long getMillis(Date date) {
         calendar = Calendar.getInstance();
         calendar.setTime(date);
-        return calendar.getTimeInMillis();
+        return calendar.getTimeInMillis() / 1000;
     }
-
 
     /**
      * 按默认格式的字符串距离今天的天数
@@ -386,9 +345,7 @@ public class DateUtil {
         c.setTime(parse(date));
         long t1 = c.getTime().getTime();
         return (int) (t / 1000 - t1 / 1000) / 3600 / 24;
-
     }
-
 
     /**
      * 使用用户格式提取字符串日期
@@ -405,9 +362,7 @@ public class DateUtil {
             e.printStackTrace();
             return null;
         }
-
     }
-
 
     /**
      * 按用户格式字符串距离今天的天数
@@ -422,6 +377,5 @@ public class DateUtil {
         c.setTime(parse(date, format));
         long t1 = c.getTime().getTime();
         return (int) (t / 1000 - t1 / 1000) / 3600 / 24;
-
     }
 }
