@@ -127,7 +127,12 @@ class ShopEditActivity : Activity(), View.OnClickListener {
             }
             R.id.btn_close -> {
                 if (isEdit) {//确认关闭提示
-                    ToastUtils.showWarning("请编辑完成后再关闭")
+                    android.support.v7.app.AlertDialog.Builder(this)
+                            .setMessage("正在编辑，您确定要现在返回吗？")
+                            .setPositiveButton("返回") { _, _ ->
+                                finish()
+                            }
+                            .setNegativeButton("取消", null).show()
                 } else {
                     if (isChange) {
                         val intent = Intent(this@ShopEditActivity, ShopListFragment::class.java)

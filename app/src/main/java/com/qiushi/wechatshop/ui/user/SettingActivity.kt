@@ -44,7 +44,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             }
         })
         version.text = Utils.getVersionName()
-
         back.setOnClickListener(this)
         layout_info.setOnClickListener(this)
         layout_cache.setOnClickListener(this)
@@ -65,10 +64,10 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 cache.text = "0b"
             }
             R.id.layout_feedback -> startActivity(Intent(this@SettingActivity, FeedbackActivity::class.java))
-            R.id.layout_about_us -> {
+            R.id.layout_about_us -> {//TODO 关于我们界面
 
             }
-            R.id.logout -> {
+            R.id.logout -> {//TODO 登出
 
             }
         }

@@ -176,6 +176,7 @@
         android:background="@drawable/bg_order_filter_input"
         android:gravity="center"
         android:hint="长按粘贴订单编号"
+        android:inputType="number"
         android:textColor="@color/color_item_text"
         android:textColorHint="@color/color_more"
         android:textSize="14sp" />

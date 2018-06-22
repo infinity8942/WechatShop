@@ -40,10 +40,15 @@ interface ApiService {
     fun editShop(@Field("shop_ids") code: String): Observable<BaseResponse<Boolean>>
 
     /**
-     * 订单列表
+     * 店铺、用户订单列表
      */
-    @POST("shop/order")
-    fun orderList(): Observable<BaseResponse<ArrayList<Order>>>
+    @FormUrlEncoded
+    @POST("Order/shop_order")
+    fun getOrders(@Field("identify") identify: Int, @Field("number") number: String,
+                  @Field("pay_time") pay_time: Int, @Field("keywords") keywords: String,
+                  @Field("start_time") start_time: Long, @Field("end_time") end_time: Long,
+                  @Field("from") from: Int, @Field("state") state: Int,
+                  @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Order>>>
 
     /**
      * 登录
@@ -79,6 +84,41 @@ interface ApiService {
     @FormUrlEncoded
     @POST("MobileApp/order/wechatpay")
     fun getWechatPay(@Field("number") phone: String): Observable<BaseResponse<PayReq>>
+
+    /**
+     * 意见反馈
+     */
+    @FormUrlEncoded
+    @POST("User/feedback")
+    fun feedback(@Field("type") type: Int, @Field("des") des: String, @Field("phone") phone: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 素材列表
+     */
+    @FormUrlEncoded
+    @POST("Shop/moments")
+    fun getMoments(@Field("shop_id") shop_id: Long, @Field("type") type: Int, @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Moment>>>
+
+    /**
+     * 添加素材
+     */
+    @FormUrlEncoded
+    @POST("Shop/moments_edit")
+    fun addMoments(@Field("type") type: Int, @Field("content") content: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 素材编辑
+     */
+    @FormUrlEncoded
+    @POST("Shop/moments_edit")
+    fun editMoments(@Field("id") moments_id: Long, @Field("type") type: Int, @Field("content") content: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 删除素材
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/shop/moments/del")
+    fun delMoments(@Field("moment_id") moment_id: Long): Observable<BaseResponse<Boolean>>
 
     //==============================================================================================
     /**

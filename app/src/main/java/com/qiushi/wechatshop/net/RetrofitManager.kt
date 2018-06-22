@@ -34,6 +34,22 @@ object RetrofitManager {
             var response = it.proceed(request)
             val responseBody = response.body()
             if (null != responseBody) {
+
+                if (Constants.IS_DEVELOPER && "POST" == request.method()) {//打印请求参数
+                    val sb = StringBuilder()
+                    if (request.body() is FormBody) {
+                        val body = request.body() as FormBody?
+                        if (null != body) {
+                            for (i in 0 until body.size()) {
+                                sb.append(body.encodedName(i)).append("=").append(body.encodedValue(i)).append(",")
+                            }
+                            if (sb.isNotEmpty()) {
+                                sb.delete(sb.length - 1, sb.length)
+                                Logger.d("Params ? " + sb.toString())
+                            }
+                        }
+                    }
+                }
                 val content = responseBody.string()
                 Logger.d("Response = " + content)
                 response = response.newBuilder()

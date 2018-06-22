@@ -5,22 +5,23 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.text.TextUtils
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import br.com.mauker.materialsearchview.MaterialSearchView
 import cn.qqtheme.framework.picker.DatePicker
 import cn.qqtheme.framework.util.ConvertUtils
-import com.flyco.tablayout.listener.CustomTabEntity
-import com.flyco.tablayout.listener.OnTabSelectListener
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
 import com.qiushi.wechatshop.util.DateUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.TabEntity
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
+import com.qiushi.wechatshop.view.tab.listener.OnTabSelectListener
+import com.qiushi.wechatshop.view.tab.listener.TabEntity
 import kotlinx.android.synthetic.main.activity_order.*
-import java.util.*
 
 /**
  * Created by Rylynn on 2018-06-12.
@@ -29,7 +30,7 @@ import java.util.*
  */
 class OrderActivity : BaseActivity(), View.OnClickListener {
 
-    private var isManage: Boolean = true
+    var isManage: Boolean = true //true店铺订单管理,false用户订单
     private val tabList = ArrayList<String>()
     private val mTabEntities = ArrayList<CustomTabEntity>()
     private val fragments = ArrayList<Fragment>()
@@ -47,11 +48,15 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
     private var cancel: TextView? = null
     private var confirm: TextView? = null
     //
-    private var source = 0 //订单来源 0不选择、1客户端、2小程序
-    private var date = 0 //下单时间 0不选择、1近一周内、2近一月内、3近一年内
-    private var startTime: Long = 0
-    private var endTime: Long = 0
-    private var orderNumber: String = ""
+    var identify = 1
+    var source = 0
+    var time = 0
+    var from = 0 //订单来源 0不选择、1客户端、2小程序
+    var pay_time = 0 //下单时间 0不选择、1近一周内、2近一月内、3近一年内
+    var startTime: Long = 0
+    var endTime: Long = 0
+    var orderNumber: String = ""
+    var keywords: String = ""
 
     override fun layoutId(): Int {
         return R.layout.activity_order
@@ -61,14 +66,22 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
+        StatusBarUtil.setPaddingSmart(this, search_view)
+
+        search_view.adjustTintAlpha(0.8f)
 
         //getData
         isManage = intent.getBooleanExtra("isManage", true)
 
-        if (isManage)
+        if (isManage) {
+            tv_title.text = "订单管理"
             layout_order.visibility = View.VISIBLE
-        else
+            identify = 1
+        } else {
+            tv_title.text = "我的订单"
             layout_order.visibility = View.GONE
+            identify = 2
+        }
 
         tabList.add("全部")
         tabList.add("代付款")
@@ -114,7 +127,27 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         })
         viewpager.currentItem = 0
 
+        search_view.setOnItemClickListener { _, _, position, _ ->
+            val suggestion = search_view.getSuggestionAtPosition(position)
+            search_view.setQuery(suggestion, true)
+        }
+        search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!TextUtils.isEmpty(query)) {
+                    keywords = query!!
+                    searchOrder()
+                }
+                return false
+            }
+
+        })
+
         back.setOnClickListener(this)
+        btn_search.setOnClickListener(this)
         if (isManage) {
             filter.setOnClickListener(this)
             add.setOnClickListener(this)
@@ -155,6 +188,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
+            R.id.btn_search -> search_view.openSearch()
             R.id.filter -> {//筛选弹框
                 showBottomFilterDialog()
             }
@@ -171,8 +205,9 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
             R.id.end_time -> chooseTime(false)
             R.id.cancel -> mFilterDialog.dismiss()
             R.id.confirm -> {
-                mFilterDialog.dismiss()
+                getFilter()
                 searchOrder()
+                mFilterDialog.dismiss()
             }
         }
     }
@@ -208,7 +243,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun changeDate(chooseDate: Int) {
-        if (date != chooseDate) {
+        if (time != chooseDate) {
 
             when (chooseDate) {
                 1 -> {
@@ -236,14 +271,12 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
                     dateYear!!.setBackgroundResource(R.drawable.bg_order_filter_item_selected)
                 }
             }
-            date = chooseDate
+            time = chooseDate
             //重置下单时间区间
             start_time!!.text = ""
-            startTime = 0L
             end_time!!.text = ""
-            endTime = 0L
         } else {
-            date = 0
+            time = 0
             dateWeek!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
             dateWeek!!.setBackgroundResource(R.drawable.bg_order_filter_item)
             dateMonth!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
@@ -292,39 +325,61 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         }
         picker.submitButton.setOnClickListener {
             if (isStart) {
-                if (endTime != 0L && endTime < DateUtil.getMillis(DateUtil.str2Date(
+                if (end_time!!.text.toString().isNotEmpty() && DateUtil.getMillis(DateUtil.str2Date(end_time!!.text.toString(), DateUtil.FORMAT_YMD)) < DateUtil.getMillis(DateUtil.str2Date(
                                 picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay,
                                 DateUtil.FORMAT_YMD))) {
                     ToastUtils.showError("开始日期不能晚于结束日期")
                 } else {
                     picker.dismiss()
                     start_time!!.text = picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay
-                    startTime = DateUtil.getMillis(DateUtil.str2Date(start_time!!.text.toString(), DateUtil.FORMAT_YMD))
+
                     //重置下单时间
-                    if (date != 0)
-                        changeDate(date)
+                    if (time != 0)
+                        changeDate(time)
                 }
             } else {
-                if (startTime != 0L && startTime > DateUtil.getMillis(DateUtil.str2Date(
+                if (start_time!!.text.toString().isNotEmpty() && DateUtil.getMillis(DateUtil.str2Date(start_time!!.text.toString(), DateUtil.FORMAT_YMD)) > DateUtil.getMillis(DateUtil.str2Date(
                                 picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay,
                                 DateUtil.FORMAT_YMD))) {
                     ToastUtils.showError("结束日期不能早于开始日期")
                 } else {
                     picker.dismiss()
                     end_time!!.text = picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay
-                    endTime = DateUtil.getMillis(DateUtil.str2Date(end_time!!.text.toString(), DateUtil.FORMAT_YMD))
                     //重置下单时间
-                    if (date != 0)
-                        changeDate(date)
+                    if (time != 0)
+                        changeDate(time)
                 }
             }
         }
     }
 
+    private fun getFilter() {
+        from = source
+        pay_time = time
+        startTime = if (start_time!!.text.toString().isNotEmpty())
+            DateUtil.getMillis(DateUtil.str2Date(start_time!!.text.toString(), DateUtil.FORMAT_YMD))
+        else
+            0
+        endTime = if (end_time!!.text.toString().isNotEmpty())
+            DateUtil.getMillis(DateUtil.str2Date(end_time!!.text.toString(), DateUtil.FORMAT_YMD))
+        else
+            0
+
+        orderNumber = number!!.text.toString().trim()
+    }
+
     /**
-     * 关键字搜索订单
+     * 搜索订单
      */
     private fun searchOrder() {
-        (fragments[viewpager.currentItem] as OrderFragment).getOrder("")
+        (fragments[viewpager.currentItem] as OrderFragment).getOrders()
+    }
+
+    override fun onBackPressed() {
+        if (search_view.isOpen) {
+            search_view.closeSearch()
+        } else {
+            super.onBackPressed()
+        }
     }
 }

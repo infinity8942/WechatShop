@@ -10,7 +10,7 @@ import com.previewlibrary.enitity.IThumbViewInfo
  *
  * 素材宫格图片
  */
-data class NineImage(var img_url: String, var oss_img: String, var mBounds: Rect) : IThumbViewInfo {
+data class NineImage(var img_url: String, var oss_img: String, var mBounds: Rect) : IThumbViewInfo, Parcelable {
 
     override fun getUrl(): String {
         return img_url

@@ -1,9 +1,15 @@
 package com.qiushi.wechatshop.ui.user
 
+import android.text.TextUtils
 import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.StatusBarUtil
+import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_feedback.*
 
 /**
@@ -12,6 +18,8 @@ import kotlinx.android.synthetic.main.activity_feedback.*
  * 用户反馈
  */
 class FeedbackActivity : BaseActivity(), View.OnClickListener {
+
+    private var type = 1
 
     override fun layoutId(): Int {
         return R.layout.activity_feedback
@@ -24,12 +32,9 @@ class FeedbackActivity : BaseActivity(), View.OnClickListener {
 
         radiogroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.rb1 -> {
-                }
-                R.id.rb2 -> {
-                }
-                R.id.rb3 -> {
-                }
+                R.id.rb1 -> type = 1
+                R.id.rb2 -> type = 2
+                R.id.rb3 -> type = 3
             }
         }
         commit.setOnClickListener(this)
@@ -39,9 +44,31 @@ class FeedbackActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
-            R.id.commit -> {
-            }
+            R.id.commit -> feedback()
         }
+    }
+
+    private fun feedback() {
+        if (TextUtils.isEmpty(content.text.toString().trim())) {
+            ToastUtils.showWarning("请填写意见")
+            return
+        }
+        val disposable = RetrofitManager.service.feedback(type,
+                content.text.toString().trim(), phone.text.toString().trim())
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<Boolean>() {
+                    override fun onHandleSuccess(t: Boolean) {
+                        if (t) {
+                            ToastUtils.showMessage("反馈成功")
+                            this@FeedbackActivity.finish()
+                        }
+                    }
+
+                    override fun onHandleError(error: Error) {
+                        ToastUtils.showError(error.msg)
+                    }
+                })
+        addSubscription(disposable)
     }
 
     override fun getData() {

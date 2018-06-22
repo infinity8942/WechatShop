@@ -21,12 +21,11 @@
             android:src="@mipmap/ic_back" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/padding_tab_layout_top"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
-            android:text="订单管理"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
@@ -39,7 +38,7 @@
             android:src="@mipmap/ic_search" />
     </RelativeLayout>
 
-    <com.flyco.tablayout.CommonTabLayout
+    <com.qiushi.wechatshop.view.tab.CommonTabLayout
         android:id="@+id/tab"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -103,4 +102,10 @@
             android:textColor="@color/coupon_yellow"
             android:textSize="13sp" />
     </RelativeLayout>
+
+    <br.com.mauker.materialsearchview.MaterialSearchView
+        android:id="@+id/search_view"
+        style="@style/MaterialSearchViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

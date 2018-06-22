@@ -1,6 +1,4 @@
-package com.qiushi.wechatshop.util;
-
-import com.flyco.tablayout.listener.CustomTabEntity;
+package com.qiushi.wechatshop.view.tab.listener;
 
 public class TabEntity implements CustomTabEntity {
     public String title;

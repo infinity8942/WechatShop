@@ -5,14 +5,16 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
-import com.orhanobut.logger.Logger
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.SpaceItemDecoration
@@ -55,7 +57,10 @@ class OrderFragment : BaseFragment() {
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
                 R.id.layout_shop -> {
-                    Logger.e("~~~~~~~~~~~~~~~layout_shop")
+                    val intent = Intent(activity, MainActivity::class.java)
+                    intent.putExtra("jumpToShop", (adapter.data[position] as Order).shop.id)
+                    startActivity(intent)
+                    (activity as OrderActivity).finish()
                 }
                 else -> {
                     val intent = Intent(activity, OrderDetailActivity::class.java)
@@ -64,31 +69,52 @@ class OrderFragment : BaseFragment() {
                 }
             }
         }
-
-        //TODO 测试数据
-        val list = ArrayList<Order>()
-        for (i in 1..5) {
-            list.add(Order())
-        }
-        mAdapter.setNewData(list)
     }
 
     override fun lazyLoad() {
-        getOrder("")
+        getOrders()
     }
 
-    fun getOrder(keyword: String) {//TODO 订单筛选接口
-        val disposable = RetrofitManager.service.orderList()
+    /**
+     * 获取订单列表（店铺、用户）
+     */
+    fun getOrders() {
+        val disposable = RetrofitManager.service.getOrders(
+                (activity as OrderActivity).identify, (activity as OrderActivity).orderNumber,
+                (activity as OrderActivity).pay_time, (activity as OrderActivity).keywords,
+                (activity as OrderActivity).startTime, (activity as OrderActivity).endTime,
+                (activity as OrderActivity).from, status,
+                mAdapter.itemCount, Constants.PAGE_NUM)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
                     override fun onHandleSuccess(t: ArrayList<Order>) {
-                        for (i in t) {
-
+                        if (page == 1) {
+                            mAdapter.setNewData(t)
+                            mRefreshLayout.finishRefresh(true)
+                        } else {
+                            mAdapter.addData(t)
+                            mRefreshLayout.finishLoadMore(true)
                         }
+
+                        //more
+                        mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
+                        page++
                     }
 
                     override fun onHandleError(error: Error) {
                         ToastUtils.showError(error.msg)
+                        if (page == 1) {
+                            mRefreshLayout.finishRefresh(false)
+                        } else {
+                            mRefreshLayout.finishLoadMore(false)
+                        }
+                        if (mAdapter.itemCount == 0) {
+                            if (error.code == ErrorStatus.NETWORK_ERROR) {
+                                mAdapter.emptyView = errorView
+                            } else {
+                                mAdapter.emptyView = notDataView
+                            }
+                        }
                     }
                 })
         addSubscription(disposable)

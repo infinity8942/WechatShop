@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <com.flyco.tablayout.CommonTabLayout
+    <com.qiushi.wechatshop.view.tab.CommonTabLayout
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="@dimen/padding_tab_layout_bottom"
