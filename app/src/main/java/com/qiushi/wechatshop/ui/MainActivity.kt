@@ -62,7 +62,14 @@ class MainActivity : BaseActivity() {
 //                        intent.getLongExtra("jumpToShop", -1)
                 )
             }
-            //
+
+            if (intent.hasExtra("jumpToOrder")) {//跳转订单页
+                val orderType = intent.getIntExtra("jumpToOrder", -1)
+                Logger.e("跳转订单 -> " + orderType)
+                if (orderType != -1) {
+                    (mFragments[1] as ManageFragment).goToOrderActivity(orderType)
+                }
+            }
         }
     }
 }

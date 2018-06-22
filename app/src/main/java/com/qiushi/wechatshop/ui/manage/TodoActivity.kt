@@ -1,9 +1,16 @@
 package com.qiushi.wechatshop.ui.manage
 
+import android.content.Intent
 import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
+import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_todo.*
 
 /**
@@ -27,17 +34,23 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
         layout_pay.setOnClickListener(this)
         layout_amount.setOnClickListener(this)
         layout_chat.setOnClickListener(this)
-        layout_date.setOnClickListener(this)
-        layout_coupon_amount.setOnClickListener(this)
+//        layout_date.setOnClickListener(this)
+//        layout_coupon_amount.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.layout_deliver -> {//待发货
-
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("jumpToOrder", 2)
+                startActivity(intent)
+                finish()
             }
             R.id.layout_pay -> {//待支付
-
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("jumpToOrder", 3)
+                startActivity(intent)
+                finish()
             }
             R.id.layout_amount -> {//库存量紧缺
 
@@ -45,15 +58,31 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
             R.id.layout_chat -> {//需沟通人员
 
             }
-            R.id.layout_date -> {//优惠券即将过期
-
-            }
-            R.id.layout_coupon_amount -> {//优惠券剩余数量
-            }
+//            R.id.layout_date -> {//优惠券即将过期
+//
+//            }
+//            R.id.layout_coupon_amount -> {//优惠券剩余数量
+//            }
             R.id.back -> finish()
         }
     }
 
     override fun getData() {
+        val disposable = RetrofitManager.service.getToDo(
+                10091 //TODO 测试数据
+        )
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<Boolean>() {
+                    override fun onHandleSuccess(t: Boolean) {
+                        if (t) {
+                            ToastUtils.showMessage("删除成功")
+                        }
+                    }
+
+                    override fun onHandleError(error: Error) {
+                        ToastUtils.showError(error.msg)
+                    }
+                })
+        addSubscription(disposable)
     }
 }

@@ -379,5 +379,7 @@ class ManageFragment : BaseFragment() {
         addSubscription(disposable)
     }
 
-
+    fun goToOrderActivity(type: Int) {
+        startActivity(Intent(activity, OrderActivity::class.java))
+    }
 }
