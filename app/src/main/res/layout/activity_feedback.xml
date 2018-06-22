@@ -119,8 +119,8 @@
         android:gravity="center_vertical"
         android:hint="手机号或微信号"
         android:imeOptions="actionDone"
-        android:maxLines="1"
         android:padding="12dp"
+        android:singleLine="true"
         android:textColor="@color/color_item_text"
         android:textColorHint="@color/color_more"
         android:textSize="14sp" />

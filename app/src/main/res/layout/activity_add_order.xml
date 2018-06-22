@@ -69,6 +69,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:text="*"
                     android:textColor="@color/color_item_price" />
 
@@ -83,14 +85,14 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="16dp"
-                android:background="@drawable/add_goods_et_shape"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
+                android:background="@drawable/add_goods_et_shape">
 
                 <EditText
                     android:id="@+id/et_price"
                     style="@style/Edit_style"
-                    android:hint="输入价格" />
+                    android:hint="输入价格"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="@color/color_more" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -131,7 +133,9 @@
                     android:id="@+id/et_amount"
                     style="@style/Edit_style"
                     android:hint="产品数量"
-                    android:text="1" />
+                    android:inputType="number"
+                    android:text="1"
+                    android:textColorHint="@color/color_more" />
             </FrameLayout>
 
             <LinearLayout
@@ -164,7 +168,7 @@
                     android:id="@+id/et_all"
                     style="@style/Edit_style"
                     android:focusable="false"
-                    android:hint="输入价格" />
+                    android:textColorHint="@color/color_more" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -187,18 +191,19 @@
             <EditText
                 android:id="@+id/et_des"
                 android:layout_width="match_parent"
-                android:layout_height="72dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/add_goods_et_shape"
-                android:enabled="true"
                 android:gravity="top"
                 android:hint="输入100字以内备注内容"
                 android:maxLines="1"
+                android:minHeight="72dp"
                 android:paddingLeft="12dp"
                 android:paddingTop="10dp"
                 android:textColor="@color/black_90"
+                android:textColorHint="@color/color_more"
                 android:textSize="14sp" />
 
             <TextView

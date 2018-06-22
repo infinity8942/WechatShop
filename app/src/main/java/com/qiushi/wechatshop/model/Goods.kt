@@ -8,8 +8,8 @@ import java.io.Serializable
  *
  * 商品
  */
-data class Goods(var id: Int, var name: String, var price: Double, var cover: String, var views: Int, var enable: Boolean, var is_top: Boolean) : Serializable {
+data class Goods(var id: Long, var name: String, var price: Double, var cover: String, var views: Int, var enable: Boolean, var is_top: Boolean) : Serializable {
 
     //test
-    constructor(name: String) : this(1, name, 50.5, Constants.GOOD0, 1,false,false)
+    constructor(name: String) : this(1, name, 50.5, Constants.GOOD0, 1, false, false)
 }

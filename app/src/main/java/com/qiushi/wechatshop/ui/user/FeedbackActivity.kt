@@ -2,6 +2,7 @@ package com.qiushi.wechatshop.ui.user
 
 import android.text.TextUtils
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -39,6 +40,13 @@ class FeedbackActivity : BaseActivity(), View.OnClickListener {
         }
         commit.setOnClickListener(this)
         back.setOnClickListener(this)
+
+        phone.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                feedback()
+            }
+            false
+        }
     }
 
     override fun onClick(v: View) {

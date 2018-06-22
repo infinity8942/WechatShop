@@ -51,6 +51,15 @@ interface ApiService {
                   @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Order>>>
 
     /**
+     * 手动添加订单
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/order/add")
+    fun addOrder(@Field("shop_id") shop_id: Long, @Field("goods_id") goods_id: Long,
+                 @Field("des") des: String,
+                 @Field("price") price: Double, @Field("amount") amount: Int): Observable<BaseResponse<Boolean>>
+
+    /**
      * 登录
      */
     @FormUrlEncoded
