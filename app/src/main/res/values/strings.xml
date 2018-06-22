@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">WechatShop</string>
-    <string name="title_shop">我的店</string>
-    <string name="title_order">串门</string>
+    <string name="title_manage">我的店</string>
+    <string name="title_shop">串门</string>
     <string name="title_user">我的</string>
 
     <string name="error_view_hint">加载失败</string>
@@ -9,7 +9,6 @@
 
     <string name="notshop_hint">您还没有自己的店铺呦～</string>
     <string name="empty_view_hint">暂无内容~</string>
-    <string name="data_error">数据获取失败(ㄒoㄒ)~~</string>
     <string name="loading_text">加载中&#8230;</string>
     <string name="no_network">没有网络啦 刷新试试吧～</string>
 
