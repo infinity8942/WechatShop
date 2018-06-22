@@ -128,6 +128,15 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         })
         viewpager.currentItem = 0
 
+        search_view.setSearchViewListener(object : MaterialSearchView.SearchViewListener {
+            override fun onSearchViewClosed() {
+                search_view.setShouldAnimate(true)
+            }
+
+            override fun onSearchViewOpened() {
+                search_view.setShouldAnimate(false)
+            }
+        })
         search_view.setOnItemClickListener { _, _, position, _ ->
             val suggestion = search_view.getSuggestionAtPosition(position)
             search_view.setQuery(suggestion, true)

@@ -269,7 +269,7 @@ class ManageFragment : BaseFragment() {
             R.id.item_name -> {
                 when (data.menu_id) {
                     1 -> startActivity(Intent(activity, TodoActivity::class.java))
-                    2 -> startActivity(Intent(activity, OrderActivity::class.java))
+                    2 -> goToOrderActivity(0)
                     3 -> startActivity(Intent(activity, MomentsActivity::class.java))
                     13 -> {
                         ManagerMoreActivity.startManagerMoreActivity(this.context!!)
@@ -381,6 +381,7 @@ class ManageFragment : BaseFragment() {
 
     fun goToOrderActivity(type: Int) {
         val intent = Intent(activity, OrderActivity::class.java)
+        intent.putExtra("isManage", true)
         intent.putExtra("type", type)
         startActivity(intent)
     }

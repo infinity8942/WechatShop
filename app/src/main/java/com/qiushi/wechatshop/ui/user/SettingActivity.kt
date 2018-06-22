@@ -3,6 +3,7 @@ package com.qiushi.wechatshop.ui.user
 import android.Manifest
 import android.content.Intent
 import android.view.View
+import br.com.mauker.materialsearchview.MaterialSearchView
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.util.*
@@ -62,6 +63,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 ImageHelper.clear()
                 ToastUtils.showMessage("已清理")
                 cache.text = "0b"
+                MaterialSearchView(this).clearAll()
             }
             R.id.layout_feedback -> startActivity(Intent(this@SettingActivity, FeedbackActivity::class.java))
             R.id.layout_about_us -> {//TODO 关于我们界面
