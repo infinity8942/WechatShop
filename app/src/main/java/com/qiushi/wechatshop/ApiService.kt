@@ -60,6 +60,13 @@ interface ApiService {
                  @Field("price") price: Double, @Field("amount") amount: Int): Observable<BaseResponse<Boolean>>
 
     /**
+     * 订单详情
+     */
+    @FormUrlEncoded
+    @POST("Order/order_detail")
+    fun getOrderDetail(@Field("order_id") shop_id: Long): Observable<BaseResponse<Order>>
+
+    /**
      * 登录
      */
     @FormUrlEncoded
