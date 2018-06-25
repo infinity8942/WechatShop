@@ -306,14 +306,24 @@ class AddGoodsActivity : BaseActivity() {
             }
             Constants.EDIT_TEXT_REQUEST -> {
                 val mText = data?.getStringExtra("text")
-                if (mText != null && mText.isNotEmpty()) {
-                    val content = Content()
-                    content.content = mText
-                    contentList.add(content)
-                    addContentList.add(content)
+                if (mText != null && !mText.equals("")) {
+                    if (goods_id != 0.toLong()) {
+                        val content = Content()
+                        content.content = mText
+                        contentList.add(content)
+                        addContentList.add(content)
 //                    addGoods.content = contentList
-                    isVisible()
-                    mAdapter.setNewData(contentList)
+                        isVisible()
+                        mAdapter.setNewData(contentList)
+                    } else {
+                        val content = Content()
+                        content.content = mText
+                        contentList.add(content)
+                        addGoods.content = contentList
+                        isVisible()
+                        mAdapter.setNewData( addGoods.content)
+                    }
+
                 }
             }
             Constants.ADDIMG_BG -> {

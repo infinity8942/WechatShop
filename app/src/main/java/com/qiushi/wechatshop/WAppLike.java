@@ -31,6 +31,8 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.interfaces.BetaPatchListener;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -43,6 +45,7 @@ import io.realm.RealmConfiguration;
 public class WAppLike extends DefaultApplicationLike {
 
     private static final String TAG = "WechatShop";
+    public static IWXAPI mWxApi;
 
     public WAppLike(Application application,
                     int tinkerFlags,
@@ -79,8 +82,21 @@ public class WAppLike extends DefaultApplicationLike {
         //友盟推送
         Push.init();
 
+        registToWX();
         if (WAppContext.application.getPackageName().equals(Utils.getProcessName()))
             init();
+    }
+
+    /**
+     * 微信登录初始化
+     */
+    private void registToWX() {
+        //AppConst.WEIXIN.APP_ID是指你应用在微信开放平台上的AppID，记得替换。
+        mWxApi = WXAPIFactory.createWXAPI(WAppContext.context, Constants.WX_ID, false);
+        // 将该app注册到微信
+
+        mWxApi.registerApp(Constants.WX_ID);
+
     }
 
     private void initBugly() {
