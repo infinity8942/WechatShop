@@ -4,7 +4,6 @@ package com.qiushi.wechatshop.ui.manage
 import android.content.Context
 import android.content.Intent
 import android.support.design.widget.BottomSheetDialog
-
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,11 +12,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import cn.qqtheme.framework.util.CompatUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.R.id.mRecyclerView
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.net.BaseResponse
@@ -60,7 +57,6 @@ class ManagerGoodsActivity : BaseActivity() {
     private var ivYhj: ImageView? = null
     private var tvClose: TextView? = null
 
-
     private var allLayout: RelativeLayout? = null
     private var zdLayout: RelativeLayout? = null
     private var sjLayout: RelativeLayout? = null
@@ -83,13 +79,11 @@ class ManagerGoodsActivity : BaseActivity() {
         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
-
     override fun layoutId(): Int = R.layout.activity_manager_goods
 
     override fun init() {
         StatusBarUtil.immersive(this)
         StatusBarUtil.setPaddingSmart(this, toolbar)
-
 
         notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { getData() }
@@ -107,17 +101,14 @@ class ManagerGoodsActivity : BaseActivity() {
         }
         mRefreshLayout.setOnLoadMoreListener { getData() }
         setBottomSheet()
-        tv_add.setOnClickListener(View.OnClickListener { v: View? ->
-
+        tv_add.setOnClickListener({ _: View? ->
             AddGoodsActivity.startAddGoodsActivity(this, 0)
         })
 
-        tv_filter.setOnClickListener(View.OnClickListener { v: View? ->
-
+        tv_filter.setOnClickListener({ _: View? ->
             showBottomFilterDialog()
         })
     }
-
 
     override fun getData() {
 
@@ -167,7 +158,7 @@ class ManagerGoodsActivity : BaseActivity() {
 
     override fun getParams(intent: Intent) {
         super.getParams(intent)
-        state = intent?.getIntExtra("state", -1)
+        state = intent.getIntExtra("state", -1)
     }
 
     companion object {
@@ -196,10 +187,10 @@ class ManagerGoodsActivity : BaseActivity() {
      * 商品条目点击事件
      */
     private val itemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        var mData = adapter.getItem(position) as Goods
+        val mData = adapter.getItem(position) as Goods
         when (view.id) {
             R.id.iv_more -> {
-                var item = adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)
+                val item = adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)
                 if (mItemPosition == -1) {
                     if (item!!.visibility == View.VISIBLE) {
                         item.visibility = View.GONE
@@ -228,17 +219,17 @@ class ManagerGoodsActivity : BaseActivity() {
             }
             R.id.tv_delete -> {
                 type = TYPE_DELETE
-                setTop(mData.id.toLong(), type)
+                setTop(mData.id, type)
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.tv_xj -> {
                 type = TYPE_XJ
-                setTop(mData.id.toLong(), type)
+                setTop(mData.id, type)
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.tv_zd -> {
                 type = TYPE_ZD
-                setTop(mData.id.toLong(), type)
+                setTop(mData.id, type)
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.iv_edit -> {
@@ -253,7 +244,7 @@ class ManagerGoodsActivity : BaseActivity() {
      * 置顶 下架 删除
      */
     private fun setTop(goods_id: Long, type: Int) {
-        var observable: Observable<BaseResponse<Boolean>> = when (type) {
+        val observable: Observable<BaseResponse<Boolean>> = when (type) {
             TYPE_ZD -> RetrofitManager.service.setTop(goods_id)
             TYPE_XJ -> RetrofitManager.service.upShop(goods_id)
             else -> RetrofitManager.service.deleteShop(goods_id)
@@ -291,7 +282,6 @@ class ManagerGoodsActivity : BaseActivity() {
                                 getData()
                             }
                         }
-
                     }
 
                     override fun onHandleError(error: Error) {
@@ -305,7 +295,7 @@ class ManagerGoodsActivity : BaseActivity() {
      * 筛选弹窗
      */
     fun setBottomSheet() {
-        var dialogView = layoutInflater.inflate(R.layout.filter_dialog_layout, null)
+        val dialogView = layoutInflater.inflate(R.layout.filter_dialog_layout, null)
 
         tvAll = dialogView.findViewById(R.id.tv_all)
         ivAll = dialogView.findViewById(R.id.iv_all)
@@ -321,7 +311,6 @@ class ManagerGoodsActivity : BaseActivity() {
         ivYhj = dialogView.findViewById(R.id.iv_yhj)
         tvClose = dialogView.findViewById(R.id.tv_close)
 
-
         allLayout = dialogView.findViewById(R.id.all_layout)
         zdLayout = dialogView.findViewById(R.id.zd_layout)
         sjLayout = dialogView.findViewById(R.id.sj_layout)
@@ -330,9 +319,6 @@ class ManagerGoodsActivity : BaseActivity() {
         yhjLayout = dialogView.findViewById(R.id.yhj_layout)
         closeLyout = dialogView.findViewById(R.id.close_layout)
 
-
-
-
         allLayout!!.setOnClickListener(bottomsheetListener)
         zdLayout!!.setOnClickListener(bottomsheetListener)
         sjLayout!!.setOnClickListener(bottomsheetListener)
@@ -340,7 +326,6 @@ class ManagerGoodsActivity : BaseActivity() {
         jfLayout!!.setOnClickListener(bottomsheetListener)
         yhjLayout!!.setOnClickListener(bottomsheetListener)
         closeLyout!!.setOnClickListener(bottomsheetListener)
-
 
         mFilterDialog = BottomSheetDialog(this)
         mFilterDialog.setContentView(dialogView)
@@ -393,7 +378,6 @@ class ManagerGoodsActivity : BaseActivity() {
     }
 
     private fun showBottomFilterDialog() {
-
         mFilterDialog.show()
         when (state) {
             0 -> {
@@ -414,8 +398,6 @@ class ManagerGoodsActivity : BaseActivity() {
 
                 tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
                 ivYhj!!.visibility = View.GONE
-
-
             }
             1 -> {
                 tvZd!!.setTextColor(resources.getColor(R.color.filter_color))
@@ -516,9 +498,6 @@ class ManagerGoodsActivity : BaseActivity() {
                 tvJf!!.setTextColor(resources.getColor(R.color.gray3))
                 ivJf!!.visibility = View.GONE
             }
-
         }
     }
-
-
 }

@@ -78,14 +78,14 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
             R.id.cover -> {
                 choicePhotoWrapper(1, Constants.ADDIMG_GOODS_BG)
             }
-            R.id.commit -> commit()
+            R.id.commit -> edit()
         }
     }
 
     override fun getData() {
     }
 
-    private fun commit() {
+    private fun edit() {
         val name = name.text.toString().trim()
         if (TextUtils.isEmpty(name)) {
             ToastUtils.showWarning("店铺名不能为空")

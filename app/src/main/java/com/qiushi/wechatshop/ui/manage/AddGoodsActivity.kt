@@ -35,10 +35,8 @@ import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
 import java.io.File
 
-
 class AddGoodsActivity : BaseActivity() {
     var goods_id: Long = 0
-    override fun layoutId(): Int = R.layout.activity_add_goods
     var isBg: Boolean = false
     var addGoods = AddGoods()
     var mHandler = Handler()
@@ -56,6 +54,8 @@ class AddGoodsActivity : BaseActivity() {
     private val linearLayoutManager by lazy {
         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
+
+    override fun layoutId(): Int = R.layout.activity_add_goods
 
     override fun init() {
         StatusBarUtil.immersive(this)
@@ -88,7 +88,6 @@ class AddGoodsActivity : BaseActivity() {
         }
     }
 
-
     override fun getParams(intent: Intent) {
         super.getParams(intent)
         goods_id = intent.getLongExtra("goods_id", 0)
@@ -111,7 +110,6 @@ class AddGoodsActivity : BaseActivity() {
                         }
 
                         override fun onHandleError(error: Error) {
-
                         }
                     })
             addSubscription(subscribeWith)
@@ -142,7 +140,6 @@ class AddGoodsActivity : BaseActivity() {
         if (addGoods.stock != null && addGoods.stock != 0.toLong()) {
             stock.setText(addGoods.stock.toString())
         }
-
     }
 
     companion object {
@@ -177,10 +174,8 @@ class AddGoodsActivity : BaseActivity() {
                 choicePhotoWrapper(1, Constants.ADDIMG_BG)
             }
             R.id.rl_next -> {
-
                 //判断 数据空值限制
                 isDataNull()
-
             }
         }
     }
@@ -236,9 +231,7 @@ class AddGoodsActivity : BaseActivity() {
         AddGoodsNextActivity.startAddGoodsNextActivity(this, addGoods)
     }
 
-
     private fun choicePhotoWrapper(count: Int, resultCode: Int) {
-
 
         getPermission()
 
@@ -249,7 +242,6 @@ class AddGoodsActivity : BaseActivity() {
                 .pauseOnScroll(true) // 滚动列表时是否暂停加载图片
                 .build()
         startActivityForResult(intent, resultCode)
-
     }
 
     /**
@@ -274,7 +266,6 @@ class AddGoodsActivity : BaseActivity() {
                     }
 
                     override fun onFinish() {
-
                     }
                 })
     }
@@ -321,7 +312,7 @@ class AddGoodsActivity : BaseActivity() {
                         contentList.add(content)
                         addGoods.content = contentList
                         isVisible()
-                        mAdapter.setNewData( addGoods.content)
+                        mAdapter.setNewData(addGoods.content)
                     }
 
                 }
@@ -350,7 +341,6 @@ class AddGoodsActivity : BaseActivity() {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-
             mHandler.postDelayed({
                 if (isBg) {
                     addGoods.cover = id.toString()
@@ -381,10 +371,8 @@ class AddGoodsActivity : BaseActivity() {
                             mAdapter.setNewData(addGoods.content)
                         }
                     }
-
                 }
             }, 500)
-
         }
     }
 

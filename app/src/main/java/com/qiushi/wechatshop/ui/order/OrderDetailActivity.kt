@@ -53,7 +53,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 .subscribeWith(object : BaseObserver<Order>() {
                     override fun onHandleSuccess(t: Order) {
 
-                        name.text = t.user.nick + "  " + t.user.phone
+                        name.text = t.user.receiver + "  " + t.user.mobile
                         address.text = t.user.address
 
                         ImageHelper.loadAvatar(this@OrderDetailActivity, logo, t.shop.logo, 24)
@@ -96,7 +96,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
             R.id.back -> finish()
             R.id.phone -> {
                 if (null != order)
-                    Utils.call(this, order!!.user.phone)
+                    Utils.call(this, order!!.user.mobile)
             }
             R.id.copy -> {
                 ToastUtils.showMessage("已复制到剪贴板")
