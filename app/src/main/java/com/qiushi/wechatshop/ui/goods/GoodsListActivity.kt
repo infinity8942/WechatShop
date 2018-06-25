@@ -20,8 +20,8 @@ class GoodsListActivity : BaseActivity() {
     private lateinit var headerView: View
     private lateinit var notDataView: View
     private lateinit var errorView: View
+    private var mList: ArrayList<Goods>? = ArrayList()
 
-    var mList: ArrayList<Goods>? = ArrayList()
     private val mGrideManager by lazy {
         GridLayoutManager(this, 2)
     }
@@ -53,17 +53,9 @@ class GoodsListActivity : BaseActivity() {
         mGrideAdapter.setOnItemChildClickListener { adapter, view, position ->
 
         }
-
-        //TODO 测试数据
-        mList!!.add(Goods("小商店"))
-        mList!!.add(Goods("小商店1"))
-        mList!!.add(Goods("小商店2"))
-        mList!!.add(Goods("小商店3"))
-        mGrideAdapter.setNewData(mList)
     }
 
     override fun getData() {
-
     }
 
     /**

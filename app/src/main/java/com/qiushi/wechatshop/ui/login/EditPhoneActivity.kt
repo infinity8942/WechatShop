@@ -13,17 +13,16 @@ import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
-import com.qiushi.wechatshop.util.web.WebActivity
-import kotlinx.android.synthetic.main.activity_phone.*
+import kotlinx.android.synthetic.main.activity_phone_edit.*
 
 /**
- * 手机号验证码登录
+ * 修改手机号
  */
-class PhoneActivity : BaseActivity(), View.OnClickListener {
+class EditPhoneActivity : BaseActivity(), View.OnClickListener {
 
     private var authCode = "" //验证码
 
-    override fun layoutId(): Int = R.layout.activity_phone
+    override fun layoutId(): Int = R.layout.activity_phone_edit
 
     override fun init() {
         setSwipeBackEnable(false)
@@ -47,12 +46,6 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.auth -> getAuthCode()
             R.id.login -> login()
-            R.id.protocol -> {//H5协议
-                val intent = Intent(this, WebActivity::class.java)
-                intent.putExtra(WebActivity.PARAM_TITLE, "协议")
-                intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
-                startActivity(intent)
-            }
         }
     }
 
@@ -95,7 +88,7 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
-                            startActivity(Intent(this@PhoneActivity, MainActivity::class.java))
+                            startActivity(Intent(this@EditPhoneActivity, MainActivity::class.java))
                             finish()
                         }
                     }

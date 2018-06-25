@@ -58,9 +58,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
     var orderNumber: String = ""
     var keywords: String = ""
 
-    override fun layoutId(): Int {
-        return R.layout.activity_order
-    }
+    override fun layoutId(): Int = R.layout.activity_order
 
     override fun init() {
         //状态栏透明和间距处理
@@ -95,15 +93,15 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         mTabEntities.add(TabEntity("待发货", 0, 0))
         mTabEntities.add(TabEntity("已发货", 0, 0))
         mTabEntities.add(TabEntity("已完成", 0, 0))
-        fragments.add(OrderFragment.getInstance(100))
+        fragments.add(OrderFragment.getInstance(100))//status
         fragments.add(OrderFragment.getInstance(1))
         fragments.add(OrderFragment.getInstance(2))
         fragments.add(OrderFragment.getInstance(3))
         fragments.add(OrderFragment.getInstance(4))
 
+        viewpager.offscreenPageLimit = 5
         viewpager.adapter = BaseFragmentAdapter(supportFragmentManager, fragments, tabList)
         tab.setTabData(mTabEntities)
-        tab.currentTab = intent.getIntExtra("type", 0)
 
         initFilterDialog()
 
@@ -127,7 +125,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
             }
         })
-        viewpager.currentItem = 0
+        viewpager.currentItem = intent.getIntExtra("type", 0)
 
         search_view.setSearchViewListener(object : MaterialSearchView.SearchViewListener {
             override fun onSearchViewClosed() {
@@ -158,7 +156,6 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
                 tv_title.text = keywords
                 return false
             }
-
         })
 
         back.setOnClickListener(this)

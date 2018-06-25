@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.ui.order
 
+import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -33,6 +34,12 @@ class OrderAdapter : BaseQuickAdapter<Order, BaseViewHolder>(R.layout.item_order
         recyclerView.adapter = mAdapterGoods
         mAdapterGoods.setNewData(order.goods)
 
-        helper.addOnClickListener(R.id.layout_shop).addOnLongClickListener(R.id.layout_shop)
+        mAdapterGoods.setOnItemClickListener { _, _, _ ->
+            val intent = Intent(mContext, OrderDetailActivity::class.java)
+            intent.putExtra("id", order.id)
+            mContext.startActivity(intent)
+        }
+
+        helper.addOnClickListener(R.id.layout_shop)
     }
 }

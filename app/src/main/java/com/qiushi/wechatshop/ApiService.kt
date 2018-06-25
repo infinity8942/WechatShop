@@ -83,11 +83,11 @@ interface ApiService {
                       @Field("num") num: Int): Observable<BaseResponse<Boolean>>
 
     /**
-     * 登录
+     * 手机号登录
      */
     @FormUrlEncoded
     @POST("MobileApp/user/login")
-    fun login(@Field("phone") phone: String, @Field("password") password: String): Observable<BaseResponse<Boolean>>
+    fun loginPhone(@Field("phone") phone: String, @Field("password") password: String): Observable<BaseResponse<Boolean>>
 
     /**
      * 微信登录
@@ -102,6 +102,13 @@ interface ApiService {
     @FormUrlEncoded
     @POST("User/mobile_bind")
     fun bindPhone(@Field("phone") phone: String, @Field("verify_code") verify_code: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 发送验证码
+     */
+    @FormUrlEncoded
+    @POST("User/send_verify")
+    fun sendVerifyCode(@Field("phone") phone: String): Observable<BaseResponse<String>>
 
     /**
      * 支付宝支付

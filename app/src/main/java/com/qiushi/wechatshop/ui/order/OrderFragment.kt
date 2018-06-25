@@ -65,9 +65,7 @@ class OrderFragment : BaseFragment() {
             }
         }
         mAdapter.setOnItemClickListener { adapter, _, position ->
-            val intent = Intent(activity, OrderDetailActivity::class.java)
-            intent.putExtra("id", (adapter.data[position] as Order).id)
-            startActivity(intent)
+            goToOrderDetails((adapter.data[position] as Order).id)
         }
     }
 
@@ -84,7 +82,7 @@ class OrderFragment : BaseFragment() {
                 (activity as OrderActivity).pay_time, (activity as OrderActivity).keywords,
                 (activity as OrderActivity).startTime, (activity as OrderActivity).endTime,
                 (activity as OrderActivity).from, status,
-                mAdapter.itemCount - mAdapter.emptyViewCount, Constants.PAGE_NUM)
+                (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
                     override fun onHandleSuccess(t: ArrayList<Order>) {
@@ -103,8 +101,12 @@ class OrderFragment : BaseFragment() {
                         }
 
                         if (t.isNotEmpty()) {
-                            mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
-                            page++
+                            if (t.size < Constants.PAGE_NUM) {
+                                mRefreshLayout.setNoMoreData(true)
+                            } else {
+                                mRefreshLayout.setNoMoreData(false)
+                                page++
+                            }
                         }
                     }
 
@@ -125,6 +127,12 @@ class OrderFragment : BaseFragment() {
                     }
                 })
         addSubscription(disposable)
+    }
+
+    private fun goToOrderDetails(id: Long) {
+        val intent = Intent(activity, OrderDetailActivity::class.java)
+        intent.putExtra("id", id)
+        startActivity(intent)
     }
 
     companion object {

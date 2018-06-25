@@ -21,7 +21,7 @@ public class PhoneInfo {
     private String model;//手机型号
     private String brand;//手机品牌
     private String version;//版本号
-    private String channel = "test";//渠道
+    private String channel;//渠道
 
     private PhoneInfo(Context context) {
         this.model = android.os.Build.MODEL;
@@ -39,7 +39,7 @@ public class PhoneInfo {
             this.imei = android.os.Build.UNKNOWN;
         }
 
-//        channel = Utils.getWalleChannel();
+        channel = Utils.getWalleChannel();
     }
 
     public String getImei() {

@@ -148,7 +148,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_toRightOf="@id/ic_location"
-                    android:text="张磊磊 18976542378"
                     android:textColor="@color/color_item_text"
                     android:textSize="14sp" />
 
@@ -160,7 +159,6 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="3dp"
                     android:layout_toRightOf="@id/ic_location"
-                    android:text="地址：北京市朝阳区亮马桥234号二十一世纪大厦4楼"
                     android:textColor="@color/gray1"
                     android:textSize="12sp" />
             </RelativeLayout>
@@ -320,8 +318,11 @@
             <TextView
                 android:id="@+id/message"
                 android:layout_width="match_parent"
-                android:layout_height="33dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:maxLines="3"
+                android:minHeight="33dp"
                 android:paddingLeft="16dp"
                 android:textColor="@color/color_item_text"
                 android:textSize="12sp" />
@@ -346,6 +347,7 @@
                     android:src="@mipmap/ic_message" />
 
                 <TextView
+                    android:id="@+id/phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -368,7 +370,7 @@
                 android:paddingRight="16dp">
 
                 <TextView
-                    android:id="@+id/btn_copy"
+                    android:id="@+id/copy"
                     android:layout_width="50dp"
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
@@ -384,10 +386,9 @@
                     android:layout_height="27dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@id/btn_copy"
+                    android:layout_toLeftOf="@id/copy"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:text="订单编号："
                     android:textColor="@color/color_item_text"
                     android:textSize="13sp" />
 
@@ -399,7 +400,6 @@
                     android:layout_marginLeft="8dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:text="创建时间："
                     android:textColor="@color/color_item_text"
                     android:textSize="13sp" />
             </RelativeLayout>
@@ -424,7 +424,6 @@
                     android:layout_marginLeft="8dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:text="付款时间："
                     android:textColor="@color/color_item_text"
                     android:textSize="13sp" />
 
@@ -436,7 +435,6 @@
                     android:layout_marginLeft="8dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:text="支付方式："
                     android:textColor="@color/color_item_text"
                     android:textSize="13sp" />
             </RelativeLayout>
@@ -461,7 +459,6 @@
                     android:layout_marginLeft="8dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:text="发货时间："
                     android:textColor="@color/color_item_text"
                     android:textSize="13sp" />
 
@@ -473,7 +470,6 @@
                     android:layout_marginLeft="8dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:text="成交时间："
                     android:textColor="@color/color_item_text"
                     android:textSize="13sp" />
             </RelativeLayout>

@@ -20,9 +20,7 @@ import java.io.File
 class SettingActivity : BaseActivity(), View.OnClickListener {
     private var mCacheFolder: File? = null
 
-    override fun layoutId(): Int {
-        return R.layout.activity_setting
-    }
+    override fun layoutId(): Int = R.layout.activity_setting
 
     override fun init() {
         //状态栏透明和间距处理

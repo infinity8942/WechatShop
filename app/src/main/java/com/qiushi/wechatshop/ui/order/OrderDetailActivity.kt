@@ -1,25 +1,28 @@
 package com.qiushi.wechatshop.ui.order
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.util.DateUtil
-import com.qiushi.wechatshop.util.ImageHelper
-import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.*
 import kotlinx.android.synthetic.main.activity_order_detail.*
+
 
 /**
  * Created by Rylynn on 2018-06-12.
  *
  * 订单详情
  */
-class OrderDetailActivity : BaseActivity() {
+class OrderDetailActivity : BaseActivity(), View.OnClickListener {
 
+    private var order: Order? = null
     private var orderID: Long = 0
     private lateinit var mAdapter: OrderGoodsAdapter
 
@@ -39,6 +42,8 @@ class OrderDetailActivity : BaseActivity() {
         mRecyclerView.adapter = mAdapter
 
         back.setOnClickListener(this)
+        copy.setOnClickListener(this)
+        phone.setOnClickListener(this)
     }
 
     override fun getData() {
@@ -47,6 +52,10 @@ class OrderDetailActivity : BaseActivity() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Order>() {
                     override fun onHandleSuccess(t: Order) {
+
+                        name.text = t.user.nick + "  " + t.user.phone
+                        address.text = t.user.address
+
                         ImageHelper.loadAvatar(this@OrderDetailActivity, logo, t.shop.logo, 24)
                         shop.text = t.shop.name
 
@@ -61,16 +70,18 @@ class OrderDetailActivity : BaseActivity() {
                             3 -> status.text = "已完成"
                         }
                         message.text = "买家留言：" + t.content
-                        number.text = "订单编号：" + t.number
+                        number.text = "订单编号：" + t.numbers
                         create_time.text = "创建时间：" + DateUtil.getMillon(t.create_time)
                         pay_time.text = "付款时间：" + DateUtil.getMillon(t.pay_time)
-                        when (t.payment) {
+                        when (t.pay_type) {
                             1 -> payment.text = "支付方式：微信"
                             2 -> payment.text = "支付方式：支付宝"
                         }
 
-                        deliver_time.text = "发货时间：" + DateUtil.getMillon(t.deliver_time)
-                        achieve_time.text = "成交时间：" + DateUtil.getMillon(t.achieve_time)
+                        deliver_time.text = "发货时间：" + DateUtil.getMillon(t.shipping_time)
+                        achieve_time.text = "成交时间：" + DateUtil.getMillon(t.shipping_end_time)
+
+                        order = t
                     }
 
                     override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {
@@ -78,5 +89,20 @@ class OrderDetailActivity : BaseActivity() {
                     }
                 })
         addSubscription(disposable)
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.back -> finish()
+            R.id.phone -> {
+                if (null != order)
+                    Utils.call(this, order!!.user.phone)
+            }
+            R.id.copy -> {
+                ToastUtils.showMessage("已复制到剪贴板")
+                val cm: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                cm.primaryClip = ClipData.newPlainText("Label", number.text.toString())
+            }
+        }
     }
 }

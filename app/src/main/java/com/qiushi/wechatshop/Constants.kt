@@ -5,9 +5,6 @@ package com.qiushi.wechatshop
  */
 object Constants {
     //测试图片
-    const val IMAGE1 = "http://image.hnol.net/c/2018-06/04/20/201806042031543551-2053485.jpg"
-    const val IMAGE2 = "http://image.hnol.net/c/2018-05/30/17/201805301706219791-5900080.jpg"
-    const val IMAGE3 = "http://image.hnol.net/c/2018-05/25/20/201805252007168161-2053485.jpg"
     const val AVATAR = "https://static.chiphell.com/forum/201806/06/111637jjxw8cwnj88xss8k.jpg"
 
     //测试店铺ID

@@ -34,9 +34,7 @@ import kotlin.collections.set
  */
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
-    override fun layoutId(): Int {
-        return R.layout.activity_login
-    }
+    override fun layoutId(): Int = R.layout.activity_login
 
     override fun init() {
         setSwipeBackEnable(false)

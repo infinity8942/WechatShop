@@ -11,7 +11,7 @@ import com.previewlibrary.enitity.IThumbViewInfo
  *
  * 素材宫格图片
  */
-data class NineImage(var img_url: String, var oss_img: String, var mBounds: Rect?, var oss_id: Long, var size: Int,var base_url:String,var is_del:Int) : IThumbViewInfo, Parcelable, MultiItemEntity {
+data class NineImage(var img_url: String, var oss_img: String, var mBounds: Rect?, var oss_id: Long, var size: Int, var base_url: String, var is_del: Int) : IThumbViewInfo, Parcelable, MultiItemEntity {
     override fun getItemType(): Int {
         return if (size == 0) {
             -1  //有加号的情况
@@ -20,15 +20,11 @@ data class NineImage(var img_url: String, var oss_img: String, var mBounds: Rect
         }
     }
 
-    override fun getUrl(): String {
-        return img_url
-    }
+    override fun getUrl(): String = img_url
 
-    override fun getBounds(): Rect? {
-        return mBounds
-    }
+    override fun getBounds(): Rect? = mBounds
 
-    constructor() : this("", "", null, 0, 0,"",0)
+    constructor() : this("", "", null, 0, 0, "", 0)
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),
@@ -51,9 +47,7 @@ data class NineImage(var img_url: String, var oss_img: String, var mBounds: Rect
         parcel.writeInt(is_del)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents(): Int = 0
 
     companion object CREATOR : Parcelable.Creator<NineImage> {
         override fun createFromParcel(parcel: Parcel): NineImage {

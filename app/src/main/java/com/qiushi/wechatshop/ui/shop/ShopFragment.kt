@@ -99,8 +99,12 @@ class ShopFragment : BaseFragment() {
                         }
 
                         if (t.goods.isNotEmpty()) {
-                            mRefreshLayout.setNoMoreData(t.goods.size < Constants.PAGE_NUM)
-                            page++
+                            if (t.goods.size < Constants.PAGE_NUM) {
+                                mRefreshLayout.setNoMoreData(true)
+                            } else {
+                                mRefreshLayout.setNoMoreData(false)
+                                page++
+                            }
                         }
                     }
 
