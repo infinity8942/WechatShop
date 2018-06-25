@@ -318,13 +318,23 @@ class AddGoodsActivity : BaseActivity() {
             Constants.EDIT_TEXT_REQUEST -> {
                 var mText = data?.getStringExtra("text")
                 if (mText != null && !mText.equals("")) {
-                    var content = Content()
-                    content.content = mText
-                    contentList.add(content)
-                    addContentList.add(content)
+                    if (goods_id != 0.toLong()) {
+                        var content = Content()
+                        content.content = mText
+                        contentList.add(content)
+                        addContentList.add(content)
 //                    addGoods.content = contentList
-                    isVisible()
-                    mAdapter.setNewData(contentList)
+                        isVisible()
+                        mAdapter.setNewData(contentList)
+                    } else {
+                        var content = Content()
+                        content.content = mText
+                        contentList.add(content)
+                        addGoods.content = contentList
+                        isVisible()
+                        mAdapter.setNewData( addGoods.content)
+                    }
+
                 }
             }
             Constants.ADDIMG_BG -> {
@@ -361,7 +371,7 @@ class AddGoodsActivity : BaseActivity() {
                     ImageHelper.loadImageWithCorner(application, ic_bg, ("file://" + file!!.path), 94, 94,
                             RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
                 } else {
-                    if (goods_id!= 0.toLong()) {
+                    if (goods_id != 0.toLong()) {
                         //编辑
                         var content = Content()
                         content.oss_id = id

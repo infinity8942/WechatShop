@@ -5,10 +5,7 @@ import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.util.oss.UploadFile
 import com.tencent.mm.opensdk.modelpay.PayReq
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.FieldMap
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -209,5 +206,9 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Shop/moments_edit_info")
     fun editMomentsInfo(@Field("id") id: Long): Observable<BaseResponse<Moment>>
+
+    @GET("https://api.weixin.qq.com/sns/oauth2/access_token")
+    fun getWXtoken(@Query("appid") appid: String, @Query("secret") secret: String, @Query("code") code: String, @Query("grant_type") grant_type: String)
+
 
 }

@@ -9,6 +9,7 @@ import cn.sharesdk.framework.PlatformActionListener
 import cn.sharesdk.framework.ShareSDK
 import cn.sharesdk.wechat.friends.Wechat
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.WAppLike
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -21,6 +22,7 @@ import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
+import com.tencent.mm.opensdk.modelmsg.SendAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
@@ -59,6 +61,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
 //                loginWX()
+//                loginWXX()
             }
             R.id.phone -> {//手机号登录
                 startActivity(Intent(this, PhoneActivity::class.java))
@@ -70,6 +73,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 startActivity(intent)
             }
         }
+    }
+
+    private fun loginWXX() {
+
+        if (!WAppLike.mWxApi.isWXAppInstalled) {
+            ToastUtils.showError("您还未安装微信客户端")
+            return
+        }
+        var req = SendAuth.Req()
+        req.scope = "snsapi_userinfo"
+        req.state = "diandi_wx_login"
+        WAppLike.mWxApi.sendReq(req)
+
     }
 
     private fun getPermission() {
