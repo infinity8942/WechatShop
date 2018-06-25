@@ -18,7 +18,12 @@ class OrderAdapter : BaseQuickAdapter<Order, BaseViewHolder>(R.layout.item_order
 
         ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), order.shop.logo, 24)
         helper.setText(R.id.name, order.shop.name)
-        helper.setText(R.id.status, "等待卖家发货")//TODO 状态
+        when (order.status) {
+            0 -> helper.setText(R.id.status, "等待买家付款")
+            1 -> helper.setText(R.id.status, "买家已付款")
+            2 -> helper.setText(R.id.status, "等待买家收货")
+            3 -> helper.setText(R.id.status, "已完成")
+        }
         helper.setText(R.id.amount, "共计" + order.count + "件商品")
         helper.setText(R.id.price, "￥" + order.price)
 

@@ -146,9 +146,7 @@ class ShopFragment : BaseFragment() {
      * 添加到购物车
      */
     private fun addToShopCart(goods_id: Long) {
-        val disposable = RetrofitManager.service.addToShopCart(//TODO 测试数据
-                10091, goods_id, 1
-        )
+        val disposable = RetrofitManager.service.addToShopCart(shopID, goods_id, 1)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {

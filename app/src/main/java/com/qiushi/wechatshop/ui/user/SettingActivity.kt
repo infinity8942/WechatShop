@@ -44,7 +44,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             override fun onFinish() {
             }
         })
-        version.text = Utils.getVersionName()
+        version.text = "v" + Utils.getVersionName()
         back.setOnClickListener(this)
         layout_info.setOnClickListener(this)
         layout_cache.setOnClickListener(this)
@@ -66,9 +66,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 MaterialSearchView(this).clearAll()
             }
             R.id.layout_feedback -> startActivity(Intent(this@SettingActivity, FeedbackActivity::class.java))
-            R.id.layout_about_us -> {//TODO 关于我们界面
-
-            }
+            R.id.layout_about_us -> startActivity(Intent(this@SettingActivity, AboutUsActivity::class.java))
             R.id.logout -> {//TODO 登出
 
             }

@@ -75,7 +75,7 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
-                            ToastUtils.showMessage("删除成功")
+
                         }
                     }
 

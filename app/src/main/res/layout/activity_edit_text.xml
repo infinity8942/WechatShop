@@ -12,12 +12,12 @@
         app:contentInsetStart="0dp">
 
         <ImageView
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="11dp"
             android:padding="5dp"
             android:src="@mipmap/ic_goods_back" />
-
 
         <TextView
             android:id="@+id/tv_header_title"
@@ -30,9 +30,7 @@
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
 
-
     <EditText
-        android:paddingRight="16dp"
         android:id="@+id/et_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,6 +42,7 @@
         android:maxLines="1"
         android:paddingLeft="16dp"
         android:paddingTop="17dp"
+        android:paddingRight="16dp"
         android:textColor="@color/black_90"
         android:textSize="14sp" />
 
@@ -62,18 +61,13 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/add_goods_yellow_shape">
 
-
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="提交"
                 android:textColor="@color/title"
                 android:textSize="18sp" />
-
         </RelativeLayout>
     </LinearLayout>
-
-
 </RelativeLayout>

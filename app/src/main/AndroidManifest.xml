@@ -46,7 +46,7 @@
             android:theme="@style/dialogstyle" />
         <activity
             android:name=".ui.goods.GoodsListActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.order.OrderActivity"
             android:screenOrientation="portrait" />
@@ -73,6 +73,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.user.FeedbackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.AboutUsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.login.PhoneActivity"

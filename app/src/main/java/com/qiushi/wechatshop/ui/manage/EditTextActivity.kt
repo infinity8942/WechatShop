@@ -1,10 +1,7 @@
 package com.qiushi.wechatshop.ui.manage
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.support.v4.content.ContextCompat
-import android.view.View
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
@@ -12,52 +9,45 @@ import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_edit_text.*
 
-
 class EditTextActivity : BaseActivity() {
-    private var mText: String = ""
-    override fun init() {
-        StatusBarUtil.immersive(this!!)
-        StatusBarUtil.setPaddingSmart(this!!, toolbar)
 
-        if (!mText?.contentEquals("")) {
+    private var mText: String = ""
+
+    override fun layoutId(): Int = R.layout.activity_edit_text
+
+    override fun init() {
+        StatusBarUtil.immersive(this)
+        StatusBarUtil.setPaddingSmart(this, toolbar)
+
+        if (!mText.contentEquals("")) {
             et_text.setText(mText)
         }
 
-        commit?.setOnClickListener(View.OnClickListener { v: View? ->
-            if (et_text.text.toString().equals("")) {
+        commit.setOnClickListener({
+            if (et_text.text.toString().isEmpty()) {
                 ToastUtils.showError("请编辑")
             } else {
-                var intent = Intent()
+                val intent = Intent()
                 intent.putExtra("text", et_text.text.toString())
                 setResult(1, Intent(intent))
                 finish()
             }
         })
-
+        back.setOnClickListener(this)
     }
 
     override fun getData() {
-
     }
-
-    override fun layoutId(): Int = R.layout.activity_edit_text
-
 
     override fun getParams(intent: Intent) {
-        mText = intent?.getStringExtra("text")
+        mText = intent.getStringExtra("text")
     }
-
 
     companion object {
         fun startEditTextActivity(context: Activity, text: String) {
-            val intent = Intent()
-            //获取intent对象
+            val intent = Intent(context, EditTextActivity::class.java)
             intent.putExtra("text", text)
-            intent.setClass(context, EditTextActivity::class.java)
-            // 获取class是使用::反射
             context.startActivityForResult(intent, Constants.EDIT_TEXT_REQUEST)
-
         }
     }
-
 }

@@ -40,6 +40,14 @@ interface ApiService {
     fun editShop(@Field("shop_ids") code: String): Observable<BaseResponse<Boolean>>
 
     /**
+     * 店铺装修
+     */
+    @FormUrlEncoded
+    @POST("Shop/edit_shop")
+    fun editShop(@Field("name") name: String, @Field("oss_id") oss_id: String,
+                 @Field("shop_id") shop_id: Long, @Field("bg_oss_id") bg_oss_id: String): Observable<BaseResponse<Boolean>>
+
+    /**
      * 店铺、用户订单列表
      */
     @FormUrlEncoded
@@ -54,7 +62,7 @@ interface ApiService {
      * 手动添加订单
      */
     @FormUrlEncoded
-    @POST("MobileApp/order/add")
+    @POST("Order/add_order")
     fun addOrder(@Field("shop_id") shop_id: Long, @Field("goods_id") goods_id: Long,
                  @Field("des") des: String,
                  @Field("price") price: Double, @Field("amount") amount: Int): Observable<BaseResponse<Boolean>>

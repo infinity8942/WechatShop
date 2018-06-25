@@ -32,6 +32,7 @@ object Constants {
     const val GOODS_DETAIL = "http://wechatshop.qiushizixun.com/H5/detail/id/"
     const val SHOPCART = "http://wechatshop.qiushizixun.com/H5/car"
     const val ADDRESS = "http://wechatshop.qiushizixun.com/H5/address"
+    const val ORDER = "http://wechatshop.qiushizixun.com/H5/order"
 
     //OSS
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"

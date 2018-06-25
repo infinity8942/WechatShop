@@ -12,6 +12,9 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
@@ -21,7 +24,6 @@ import com.qiushi.wechatshop.util.oss.OnUploadListener
 import com.qiushi.wechatshop.util.oss.UploadManager
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.activity_decorate.*
-import kotlinx.android.synthetic.main.addgoods_header.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
@@ -37,6 +39,9 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
     var bgUrl: String = ""
     var logoUrl: String = ""
     var isLogo: Boolean = false
+
+    var oss_id = ""
+    var bg_oss_id = ""
     override fun layoutId(): Int = R.layout.activity_decorate
 
     override fun init() {
@@ -51,6 +56,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
 
         if (shop_name.isNotEmpty()) {
             name.setText(shop_name)
+            name.setSelection(shop_name.length)
         }
         if (bgUrl.isNotEmpty()) {
             ImageHelper.loadImageWithCorner(application, cover, bgUrl, 343, 178,
@@ -58,7 +64,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
 
         }
         if (logoUrl.isNotEmpty()) {
-            ImageHelper.loadImageWithCorner(application, logo,logoUrl, 64, 64,
+            ImageHelper.loadImageWithCorner(application, logo, logoUrl, 64, 64,
                     RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
         }
     }
@@ -66,7 +72,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
-            R.id.logo -> {//TODO 店铺装修选图、接口
+            R.id.logo -> {
                 choicePhotoWrapper(1, Constants.ADDIMG_LOGO)
             }
             R.id.cover -> {
@@ -89,8 +95,20 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showWarning("店铺名不合法，请重新输入")
             return
         }
-    }
 
+        val disposable = RetrofitManager.service.editShop(name, oss_id, 10091, bg_oss_id)//TODO oss id
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<Boolean>() {
+                    override fun onHandleSuccess(t: Boolean) {
+                        ToastUtils.showMessage("修改成功")
+                    }
+
+                    override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {
+                        ToastUtils.showError(error.msg)
+                    }
+                })
+        compositeDisposable.add(disposable)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -98,9 +116,9 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
             Constants.ADDIMG_LOGO -> {
                 if (data != null) {
                     isLogo = true
-                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
-                        var mFile = File(selected[0])
+                        val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
                     }
                 }
@@ -108,16 +126,15 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
             Constants.ADDIMG_GOODS_BG -> {
                 if (data != null) {
                     isLogo = false
-                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
-                        var mFile = File(selected[0])
+                        val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
                     }
                 }
             }
         }
     }
-
 
     private val uploadListener = object : OnUploadListener {
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
@@ -140,7 +157,6 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-
     override fun getParams(intent: Intent) {
         super.getParams(intent)
         shop_name = intent.getStringExtra("shop_name")
@@ -150,19 +166,15 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
 
     companion object {
         fun startDecorateActivity(context: Context, shop_name: String, logo: String, bg: String) {
-            val intent = Intent()
-            //获取intent对象
+            val intent = Intent(context, DecorateActivity::class.java)
             intent.putExtra("shop_name", shop_name)
             intent.putExtra("logo", logo)
             intent.putExtra("bg", bg)
-            intent.setClass(context, DecorateActivity::class.java)
-            // 获取class是使用::反射
             ContextCompat.startActivity(context, intent, null)
         }
     }
 
     private fun choicePhotoWrapper(count: Int, resultCode: Int) {
-
 
         getPermission()
 
@@ -173,7 +185,6 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                 .pauseOnScroll(true) // 滚动列表时是否暂停加载图片
                 .build()
         startActivityForResult(intent, resultCode)
-
     }
 
     /**
@@ -198,10 +209,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onFinish() {
-
                     }
                 })
     }
-
-
 }

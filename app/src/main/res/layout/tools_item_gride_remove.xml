@@ -2,32 +2,28 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="2dp"
-    android:layout_marginTop="2dp">
-
+    android:layout_marginTop="2dp"
+    android:layout_marginRight="2dp">
 
     <TextView
         android:id="@+id/item_name"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@drawable/tools_shape"
-        android:drawablePadding="4dp"
         android:drawableTop="@mipmap/ic_waitthing"
+        android:drawablePadding="4dp"
         android:gravity="center_horizontal"
-        android:paddingBottom="8dp"
         android:paddingTop="10dp"
+        android:paddingBottom="8dp"
         android:text="待办事项"
         android:textColor="@color/color_item_text" />
 
-
     <ImageView
-        android:visibility="gone"
         android:id="@+id/iv_remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:padding="4dp"
-        android:src="@mipmap/ic_remove_red" />
-
-
+        android:src="@mipmap/ic_remove_red"
+        android:visibility="gone" />
 </FrameLayout>

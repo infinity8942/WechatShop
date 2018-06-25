@@ -1,6 +1,5 @@
 package com.qiushi.wechatshop.ui.manage
 
-
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -8,46 +7,30 @@ import android.os.Environment
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
-import cn.qqtheme.framework.util.CompatUtils
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.R.id.*
-import com.qiushi.wechatshop.R.mipmap.ic_add_img
-import com.qiushi.wechatshop.WAppContext.application
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.AddGoods
 import com.qiushi.wechatshop.model.Content
-import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
-
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.oss.OnUploadListener
 import com.qiushi.wechatshop.util.oss.UploadManager
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
-
 import kotlinx.android.synthetic.main.activity_add_goods.*
 import kotlinx.android.synthetic.main.addgoods_header.*
-import kotlinx.android.synthetic.main.addgoods_header.view.*
 import kotlinx.android.synthetic.main.next_layout.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
 import java.io.File
 
-import java.util.*
-import kotlin.collections.ArrayList
-
-
 class AddGoodsActivity : BaseActivity() {
     override fun layoutId(): Int = R.layout.activity_add_goods
-    private var mShopOrderList = ArrayList<ShopOrder>()
     var isBg: Boolean = false
     var addGoods = AddGoods()
 
@@ -65,10 +48,9 @@ class AddGoodsActivity : BaseActivity() {
         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
-
     override fun init() {
-        StatusBarUtil.immersive(this!!)
-        StatusBarUtil.setPaddingSmart(this!!, toolbar)
+        StatusBarUtil.immersive(this)
+        StatusBarUtil.setPaddingSmart(this, toolbar)
         UploadManager.getInstance().register(uploadListener)
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.adapter = mAdapter
@@ -76,7 +58,6 @@ class AddGoodsActivity : BaseActivity() {
         rl_next.setOnClickListener(onclicklistener)
         isVisible()
     }
-
 
     private fun isVisible() {
         if (addGoods != null && addGoods.content != null && addGoods.content!!.size > 0) {
@@ -96,19 +77,12 @@ class AddGoodsActivity : BaseActivity() {
         }
     }
 
-
     override fun getData() {
-
     }
-
 
     companion object {
         fun startAddGoodsActivity(context: Context) {
-            val intent = Intent()
-            //获取intent对象
-            intent.setClass(context, AddGoodsActivity::class.java)
-            // 获取class是使用::反射
-            ContextCompat.startActivity(context, intent, null)
+            ContextCompat.startActivity(context, Intent(context, AddGoodsActivity::class.java), null)
         }
     }
 
@@ -144,8 +118,8 @@ class AddGoodsActivity : BaseActivity() {
     private fun isDataNull() {
 
         addGoods.shop_id = Constants.SHOP_ID
-        if (et_brief.text.toString().isNotEmpty()){
-            addGoods.brief=et_brief.text.toString()
+        if (et_brief.text.toString().isNotEmpty()) {
+            addGoods.brief = et_brief.text.toString()
         }
         if (et_name.text.toString().isNotEmpty()) {
             addGoods.name = et_name.text.toString()
@@ -233,10 +207,10 @@ class AddGoodsActivity : BaseActivity() {
             Constants.ADDIMG_RESUALT -> {
                 if (data != null) {
                     isBg = false
-                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
                         //去上传
-                        var mFile = File(selected[0])
+                        val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
                     }
                 }
@@ -244,18 +218,18 @@ class AddGoodsActivity : BaseActivity() {
             Constants.ADDIMG_ITEM_REQUEST -> {
                 if (data != null) {
                     isBg = false
-                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
                         //去上传
-                        var mFile = File(selected[0])
+                        val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
                     }
                 }
             }
             Constants.EDIT_TEXT_REQUEST -> {
-                var mText = data?.getStringExtra("text")
-                if (mText != null && !mText.equals("")) {
-                    var content = Content()
+                val mText = data?.getStringExtra("text")
+                if (mText != null && mText.isNotEmpty()) {
+                    val content = Content()
                     content.content = mText
                     contentList.add(content)
                     addGoods.content = contentList
@@ -266,9 +240,9 @@ class AddGoodsActivity : BaseActivity() {
             Constants.ADDIMG_BG -> {
                 if (data != null) {
                     isBg = true
-                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
-                        var mFile = File(selected[0])
+                        val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
                     }
                 }
@@ -281,11 +255,9 @@ class AddGoodsActivity : BaseActivity() {
      */
     private val uploadListener = object : OnUploadListener {
         override fun onFailure(file: File?, error: com.qiushi.wechatshop.util.oss.Error?) {
-
         }
 
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
-
         }
 
         override fun onSuccess(file: File?, id: Long) {
@@ -295,7 +267,7 @@ class AddGoodsActivity : BaseActivity() {
                 ImageHelper.loadImageWithCorner(application, ic_bg, ("file://" + file!!.path), 94, 94,
                         RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
             } else {
-                var content = Content()
+                val content = Content()
                 content.oss_id = id
                 content.img = "file://" + file!!.path
                 contentList.add(content)
@@ -308,6 +280,3 @@ class AddGoodsActivity : BaseActivity() {
         }
     }
 }
-
-
-
