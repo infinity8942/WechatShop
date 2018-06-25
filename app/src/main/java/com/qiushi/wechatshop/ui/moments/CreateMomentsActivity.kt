@@ -2,7 +2,6 @@ package com.qiushi.wechatshop.ui.moments
 
 import android.Manifest
 import android.content.Intent
-import android.database.Observable
 import android.os.Environment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.GridLayoutManager
@@ -16,7 +15,6 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Moment
 import com.qiushi.wechatshop.model.NineImage
-import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
@@ -40,13 +38,16 @@ import java.io.File
 class CreateMomentsActivity : BaseActivity() {
 
     private var type: Int = 1 //1产品、2鸡汤、3海报
+    var id: Long = 0
     private var moment = Moment()//编辑
     var foot: View? = null
     var size: Int = 0
     private var mNineList = ArrayList<NineImage>()
     private var mFileList = ArrayList<File>()
+    private var addNineList = ArrayList<NineImage>() //删除新加后的展示
     var gson = Gson()
     var mJson: String = ""
+    var mNineImage = NineImage()
     override fun layoutId(): Int {
         return R.layout.activity_moments_create
     }
@@ -67,28 +68,52 @@ class CreateMomentsActivity : BaseActivity() {
         StatusBarUtil.setPaddingSmart(this, toolbar)
 
         UploadManager.getInstance().register(uploadListener)
-        type = intent.getIntExtra("type", 1)
-        if (intent.hasExtra("moment")) {
-            tv_title.text = "编辑素材"
-            moment = intent.getParcelableExtra("moment") as Moment
-            setData()
-        }
 
+        if (id != 0.toLong()) {
+            tv_title.text = "编辑素材"
+        }
 
         //Listener
         back.setOnClickListener(this)
         tv_ok.setOnClickListener(this)
-        var mNineImage = NineImage()
-        mNineList.add(mNineImage)
+
         mRecyclerView.layoutManager = mGrideManager
         mRecyclerView.adapter = mGrideAdapter
-        mGrideAdapter.setNewData(mNineList)
+
 
         mGrideAdapter.onItemChildClickListener = itemchildListener
     }
 
 
+    override fun getParams(intent: Intent) {
+        super.getParams(intent)
+        type = intent.getIntExtra("type", 1)
+        id = intent.getLongExtra("id", 0)
+    }
+
     override fun getData() {
+        if (id != 0.toLong()) {
+            val subscribeWith: BaseObserver<Moment> = RetrofitManager.service.editMomentsInfo(id)
+                    .compose(SchedulerUtils.ioToMain())
+                    .subscribeWith(object : BaseObserver<Moment>() {
+                        override fun onHandleSuccess(t: Moment) {
+                            if (t != null) {
+                                setData(t)
+                            }
+                        }
+
+                        override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {
+
+                        }
+                    })
+            addSubscription(subscribeWith)
+        } else {
+
+            mNineList.add(mNineImage)
+            mGrideAdapter.setNewData(mNineList)
+        }
+
+
     }
 
     override fun onClick(v: View) {
@@ -113,30 +138,41 @@ class CreateMomentsActivity : BaseActivity() {
                             return
                         }
                     }
-
                 }
-
-                if (size < 9) {
-                    mNineList.removeAt(mNineList.size - 1)
-                    mJson = gson.toJson(mNineList)
+                mJson = if (id != 0.toLong()) {
+                    if (moment.images!!.contains(mNineImage)) {
+                        moment.images!!.remove(mNineImage)
+                    }
+                    for (item in addNineList) {
+                        if (!moment.images!!.contains(item)) {
+                            moment.images!!.add(item)
+                        }
+                    }
+                    gson.toJson(moment.images)
                 } else {
-                    mJson = gson.toJson(mNineList)
+                    if (size < 9) {
+                        mNineList.removeAt(mNineList.size - 1)
+                        gson.toJson(mNineList)
+                    } else {
+                        gson.toJson(mNineList)
+                    }
                 }
 
+                Log.e("tag", "mJson$mJson")
                 postData(mJson)
             }
         }
     }
 
     private fun postData(mJson: String) {
-        RetrofitManager.service.addMoments(type, moment.id, moment.content, Constants.SHOP_ID, mJson)
+        val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.addMoments(type, moment.id, moment.content, Constants.SHOP_ID, mJson)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
                             ToastUtils.showSuccess("发布成功")
                             finish()
-                        }else{
+                        } else {
                             ToastUtils.showError("发布失败")
                             finish()
                         }
@@ -146,6 +182,7 @@ class CreateMomentsActivity : BaseActivity() {
 
                     }
                 })
+        addSubscription(subscribeWith)
     }
 
     private val itemchildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
@@ -153,48 +190,77 @@ class CreateMomentsActivity : BaseActivity() {
             R.id.foot -> {
                 choicePhotoWrapper((9 - size), Constants.ADDSC_IMG)
             }
+            R.id.iv_remove -> {
+                if (id != 0.toLong()) {
+                    //编辑
+                    if (size < 9) {
+                        val removeAt = mNineList.removeAt(position)
+                        if (addNineList != null && addNineList.size > 0 && addNineList.contains(removeAt)) {
+                            addNineList.remove(removeAt)
+                        }
+                        if (moment.images!!.contains(removeAt)) {
+                            moment.images!![moment.images!!.indexOf(removeAt)].is_del = 1
+                        }
+                        size = mNineList.size
+                        mGrideAdapter.setNewData(mNineList)
+                    } else {
+                        val removeAt = mNineList.removeAt(position)
+                        if (moment.images!!.contains(removeAt)) {
+                            moment.images!![moment.images!!.indexOf(removeAt)].is_del = 1
+                        }
+                        if (addNineList != null && addNineList.size > 0 && addNineList.contains(removeAt)) {
+                            addNineList.remove(removeAt)
+                        }
+                        size = mNineList.size
+                        mNineList.add(mNineImage)
+                        mGrideAdapter.setNewData(mNineList)
+                    }
+                    Log.e("tag", "momentsize======" + moment.images!!.size)
+                } else {
+                    //新添加
+                    if (size < 9) {
+                        mNineList.removeAt(position)
+                        moment.images = mNineList
+                        size = moment.images!!.size - 1
+                        mGrideAdapter.setNewData(moment.images)
+                    } else {
+                        mNineList.removeAt(position)
+                        moment.images = mNineList
+                        size = moment.images!!.size
+//                        mNineList.addAll(mNineImage)
+                        mNineList.add(mNineImage)
+                        mGrideAdapter.setNewData(mNineList)
+                    }
+                }
+            }
         }
     }
 
-    private fun setData() {
-
+    private fun setData(t: Moment) {
+        moment = t
+        if (moment.content.isNotEmpty()) {
+            et_text.setText(t.content)
+        }
+        if (moment.images != null && moment.images!!.size != 0) {
+            size = moment.images!!.size
+            if (size < 9) {
+                for (item in moment.images!!) {
+                    item.size = 1
+                }
+                mNineList.addAll(moment.images!!)
+                mNineList.add(mNineImage)
+                mGrideAdapter.setNewData(mNineList)
+            } else {
+                size = moment.images!!.size
+                mNineList = moment.images!!
+                for (item in moment.images!!) {
+                    item.size = 1
+                }
+                mGrideAdapter.setNewData(moment.images)
+            }
+        }
     }
 
-    private fun addMoments() {
-//        val disposable = RetrofitManager.service.addMoments(id)
-//                .compose(SchedulerUtils.ioToMain())
-//                .subscribeWith(object : BaseObserver<Boolean>() {
-//                    override fun onHandleSuccess(t: Boolean) {
-//                        if (t) {
-//                            ToastUtils.showMessage("添加成功")
-//                            finish()
-//                        }
-//                    }
-//
-//                    override fun onHandleError(error: Error) {
-//                        ToastUtils.showError(error.msg)
-//                    }
-//                })
-//        addSubscription(disposable)
-    }
-
-    private fun editMoments() {
-//        val disposable = RetrofitManager.service.editMoments(id)
-//                .compose(SchedulerUtils.ioToMain())
-//                .subscribeWith(object : BaseObserver<Boolean>() {
-//                    override fun onHandleSuccess(t: Boolean) {
-//                        if (t) {
-//                            ToastUtils.showMessage("编辑成功")
-//                            finish()
-//                        }
-//                    }
-//
-//                    override fun onHandleError(error: Error) {
-//                        ToastUtils.showError(error.msg)
-//                    }
-//                })
-//        addSubscription(disposable)
-    }
 
     private fun choicePhotoWrapper(count: Int, resultCode: Int) {
 
@@ -245,28 +311,54 @@ class CreateMomentsActivity : BaseActivity() {
                 if (data != null) {
                     var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
-                        size += selected.size
-                        mFileList.clear()
-                        for (item in selected) {
-                            var mFile = File(item)
-                            var mNineImage = NineImage()
-                            mNineImage.size = 1
-                            mNineImage.img_url = "file://$item"
-                            if (mNineList.size != 0) {
+                        if (id != 0.toLong()) {
+                            //编辑
+                            size += selected.size
+                            mFileList.clear()
+                            for (item in selected) {
+                                var mFile = File(item)
+                                var mNineImage = NineImage()
+                                mNineImage.size = 1
+                                mNineImage.img_url = "file://$item"
                                 mNineList.add(mNineList.size - 1, mNineImage)
-                            } else {
-                                mNineList.add(mNineImage)
+//                                moment.images!!.add(mNineImage)
+                                mFileList.add(mFile)
+                                addNineList.add(mNineImage)
+
                             }
-                            mFileList.add(mFile)
-                        }
-                        if (size < 9) {
-                            moment.images = mNineList
-                            mGrideAdapter.setNewData(moment.images)
+                            if (size < 9) {
+                                mGrideAdapter.setNewData(mNineList)
+                            } else {
+                                mNineList.removeAt(mNineList.size - 1)
+                                mGrideAdapter.setNewData(mNineList)
+                            }
+                            Log.e("tag", "momentsize1======" + moment.images!!.size)
                         } else {
-                            mNineList.removeAt(mNineList.size - 1)
-                            moment.images = mNineList
-                            mGrideAdapter.setNewData(moment.images)
+                            //新添加
+                            size += selected.size
+                            mFileList.clear()
+                            for (item in selected) {
+                                var mFile = File(item)
+                                var mNineImage = NineImage()
+                                mNineImage.size = 1
+                                mNineImage.img_url = "file://$item"
+                                if (mNineList.size != 0) {
+                                    mNineList.add(mNineList.size - 1, mNineImage)
+                                } else {
+                                    mNineList.add(mNineImage)
+                                }
+                                mFileList.add(mFile)
+                            }
+                            if (size < 9) {
+                                moment.images = mNineList
+                                mGrideAdapter.setNewData(moment.images)
+                            } else {
+                                mNineList.removeAt(mNineList.size - 1)
+                                moment.images = mNineList
+                                mGrideAdapter.setNewData(moment.images)
+                            }
                         }
+
                         UploadManager.getInstance().add(mFileList)
                     }
                 }
@@ -277,11 +369,9 @@ class CreateMomentsActivity : BaseActivity() {
     private val uploadListener = object : OnUploadListener {
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
 
-            val nineImage = findPictureByFile(file!!)
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            Log.e("tag", "longID===========" + id)
             val nineImage = findPictureByFile(file!!)
             if (nineImage != null) {
                 nineImage.oss_id = id
@@ -298,12 +388,22 @@ class CreateMomentsActivity : BaseActivity() {
 
     private fun findPictureByFile(file: File): NineImage? {
 
-        var mData = mGrideAdapter.data
+        if (id != 0.toLong()) {
+            if (addNineList != null) {
+                for (item in addNineList) {
+                    if (item.img_url == "file://${file.path}")
+                        return item
+                }
+            }
 
-        for (item in mData) {
-            if (item.img_url == "file://${file.path}")
-                return item
+        } else {
+            var mData = mGrideAdapter.data
+            for (item in mData) {
+                if (item.img_url == "file://${file.path}")
+                    return item
+            }
         }
+
 
         return null
     }

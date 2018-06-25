@@ -123,8 +123,7 @@ class AddGoodsNextActivity : BaseActivity() {
     private fun putData() {
         var gson = Gson()
         val toJson = gson.toJson(addGoods)
-        var mMap = HashMap<String, String>()
-        mMap["json"] = toJson
+        Log.e("tag", "toJson~~~~~~~~~~~~~~~$toJson")
         val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.postGoods(toJson)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {

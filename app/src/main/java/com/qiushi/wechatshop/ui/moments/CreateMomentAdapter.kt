@@ -26,6 +26,7 @@ class CreateMomentAdapter(data: List<NineImage>) : BaseMultiItemQuickAdapter<Nin
             1 -> {
                 ImageHelper.loadImageWithCorner(mContext, helper!!.getView(iv_add), item!!.img_url, 100, 100,
                         RoundedCornersTransformation(DensityUtils.dp2px(1.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+                helper.addOnClickListener(R.id.iv_remove)
             }
         }
 

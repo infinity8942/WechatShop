@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
@@ -33,6 +35,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 import kotlinx.android.synthetic.main.activity_add_goods.*
 import kotlinx.android.synthetic.main.addgoods_header.*
+import kotlinx.android.synthetic.main.item_moment.*
 import kotlinx.android.synthetic.main.next_layout.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
@@ -45,11 +48,10 @@ import kotlin.collections.ArrayList
 class AddGoodsActivity : BaseActivity() {
     var goods_id: Long = 0
     override fun layoutId(): Int = R.layout.activity_add_goods
-    private var mShopOrderList = ArrayList<ShopOrder>()
     var isBg: Boolean = false
     var addGoods = AddGoods()
     var mHandler = Handler()
-
+    var addContentList = ArrayList<Content>()
     var contentList = ArrayList<Content>()
     /**
      * 整体recyclerview adapter
@@ -71,6 +73,8 @@ class AddGoodsActivity : BaseActivity() {
         UploadManager.getInstance().register(uploadListener)
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.adapter = mAdapter
+
+        mAdapter.onItemChildClickListener = itemchildListener
         ic_bg.setOnClickListener(onclicklistener)
         rl_next.setOnClickListener(onclicklistener)
 
@@ -113,7 +117,7 @@ class AddGoodsActivity : BaseActivity() {
                                 contentList = addGoods.content!!
                                 //展示数据
                                 setData(addGoods)
-                                mAdapter.setNewData(addGoods.content)
+                                mAdapter.setNewData(contentList)
                             }
                         }
 
@@ -232,6 +236,14 @@ class AddGoodsActivity : BaseActivity() {
             ToastUtils.showError("产品详情未设置")
             return
         }
+
+        if (goods_id != 0.toLong() && addContentList != null && addContentList.size > 0) {
+            for (item in addContentList) {
+                if (!addGoods.content!!.contains(item)) {
+                    addGoods.content!!.add(item)
+                }
+            }
+        }
         AddGoodsNextActivity.startAddGoodsNextActivity(this, addGoods)
     }
 
@@ -309,9 +321,10 @@ class AddGoodsActivity : BaseActivity() {
                     var content = Content()
                     content.content = mText
                     contentList.add(content)
-                    addGoods.content = contentList
+                    addContentList.add(content)
+//                    addGoods.content = contentList
                     isVisible()
-                    mAdapter.setNewData(addGoods.content)
+                    mAdapter.setNewData(contentList)
                 }
             }
             Constants.ADDIMG_BG -> {
@@ -348,21 +361,68 @@ class AddGoodsActivity : BaseActivity() {
                     ImageHelper.loadImageWithCorner(application, ic_bg, ("file://" + file!!.path), 94, 94,
                             RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
                 } else {
-                    var content = Content()
-                    content.oss_id = id
-                    content.img = "file://" + file!!.path
-                    contentList.add(content)
-                    addGoods.content = contentList
-                    if (file != null && file.path != null) {
-                        isVisible()
-                        mAdapter.setNewData(addGoods.content)
+                    if (goods_id!= 0.toLong()) {
+                        //编辑
+                        var content = Content()
+                        content.oss_id = id
+                        content.img = "file://" + file!!.path
+                        contentList.add(content)
+                        addContentList.add(content)
+//                        addGoods.content = contentList
+                        if (file != null && file.path != null) {
+                            isVisible()
+                            mAdapter.setNewData(contentList)
+                        }
+                    } else {
+                        var content = Content()
+                        content.oss_id = id
+                        content.img = "file://" + file!!.path
+                        contentList.add(content)
+                        addGoods.content = contentList
+                        if (file != null && file.path != null) {
+                            isVisible()
+                            mAdapter.setNewData(addGoods.content)
+                        }
                     }
+
                 }
             }, 500)
 
         }
     }
+
+    val itemchildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+        when (view?.id) {
+            R.id.iv_remove -> {
+                if (goods_id != 0.toLong()) {
+                    //编辑
+                    if (contentList != null && contentList.size > 0 && contentList.size > position) {
+                        val removeAt = contentList.removeAt(position)
+
+                        if (addContentList != null && addContentList.size > 0 && addContentList.contains(removeAt)) {
+                            addContentList.remove(removeAt)
+                        }
+                        if (addGoods.content!!.contains(removeAt)) {
+                            addGoods.content!![addGoods.content!!.indexOf(removeAt)].is_del = 1
+                        }
+                        isVisible()
+                        mAdapter.setNewData(contentList)
+                    }
+
+                } else {
+                    //新增
+                    if (contentList != null && contentList.size > 0 && contentList.size > position) {
+                        contentList.removeAt(position)
+                        addGoods.content = contentList
+                        isVisible()
+                        mAdapter.setNewData(addGoods.content)
+                    }
+                }
+            }
+        }
+    }
 }
+
 
 
 

@@ -192,6 +192,14 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("Shop/moments_edit")
-    fun addMoments(@Field("type") type: Int, @Field("id") id: Long, @Field("content") content: String, @Field("shop_id") shop_id: Long, @Field("imgs") imgs: String): Observable<BaseResponse<Boolean>>
+    fun addMoments(@Field("type") type: Int, @Field("id") id: Long, @Field("content") content: String, @Field("shop_id") shop_id: Long, @Field("images") images: String): Observable<BaseResponse<Boolean>>
+
+
+    /**
+     * 信息编辑页面
+     */
+    @FormUrlEncoded
+    @POST("Shop/moments_edit_info")
+    fun editMomentsInfo(@Field("id") id: Long): Observable<BaseResponse<Moment>>
 
 }
