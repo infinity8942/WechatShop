@@ -1,9 +1,7 @@
-package com.qiushi.wechatshop.ui.order
-
+package com.qiushi.wechatshop.ui.goods
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
@@ -11,12 +9,14 @@ import android.view.ViewGroup
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Goods
-
+import com.qiushi.wechatshop.ui.order.AddOrderActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_order_list.*
 
-
-class OrderListActivity : BaseActivity() {
+/**
+ * 商品列表页
+ */
+class GoodsListActivity : BaseActivity() {
     private lateinit var headerView: View
     private lateinit var notDataView: View
     private lateinit var errorView: View
@@ -26,30 +26,19 @@ class OrderListActivity : BaseActivity() {
         GridLayoutManager(this, 2)
     }
 
-
     private val mGrideAdapter by lazy {
-        OrderGrideAdapter(ArrayList())
+        GoodsAdapter(ArrayList())
     }
 
     override fun layoutId(): Int = R.layout.activity_order_list
 
     override fun init() {
-        StatusBarUtil.immersive(this!!)
-        StatusBarUtil.setPaddingSmart(this!!, toolbar)
+        StatusBarUtil.immersive(this)
+        StatusBarUtil.setPaddingSmart(this, toolbar)
 
-       var mGoods1 = Goods("小商店")
-        var mGoods2 = Goods("小商店1")
-        var mGoods3 = Goods("小商店2")
-        var mGoods4 = Goods("小商店3")
-        mList!!.add(mGoods1!!)
-        mList!!.add(mGoods2!!)
-        mList!!.add(mGoods3!!)
-        mList!!.add(mGoods4!!)
-
-
-        notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
+        notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { getData() }
-        errorView = layoutInflater.inflate(R.layout.error_view, mRecyclerView.parent as ViewGroup, false)
+        errorView = layoutInflater.inflate(R.layout.empty_network_view, mRecyclerView.parent as ViewGroup, false)
         errorView.setOnClickListener { getData() }
 
         headerView = layoutInflater.inflate(R.layout.orderlist_header, mRecyclerView.parent as ViewGroup, false)
@@ -58,6 +47,18 @@ class OrderListActivity : BaseActivity() {
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         mRecyclerView.adapter = mGrideAdapter
         mGrideAdapter.addHeaderView(headerView)
+
+        //Listener
+        back.setOnClickListener(this)
+        mGrideAdapter.setOnItemChildClickListener { adapter, view, position ->
+
+        }
+
+        //TODO 测试数据
+        mList!!.add(Goods("小商店"))
+        mList!!.add(Goods("小商店1"))
+        mList!!.add(Goods("小商店2"))
+        mList!!.add(Goods("小商店3"))
         mGrideAdapter.setNewData(mList)
     }
 
@@ -65,13 +66,18 @@ class OrderListActivity : BaseActivity() {
 
     }
 
+    /**
+     * 选中商品
+     */
+    fun selectGoods(goods: Goods) {
+        val intent = Intent(this, AddOrderActivity::class.java)
+        intent.putExtra("goods", goods)
+        setResult(Activity.RESULT_OK, intent)
+    }
 
     companion object {
         fun startOrderListActivity(context: Activity) {
-            var intent = Intent()
-            intent.setClass(context, OrderListActivity::class.java)
-            ContextCompat.startActivity(context, intent, null)
+            context.startActivityForResult(Intent(context, GoodsListActivity::class.java), 1000)
         }
     }
-
 }

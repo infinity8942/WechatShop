@@ -13,7 +13,6 @@ import com.heaven7.android.dragflowlayout.ClickToDeleteItemListenerImpl
 import com.heaven7.android.dragflowlayout.DragAdapter
 import com.heaven7.android.dragflowlayout.DragFlowLayout
 import com.heaven7.android.dragflowlayout.IViewObserver
-import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -97,11 +96,9 @@ class ShopEditActivity : Activity(), View.OnClickListener {
         }
         drag_flowLayout.addViewObserver(object : IViewObserver {
             override fun onAddView(child: View, index: Int) {
-                Logger.e("onAddView " + index)
             }
 
             override fun onRemoveView(child: View, index: Int) {
-                Logger.e("onRemoveView " + index)
             }
         })
         drag_flowLayout.setOnItemClickListener(object : ClickToDeleteItemListenerImpl(R.id.close) {

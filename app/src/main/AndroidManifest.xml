@@ -45,7 +45,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/dialogstyle" />
         <activity
-            android:name=".ui.order.OrderListActivity"
+            android:name=".ui.goods.GoodsListActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.order.OrderActivity"
@@ -134,7 +134,7 @@
         </provider>
 
         <provider
-            android:name="br.com.mauker.materialsearchview.db.HistoryProvider"
+            android:name=".view.search.db.HistoryProvider"
             android:authorities="com.qiushi.wechatshop.searchhistorydatabase"
             android:exported="false"
             android:protectionLevel="signature"

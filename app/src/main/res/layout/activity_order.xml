@@ -20,15 +20,6 @@
             android:scaleType="centerInside"
             android:src="@mipmap/ic_back" />
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/padding_tab_layout_top"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_vertical"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
-
         <ImageView
             android:id="@+id/btn_search"
             android:layout_width="@dimen/padding_tab_layout_top"
@@ -36,6 +27,20 @@
             android:layout_alignParentRight="true"
             android:scaleType="centerInside"
             android:src="@mipmap/ic_search" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/btn_search"
+            android:layout_toRightOf="@id/back"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <com.qiushi.wechatshop.view.tab.CommonTabLayout
@@ -103,7 +108,7 @@
             android:textSize="13sp" />
     </RelativeLayout>
 
-    <br.com.mauker.materialsearchview.MaterialSearchView
+    <com.qiushi.wechatshop.view.search.MaterialSearchView
         android:id="@+id/search_view"
         style="@style/MaterialSearchViewStyle"
         android:layout_width="match_parent"

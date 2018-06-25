@@ -44,7 +44,7 @@ class OrderFragment : BaseFragment() {
 
         notDataView = layoutInflater.inflate(R.layout.empty_order_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }
-        errorView = layoutInflater.inflate(R.layout.error_view, mRecyclerView.parent as ViewGroup, false)
+        errorView = layoutInflater.inflate(R.layout.empty_network_view, mRecyclerView.parent as ViewGroup, false)
         errorView.setOnClickListener { lazyLoad() }
 
         //Listener
@@ -97,8 +97,15 @@ class OrderFragment : BaseFragment() {
                         }
 
                         //more
-                        mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
-                        page++
+                        if (mAdapter.itemCount == 0) {
+                            mAdapter.emptyView = notDataView
+                            return
+                        }
+
+                        if (t.isNotEmpty()) {
+                            mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
+                            page++
+                        }
                     }
 
                     override fun onHandleError(error: Error) {

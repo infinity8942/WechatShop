@@ -6,6 +6,7 @@ import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.util.*
+import com.qiushi.wechatshop.view.search.MaterialSearchView
 import kotlinx.android.synthetic.main.activity_setting.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
@@ -62,6 +63,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 ImageHelper.clear()
                 ToastUtils.showMessage("已清理")
                 cache.text = "0b"
+                MaterialSearchView(this).clearAll()
             }
             R.id.layout_feedback -> startActivity(Intent(this@SettingActivity, FeedbackActivity::class.java))
             R.id.layout_about_us -> {//TODO 关于我们界面

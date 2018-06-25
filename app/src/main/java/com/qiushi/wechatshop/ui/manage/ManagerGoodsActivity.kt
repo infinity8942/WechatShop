@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.ui.manage
 
+
 import android.content.Context
 import android.content.Intent
 import android.support.design.widget.BottomSheetDialog
@@ -19,8 +20,6 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.R.id.mRecyclerView
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Goods
-import com.qiushi.wechatshop.model.Shop
-import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -31,10 +30,7 @@ import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_manager_goods.*
-import uk.co.senab.photoview.Compat
-
-
-import java.util.ArrayList
+import java.util.*
 
 
 class ManagerGoodsActivity : BaseActivity() {
@@ -91,13 +87,13 @@ class ManagerGoodsActivity : BaseActivity() {
     override fun layoutId(): Int = R.layout.activity_manager_goods
 
     override fun init() {
-        StatusBarUtil.immersive(this!!)
-        StatusBarUtil.setPaddingSmart(this!!, toolbar)
+        StatusBarUtil.immersive(this)
+        StatusBarUtil.setPaddingSmart(this, toolbar)
 
 
-        notDataView = layoutInflater.inflate(R.layout.empty_view, mRecyclerView.parent as ViewGroup, false)
+        notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { getData() }
-        errorView = layoutInflater.inflate(R.layout.error_view, mRecyclerView.parent as ViewGroup, false)
+        errorView = layoutInflater.inflate(R.layout.empty_network_view, mRecyclerView.parent as ViewGroup, false)
         errorView.setOnClickListener { getData() }
 
         mRecyclerView.layoutManager = linearLayoutManager

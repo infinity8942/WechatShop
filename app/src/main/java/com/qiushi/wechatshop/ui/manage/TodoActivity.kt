@@ -33,7 +33,7 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
         layout_deliver.setOnClickListener(this)
         layout_pay.setOnClickListener(this)
         layout_amount.setOnClickListener(this)
-        layout_chat.setOnClickListener(this)
+//        layout_chat.setOnClickListener(this)
 //        layout_date.setOnClickListener(this)
 //        layout_coupon_amount.setOnClickListener(this)
     }
@@ -48,16 +48,16 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.layout_pay -> {//待支付
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("jumpToOrder", 3)
+                intent.putExtra("jumpToOrder", 1)
                 startActivity(intent)
                 finish()
             }
             R.id.layout_amount -> {//库存量紧缺
-
+                ManagerGoodsActivity.startManagerGoodsActivity(this, 0)
             }
-            R.id.layout_chat -> {//需沟通人员
-
-            }
+//            R.id.layout_chat -> {//需沟通人员
+//
+//            }
 //            R.id.layout_date -> {//优惠券即将过期
 //
 //            }
