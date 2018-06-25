@@ -12,11 +12,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import com.qiushi.wechatshop.Constants;
 import com.qiushi.wechatshop.R;
+import com.qiushi.wechatshop.model.PhoneInfo;
 import com.tencent.sonic.sdk.SonicConfig;
 import com.tencent.sonic.sdk.SonicEngine;
 import com.tencent.sonic.sdk.SonicSession;
 import com.tencent.sonic.sdk.SonicSessionConfig;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -48,7 +53,12 @@ public class WebActivity extends SwipeBackActivity {
         SonicSessionClientImpl sonicSessionClient;
 
         // step 2: Create SonicSession
-        sonicSession = SonicEngine.getInstance().createSession(url, new SonicSessionConfig.Builder().build());
+        Map<String, String> header = new HashMap<>();//TODO Header
+        header.put("client-id", Constants.CILIENT);
+        header.put("access-token", Constants.TOKEN);
+        header.put("is-app", "1");
+        header.put("version", PhoneInfo.getInstance().getVersion());
+        sonicSession = SonicEngine.getInstance().createSession(url, new SonicSessionConfig.Builder().setCustomRequestHeaders(header).build());
         if (null != sonicSession) {
             sonicSession.bindClient(sonicSessionClient = new SonicSessionClientImpl());
         } else {
@@ -115,7 +125,6 @@ public class WebActivity extends SwipeBackActivity {
         webSettings.setSaveFormData(false);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
-
 
         // step 5: webview is ready now, just tell session client to bind
         sonicSessionClient.bindWebView(webView);

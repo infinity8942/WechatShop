@@ -34,6 +34,5 @@ public class SonicSessionClientImpl extends SonicSessionClient {
 
     @Override
     public void loadDataWithBaseUrlAndHeader(String baseUrl, String data, String mimeType, String encoding, String historyUrl, HashMap<String, String> headers) {
-        //header
     }
 }

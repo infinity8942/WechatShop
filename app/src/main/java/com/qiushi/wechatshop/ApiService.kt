@@ -64,7 +64,15 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("Order/order_detail")
-    fun getOrderDetail(@Field("order_id") shop_id: Long): Observable<BaseResponse<Order>>
+    fun getOrderDetail(@Field("order_id") order_id: Long): Observable<BaseResponse<Order>>
+
+    /**
+     * 添加商品到购物车
+     */
+    @FormUrlEncoded
+    @POST("User/add_to_cart")
+    fun addToShopCart(@Field("shop_id") shop_id: Long, @Field("goods_id") goods_id: Long,
+                      @Field("num") num: Int): Observable<BaseResponse<Boolean>>
 
     /**
      * 登录

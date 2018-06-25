@@ -28,6 +28,12 @@ object Constants {
     @JvmField
     val HOST = if (DEBUG) "http://wechatshop.qiushizixun.com/" else "http://wap.top6000.com/MobileApp/"
 
+    //H5
+    const val GOODS_DETAIL = "http://wechatshop.qiushizixun.com/H5/detail/id/"
+    const val SHOPCART = "http://wechatshop.qiushizixun.com/H5/car"
+    const val ADDRESS = "http://wechatshop.qiushizixun.com/H5/address"
+
+    //OSS
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"
     @JvmField
     val OssCallback = HOST + "Oss/app_response_call_back" //"http://192.168.1.82:81"

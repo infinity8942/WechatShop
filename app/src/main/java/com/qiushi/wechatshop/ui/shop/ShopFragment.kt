@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.ui.shop
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.TextView
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
+import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -17,6 +19,7 @@ import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.GridSpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_shop.*
 
@@ -62,9 +65,16 @@ class ShopFragment : BaseFragment() {
 
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
-                R.id.cart -> {//TODO 添加购物车
+                R.id.cart -> {
+                    addToShopCart((adapter.data[position] as Goods).id)
                 }
             }
+        }
+        mAdapter.setOnItemClickListener { adapter, _, position ->
+            val intent = Intent(activity, WebActivity::class.java)
+            intent.putExtra(WebActivity.PARAM_TITLE, (adapter.data[position] as Goods).name)
+            intent.putExtra(WebActivity.PARAM_URL, Constants.GOODS_DETAIL + (adapter.data[position] as Goods).id)
+            startActivity(intent)
         }
     }
 
@@ -130,6 +140,28 @@ class ShopFragment : BaseFragment() {
 //        headerView.findViewById<RecyclerView>(R.id.rv_coupon).addItemDecoration(SpaceItemDecoration(DensityUtils.dp2px(13.toFloat()), 0))
 //        headerView.findViewById<RecyclerView>(R.id.rv_coupon).adapter = mCouponAdapter
 //        mCouponAdapter.setNewData(listCoupon)
+    }
+
+    /**
+     * 添加到购物车
+     */
+    private fun addToShopCart(goods_id: Long) {
+        val disposable = RetrofitManager.service.addToShopCart(//TODO 测试数据
+                10091, goods_id, 1
+        )
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<Boolean>() {
+                    override fun onHandleSuccess(t: Boolean) {
+                        if (t) {
+                            ToastUtils.showMessage("添加成功")
+                        }
+                    }
+
+                    override fun onHandleError(error: Error) {
+                        ToastUtils.showError(error.msg)
+                    }
+                })
+        addSubscription(disposable)
     }
 
     companion object {
