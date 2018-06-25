@@ -73,11 +73,11 @@
                     android:src="@mipmap/bg_express" />
 
                 <TextView
+                    android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:layout_marginTop="24dp"
-                    android:text="卖家已发货"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
             </RelativeLayout>
@@ -192,7 +192,6 @@
                     android:layout_marginLeft="7dp"
                     android:layout_toRightOf="@id/logo"
                     android:ellipsize="end"
-                    android:text="咪蒙韩国代购"
                     android:textColor="@color/color_item_text"
                     android:textSize="13sp" />
 

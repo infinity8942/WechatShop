@@ -62,12 +62,12 @@ class OrderFragment : BaseFragment() {
                     startActivity(intent)
                     (activity as OrderActivity).finish()
                 }
-                else -> {
-                    val intent = Intent(activity, OrderDetailActivity::class.java)
-                    intent.putExtra("id", (adapter.data[position] as Order).id)
-                    startActivity(intent)
-                }
             }
+        }
+        mAdapter.setOnItemClickListener { adapter, _, position ->
+            val intent = Intent(activity, OrderDetailActivity::class.java)
+            intent.putExtra("id", (adapter.data[position] as Order).id)
+            startActivity(intent)
         }
     }
 

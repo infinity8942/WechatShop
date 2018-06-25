@@ -31,15 +31,19 @@ class OrderDetailActivity : BaseActivity() {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
-        back.setOnClickListener(this)
+
+        orderID = intent.getLongExtra("id", -1)
 
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mAdapter = OrderGoodsAdapter()
         mRecyclerView.adapter = mAdapter
+
+        back.setOnClickListener(this)
     }
 
     override fun getData() {
-        val disposable = RetrofitManager.service.getOrderDetail(orderID)
+        val disposable = RetrofitManager.service.getOrderDetail(10091,//TODO 测试数据
+                orderID)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Order>() {
                     override fun onHandleSuccess(t: Order) {
@@ -48,8 +52,14 @@ class OrderDetailActivity : BaseActivity() {
 
                         mAdapter.setNewData(t.goods)
 
-                        amount.text = "共计" + t.count + "件商品"
+                        amount.text = "共计" + t.num + "件商品"
                         price.text = "￥" + t.price
+                        when (t.status) {
+                            0 -> status.text = "等待买家付款"
+                            1 -> status.text = "买家已付款"
+                            2 -> status.text = "等待买家收货"
+                            3 -> status.text = "已完成"
+                        }
                         message.text = "买家留言：" + t.content
                         number.text = "订单编号：" + t.number
                         create_time.text = "创建时间：" + DateUtil.getMillon(t.create_time)

@@ -24,7 +24,7 @@ class OrderAdapter : BaseQuickAdapter<Order, BaseViewHolder>(R.layout.item_order
             2 -> helper.setText(R.id.status, "等待买家收货")
             3 -> helper.setText(R.id.status, "已完成")
         }
-        helper.setText(R.id.amount, "共计" + order.count + "件商品")
+        helper.setText(R.id.amount, "共计" + order.num + "件商品")
         helper.setText(R.id.price, "￥" + order.price)
 
         val recyclerView: RecyclerView = helper.getView(R.id.mRecyclerView)

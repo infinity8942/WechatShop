@@ -3,7 +3,6 @@ package com.qiushi.wechatshop.ui
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.view.KeyEvent
-import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.ui.manage.ManageFragment
@@ -54,18 +53,15 @@ class MainActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent?) {
         if (null != intent) {
             if (intent.hasExtra("jumpToShop")) {//跳转“串门”店铺页
-                Logger.e("跳转店铺 -> " + intent.getLongExtra("jumpToShop", -1))
                 if (navigation.currentTab != 1)
                     navigation.currentTab = 1
                 (mFragments[1] as ShopListFragment).selectShop(
-                        10088 //TODO 测试数据
-//                        intent.getLongExtra("jumpToShop", -1)
+                        intent.getLongExtra("jumpToShop", -1)
                 )
             }
 
             if (intent.hasExtra("jumpToOrder")) {//跳转订单页
                 val orderType = intent.getIntExtra("jumpToOrder", -1)
-                Logger.e("跳转订单 -> " + orderType)
                 if (orderType != -1) {
                     (mFragments[0] as ManageFragment).goToOrderActivity(orderType)
                 }

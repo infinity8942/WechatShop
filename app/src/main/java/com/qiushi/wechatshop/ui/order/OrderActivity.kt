@@ -95,11 +95,11 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         mTabEntities.add(TabEntity("待发货", 0, 0))
         mTabEntities.add(TabEntity("已发货", 0, 0))
         mTabEntities.add(TabEntity("已完成", 0, 0))
+        fragments.add(OrderFragment.getInstance(100))
         fragments.add(OrderFragment.getInstance(1))
         fragments.add(OrderFragment.getInstance(2))
         fragments.add(OrderFragment.getInstance(3))
         fragments.add(OrderFragment.getInstance(4))
-        fragments.add(OrderFragment.getInstance(5))
 
         viewpager.adapter = BaseFragmentAdapter(supportFragmentManager, fragments, tabList)
         tab.setTabData(mTabEntities)
