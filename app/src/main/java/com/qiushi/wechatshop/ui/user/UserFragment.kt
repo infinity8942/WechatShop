@@ -9,6 +9,7 @@ import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
+import com.qiushi.wechatshop.util.web.WebActivity
 import kotlinx.android.synthetic.main.fragment_user.*
 
 /**
@@ -51,10 +52,17 @@ class UserFragment : BaseFragment(), View.OnClickListener {
             R.id.all -> goToOrder(0)
 
             R.id.layout_cart -> {
+                val intent = Intent(activity, WebActivity::class.java)
+                intent.putExtra(WebActivity.PARAM_TITLE, "我的购物车")
+                intent.putExtra(WebActivity.PARAM_URL, Constants.SHOPCART)
+                startActivity(intent)
             }
 
             R.id.layout_address -> {
-
+                val intent = Intent(activity, WebActivity::class.java)
+                intent.putExtra(WebActivity.PARAM_TITLE, "我的地址")
+                intent.putExtra(WebActivity.PARAM_URL, Constants.ADDRESS)
+                startActivity(intent)
             }
             R.id.layout_credit -> {
             }

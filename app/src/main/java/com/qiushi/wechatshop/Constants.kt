@@ -28,6 +28,12 @@ object Constants {
     @JvmField
     val HOST = if (DEBUG) "http://wechatshop.qiushizixun.com/" else "http://wap.top6000.com/MobileApp/"
 
+    //H5
+    const val GOODS_DETAIL = "http://wechatshop.qiushizixun.com/H5/detail/id/"
+    const val SHOPCART = "http://wechatshop.qiushizixun.com/H5/car"
+    const val ADDRESS = "http://wechatshop.qiushizixun.com/H5/address"
+
+    //OSS
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"
     @JvmField
     val OssCallback = HOST + "Oss/app_response_call_back" //"http://192.168.1.82:81"
@@ -48,8 +54,8 @@ object Constants {
     const val EDIT_TEXT_REQUEST = 1005 //编辑文本的回调
     const val ADDIMG_BG = 1006//背景进入相册回调
 
-    const val ADDIMG_LOGO=1007//店铺装修logo
-    const val ADDIMG_GOODS_BG=1008//店铺装修背景
+    const val ADDIMG_LOGO = 1007//店铺装修logo
+    const val ADDIMG_GOODS_BG = 1008//店铺装修背景
 
 
     const val TOKEN = "2813c9014ff9581978e3f616e09b1d79"
