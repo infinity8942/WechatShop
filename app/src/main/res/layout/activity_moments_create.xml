@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/contentBackground"
-    android:orientation="vertical"
-    tools:context=".ui.moments.CreateMomentsActivity">
+    android:background="@color/contentBackground">
 
     <RelativeLayout
         android:id="@+id/toolbar"
@@ -29,14 +27,49 @@
             android:text="添加素材"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
+
+
+        <TextView
+            android:gravity="center_vertical"
+            android:id="@+id/tv_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:text="完成"
+            android:textColor="@color/title"
+            android:textSize="16sp" />
     </RelativeLayout>
 
-    <LinearLayout
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--android:padding="16dp">-->
+
+    <!---->
+    <!--</LinearLayout>-->
+
+    <EditText
+        android:id="@+id/et_text"
+        android:layout_width="match_parent"
+        android:layout_height="107dp"
+        android:layout_below="@+id/toolbar"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="我为产品代言"
+        android:paddingLeft="30dp"
+        android:paddingTop="32dp"
+        android:textColor="@color/color_add_goods"
+        android:textSize="16sp" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_below="@+id/et_text"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="35dp" />
 
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

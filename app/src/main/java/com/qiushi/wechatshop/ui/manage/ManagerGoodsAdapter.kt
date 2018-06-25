@@ -36,5 +36,6 @@ class ManagerGoodsAdapter(data: List<Goods>) : BaseQuickAdapter<Goods, BaseViewH
                 .addOnClickListener(R.id.tv_zd)
                 .addOnClickListener(R.id.tv_delete)
                 .addOnClickListener(R.id.tv_xj)
+                .addOnClickListener(R.id.iv_edit)
     }
 }

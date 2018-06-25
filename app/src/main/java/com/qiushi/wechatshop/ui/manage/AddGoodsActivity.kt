@@ -4,16 +4,22 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
+import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.AddGoods
 import com.qiushi.wechatshop.model.Content
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
@@ -29,11 +35,14 @@ import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
 import java.io.File
 
+
 class AddGoodsActivity : BaseActivity() {
+    var goods_id: Long = 0
     override fun layoutId(): Int = R.layout.activity_add_goods
     var isBg: Boolean = false
     var addGoods = AddGoods()
-
+    var mHandler = Handler()
+    var addContentList = ArrayList<Content>()
     var contentList = ArrayList<Content>()
     /**
      * 整体recyclerview adapter
@@ -54,9 +63,11 @@ class AddGoodsActivity : BaseActivity() {
         UploadManager.getInstance().register(uploadListener)
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.adapter = mAdapter
+
+        mAdapter.onItemChildClickListener = itemchildListener
         ic_bg.setOnClickListener(onclicklistener)
         rl_next.setOnClickListener(onclicklistener)
-        isVisible()
+
     }
 
     private fun isVisible() {
@@ -77,12 +88,71 @@ class AddGoodsActivity : BaseActivity() {
         }
     }
 
+
+    override fun getParams(intent: Intent) {
+        super.getParams(intent)
+        goods_id = intent.getLongExtra("goods_id", 0)
+    }
+
     override fun getData() {
+        if (goods_id != null && goods_id != 0.toLong()) {
+            val subscribeWith: BaseObserver<AddGoods> = RetrofitManager.service.getGoods(goods_id)
+                    .compose(SchedulerUtils.ioToMain())
+                    .subscribeWith(object : BaseObserver<AddGoods>() {
+                        override fun onHandleSuccess(t: AddGoods) {
+                            addGoods = t
+                            isVisible()
+                            if (addGoods != null && addGoods.content != null && addGoods.content!!.size > 0) {
+                                contentList = addGoods.content!!
+                                //展示数据
+                                setData(addGoods)
+                                mAdapter.setNewData(contentList)
+                            }
+                        }
+
+                        override fun onHandleError(error: Error) {
+
+                        }
+                    })
+            addSubscription(subscribeWith)
+        } else {
+            isVisible()
+        }
+    }
+
+    fun setData(addGoods: AddGoods) {
+        //背景图
+        if (addGoods.cover_url != null && addGoods.cover_url.isNotEmpty()) {
+            ImageHelper.loadImageWithCorner(application, ic_bg, addGoods.cover_url, 94, 94,
+                    RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+        }
+        //名字
+        if (addGoods.name != null && addGoods.name.isNotEmpty()) {
+            et_name.setText(addGoods.name)
+        }
+        //描述
+        if (addGoods.brief != null && addGoods.brief.isNotEmpty()) {
+            et_brief.setText(addGoods.brief)
+        }
+        //单价
+        if (addGoods.price != null && addGoods.price != 0.toLong()) {
+            price.setText(addGoods.price.toString())
+        }
+        //库存
+        if (addGoods.stock != null && addGoods.stock != 0.toLong()) {
+            stock.setText(addGoods.stock.toString())
+        }
+
     }
 
     companion object {
-        fun startAddGoodsActivity(context: Context) {
-            ContextCompat.startActivity(context, Intent(context, AddGoodsActivity::class.java), null)
+        fun startAddGoodsActivity(context: Context, goods_id: Long) {
+            val intent = Intent()
+            //获取intent对象
+            intent.putExtra("goods_id", goods_id)
+            intent.setClass(context, AddGoodsActivity::class.java)
+            // 获取class是使用::反射
+            ContextCompat.startActivity(context, intent, null)
         }
     }
 
@@ -154,6 +224,14 @@ class AddGoodsActivity : BaseActivity() {
         if (addGoods.content == null || addGoods.content!!.size <= 0) {
             ToastUtils.showError("产品详情未设置")
             return
+        }
+
+        if (goods_id != 0.toLong() && addContentList != null && addContentList.size > 0) {
+            for (item in addContentList) {
+                if (!addGoods.content!!.contains(item)) {
+                    addGoods.content!!.add(item)
+                }
+            }
         }
         AddGoodsNextActivity.startAddGoodsNextActivity(this, addGoods)
     }
@@ -232,9 +310,10 @@ class AddGoodsActivity : BaseActivity() {
                     val content = Content()
                     content.content = mText
                     contentList.add(content)
-                    addGoods.content = contentList
+                    addContentList.add(content)
+//                    addGoods.content = contentList
                     isVisible()
-                    mAdapter.setNewData(addGoods.content)
+                    mAdapter.setNewData(contentList)
                 }
             }
             Constants.ADDIMG_BG -> {
@@ -261,20 +340,70 @@ class AddGoodsActivity : BaseActivity() {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            if (isBg) {
-                addGoods.cover = id.toString()
-                //如果是背景 ,显示背景
-                ImageHelper.loadImageWithCorner(application, ic_bg, ("file://" + file!!.path), 94, 94,
-                        RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
-            } else {
-                val content = Content()
-                content.oss_id = id
-                content.img = "file://" + file!!.path
-                contentList.add(content)
-                addGoods.content = contentList
-                if (file != null && file.path != null) {
-                    isVisible()
-                    mAdapter.setNewData(addGoods.content)
+
+            mHandler.postDelayed({
+                if (isBg) {
+                    addGoods.cover = id.toString()
+                    //如果是背景 ,显示背景
+                    ImageHelper.loadImageWithCorner(application, ic_bg, ("file://" + file!!.path), 94, 94,
+                            RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+                } else {
+                    if (goods_id != 0.toLong()) {
+                        //编辑
+                        var content = Content()
+                        content.oss_id = id
+                        content.img = "file://" + file!!.path
+                        contentList.add(content)
+                        addContentList.add(content)
+//                        addGoods.content = contentList
+                        if (file != null && file.path != null) {
+                            isVisible()
+                            mAdapter.setNewData(contentList)
+                        }
+                    } else {
+                        var content = Content()
+                        content.oss_id = id
+                        content.img = "file://" + file!!.path
+                        contentList.add(content)
+                        addGoods.content = contentList
+                        if (file != null && file.path != null) {
+                            isVisible()
+                            mAdapter.setNewData(addGoods.content)
+                        }
+                    }
+
+                }
+            }, 500)
+
+        }
+    }
+
+    val itemchildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+        when (view?.id) {
+            R.id.iv_remove -> {
+                if (goods_id != 0.toLong()) {
+                    //编辑
+                    if (contentList != null && contentList.size > 0 && contentList.size > position) {
+                        val removeAt = contentList.removeAt(position)
+
+                        if (addContentList != null && addContentList.size > 0 && addContentList.contains(removeAt)) {
+                            addContentList.remove(removeAt)
+                        }
+                        if (addGoods.content!!.contains(removeAt)) {
+                            addGoods.content!![addGoods.content!!.indexOf(removeAt)].is_del = 1
+                        }
+                        isVisible()
+                        mAdapter.setNewData(contentList)
+                    }
+
+                } else {
+                    //新增
+                    if (contentList != null && contentList.size > 0 && contentList.size > position) {
+                        contentList.removeAt(position)
+                        addGoods.content = contentList
+                        isVisible()
+                        mAdapter.setNewData(addGoods.content)
+                    }
                 }
             }
         }

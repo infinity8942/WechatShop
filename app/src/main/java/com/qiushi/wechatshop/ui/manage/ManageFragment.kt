@@ -257,6 +257,9 @@ class ManageFragment : BaseFragment() {
                 setTop(mData.id.toLong(), type, position + 1)
                 adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
             }
+            R.id.iv_edit -> {
+                AddGoodsActivity.startAddGoodsActivity(this!!.context!!, mData.id.toLong())
+            }
         }
     }
 

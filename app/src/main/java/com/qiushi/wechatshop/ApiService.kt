@@ -131,12 +131,6 @@ interface ApiService {
     @POST("Shop/moments")
     fun getMoments(@Field("shop_id") shop_id: Long, @Field("type") type: Int, @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Moment>>>
 
-    /**
-     * 添加素材
-     */
-    @FormUrlEncoded
-    @POST("Shop/moments_edit")
-    fun addMoments(@Field("type") type: Int, @Field("content") content: String): Observable<BaseResponse<Boolean>>
 
     /**
      * 素材编辑
@@ -202,5 +196,26 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Goods/goods_edit")
     fun postGoods(@Field("json") json: String): Observable<BaseResponse<Boolean>>
+
+    @FormUrlEncoded
+    @POST("Goods/edit_goods_info")
+    fun getGoods(@Field("goods_id") goods_id: Long): Observable<BaseResponse<AddGoods>>
+
+
+    /**
+     * 添加素材
+     *
+     */
+    @FormUrlEncoded
+    @POST("Shop/moments_edit")
+    fun addMoments(@Field("type") type: Int, @Field("id") id: Long, @Field("content") content: String, @Field("shop_id") shop_id: Long, @Field("images") images: String): Observable<BaseResponse<Boolean>>
+
+
+    /**
+     * 信息编辑页面
+     */
+    @FormUrlEncoded
+    @POST("Shop/moments_edit_info")
+    fun editMomentsInfo(@Field("id") id: Long): Observable<BaseResponse<Moment>>
 
 }

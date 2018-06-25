@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!--<com.qiushi.wechatshop.view.SquareImageView
+ xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:id="@+id/iv_add"--><!--android:layout_width="match_parent"-->
+<!--android:layout_height="100dp"-->
+<!--android:layout_marginLeft="2dp"-->
+<!--android:layout_marginRight="2dp"-->
+<!--android:layout_marginTop="4dp">-->
+
+<!--</com.qiushi.wechatshop.view.SquareImageView>-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginTop="4dp">
+
+    <com.qiushi.wechatshop.view.SquareImageView
+        android:id="@+id/iv_add"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <ImageView
+        android:id="@+id/iv_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:src="@mipmap/ic_close_goods" />
+</RelativeLayout>

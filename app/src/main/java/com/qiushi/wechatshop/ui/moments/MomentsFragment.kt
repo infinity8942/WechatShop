@@ -138,7 +138,7 @@ class MomentsFragment : BaseFragment() {
      */
     private fun goToEditMoments(moment: Moment) {
         val intent = Intent(activity, CreateMomentsActivity::class.java)
-        intent.putExtra("moment", moment)
+        intent.putExtra("id", moment.id)
         intent.putExtra("type", moment.type)
         startActivity(intent)
     }

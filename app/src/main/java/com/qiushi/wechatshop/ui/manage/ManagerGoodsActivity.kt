@@ -3,14 +3,21 @@ package com.qiushi.wechatshop.ui.manage
 
 import android.content.Context
 import android.content.Intent
+import android.support.design.widget.BottomSheetDialog
+
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import cn.qqtheme.framework.util.CompatUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.R.id.mRecyclerView
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.net.BaseResponse
@@ -36,6 +43,32 @@ class ManagerGoodsActivity : BaseActivity() {
     var mItemPosition: Int = -1
     var state: Int = -1
     var keyword: String = ""
+    private lateinit var mFilterDialog: BottomSheetDialog //底部Dialog
+
+
+    private var tvAll: TextView? = null
+    private var ivAll: ImageView? = null
+    private var tvZd: TextView? = null
+    private var ivZd: ImageView? = null
+    private var tvSj: TextView? = null
+    private var ivSj: ImageView? = null
+    private var tvXj: TextView? = null
+    private var ivXj: ImageView? = null
+    private var tvJf: TextView? = null
+    private var ivJf: ImageView? = null
+    private var tvYhj: TextView? = null
+    private var ivYhj: ImageView? = null
+    private var tvClose: TextView? = null
+
+
+    private var allLayout: RelativeLayout? = null
+    private var zdLayout: RelativeLayout? = null
+    private var sjLayout: RelativeLayout? = null
+    private var xjLayout: RelativeLayout? = null
+    private var jfLayout: RelativeLayout? = null
+    private var yhjLayout: RelativeLayout? = null
+    private var closeLyout: RelativeLayout? = null
+
     /**
      * 整体recyclerview adapter
      */
@@ -73,12 +106,18 @@ class ManagerGoodsActivity : BaseActivity() {
             getData()
         }
         mRefreshLayout.setOnLoadMoreListener { getData() }
-
+        setBottomSheet()
         tv_add.setOnClickListener(View.OnClickListener { v: View? ->
 
-            AddGoodsActivity.startAddGoodsActivity(this)
+            AddGoodsActivity.startAddGoodsActivity(this, 0)
+        })
+
+        tv_filter.setOnClickListener(View.OnClickListener { v: View? ->
+
+            showBottomFilterDialog()
         })
     }
+
 
     override fun getData() {
 
@@ -94,6 +133,9 @@ class ManagerGoodsActivity : BaseActivity() {
                             mAdapter.addData(t)
                             mRefreshLayout.finishRefresh(true)
                         }
+                        if (t == null || t.isEmpty()) {
+                            mAdapter.emptyView = notDataView
+                        }
                         if (t != null) {
                             mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
                             page++
@@ -101,6 +143,7 @@ class ManagerGoodsActivity : BaseActivity() {
                             mRefreshLayout.setNoMoreData(true)
                         }
                     }
+
 
                     override fun onHandleError(error: Error) {
                         if (page == 1) {
@@ -198,6 +241,9 @@ class ManagerGoodsActivity : BaseActivity() {
                 setTop(mData.id.toLong(), type)
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
+            R.id.iv_edit -> {
+                AddGoodsActivity.startAddGoodsActivity(this, mData.id.toLong())
+            }
 
 
         }
@@ -254,4 +300,225 @@ class ManagerGoodsActivity : BaseActivity() {
                 })
         addSubscription(disposable)
     }
+
+    /**
+     * 筛选弹窗
+     */
+    fun setBottomSheet() {
+        var dialogView = layoutInflater.inflate(R.layout.filter_dialog_layout, null)
+
+        tvAll = dialogView.findViewById(R.id.tv_all)
+        ivAll = dialogView.findViewById(R.id.iv_all)
+        tvZd = dialogView.findViewById(R.id.tv_zd)
+        ivZd = dialogView.findViewById(R.id.iv_zd)
+        tvSj = dialogView.findViewById(R.id.tv_sj)
+        ivSj = dialogView.findViewById(R.id.iv_sj)
+        tvXj = dialogView.findViewById(R.id.tv_xj)
+        ivXj = dialogView.findViewById(R.id.iv_xj)
+        tvJf = dialogView.findViewById(R.id.tv_jf)
+        ivJf = dialogView.findViewById(R.id.iv_jf)
+        tvYhj = dialogView.findViewById(R.id.tv_yhj)
+        ivYhj = dialogView.findViewById(R.id.iv_yhj)
+        tvClose = dialogView.findViewById(R.id.tv_close)
+
+
+        allLayout = dialogView.findViewById(R.id.all_layout)
+        zdLayout = dialogView.findViewById(R.id.zd_layout)
+        sjLayout = dialogView.findViewById(R.id.sj_layout)
+        xjLayout = dialogView.findViewById(R.id.xj_layout)
+        jfLayout = dialogView.findViewById(R.id.jf_layout)
+        yhjLayout = dialogView.findViewById(R.id.yhj_layout)
+        closeLyout = dialogView.findViewById(R.id.close_layout)
+
+
+
+
+        allLayout!!.setOnClickListener(bottomsheetListener)
+        zdLayout!!.setOnClickListener(bottomsheetListener)
+        sjLayout!!.setOnClickListener(bottomsheetListener)
+        xjLayout!!.setOnClickListener(bottomsheetListener)
+        jfLayout!!.setOnClickListener(bottomsheetListener)
+        yhjLayout!!.setOnClickListener(bottomsheetListener)
+        closeLyout!!.setOnClickListener(bottomsheetListener)
+
+
+        mFilterDialog = BottomSheetDialog(this)
+        mFilterDialog.setContentView(dialogView)
+    }
+
+    private val bottomsheetListener = View.OnClickListener { v ->
+        when (v!!.id) {
+            R.id.all_layout -> {
+                state = 0
+                mFilterDialog.dismiss()
+                page = 1
+                getData()
+            }
+            R.id.zd_layout -> {
+                state = 1
+                mFilterDialog.dismiss()
+                page = 1
+                getData()
+            }
+            R.id.sj_layout -> {
+                state = 2
+                mFilterDialog.dismiss()
+                page = 1
+                getData()
+            }
+            R.id.xj_layout -> {
+                state = 3
+                mFilterDialog.dismiss()
+                page = 1
+                getData()
+            }
+            R.id.jf_layout -> {
+                state = 4
+                mFilterDialog.dismiss()
+                page = 1
+                getData()
+
+            }
+            R.id.yhj_layout -> {
+                state = 5
+                mFilterDialog.dismiss()
+                page = 1
+                getData()
+
+            }
+            R.id.close_layout -> {
+                mFilterDialog.dismiss()
+            }
+        }
+    }
+
+    private fun showBottomFilterDialog() {
+
+        mFilterDialog.show()
+        when (state) {
+            0 -> {
+                tvAll!!.setTextColor(resources.getColor(R.color.filter_color))
+                ivAll!!.visibility = View.VISIBLE
+
+                tvZd!!.setTextColor(resources.getColor(R.color.gray3))
+                ivZd!!.visibility = View.GONE
+
+                tvSj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivSj!!.visibility = View.GONE
+
+                tvXj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivXj!!.visibility = View.GONE
+
+                tvJf!!.setTextColor(resources.getColor(R.color.gray3))
+                ivJf!!.visibility = View.GONE
+
+                tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivYhj!!.visibility = View.GONE
+
+
+            }
+            1 -> {
+                tvZd!!.setTextColor(resources.getColor(R.color.filter_color))
+                ivZd!!.visibility = View.VISIBLE
+
+                tvAll!!.setTextColor(resources.getColor(R.color.gray3))
+                ivAll!!.visibility = View.GONE
+
+                tvSj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivSj!!.visibility = View.GONE
+
+                tvXj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivXj!!.visibility = View.GONE
+
+                tvJf!!.setTextColor(resources.getColor(R.color.gray3))
+                ivJf!!.visibility = View.GONE
+
+                tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivYhj!!.visibility = View.GONE
+
+            }
+            2 -> {
+                tvSj!!.setTextColor(resources.getColor(R.color.filter_color))
+                ivSj!!.visibility = View.VISIBLE
+
+                tvAll!!.setTextColor(resources.getColor(R.color.gray3))
+                ivAll!!.visibility = View.GONE
+
+                tvZd!!.setTextColor(resources.getColor(R.color.gray3))
+                ivZd!!.visibility = View.GONE
+
+                tvXj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivXj!!.visibility = View.GONE
+
+                tvJf!!.setTextColor(resources.getColor(R.color.gray3))
+                ivJf!!.visibility = View.GONE
+
+                tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivYhj!!.visibility = View.GONE
+
+            }
+            3 -> {
+                tvXj!!.setTextColor(resources.getColor(R.color.filter_color))
+                ivXj!!.visibility = View.VISIBLE
+
+                tvAll!!.setTextColor(resources.getColor(R.color.gray3))
+                ivAll!!.visibility = View.GONE
+
+                tvZd!!.setTextColor(resources.getColor(R.color.gray3))
+                ivZd!!.visibility = View.GONE
+
+                tvSj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivSj!!.visibility = View.GONE
+
+                tvJf!!.setTextColor(resources.getColor(R.color.gray3))
+                ivJf!!.visibility = View.GONE
+
+                tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivYhj!!.visibility = View.GONE
+            }
+            4 -> {
+                tvJf!!.setTextColor(resources.getColor(R.color.filter_color))
+                ivJf!!.visibility = View.VISIBLE
+
+                tvAll!!.setTextColor(resources.getColor(R.color.gray3))
+                ivAll!!.visibility = View.GONE
+
+                tvZd!!.setTextColor(resources.getColor(R.color.gray3))
+                ivZd!!.visibility = View.GONE
+
+                tvSj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivSj!!.visibility = View.GONE
+
+                tvXj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivXj!!.visibility = View.GONE
+
+                tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivYhj!!.visibility = View.GONE
+
+            }
+            5 -> {
+                tvYhj!!.setTextColor(resources.getColor(R.color.filter_color))
+                ivYhj!!.visibility = View.VISIBLE
+
+
+                tvAll!!.setTextColor(resources.getColor(R.color.gray3))
+                ivAll!!.visibility = View.GONE
+
+                tvZd!!.setTextColor(resources.getColor(R.color.gray3))
+                ivZd!!.visibility = View.GONE
+
+                tvSj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivSj!!.visibility = View.GONE
+
+                tvXj!!.setTextColor(resources.getColor(R.color.gray3))
+                ivXj!!.visibility = View.GONE
+
+                tvJf!!.setTextColor(resources.getColor(R.color.gray3))
+                ivJf!!.visibility = View.GONE
+            }
+
+        }
+    }
+
+
 }

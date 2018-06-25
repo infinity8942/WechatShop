@@ -19,11 +19,13 @@ class AddGoodsAdapter(data: List<Content>) : BaseQuickAdapter<Content, BaseViewH
             helper?.getView<TextView>(R.id.tv_text)?.visibility = View.VISIBLE
             helper?.getView<ImageView>(R.id.iv_img)?.visibility = View.GONE
             helper?.setText(R.id.tv_text, item.content)
+            helper?.addOnClickListener(R.id.iv_remove)
         } else {
             helper?.getView<TextView>(R.id.tv_text)?.visibility = View.GONE
             helper?.getView<ImageView>(R.id.iv_img)?.visibility = View.VISIBLE
             ImageHelper.loadImageWithCorner(mContext, helper?.getView(R.id.iv_img)!!, item.img, 327, 327,
                     RoundedCornersTransformation(DensityUtils.dp2px(10.toFloat()), 0, RoundedCornersTransformation.CornerType.LEFT))
+            helper?.addOnClickListener(R.id.iv_remove)
         }
 
     }

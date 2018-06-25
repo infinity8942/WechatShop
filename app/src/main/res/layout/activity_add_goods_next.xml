@@ -69,19 +69,19 @@
         </RelativeLayout>
 
         <View
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
-            android:visibility="gone"
             android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_tools_bg" />
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/color_tools_bg"
+            android:visibility="gone" />
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/countlayout"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -125,6 +125,7 @@
         android:textSize="12sp" />
 
     <EditText
+        android:id="@+id/et_bz"
         android:layout_width="match_parent"
         android:layout_height="117dp"
         android:layout_marginLeft="16dp"

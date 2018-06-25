@@ -40,6 +40,14 @@ class AddGoodsNextActivity : BaseActivity() {
         } else {
             false
         }
+        if (addGoods != null && addGoods!!.left_todo != 0) {
+            et_count.setText(addGoods!!.left_todo.toString())
+        }
+
+        if (addGoods != null && addGoods!!.sales_brief.isNotEmpty()) {
+            et_bz.setText(addGoods!!.sales_brief)
+        }
+
         if (isSwitch) {
             iv_switch.setImageResource(R.mipmap.ic_goods_open)
             line.visibility = View.VISIBLE
@@ -91,6 +99,9 @@ class AddGoodsNextActivity : BaseActivity() {
     }
 
     private fun isDataNull() {
+        if (et_bz.text.isNotEmpty()) {
+            addGoods!!.sales_brief = et_bz.text.toString()
+        }
         if (et_count.text.isNotEmpty()) {
             addGoods!!.left_todo = et_count.text.toString().toInt()
         }
@@ -112,8 +123,7 @@ class AddGoodsNextActivity : BaseActivity() {
     private fun putData() {
         var gson = Gson()
         val toJson = gson.toJson(addGoods)
-        var mMap = HashMap<String, String>()
-        mMap["json"] = toJson
+        Log.e("tag", "toJson~~~~~~~~~~~~~~~$toJson")
         val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.postGoods(toJson)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
