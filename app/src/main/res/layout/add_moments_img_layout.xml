@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.qiushi.wechatshop.view.SquareImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/iv_add"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="4dp">
+
+</com.qiushi.wechatshop.view.SquareImageView>

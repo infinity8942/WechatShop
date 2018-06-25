@@ -10,7 +10,7 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Moment
-import com.qiushi.wechatshop.model.NineImage
+
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
@@ -71,18 +71,7 @@ class MomentsFragment : BaseFragment() {
             }
         }
 
-        //TODO 测试数据
-        val list = ArrayList<Moment>()
-        for (i in 1..5) {
 
-            val images = ArrayList<NineImage>()
-            for (j in 1..Random().nextInt(9)) {
-                images.add(NineImage(Constants.IMAGE1, "", Rect()))
-            }
-
-            list.add(Moment("index " + i, images))
-        }
-        mAdapter.setNewData(list)
     }
 
     override fun lazyLoad() {

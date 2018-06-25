@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DevInfor>
+
+    <!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
+
+
+    <Wechat AppId="wx5e51e01dcf0bf531" AppSecret="8ca48c47e5a2b57d0725f486e1bb6241"
+        BypassApproval="false" Enable="true" Id="4" SortId="5" />
+
+    <!--<WechatMoments AppId="wx752b5ad91b98cc70" AppSecret="b3c9de4221137b81f53d4170756ba5b5"-->
+        <!--BypassApproval="false" Enable="true" Id="5" SortId="5" />-->
+</DevInfor>

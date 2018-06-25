@@ -8,23 +8,27 @@ import android.os.Parcelable
  *
  * 朋友圈素材
  */
-data class Moment(var id: Long, var content: String, var type: Int, var images: ArrayList<NineImage>) : Parcelable {
+data class Moment(var id: Long, var content: String, var type: Int, var images: ArrayList<NineImage>?, var shop_id: Long) : Parcelable {
 
     constructor(parcel: Parcel) : this(
             parcel.readLong(),
             parcel.readString(),
             parcel.readInt(),
-            parcel.createTypedArrayList(NineImage.CREATOR)
+            parcel.createTypedArrayList(NineImage.CREATOR),
+            parcel.readLong()
     )
 
     //test
-    constructor(content: String, images: ArrayList<NineImage>) : this(1, content, 1, images)
+    constructor() : this(0, "", 0, null, 0)
+
+    constructor(content: String, images: ArrayList<NineImage>, shop_id: Long) : this(1, content, 1, images, shop_id)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
         parcel.writeString(content)
         parcel.writeInt(type)
         parcel.writeTypedList(this.images)
+        parcel.writeLong(shop_id)
     }
 
     override fun describeContents(): Int {
