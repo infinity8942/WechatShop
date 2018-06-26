@@ -24,5 +24,4 @@
         android:text="@string/bga_pp_take_picture"
         android:textColor="@color/bga_pp_take_photo_textColor"
         android:textSize="@dimen/bga_pp_textSize_level1" />
-
 </RelativeLayout>

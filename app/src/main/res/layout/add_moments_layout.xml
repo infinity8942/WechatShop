@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp"
     android:layout_marginTop="4dp"
-    android:background="@mipmap/moment_btn_add">
-
-</ImageView>
+    android:layout_marginRight="2dp"
+    android:background="@mipmap/moment_btn_add" />

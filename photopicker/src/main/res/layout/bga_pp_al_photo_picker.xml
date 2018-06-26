@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/bga_pp_size_level2"
-        android:background="@drawable/bga_pp_selector_btn_confirm"
+        android:background="@color/yellow"
         android:clickable="true"
         android:gravity="center"
         android:minWidth="80dp"
@@ -44,6 +44,4 @@
         android:layout_toRightOf="@id/tv_photo_picker_title"
         android:src="@mipmap/bga_pp_ic_arrow_down"
         tools:background="#6C9FFC" />
-
-
 </RelativeLayout>

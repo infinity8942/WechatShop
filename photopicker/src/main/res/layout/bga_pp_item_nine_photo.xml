@@ -23,5 +23,4 @@
         android:src="@mipmap/bga_pp_ic_delete"
         android:visibility="gone"
         tools:visibility="visible" />
-
 </RelativeLayout>

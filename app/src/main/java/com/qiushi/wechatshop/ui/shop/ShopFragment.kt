@@ -134,10 +134,6 @@ class ShopFragment : BaseFragment() {
         headerView.findViewById<TextView>(R.id.des).text = shop.des
 
         //优惠券
-//        val listCoupon = ArrayList<Coupon>()
-//        for (i in 1..5) {
-//            listCoupon.add(Coupon(50))
-//        }
 //        headerView.findViewById<RecyclerView>(R.id.rv_coupon).layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 //        mCouponAdapter = ShopCouponAdapter()
 //        mCouponAdapter.openLoadAnimation()

@@ -61,7 +61,7 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
+        final Drawable upArrow = getResources().getDrawable(R.mipmap.ic_back);
         upArrow.setColorFilter(getResources().getColor(R.color.textBlack), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
@@ -80,7 +80,7 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
+        final Drawable upArrow = getResources().getDrawable(R.mipmap.ic_back);
         upArrow.setColorFilter(getResources().getColor(R.color.textBlack), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
