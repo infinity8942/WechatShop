@@ -41,6 +41,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         back.setOnClickListener(this)
         copy.setOnClickListener(this)
         phone.setOnClickListener(this)
+        layout_express.setOnClickListener(this)
     }
 
     override fun getData() {
@@ -104,6 +105,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 ToastUtils.showMessage("已复制到剪贴板")
                 val cm: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 cm.primaryClip = ClipData.newPlainText("Label", number.text.toString().replace("订单编号：", ""))
+            }
+            R.id.layout_express -> {
+                //TODO 物流H5
             }
         }
     }

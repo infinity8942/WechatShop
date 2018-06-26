@@ -89,7 +89,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         tabList.add("已发货")
         tabList.add("已完成")
         mTabEntities.add(TabEntity("全部", 0, 0))
-        mTabEntities.add(TabEntity("代付款", 0, 0))
+        mTabEntities.add(TabEntity("待支付", 0, 0))
         mTabEntities.add(TabEntity("待发货", 0, 0))
         mTabEntities.add(TabEntity("已发货", 0, 0))
         mTabEntities.add(TabEntity("已完成", 0, 0))
@@ -98,6 +98,11 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         fragments.add(OrderFragment.getInstance(2))
         fragments.add(OrderFragment.getInstance(3))
         fragments.add(OrderFragment.getInstance(4))
+//        if (isManage) {
+//            tabList.add("自建订单")
+//            mTabEntities.add(TabEntity("自建订单", 0, 0))
+//            fragments.add(OrderFragment.getInstance(5))
+//        }
 
         viewpager.offscreenPageLimit = 5
         viewpager.adapter = BaseFragmentAdapter(supportFragmentManager, fragments, tabList)
@@ -204,9 +209,8 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
             R.id.filter -> {//筛选弹框
                 showBottomFilterDialog()
             }
-            R.id.add -> {//新增订单
-                startActivity(Intent(this, AddOrderActivity::class.java))
-            }
+            R.id.add -> startActivityForResult(Intent(this, AddOrderActivity::class.java), 1000)
+
         //筛选
             R.id.source_app -> changeSource(1)
             R.id.source_wechat -> changeSource(2)
@@ -385,6 +389,17 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
      */
     private fun searchOrder() {
         (fragments[viewpager.currentItem] as OrderFragment).getOrders()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            1000 -> {
+                if (resultCode == RESULT_OK) {//手动创建订单成功后返回
+                    viewpager.currentItem = 0
+                    (fragments[0] as OrderFragment).getOrders()//刷新
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {

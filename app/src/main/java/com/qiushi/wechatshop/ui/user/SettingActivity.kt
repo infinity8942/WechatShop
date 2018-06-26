@@ -44,7 +44,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         })
         version.text = "v" + Utils.getVersionName()
         back.setOnClickListener(this)
-        layout_info.setOnClickListener(this)
+//        layout_info.setOnClickListener(this)
         layout_cache.setOnClickListener(this)
         layout_feedback.setOnClickListener(this)
         layout_about_us.setOnClickListener(this)
@@ -54,9 +54,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
-            R.id.layout_info -> {//我的资料
-
-            }
+//            R.id.layout_info -> {//我的资料
+//
+//            }
             R.id.layout_cache -> {
                 ImageHelper.clear()
                 ToastUtils.showMessage("已清理")
@@ -65,8 +65,15 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.layout_feedback -> startActivity(Intent(this@SettingActivity, FeedbackActivity::class.java))
             R.id.layout_about_us -> startActivity(Intent(this@SettingActivity, AboutUsActivity::class.java))
-            R.id.logout -> {//TODO 登出
-    
+            R.id.logout -> {
+                android.support.v7.app.AlertDialog.Builder(this)
+                        .setMessage("您确定要登出当前账户吗？")
+                        .setPositiveButton("退出") { _, _ ->
+                            //TODO 登出 clear user
+
+                            finish()
+                        }
+                        .setNegativeButton("取消", null).show()
             }
         }
     }
