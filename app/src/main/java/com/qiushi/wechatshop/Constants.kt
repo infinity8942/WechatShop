@@ -10,9 +10,6 @@ object Constants {
      */
     const val REGEX_MOBILE = "^1(3|4|5|7|8)\\d{9}$"
 
-    //测试图片
-    const val AVATAR = "https://static.chiphell.com/forum/201806/06/111637jjxw8cwnj88xss8k.jpg"
-
     //测试店铺ID
     const val SHOP_ID: Long = 10091
 
@@ -35,7 +32,6 @@ object Constants {
     const val GOODS_DETAIL = "http://wechatshop.qiushizixun.com/H5/detail/id/"
     const val SHOPCART = "http://wechatshop.qiushizixun.com/H5/car"
     const val ADDRESS = "http://wechatshop.qiushizixun.com/H5/address"
-    const val ORDER = "http://wechatshop.qiushizixun.com/H5/order"
 
     //OSS
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"

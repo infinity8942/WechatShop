@@ -9,10 +9,10 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.jaeger.ninegridimageview.NineGridImageView
 import com.jaeger.ninegridimageview.NineGridImageViewAdapter
 import com.previewlibrary.GPreviewBuilder
-import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Moment
 import com.qiushi.wechatshop.model.NineImage
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.util.ImageHelper
 
 /**
@@ -21,8 +21,11 @@ import com.qiushi.wechatshop.util.ImageHelper
  * 素材Adapter
  */
 class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_moment, null) {
+
+    val avatar = User.getCurrent().avatar
+
     override fun convert(helper: BaseViewHolder, moment: Moment) {
-        ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), Constants.AVATAR, 42)//TODO 测试数据 卖家信息
+        ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), avatar, 42)//TODO 测试数据 卖家信息
         helper.setText(R.id.name, "咪蒙韩国代购" + helper.adapterPosition)
         helper.setText(R.id.content, moment.content)
 

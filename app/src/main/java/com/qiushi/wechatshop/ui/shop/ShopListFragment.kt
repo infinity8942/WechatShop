@@ -70,7 +70,11 @@ class ShopListFragment : BaseFragment() {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        if (error.code == 111) {//无店铺时
+
+                        } else {
+                            ToastUtils.showError(error.msg)
+                        }
                     }
                 })
         addSubscription(disposable)
