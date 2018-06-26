@@ -79,11 +79,32 @@ interface ApiService {
     fun notifyToPay(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
+     * 提醒发货
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/order/remind_payment")
+    fun notifyToDeliver(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
+
+    /**
      * 标记完成
      */
     @FormUrlEncoded
     @POST("Order/achieve_order")
     fun markAsDone(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 修改价格
+     */
+    @FormUrlEncoded
+    @POST("Order/reset_order_price")
+    fun editOrderPrice(@Field("id") order_id: Long, @Field("price") price: Double): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 删除订单
+     */
+    @FormUrlEncoded
+    @POST("Order/del_order")
+    fun delOrder(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
      * 订单详情

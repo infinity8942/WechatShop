@@ -64,7 +64,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/coupon_yellow">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -202,7 +203,8 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/shop"
                     android:scaleType="centerInside"
-                    android:src="@mipmap/ic_enter" />
+                    android:src="@mipmap/ic_enter"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -376,6 +378,7 @@
                     android:layout_width="50dp"
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/bg_order_copy"
                     android:gravity="center"
                     android:text="复制"

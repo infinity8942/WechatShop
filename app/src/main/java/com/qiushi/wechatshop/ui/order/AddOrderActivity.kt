@@ -21,8 +21,7 @@ import kotlinx.android.synthetic.main.activity_add_order.*
  */
 class AddOrderActivity : BaseActivity() {
 
-    var goods_id: Long = 5 //TODO 测试数据
-    //            0L
+    var goods_id: Long = 0L
     var price: Double = 0.00
     var amount: Int = 1
 
@@ -99,7 +98,7 @@ class AddOrderActivity : BaseActivity() {
         }
     }
 
-    private fun addOrder() {//TODO 添加订单接口
+    private fun addOrder() {
         if (goods_id == 0L) {
             ToastUtils.showWarning("请选择产品")
             return
@@ -135,6 +134,7 @@ class AddOrderActivity : BaseActivity() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
                             ToastUtils.showMessage("添加成功")
+                            setResult(RESULT_OK)
                             this@AddOrderActivity.finish()
                         }
                     }
