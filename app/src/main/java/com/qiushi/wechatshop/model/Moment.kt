@@ -31,9 +31,7 @@ data class Moment(var id: Long, var content: String, var type: Int, var images: 
         parcel.writeLong(shop_id)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents(): Int = 0
 
     companion object CREATOR : Parcelable.Creator<Moment> {
         override fun createFromParcel(parcel: Parcel): Moment {

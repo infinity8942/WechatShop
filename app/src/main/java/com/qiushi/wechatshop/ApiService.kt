@@ -37,11 +37,19 @@ interface ApiService {
     fun editShop(@Field("shop_ids") code: String): Observable<BaseResponse<Boolean>>
 
     /**
+     * 店铺装修
+     */
+    @FormUrlEncoded
+    @POST("Shop/edit_shop")
+    fun editShop(@Field("name") name: String, @Field("oss_id") oss_id: String,
+                 @Field("shop_id") shop_id: Long, @Field("bg_oss_id") bg_oss_id: String): Observable<BaseResponse<Boolean>>
+
+    /**
      * 店铺、用户订单列表
      */
     @FormUrlEncoded
     @POST("Order/shop_order")
-    fun getOrders(@Field("shop_id") shop_id: Long, @Field("number") number: String,
+    fun getOrders(@Field("shop_id") shop_id: Long, @Field("numbers") numbers: String,
                   @Field("pay_time") pay_time: Int, @Field("key") key: String,
                   @Field("start_time") start_time: Long, @Field("end_time") end_time: Long,
                   @Field("from") from: Int, @Field("state") state: Int,
@@ -51,17 +59,38 @@ interface ApiService {
      * 手动添加订单
      */
     @FormUrlEncoded
-    @POST("MobileApp/order/add")
+    @POST("Order/add_order")
     fun addOrder(@Field("shop_id") shop_id: Long, @Field("goods_id") goods_id: Long,
                  @Field("des") des: String,
                  @Field("price") price: Double, @Field("amount") amount: Int): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 标记发货
+     */
+    @FormUrlEncoded
+    @POST("Order/shipping_order")
+    fun markAsDeliver(@Field("order_id") order_id: Long, @Field("express_number") express_number: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 提醒支付
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/order/remind_payment")
+    fun notifyToPay(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 标记完成
+     */
+    @FormUrlEncoded
+    @POST("Order/achieve_order")
+    fun markAsDone(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
      * 订单详情
      */
     @FormUrlEncoded
     @POST("Order/order_detail")
-    fun getOrderDetail(@Field("order_id") order_id: Long): Observable<BaseResponse<Order>>
+    fun getOrderDetail(@Field("shop_id") shop_id: Long, @Field("order_id") order_id: Long): Observable<BaseResponse<Order>>
 
     /**
      * 添加商品到购物车
@@ -72,11 +101,11 @@ interface ApiService {
                       @Field("num") num: Int): Observable<BaseResponse<Boolean>>
 
     /**
-     * 登录
+     * 手机号登录
      */
     @FormUrlEncoded
     @POST("MobileApp/user/login")
-    fun login(@Field("phone") phone: String, @Field("password") password: String): Observable<BaseResponse<Boolean>>
+    fun loginPhone(@Field("phone") phone: String, @Field("password") password: String): Observable<BaseResponse<Boolean>>
 
     /**
      * 微信登录
@@ -91,6 +120,13 @@ interface ApiService {
     @FormUrlEncoded
     @POST("User/mobile_bind")
     fun bindPhone(@Field("phone") phone: String, @Field("verify_code") verify_code: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 发送验证码
+     */
+    @FormUrlEncoded
+    @POST("User/send_verify")
+    fun sendVerifyCode(@Field("phone") phone: String): Observable<BaseResponse<String>>
 
     /**
      * 支付宝支付

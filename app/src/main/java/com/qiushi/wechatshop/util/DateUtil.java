@@ -169,7 +169,10 @@ public class DateUtil {
      */
     //
     public static String getMillon(long time) {
-        return new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(time);
+        if (time != 0)
+            return new SimpleDateFormat(FORMAT_YMDHMS).format(time);
+        else
+            return "暂无";
     }
 
     /**

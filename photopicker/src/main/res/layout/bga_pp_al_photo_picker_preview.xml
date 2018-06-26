@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/bga_pp_size_level2"
-        android:background="@drawable/bga_pp_selector_btn_confirm"
+        android:background="@color/yellow"
         android:clickable="true"
         android:gravity="center"
         android:minWidth="80dp"
@@ -36,5 +36,4 @@
         android:textColor="@color/bga_pp_common_textColor"
         tools:background="#71CE7E"
         tools:text="1/12" />
-
 </RelativeLayout>

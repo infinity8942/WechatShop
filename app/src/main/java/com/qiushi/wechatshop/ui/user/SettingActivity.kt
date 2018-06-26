@@ -20,9 +20,7 @@ import java.io.File
 class SettingActivity : BaseActivity(), View.OnClickListener {
     private var mCacheFolder: File? = null
 
-    override fun layoutId(): Int {
-        return R.layout.activity_setting
-    }
+    override fun layoutId(): Int = R.layout.activity_setting
 
     override fun init() {
         //状态栏透明和间距处理
@@ -44,7 +42,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             override fun onFinish() {
             }
         })
-        version.text = Utils.getVersionName()
+        version.text = "v" + Utils.getVersionName()
         back.setOnClickListener(this)
         layout_info.setOnClickListener(this)
         layout_cache.setOnClickListener(this)
@@ -66,9 +64,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 MaterialSearchView(this).clearAll()
             }
             R.id.layout_feedback -> startActivity(Intent(this@SettingActivity, FeedbackActivity::class.java))
-            R.id.layout_about_us -> {//TODO 关于我们界面
-
-            }
+            R.id.layout_about_us -> startActivity(Intent(this@SettingActivity, AboutUsActivity::class.java))
             R.id.logout -> {//TODO 登出
 
             }

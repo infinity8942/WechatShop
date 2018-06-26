@@ -142,14 +142,13 @@ class ManageFragment : BaseFragment() {
 //        ImageHelper.loadAvatar(activity!!, iv_avaver, Constants.GOOD0, 28)
         //头布局数据
 
-        headerView.findViewById<TextView>(R.id.cash_all).text = (t?.cash_all).toString()
-        headerView.findViewById<TextView>(R.id.cash_flow).text = t?.cash_flow.toString()
-        headerView.findViewById<TextView>(R.id.cash_forzen).text = t?.cash_forzen.toString()
-        headerView.shop_more.setOnClickListener(View.OnClickListener { v: View? ->
+        headerView.findViewById<TextView>(R.id.cash_all).text = (t.cash_all).toString()
+        headerView.findViewById<TextView>(R.id.cash_flow).text = t.cash_flow.toString()
+        headerView.findViewById<TextView>(R.id.cash_forzen).text = t.cash_forzen.toString()
+        headerView.shop_more.setOnClickListener({ _: View? ->
             //跳转 产品管理
             ManagerGoodsActivity.startManagerGoodsActivity(this!!.context!!, 0)
         })
-
     }
 
     override fun lazyLoad() {
@@ -255,21 +254,21 @@ class ManageFragment : BaseFragment() {
             }
             R.id.tv_delete -> {
                 type = TYPE_DELETE
-                setTop(mData.id.toLong(), type, position + 1)
+                setTop(mData.id, type, position + 1)
                 adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.tv_xj -> {
                 type = TYPE_XJ
-                setTop(mData.id.toLong(), type, position + 1)
+                setTop(mData.id, type, position + 1)
                 adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.tv_zd -> {
                 type = TYPE_ZD
-                setTop(mData.id.toLong(), type, position + 1)
+                setTop(mData.id, type, position + 1)
                 adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.iv_edit -> {
-                AddGoodsActivity.startAddGoodsActivity(this!!.context!!, mData.id.toLong())
+                AddGoodsActivity.startAddGoodsActivity(this.context!!, mData.id)
             }
         }
     }

@@ -24,9 +24,7 @@ class MomentsActivity : BaseActivity(), View.OnClickListener {
     private val mTabEntities = ArrayList<CustomTabEntity>()
     private val fragments = ArrayList<Fragment>()
 
-    override fun layoutId(): Int {
-        return R.layout.activity_moments
-    }
+    override fun layoutId(): Int = R.layout.activity_moments
 
     override fun init() {
         //状态栏透明和间距处理

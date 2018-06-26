@@ -1,30 +1,14 @@
 package com.qiushi.wechatshop.util;
 
+
+import org.apache.commons.codec.binary.Hex;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 public class MD5 {
-
-    public static String getMD5(String string) {
-        byte[] hash;
-        try {
-            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Huh, MD5 should be supported?", e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
-        }
-
-        StringBuilder hex = new StringBuilder(hash.length * 2);
-        for (byte b : hash) {
-            if ((b & 0xFF) < 0x10) hex.append("0");
-            hex.append(Integer.toHexString(b & 0xFF));
-        }
-        return hex.toString();
-    }
 
     // 计算文件的 MD5 值
     public static String getMD5(File file) {
@@ -49,7 +33,7 @@ public class MD5 {
         return bytesToHexString(digest.digest());
     }
 
-    static String bytesToHexString(byte[] src) {
+    private static String bytesToHexString(byte[] src) {
         StringBuilder stringBuilder = new StringBuilder("");
         if (src == null || src.length <= 0) {
             return null;
@@ -64,5 +48,52 @@ public class MD5 {
         return stringBuilder.toString();
     }
 
+    public static String generate(String password) {
+        if (password == null)
+            return "";
+        Random r = new Random();
+        StringBuilder sb = new StringBuilder(16);
+        sb.append(r.nextInt(99999999)).append(r.nextInt(99999999));
+        int len = sb.length();
+        if (len < 16) {
+            for (int i = 0; i < 16 - len; i++) {
+                sb.append("0");
+            }
+        }
+        String salt = sb.toString();
+        password = md5Hex(password + salt);
+        if (null != password) {
+            char[] cs = new char[48];
+            for (int i = 0; i < 48; i += 3) {
+                cs[i] = password.charAt(i / 3 * 2);
+                char c = salt.charAt(i / 3);
+                cs[i + 1] = c;
+                cs[i + 2] = password.charAt(i / 3 * 2 + 1);
+            }
+            return new String(cs);
+        }
+        return "";
+    }
 
+    public static boolean verify(String password, String md5) {
+        char[] cs1 = new char[32];
+        char[] cs2 = new char[16];
+        for (int i = 0; i < 48; i += 3) {
+            cs1[i / 3 * 2] = md5.charAt(i);
+            cs1[i / 3 * 2 + 1] = md5.charAt(i + 2);
+            cs2[i / 3] = md5.charAt(i + 1);
+        }
+        String salt = new String(cs2);
+        return md5Hex(password + salt).equals(new String(cs1));
+    }
+
+    private static String md5Hex(String src) {
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] bs = md5.digest(src.getBytes());
+            return new String(new Hex().encode(bs));
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

@@ -31,7 +31,5 @@
             android:paddingRight="@dimen/bga_pp_size_level4"
             android:text="@string/bga_pp_choose"
             android:textColor="@color/bga_pp_common_textColor" />
-
     </RelativeLayout>
-
 </RelativeLayout>

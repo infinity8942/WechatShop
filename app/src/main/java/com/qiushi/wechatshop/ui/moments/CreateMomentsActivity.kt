@@ -29,7 +29,6 @@ import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
 import java.io.File
 
-
 /**
  * Created by Rylynn on 2018-06-14.
  *
@@ -48,19 +47,16 @@ class CreateMomentsActivity : BaseActivity() {
     var gson = Gson()
     var mJson: String = ""
     var mNineImage = NineImage()
-    override fun layoutId(): Int {
-        return R.layout.activity_moments_create
-    }
-
 
     private val mGrideManager by lazy {
         GridLayoutManager(this, 3)
     }
 
-
     private val mGrideAdapter by lazy {
         CreateMomentAdapter(ArrayList())
     }
+
+    override fun layoutId(): Int = R.layout.activity_moments_create
 
     override fun init() {
         //状态栏透明和间距处理
@@ -80,10 +76,8 @@ class CreateMomentsActivity : BaseActivity() {
         mRecyclerView.layoutManager = mGrideManager
         mRecyclerView.adapter = mGrideAdapter
 
-
         mGrideAdapter.onItemChildClickListener = itemchildListener
     }
-
 
     override fun getParams(intent: Intent) {
         super.getParams(intent)
@@ -103,17 +97,13 @@ class CreateMomentsActivity : BaseActivity() {
                         }
 
                         override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {
-
                         }
                     })
             addSubscription(subscribeWith)
         } else {
-
             mNineList.add(mNineImage)
             mGrideAdapter.setNewData(mNineList)
         }
-
-
     }
 
     override fun onClick(v: View) {
@@ -143,11 +133,9 @@ class CreateMomentsActivity : BaseActivity() {
                     if (moment.images!!.contains(mNineImage)) {
                         moment.images!!.remove(mNineImage)
                     }
-                    for (item in addNineList) {
-                        if (!moment.images!!.contains(item)) {
-                            moment.images!!.add(item)
-                        }
-                    }
+                    addNineList
+                            .filterNot { moment.images!!.contains(it) }
+                            .forEach { moment.images!!.add(it) }
                     gson.toJson(moment.images)
                 } else {
                     if (size < 9) {
@@ -179,7 +167,6 @@ class CreateMomentsActivity : BaseActivity() {
                     }
 
                     override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {
-
                     }
                 })
         addSubscription(subscribeWith)
@@ -261,9 +248,7 @@ class CreateMomentsActivity : BaseActivity() {
         }
     }
 
-
     private fun choicePhotoWrapper(count: Int, resultCode: Int) {
-
 
         getPermission()
 
@@ -274,7 +259,6 @@ class CreateMomentsActivity : BaseActivity() {
                 .pauseOnScroll(true) // 滚动列表时是否暂停加载图片
                 .build()
         startActivityForResult(intent, resultCode)
-
     }
 
     /**
@@ -299,7 +283,6 @@ class CreateMomentsActivity : BaseActivity() {
                     }
 
                     override fun onFinish() {
-
                     }
                 })
     }
@@ -309,15 +292,15 @@ class CreateMomentsActivity : BaseActivity() {
         when (requestCode) {
             Constants.ADDSC_IMG -> {
                 if (data != null) {
-                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
                         if (id != 0.toLong()) {
                             //编辑
                             size += selected.size
                             mFileList.clear()
                             for (item in selected) {
-                                var mFile = File(item)
-                                var mNineImage = NineImage()
+                                val mFile = File(item)
+                                val mNineImage = NineImage()
                                 mNineImage.size = 1
                                 mNineImage.img_url = "file://$item"
                                 mNineList.add(mNineList.size - 1, mNineImage)
@@ -338,8 +321,8 @@ class CreateMomentsActivity : BaseActivity() {
                             size += selected.size
                             mFileList.clear()
                             for (item in selected) {
-                                var mFile = File(item)
-                                var mNineImage = NineImage()
+                                val mFile = File(item)
+                                val mNineImage = NineImage()
                                 mNineImage.size = 1
                                 mNineImage.img_url = "file://$item"
                                 if (mNineList.size != 0) {
@@ -368,7 +351,6 @@ class CreateMomentsActivity : BaseActivity() {
 
     private val uploadListener = object : OnUploadListener {
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
-
         }
 
         override fun onSuccess(file: File?, id: Long) {
@@ -385,9 +367,7 @@ class CreateMomentsActivity : BaseActivity() {
     /**
      * 检查 是否是同一张图片  设置progress
      */
-
     private fun findPictureByFile(file: File): NineImage? {
-
         if (id != 0.toLong()) {
             if (addNineList != null) {
                 for (item in addNineList) {
@@ -395,16 +375,13 @@ class CreateMomentsActivity : BaseActivity() {
                         return item
                 }
             }
-
         } else {
-            var mData = mGrideAdapter.data
+            val mData = mGrideAdapter.data
             for (item in mData) {
                 if (item.img_url == "file://${file.path}")
                     return item
             }
         }
-
-
         return null
     }
 }

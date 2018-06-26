@@ -5,7 +5,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.MenuInfo
-import com.qiushi.wechatshop.model.Tools
 
 class ToolsAlwayAdapter(data: List<MenuInfo>) : BaseQuickAdapter<MenuInfo, BaseViewHolder>(R.layout.tools_item_gride_remove, data) {
     var isEdit: Boolean = false
@@ -22,13 +21,11 @@ class ToolsAlwayAdapter(data: List<MenuInfo>) : BaseQuickAdapter<MenuInfo, BaseV
                 helper.setBackgroundRes(R.id.item_name, 0)
                 helper.setVisible(R.id.iv_remove, false)
             }
-        }else{
+        } else {
             helper.setBackgroundRes(R.id.item_name, 0)
             helper.setVisible(R.id.iv_remove, false)
         }
-
     }
-
 
     fun setBackground(isEdit: Boolean) {
         this.isEdit = isEdit

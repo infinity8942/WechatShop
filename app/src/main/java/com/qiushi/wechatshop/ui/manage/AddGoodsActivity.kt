@@ -1,6 +1,5 @@
 package com.qiushi.wechatshop.ui.manage
 
-
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -9,45 +8,35 @@ import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.AddGoods
 import com.qiushi.wechatshop.model.Content
-import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
-
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.oss.OnUploadListener
 import com.qiushi.wechatshop.util.oss.UploadManager
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
-
 import kotlinx.android.synthetic.main.activity_add_goods.*
 import kotlinx.android.synthetic.main.addgoods_header.*
-import kotlinx.android.synthetic.main.item_moment.*
 import kotlinx.android.synthetic.main.next_layout.*
 import me.weyye.hipermission.HiPermission
 import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
 import java.io.File
 
-import kotlin.collections.ArrayList
-
-
 class AddGoodsActivity : BaseActivity() {
     var goods_id: Long = 0
-    override fun layoutId(): Int = R.layout.activity_add_goods
     var isBg: Boolean = false
     var addGoods = AddGoods()
     var mHandler = Handler()
@@ -66,10 +55,11 @@ class AddGoodsActivity : BaseActivity() {
         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
+    override fun layoutId(): Int = R.layout.activity_add_goods
 
     override fun init() {
-        StatusBarUtil.immersive(this!!)
-        StatusBarUtil.setPaddingSmart(this!!, toolbar)
+        StatusBarUtil.immersive(this)
+        StatusBarUtil.setPaddingSmart(this, toolbar)
         UploadManager.getInstance().register(uploadListener)
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.adapter = mAdapter
@@ -79,7 +69,6 @@ class AddGoodsActivity : BaseActivity() {
         rl_next.setOnClickListener(onclicklistener)
 
     }
-
 
     private fun isVisible() {
         if (addGoods != null && addGoods.content != null && addGoods.content!!.size > 0) {
@@ -98,7 +87,6 @@ class AddGoodsActivity : BaseActivity() {
             item_add_text.setOnClickListener(onclicklistener)
         }
     }
-
 
     override fun getParams(intent: Intent) {
         super.getParams(intent)
@@ -124,7 +112,6 @@ class AddGoodsActivity : BaseActivity() {
                         }
 
                         override fun onHandleError(error: Error) {
-
                         }
                     })
             addSubscription(subscribeWith)
@@ -155,7 +142,6 @@ class AddGoodsActivity : BaseActivity() {
         if (addGoods.stock != null && addGoods.stock != 0.toLong()) {
             stock.setText(addGoods.stock.toString())
         }
-
     }
 
     companion object {
@@ -190,10 +176,8 @@ class AddGoodsActivity : BaseActivity() {
                 choicePhotoWrapper(1, Constants.ADDIMG_BG)
             }
             R.id.rl_next -> {
-
                 //判断 数据空值限制
                 isDataNull()
-
             }
         }
     }
@@ -251,9 +235,7 @@ class AddGoodsActivity : BaseActivity() {
         AddGoodsNextActivity.startAddGoodsNextActivity(this, addGoods)
     }
 
-
     private fun choicePhotoWrapper(count: Int, resultCode: Int) {
-
 
         getPermission()
 
@@ -264,7 +246,6 @@ class AddGoodsActivity : BaseActivity() {
                 .pauseOnScroll(true) // 滚动列表时是否暂停加载图片
                 .build()
         startActivityForResult(intent, resultCode)
-
     }
 
     /**
@@ -289,7 +270,6 @@ class AddGoodsActivity : BaseActivity() {
                     }
 
                     override fun onFinish() {
-
                     }
                 })
     }
@@ -300,10 +280,10 @@ class AddGoodsActivity : BaseActivity() {
             Constants.ADDIMG_RESUALT -> {
                 if (data != null) {
                     isBg = false
-                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
                         //去上传
-                        var mFile = File(selected[0])
+                        val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
                     }
                 }
@@ -311,19 +291,19 @@ class AddGoodsActivity : BaseActivity() {
             Constants.ADDIMG_ITEM_REQUEST -> {
                 if (data != null) {
                     isBg = false
-                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
                         //去上传
-                        var mFile = File(selected[0])
+                        val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
                     }
                 }
             }
             Constants.EDIT_TEXT_REQUEST -> {
-                var mText = data?.getStringExtra("text")
+                val mText = data?.getStringExtra("text")
                 if (mText != null && !mText.equals("")) {
                     if (goods_id != 0.toLong()) {
-                        var content = Content()
+                        val content = Content()
                         content.content = mText
                         contentList.add(content)
                         addContentList.add(content)
@@ -331,7 +311,7 @@ class AddGoodsActivity : BaseActivity() {
                         isVisible()
                         mAdapter.setNewData(contentList)
                     } else {
-                        var content = Content()
+                        val content = Content()
                         content.content = mText
                         contentList.add(content)
                         addGoods.content = contentList
@@ -344,9 +324,9 @@ class AddGoodsActivity : BaseActivity() {
             Constants.ADDIMG_BG -> {
                 if (data != null) {
                     isBg = true
-                    var selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
+                    val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
-                        var mFile = File(selected[0])
+                        val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
                     }
                 }
@@ -359,15 +339,12 @@ class AddGoodsActivity : BaseActivity() {
      */
     private val uploadListener = object : OnUploadListener {
         override fun onFailure(file: File?, error: com.qiushi.wechatshop.util.oss.Error?) {
-
         }
 
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
-
         }
 
         override fun onSuccess(file: File?, id: Long) {
-
             mHandler.postDelayed({
                 if (isBg) {
                     addGoods.cover = id.toString()
@@ -398,10 +375,8 @@ class AddGoodsActivity : BaseActivity() {
                             mAdapter.setNewData(addGoods.content)
                         }
                     }
-
                 }
             }, 500)
-
         }
     }
 
@@ -447,7 +422,3 @@ class AddGoodsActivity : BaseActivity() {
         }
     }
 }
-
-
-
-

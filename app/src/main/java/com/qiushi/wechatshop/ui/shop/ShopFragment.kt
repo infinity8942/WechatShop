@@ -99,8 +99,12 @@ class ShopFragment : BaseFragment() {
                         }
 
                         if (t.goods.isNotEmpty()) {
-                            mRefreshLayout.setNoMoreData(t.goods.size < Constants.PAGE_NUM)
-                            page++
+                            if (t.goods.size < Constants.PAGE_NUM) {
+                                mRefreshLayout.setNoMoreData(true)
+                            } else {
+                                mRefreshLayout.setNoMoreData(false)
+                                page++
+                            }
                         }
                     }
 
@@ -130,10 +134,6 @@ class ShopFragment : BaseFragment() {
         headerView.findViewById<TextView>(R.id.des).text = shop.des
 
         //优惠券
-//        val listCoupon = ArrayList<Coupon>()
-//        for (i in 1..5) {
-//            listCoupon.add(Coupon(50))
-//        }
 //        headerView.findViewById<RecyclerView>(R.id.rv_coupon).layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 //        mCouponAdapter = ShopCouponAdapter()
 //        mCouponAdapter.openLoadAnimation()
@@ -146,9 +146,7 @@ class ShopFragment : BaseFragment() {
      * 添加到购物车
      */
     private fun addToShopCart(goods_id: Long) {
-        val disposable = RetrofitManager.service.addToShopCart(//TODO 测试数据
-                10091, goods_id, 1
-        )
+        val disposable = RetrofitManager.service.addToShopCart(shopID, goods_id, 1)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {

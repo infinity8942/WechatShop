@@ -1,7 +1,6 @@
 package com.qiushi.wechatshop.ui.moments
 
 import android.content.Intent
-import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -10,7 +9,6 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Moment
-
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
@@ -70,14 +68,12 @@ class MomentsFragment : BaseFragment() {
                 }
             }
         }
-
-
     }
 
     override fun lazyLoad() {
         val disposable = RetrofitManager.service.getMoments(
                 10091  //TODO 测试数据
-                , status, mAdapter.itemCount, Constants.PAGE_NUM)
+                , status, (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Moment>>() {
                     override fun onHandleSuccess(t: ArrayList<Moment>) {
@@ -96,8 +92,12 @@ class MomentsFragment : BaseFragment() {
                         }
 
                         if (t.isNotEmpty()) {
-                            mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
-                            page++
+                            if (t.size < Constants.PAGE_NUM) {
+                                mRefreshLayout.setNoMoreData(true)
+                            } else {
+                                mRefreshLayout.setNoMoreData(false)
+                                page++
+                            }
                         }
                     }
 

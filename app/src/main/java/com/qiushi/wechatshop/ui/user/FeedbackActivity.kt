@@ -22,9 +22,7 @@ class FeedbackActivity : BaseActivity(), View.OnClickListener {
 
     private var type = 1
 
-    override fun layoutId(): Int {
-        return R.layout.activity_feedback
-    }
+    override fun layoutId(): Int = R.layout.activity_feedback
 
     override fun init() {
         //状态栏透明和间距处理

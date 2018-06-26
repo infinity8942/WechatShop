@@ -18,9 +18,9 @@ import kotlinx.android.synthetic.main.activity_bind.*
  */
 class BindActivity : BaseActivity(), View.OnClickListener {
 
-    override fun layoutId(): Int {
-        return R.layout.activity_bind
-    }
+    private var authCode = "" //验证码
+
+    override fun layoutId(): Int = R.layout.activity_bind
 
     override fun init() {
         StatusBarUtil.immersive(this)
@@ -52,11 +52,30 @@ class BindActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showWarning("请填写手机号")
             return
         }
+
+        val disposable = RetrofitManager.service.sendVerifyCode(phone.text.toString().trim())
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<String>() {
+                    override fun onHandleSuccess(t: String) {
+                        ToastUtils.showMessage("发送成功")
+                        authCode = t
+                    }
+
+                    override fun onHandleError(error: Error) {
+                        ToastUtils.showError(error.msg)
+                    }
+                })
+        addSubscription(disposable)
     }
 
     private fun bind() {
         if (TextUtils.isEmpty(password.text.toString().trim())) {
             ToastUtils.showWarning("请填写验证码")
+            return
+        }
+
+        if (authCode != password.text.toString().trim()) {
+            ToastUtils.showWarning("验证码不正确")
             return
         }
 

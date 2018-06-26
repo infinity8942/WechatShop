@@ -149,6 +149,4 @@ public class AnimationUtils {
         fadeInView(showView, duration);
         fadeOutView(hideView, duration);
     }
-
-    // TODO - Cross fade with circle reveal.
 }

@@ -5,8 +5,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Goods
-import com.qiushi.wechatshop.model.Shop
-import com.qiushi.wechatshop.model.ShopOrder
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
@@ -32,7 +30,7 @@ class ManagerGoodsAdapter(data: List<Goods>) : BaseQuickAdapter<Goods, BaseViewH
         } else {
             helper.setText(R.id.tv_xj, "上架")
         }
-        helper!!.addOnClickListener(R.id.iv_more)
+        helper.addOnClickListener(R.id.iv_more)
                 .addOnClickListener(R.id.tv_zd)
                 .addOnClickListener(R.id.tv_delete)
                 .addOnClickListener(R.id.tv_xj)

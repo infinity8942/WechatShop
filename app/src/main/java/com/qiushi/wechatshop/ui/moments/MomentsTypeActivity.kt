@@ -14,9 +14,7 @@ import kotlinx.android.synthetic.main.activity_moments_type.*
  */
 class MomentsTypeActivity : BaseActivity(), View.OnClickListener {
 
-    override fun layoutId(): Int {
-        return R.layout.activity_moments_type
-    }
+    override fun layoutId(): Int = R.layout.activity_moments_type
 
     override fun init() {
         //状态栏透明和间距处理

@@ -22,9 +22,9 @@ import com.qiushi.wechatshop.util.ImageHelper
  */
 class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_moment, null) {
     override fun convert(helper: BaseViewHolder, moment: Moment) {
-        ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), Constants.AVATAR, 42)
+        ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), Constants.AVATAR, 42)//TODO 测试数据 卖家信息
         helper.setText(R.id.name, "咪蒙韩国代购" + helper.adapterPosition)
-        helper.setText(R.id.content, "YSL圣罗兰纯口红方管豆沙色梅子姨妈色正红色1橘色13裸色官方正品")
+        helper.setText(R.id.content, moment.content)
 
         val nineGrid = helper.getView<NineGridImageView<NineImage>>(R.id.nine_grid)
         nineGrid.setAdapter(object : NineGridImageViewAdapter<NineImage>() {

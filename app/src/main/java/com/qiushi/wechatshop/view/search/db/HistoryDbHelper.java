@@ -44,7 +44,6 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO - Create update if needed.
         dropAllTables(db);
         onCreate(db);
     }
@@ -59,7 +58,6 @@ public class HistoryDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO - Create downgrade if needed.
         dropAllTables(db);
         onCreate(db);
     }

@@ -31,9 +31,7 @@ data class Image(var img_url: String, var oss_img: String, var mBounds: Rect) : 
         parcel.writeParcelable(this.mBounds, 0)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents(): Int = 0
 
     companion object CREATOR : Parcelable.Creator<Image> {
         override fun createFromParcel(parcel: Parcel): Image {

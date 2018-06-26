@@ -2,11 +2,8 @@ package com.qiushi.wechatshop.ui.manage
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build.VERSION_CODES.M
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
-import android.view.Menu
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
@@ -14,17 +11,12 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.MenuInfo
 import com.qiushi.wechatshop.model.More
-import com.qiushi.wechatshop.model.Tools
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.ToastUtils
-import jp.wasabeef.glide.transformations.internal.FastBlur
 import kotlinx.android.synthetic.main.activity_manager_more.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ManagerMoreActivity : BaseActivity() {
 
@@ -32,10 +24,9 @@ class ManagerMoreActivity : BaseActivity() {
     override fun layoutId(): Int = R.layout.activity_manager_more
     var onList = ArrayList<MenuInfo>()
     var offList = ArrayList<MenuInfo>()
-    var sb = StringBuilder()
     override fun init() {
-        StatusBarUtil.immersive(this!!)
-        StatusBarUtil.setPaddingSmart(this!!, toolbar1)
+        StatusBarUtil.immersive(this)
+        StatusBarUtil.setPaddingSmart(this, toolbar1)
         line.visibility = View.GONE
         tv_nouse.visibility = View.GONE
         often_recycler.layoutManager = useGrideManager
@@ -43,7 +34,6 @@ class ManagerMoreActivity : BaseActivity() {
 
 
         useGrideAdapter.onItemChildClickListener = useItemChildClickListener
-
 
         //如果接口返回的 不常用工具List为空，则隐藏
         notuse_recycler.layoutManager = noUserMnager
@@ -96,20 +86,14 @@ class ManagerMoreActivity : BaseActivity() {
                     }
 
                     override fun onHandleError(error: Error) {
-
                     }
-
                 })
         addSubscription(subscribeWith)
     }
 
     companion object {
         fun startManagerMoreActivity(context: Context) {
-            val intent = Intent()
-            //获取intent对象
-            intent.setClass(context, ManagerMoreActivity::class.java)
-            // 获取class是使用::反射
-            startActivity(context, intent, null)
+            startActivity(context, Intent(context, ManagerMoreActivity::class.java), null)
         }
     }
 
@@ -136,11 +120,11 @@ class ManagerMoreActivity : BaseActivity() {
     private val useItemChildClickListener =
             BaseQuickAdapter.OnItemChildClickListener { adapter,
                                                         view, position ->
-                var data = adapter.getItem(position) as MenuInfo
+                val data = adapter.getItem(position) as MenuInfo
                 when (view.id) {
                     R.id.iv_remove -> {
                         useGrideAdapter.setIsOnclick(false)
-                        menuMore(Constants.SHOP_ID,data.menu_id,"0")
+                        menuMore(Constants.SHOP_ID, data.menu_id, "0")
                     }
                 }
             }
@@ -150,16 +134,15 @@ class ManagerMoreActivity : BaseActivity() {
      */
     private val noUseItemChildClickListener =
             BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-                var data = adapter.getItem(position) as MenuInfo
+                val data = adapter.getItem(position) as MenuInfo
                 when (view.id) {
                     R.id.iv_add -> {
 //                        ToastUtils.showSuccess("拼接id(增加)")
                         noUserGrideAdapter.setIsOnclick(false)
-                        menuMore(Constants.SHOP_ID,data.menu_id,"1")
+                        menuMore(Constants.SHOP_ID, data.menu_id, "1")
                     }
                 }
             }
-
 
     /**
      * 增加或者移除的请求
@@ -174,7 +157,6 @@ class ManagerMoreActivity : BaseActivity() {
                     }
 
                     override fun onHandleError(error: Error) {
-
                     }
                 })
         addSubscription(subscribeWith)

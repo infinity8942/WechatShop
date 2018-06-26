@@ -185,7 +185,7 @@ public class WAppLike extends DefaultApplicationLike {
             @NonNull
             @Override
             public RefreshFooter createRefreshFooter(@NonNull Context context, @NonNull RefreshLayout layout) {
-                return new ClassicsFooter(context).setDrawableSize(20);
+                return new ClassicsFooter(context).setDrawableSize(15);
             }
         });
 

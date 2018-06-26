@@ -76,6 +76,10 @@ class UserFragment : BaseFragment(), View.OnClickListener {
         intent.putExtra("isManage", false)
         intent.putExtra("type", type)
         startActivity(intent)
+//        val intent = Intent(activity, WebActivity::class.java)
+//        intent.putExtra(WebActivity.PARAM_TITLE, "我的订单")
+//        intent.putExtra(WebActivity.PARAM_URL, Constants.ORDER+"/10091")
+//        startActivity(intent)
     }
 
     companion object {
