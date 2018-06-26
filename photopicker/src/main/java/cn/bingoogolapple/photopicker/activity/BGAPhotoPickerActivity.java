@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -33,6 +34,7 @@ import cn.bingoogolapple.photopicker.util.BGAAsyncTask;
 import cn.bingoogolapple.photopicker.util.BGALoadPhotoTask;
 import cn.bingoogolapple.photopicker.util.BGAPhotoHelper;
 import cn.bingoogolapple.photopicker.util.BGAPhotoPickerUtil;
+import cn.bingoogolapple.photopicker.util.StatusBarUtil;
 
 public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAOnItemChildClickListener, BGAAsyncTask.Callback<ArrayList<BGAPhotoFolderModel>> {
     private static final String EXTRA_CAMERA_FILE_DIR = "EXTRA_CAMERA_FILE_DIR";
@@ -178,6 +180,9 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
+
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.yellow), 0);
+
         // 获取拍照图片保存目录
         File cameraFileDir = (File) getIntent().getSerializableExtra(EXTRA_CAMERA_FILE_DIR);
         if (cameraFileDir != null) {
