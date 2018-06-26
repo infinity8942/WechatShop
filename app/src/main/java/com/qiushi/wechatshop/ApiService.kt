@@ -75,7 +75,7 @@ interface ApiService {
      * 提醒支付
      */
     @FormUrlEncoded
-    @POST("MobileApp/order/remind_payment")
+    @POST("Order/remind_payment")
     fun notifyToPay(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**

@@ -6,6 +6,7 @@ import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.User
+import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.*
 import com.qiushi.wechatshop.view.search.MaterialSearchView
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -70,8 +71,10 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 android.support.v7.app.AlertDialog.Builder(this)
                         .setMessage("您确定要登出当前账户吗？")
                         .setPositiveButton("退出") { _, _ ->
-                            //TODO 登出 clear user
                             User.logout()
+                            val intent = Intent(this@SettingActivity, MainActivity::class.java)
+                            intent.putExtra("logout", true)
+                            startActivity(intent)
                             finish()
                         }
                         .setNegativeButton("取消", null).show()

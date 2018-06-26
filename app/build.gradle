@@ -7,7 +7,6 @@ apply plugin: 'walle'
 apply from: 'tinker-support.gradle'
 apply plugin: 'com.mob.sdk'
 
-
 MobSDK {
     appKey "268b59df36618"
     appSecret "0e4c33d506de8c44050f8ec8a37ced83"

@@ -45,7 +45,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         login.setOnClickListener(this)
         phone.setOnClickListener(this)
         protocol.setOnClickListener(this)
-        if(User.getCurrent()!=null){
+        if (User.getCurrent() != null) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
@@ -76,16 +76,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun loginWXX() {
-
         if (!WAppLike.mWxApi.isWXAppInstalled) {
             ToastUtils.showError("您还未安装微信客户端")
             return
         }
-        var req = SendAuth.Req()
+        val req = SendAuth.Req()
         req.scope = "snsapi_userinfo"
         req.state = "diandi_wx_login"
         WAppLike.mWxApi.sendReq(req)
-
     }
 
     private fun getPermission() {
@@ -112,14 +110,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 })
     }
 
-    private fun loginWX() {//TODO 微信授权注册、登录
-
+    private fun loginWX() {
         val callback: Callback<User> = LoginCallback()
         callback.onStart()
 
-//        Platform plat = ShareSDK.getPlatform(QQ.NAME)
         val platform = ShareSDK.getPlatform(Wechat.NAME)
-
         if (platform.isAuthValid) {
             platform.removeAccount(true)
         }
@@ -144,7 +139,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             }
 
                             override fun onHandleError(error: Error) {
-
                                 callback.onFail(error.msg)
                             }
                         })
@@ -174,8 +168,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
 
         override fun onSuccess(user: User) {
-            //TODO
-            //请求 用户信息
             dismissLoading()
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()

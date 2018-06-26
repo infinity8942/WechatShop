@@ -2,14 +2,12 @@ package com.qiushi.wechatshop.ui.login
 
 import android.os.Handler
 import android.os.Looper
-import android.os.Looper.*
 import android.os.Message
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.R.id.auth
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -18,7 +16,6 @@ import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_bind.*
-
 import java.util.regex.Pattern
 
 /**
@@ -47,6 +44,7 @@ class BindActivity : BaseActivity(), View.OnClickListener {
 
     override fun init() {
         StatusBarUtil.immersive(this)
+        StatusBarUtil.setPadding(this, toolbar)
 
         back.setOnClickListener(this)
         auth.setOnClickListener(this)
@@ -99,11 +97,6 @@ class BindActivity : BaseActivity(), View.OnClickListener {
     private fun bind() {
         if (TextUtils.isEmpty(password.text.toString().trim())) {
             ToastUtils.showWarning("请填写验证码")
-            return
-        }
-
-        if (authCode != password.text.toString().trim()) {
-            ToastUtils.showWarning("验证码不正确")
             return
         }
 
