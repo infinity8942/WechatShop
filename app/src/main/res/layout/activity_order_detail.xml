@@ -125,6 +125,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/line_user"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="16dp"
@@ -132,6 +133,7 @@
                 android:background="@color/line" />
 
             <RelativeLayout
+                android:id="@+id/layout_user"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:padding="16dp">

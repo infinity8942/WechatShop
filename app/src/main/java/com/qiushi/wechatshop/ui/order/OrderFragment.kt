@@ -82,7 +82,8 @@ class OrderFragment : BaseFragment() {
                 (activity as OrderActivity).pay_time, (activity as OrderActivity).keywords,
                 (activity as OrderActivity).startTime, (activity as OrderActivity).endTime,
                 (activity as OrderActivity).from, status,
-                (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM)
+                (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM
+        )
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
                     override fun onHandleSuccess(t: ArrayList<Order>) {

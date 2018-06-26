@@ -49,7 +49,7 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("Order/shop_order")
-    fun getOrders(@Field("shop_id") shop_id: Long, @Field("number") number: String,
+    fun getOrders(@Field("shop_id") shop_id: Long, @Field("numbers") numbers: String,
                   @Field("pay_time") pay_time: Int, @Field("key") key: String,
                   @Field("start_time") start_time: Long, @Field("end_time") end_time: Long,
                   @Field("from") from: Int, @Field("state") state: Int,
@@ -63,6 +63,27 @@ interface ApiService {
     fun addOrder(@Field("shop_id") shop_id: Long, @Field("goods_id") goods_id: Long,
                  @Field("des") des: String,
                  @Field("price") price: Double, @Field("amount") amount: Int): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 标记发货
+     */
+    @FormUrlEncoded
+    @POST("Order/shipping_order")
+    fun markAsDeliver(@Field("order_id") order_id: Long, @Field("express_number") express_number: String): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 提醒支付
+     */
+    @FormUrlEncoded
+    @POST("MobileApp/order/remind_payment")
+    fun notifyToPay(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 标记完成
+     */
+    @FormUrlEncoded
+    @POST("Order/achieve_order")
+    fun markAsDone(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
      * 订单详情

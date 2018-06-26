@@ -180,7 +180,7 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-
+        StatusBarUtil.setDarkMode(this);
         StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.yellow), 0);
 
         // 获取拍照图片保存目录
@@ -486,5 +486,4 @@ public class BGAPhotoPickerActivity extends BGAPPToolbarActivity implements BGAO
             mLoadPhotoTask = null;
         }
     }
-
 }

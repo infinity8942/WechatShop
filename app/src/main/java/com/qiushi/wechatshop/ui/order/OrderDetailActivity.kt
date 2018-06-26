@@ -14,7 +14,6 @@ import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.*
 import kotlinx.android.synthetic.main.activity_order_detail.*
 
-
 /**
  * Created by Rylynn on 2018-06-12.
  *
@@ -26,9 +25,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     private var orderID: Long = 0
     private lateinit var mAdapter: OrderGoodsAdapter
 
-    override fun layoutId(): Int {
-        return R.layout.activity_order_detail
-    }
+    override fun layoutId(): Int = R.layout.activity_order_detail
 
     override fun init() {
         //状态栏透明和间距处理
@@ -53,8 +50,13 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 .subscribeWith(object : BaseObserver<Order>() {
                     override fun onHandleSuccess(t: Order) {
 
-                        name.text = t.user.receiver + "  " + t.user.mobile
-                        address.text = t.user.address
+                        if (t.type == 1) {//自建订单
+                            layout_user.visibility = View.GONE
+                            line_user.visibility = View.GONE
+                        } else {
+                            name.text = t.user.receiver + "  " + t.user.mobile
+                            address.text = t.user.address
+                        }
 
                         ImageHelper.loadAvatar(this@OrderDetailActivity, logo, t.shop.logo, 24)
                         shop.text = t.shop.name
@@ -95,13 +97,13 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.back -> finish()
             R.id.phone -> {
-                if (null != order)
+                if (null != order && order!!.type != 1)
                     Utils.call(this, order!!.user.mobile)
             }
             R.id.copy -> {
                 ToastUtils.showMessage("已复制到剪贴板")
                 val cm: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                cm.primaryClip = ClipData.newPlainText("Label", number.text.toString())
+                cm.primaryClip = ClipData.newPlainText("Label", number.text.toString().replace("订单编号：", ""))
             }
         }
     }
