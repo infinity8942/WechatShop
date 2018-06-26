@@ -19,12 +19,14 @@ import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Shop
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.login.BindActivity
 import com.qiushi.wechatshop.ui.moments.MomentsActivity
 import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
@@ -96,7 +98,12 @@ class ManageFragment : BaseFragment() {
 
         notShop = layoutInflater.inflate(R.layout.empty_shop_view, mRecyclerView.parent as ViewGroup, false)
         notShop.findViewById<Button>(R.id.empty_view_tv).setOnClickListener {
-            DecorateActivity.startDecorateActivity(this.context!!, "", "", "")
+            if (User.getCurrent() != null && User.getCurrent().phone.isNotEmpty()) {
+                DecorateActivity.startDecorateActivity(this.context!!, "", "", "")
+            } else {
+                startActivity(Intent(context, BindActivity::class.java))
+            }
+
         }
         notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }
@@ -191,7 +198,11 @@ class ManageFragment : BaseFragment() {
                             if (error.code == ErrorStatus.NETWORK_ERROR) {
                                 mAdapter.emptyView = errorView
                             } else {
-                                mAdapter.emptyView = notDataView
+                                if (User.getCurrent() != null && User.getCurrent().phone.isEmpty()) {
+                                    mAdapter.emptyView = notShop
+                                } else {
+                                    mAdapter.emptyView = notDataView
+                                }
                             }
                         }
                     }

@@ -11,7 +11,7 @@ class AddGoods : Serializable {
     var stock: Long = 0
     var brief: String = ""
     var content: ArrayList<Content>? = null
-    var good_id: Long = 0
+    var goods_id: Long = 0
     var is_todo: Boolean = false
     var cover_url: String = ""
     var sales_brief: String = ""

@@ -6,6 +6,7 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.model.PhoneInfo
 import com.qiushi.wechatshop.util.NetworkUtil
+import com.qiushi.wechatshop.util.Utils
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -74,9 +75,17 @@ object RetrofitManager {
                     .header("version", PhoneInfo.getInstance().version)
                     .header("channel", PhoneInfo.getInstance().channel)
                     .header("device", "android")
-                    .header("client-id", Constants.CILIENT)
-                    .header("access-token", Constants.TOKEN)
+//                    .header("client-id", Constants.CILIENT)
+//                    .header("access-token", Constants.TOKEN)
                     .method(originalRequest.method(), originalRequest.body())
+
+            val headers = Utils.getHttpHeaders()
+            if (headers != null) {
+                for (entry in headers!!.entries) {
+                    requestBuilder.addHeader(entry.key, entry.value)
+                }
+            }
+
             val request = requestBuilder.build()
             chain.proceed(request)
         }

@@ -5,12 +5,26 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply plugin: 'walle'
 apply from: 'tinker-support.gradle'
+apply plugin: 'com.mob.sdk'
 
+
+MobSDK {
+    appKey "268b59df36618"
+    appSecret "0e4c33d506de8c44050f8ec8a37ced83"
+    ShareSDK {
+        devInfo {
+            Wechat {
+                appId "wx5e51e01dcf0bf531"
+                appSecret "8ca48c47e5a2b57d0725f486e1bb6241"
+            }
+        }
+    }
+}
 android {
     compileSdkVersion 27
     signingConfigs {
         config {
-            keyAlias 'wang'
+            keyAlias 'rylynn'
             keyPassword '121314'
             storeFile file('../wechatshop.jks')
             storePassword '121314'
@@ -32,6 +46,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
+            signingConfig signingConfigs.config
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {

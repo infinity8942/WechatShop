@@ -1,10 +1,15 @@
 package com.qiushi.wechatshop.wxapi;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.qiushi.wechatshop.WAppLike;
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
 import cn.sharesdk.wechat.utils.WXAppExtendObject;
@@ -49,13 +54,24 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        WAppLike.mWxApi.handleIntent(getIntent(), this);
+    }
+
+    @Override
     public void onReq(BaseReq baseReq) {
 
     }
 
     @Override
     public void onResp(BaseResp baseResp) {
+        if (baseResp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {//登陆
+            Log.i("ansen", "微信登录操作.....");
+            SendAuth.Resp authResp = (SendAuth.Resp) baseResp;
+//            WeiXin weiXin=new WeiXin(1,resp.errCode,authResp.code);
+//            EventBus.getDefault().post(weiXin);
+        }
 
-        
     }
 }

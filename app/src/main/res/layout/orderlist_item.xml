@@ -17,6 +17,7 @@
             android:layout_height="wrap_content" />
 
         <ImageView
+            android:id="@+id/iv_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
@@ -27,6 +28,7 @@
             android:src="@mipmap/ic_order_blue_add" />
 
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -35,7 +37,7 @@
             android:layout_marginBottom="6dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="你么我看过激烈的价格"
+            android:text=""
             android:textColor="@color/title"
             android:textSize="14sp" />
     </FrameLayout>

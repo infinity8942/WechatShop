@@ -112,9 +112,11 @@ class AddGoodsActivity : BaseActivity() {
                     .subscribeWith(object : BaseObserver<AddGoods>() {
                         override fun onHandleSuccess(t: AddGoods) {
                             addGoods = t
+                            addGoods.content = t.content
+                            Log.e("tag", "addgons" + addGoods.content!!.size)
                             isVisible()
                             if (addGoods != null && addGoods.content != null && addGoods.content!!.size > 0) {
-                                contentList = addGoods.content!!
+                                contentList.addAll(addGoods.content!!)
                                 //展示数据
                                 setData(addGoods)
                                 mAdapter.setNewData(contentList)
@@ -244,6 +246,8 @@ class AddGoodsActivity : BaseActivity() {
                 }
             }
         }
+
+
         AddGoodsNextActivity.startAddGoodsNextActivity(this, addGoods)
     }
 
@@ -332,7 +336,7 @@ class AddGoodsActivity : BaseActivity() {
                         contentList.add(content)
                         addGoods.content = contentList
                         isVisible()
-                        mAdapter.setNewData( addGoods.content)
+                        mAdapter.setNewData(addGoods.content)
                     }
 
                 }
@@ -409,12 +413,23 @@ class AddGoodsActivity : BaseActivity() {
                     if (contentList != null && contentList.size > 0 && contentList.size > position) {
                         val removeAt = contentList.removeAt(position)
 
-                        if (addContentList != null && addContentList.size > 0 && addContentList.contains(removeAt)) {
-                            addContentList.remove(removeAt)
+//                        if (addContentList != null && addContentList.size > 0 && addContentList.contains(removeAt)) {
+//                            addContentList.remove(removeAt)
+//                        }
+                        Log.e("tag", "size~~~~dd" + addGoods.content!!.size)
+                        for (item in addContentList) {
+                            if (item.id == removeAt.id) {
+                                addContentList.remove(item)
+                            }
                         }
-                        if (addGoods.content!!.contains(removeAt)) {
-                            addGoods.content!![addGoods.content!!.indexOf(removeAt)].is_del = 1
+                        for (item in addGoods.content!!) {
+                            if (item.id == removeAt.id) {
+                                item.is_del = 1
+                            }
                         }
+//                        if (addGoods.content!!.contains(removeAt)) {
+//                            addGoods.content!![addGoods.content!!.indexOf(removeAt)].is_del = 1
+//                        }
                         isVisible()
                         mAdapter.setNewData(contentList)
                     }

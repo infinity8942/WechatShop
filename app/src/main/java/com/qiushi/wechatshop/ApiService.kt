@@ -82,8 +82,8 @@ interface ApiService {
      * 微信登录
      */
     @FormUrlEncoded
-    @POST("MobileApp/user/register")
-    fun loginWX(@FieldMap params: Map<String, String>): Observable<BaseResponse<User>>
+    @POST("User/third_login")
+    fun loginWX(@Field("third_token") third_token: String, @Field("openid") openid: String): Observable<BaseResponse<User>>
 
     /**
      * 绑定手机号
@@ -208,7 +208,16 @@ interface ApiService {
     fun editMomentsInfo(@Field("id") id: Long): Observable<BaseResponse<Moment>>
 
     @GET("https://api.weixin.qq.com/sns/oauth2/access_token")
-    fun getWXtoken(@Query("appid") appid: String, @Query("secret") secret: String, @Query("code") code: String, @Query("grant_type") grant_type: String)
+    fun getWXtoken(@Query("appid") appid: String, @Query("secret") secret: String,
+                   @Query("code") code: String, @Query("grant_type") grant_type: String)
+
+
+    /**
+     * 选择商品 (订单)
+     */
+    @FormUrlEncoded
+    @POST("Order/check_goods")
+    fun checkGoods(@Field("shop_id") shop_id: Long, @Field("page") page: Int): Observable<BaseResponse<SelectOrder>>
 
 
 }

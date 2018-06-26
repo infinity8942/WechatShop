@@ -77,4 +77,6 @@ class BindActivity : BaseActivity(), View.OnClickListener {
                 })
         addSubscription(disposable)
     }
+
+
 }

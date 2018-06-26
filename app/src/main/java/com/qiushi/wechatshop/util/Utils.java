@@ -9,10 +9,13 @@ import android.text.TextUtils;
 
 import com.meituan.android.walle.WalleChannelReader;
 import com.qiushi.wechatshop.WAppContext;
+import com.qiushi.wechatshop.model.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Utils {
     private static final int MIN_CLICK_DELAY_TIME = 1000;
@@ -83,5 +86,15 @@ public class Utils {
             channel = "debug";
         }
         return channel;
+    }
+
+    public static Map<String, String> getHttpHeaders() {
+        User user = User.getCurrentFromRealm();
+        Map<String, String> header = new HashMap<>();
+        if (user != null) {
+            header.put("client-id", user.getClient_id());
+            header.put("access-token", user.getAccess_token());
+        }
+        return header;
     }
 }

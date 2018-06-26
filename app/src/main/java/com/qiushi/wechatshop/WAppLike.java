@@ -10,6 +10,7 @@ import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
+import com.mob.MobSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
@@ -75,7 +76,7 @@ public class WAppLike extends DefaultApplicationLike {
                 return Constants.IS_DEVELOPER;
             }
         });
-
+        MobSDK.init(WAppContext.context);
         //友盟初始化
         UMConfigure.init(WAppContext.context, Constants.UMENG_APPKEY, Utils.getWalleChannel(),
                 UMConfigure.DEVICE_TYPE_PHONE, Constants.UMENG_SECRET);

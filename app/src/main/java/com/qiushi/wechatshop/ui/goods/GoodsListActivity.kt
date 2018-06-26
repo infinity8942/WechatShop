@@ -6,12 +6,21 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import android.view.ViewGroup
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Goods
+import com.qiushi.wechatshop.model.SelectOrder
+import com.qiushi.wechatshop.net.RetrofitManager
+import com.qiushi.wechatshop.net.exception.Error
+import com.qiushi.wechatshop.rx.BaseObserver
+import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.order.AddOrderActivity
+import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_order_list.*
+
 
 /**
  * 商品列表页
@@ -20,7 +29,7 @@ class GoodsListActivity : BaseActivity() {
     private lateinit var headerView: View
     private lateinit var notDataView: View
     private lateinit var errorView: View
-
+    private var page = 1
     var mList: ArrayList<Goods>? = ArrayList()
     private val mGrideManager by lazy {
         GridLayoutManager(this, 2)
@@ -50,34 +59,72 @@ class GoodsListActivity : BaseActivity() {
 
         //Listener
         back.setOnClickListener(this)
-        mGrideAdapter.setOnItemChildClickListener { adapter, view, position ->
 
+        mGrideAdapter.setOnItemChildClickListener(onItemchildListener)
+
+
+
+        mRefreshLayout.setOnRefreshListener {
+            page = 1
+            getData()
         }
-
-        //TODO 测试数据
-        mList!!.add(Goods("小商店"))
-        mList!!.add(Goods("小商店1"))
-        mList!!.add(Goods("小商店2"))
-        mList!!.add(Goods("小商店3"))
-        mGrideAdapter.setNewData(mList)
+        mRefreshLayout.setOnLoadMoreListener { getData() }
     }
 
     override fun getData() {
 
+        val subscribeWith: BaseObserver<SelectOrder> = RetrofitManager.service.checkGoods(Constants.SHOP_ID, page)
+                .compose(SchedulerUtils.ioToMain())
+                .subscribeWith(object : BaseObserver<SelectOrder>() {
+                    override fun onHandleSuccess(t: SelectOrder) {
+                        if (page == 1) {
+                            mGrideAdapter.setNewData(t.goods_list)
+                            mRefreshLayout.finishRefresh(true)
+                        } else {
+                            mGrideAdapter.addData(t.goods_list!!)
+                            mRefreshLayout.finishRefresh(true)
+                        }
+                        if (t.goods_list != null) {
+                            mRefreshLayout.setNoMoreData(t.goods_list!!.size < Constants.PAGE_NUM)
+                            page++
+                        } else {
+                            mRefreshLayout.setNoMoreData(true)
+                        }
+                    }
+
+                    override fun onHandleError(error: Error) {
+                        if (page == 1) {
+                            mRefreshLayout.finishRefresh(false)
+                        } else {
+                            mRefreshLayout.finishRefresh(false)
+                        }
+                    }
+                })
+        addSubscription(subscribeWith)
     }
 
     /**
      * 选中商品
      */
     fun selectGoods(goods: Goods) {
-        val intent = Intent(this, AddOrderActivity::class.java)
+        val intent = Intent()
         intent.putExtra("goods", goods)
         setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
     companion object {
         fun startOrderListActivity(context: Activity) {
             context.startActivityForResult(Intent(context, GoodsListActivity::class.java), 1000)
+        }
+    }
+
+    private val onItemchildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+        var data = adapter.getItem(position) as Goods
+        when (view!!.id) {
+            R.id.iv_add -> {
+                selectGoods(data)
+            }
         }
     }
 }

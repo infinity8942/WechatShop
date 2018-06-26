@@ -17,7 +17,6 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
-import com.qiushi.wechatshop.util.Push
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.share.Callback
@@ -29,7 +28,6 @@ import me.weyye.hipermission.PermissionCallback
 import me.weyye.hipermission.PermissionItem
 import java.util.HashMap
 import kotlin.collections.ArrayList
-import kotlin.collections.set
 
 /**
  * 微信登录
@@ -49,6 +47,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         login.setOnClickListener(this)
         phone.setOnClickListener(this)
         protocol.setOnClickListener(this)
+        if(User.getCurrent()!=null){
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 
     override fun getData() {
@@ -58,9 +60,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.login -> {
                 //TODO 测试，直接进入首页
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-//                loginWX()
+//                startActivity(Intent(this, MainActivity::class.java))
+//                finish()
+                loginWX()
 //                loginWXX()
             }
             R.id.phone -> {//手机号登录
@@ -113,11 +115,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun loginWX() {//TODO 微信授权注册、登录
-        ShareSDK.initSDK(this)
 
         val callback: Callback<User> = LoginCallback()
         callback.onStart()
+
+//        Platform plat = ShareSDK.getPlatform(QQ.NAME)
         val platform = ShareSDK.getPlatform(Wechat.NAME)
+
         if (platform.isAuthValid) {
             platform.removeAccount(true)
         }
@@ -125,22 +129,24 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         platform.platformActionListener = object : PlatformActionListener {
             override fun onComplete(platform: Platform, i: Int, hashMap: HashMap<String, Any>) {
                 val platDB = platform.db
-                val params = HashMap<String, String>()
-                params["push"] = Push.getDeviceToken()
-                params["token"] = platDB.token
-                params["username"] = platDB.userName
-                params["uid"] = platDB.userId
-                params["brand"] = "2"
-                params["type"] = "weixin"
+//                val params = HashMap<String, String>()
+//                params["push"] = Push.getDeviceToken()
+//                params["token"] = platDB.token
+////                params["username"] = platDB.userName
+//                params["uid"] = platDB.userId
+//                params["brand"] = "2"
+//                params["type"] = "weixin"
 
-                val disposable = RetrofitManager.service.loginWX(params)
+                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId)
                         .compose(SchedulerUtils.ioToMain())
                         .subscribeWith(object : BaseObserver<User>() {
                             override fun onHandleSuccess(t: User) {
+                                User.setCurrent(t)
                                 callback.onSuccess(t)
                             }
 
                             override fun onHandleError(error: Error) {
+
                                 callback.onFail(error.msg)
                             }
                         })
@@ -155,6 +161,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 callback.onAfter()
             }
         }
+        platform.showUser(null)
     }
 
     internal inner class LoginCallback : Callback.SimpleCallback<User>() {
@@ -170,9 +177,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         override fun onSuccess(user: User) {
             //TODO
+            //请求 用户信息
+            dismissLoading()
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
         }
 
         override fun onFail(error: String) {
+            dismissLoading()
             ToastUtils.showError(error)
         }
     }
