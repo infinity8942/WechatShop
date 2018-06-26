@@ -54,8 +54,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                             layout_user.visibility = View.GONE
                             line_user.visibility = View.GONE
                         } else {
-                            name.text = t.user.receiver + "  " + t.user.mobile
-                            address.text = t.user.address
+//                            name.text = t.user.receiver + "  " + t.user.mobile
+//                            address.text = t.user.address
                         }
 
                         ImageHelper.loadAvatar(this@OrderDetailActivity, logo, t.shop.logo, 24)
@@ -97,8 +97,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.back -> finish()
             R.id.phone -> {
-                if (null != order && order!!.type != 1)
-                    Utils.call(this, order!!.user.mobile)
+                if (null != order && order!!.type != 1){}
+//                    Utils.call(this, order!!.user.mobile)
             }
             R.id.copy -> {
                 ToastUtils.showMessage("已复制到剪贴板")

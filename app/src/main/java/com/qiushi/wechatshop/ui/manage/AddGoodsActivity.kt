@@ -101,7 +101,7 @@ class AddGoodsActivity : BaseActivity() {
                         override fun onHandleSuccess(t: AddGoods) {
                             addGoods = t
                             addGoods.content = t.content
-                            Log.e("tag", "addgons" + addGoods.content!!.size)
+
                             isVisible()
                             if (addGoods != null && addGoods.content != null && addGoods.content!!.size > 0) {
                                 contentList.addAll(addGoods.content!!)
@@ -391,7 +391,7 @@ class AddGoodsActivity : BaseActivity() {
 //                        if (addContentList != null && addContentList.size > 0 && addContentList.contains(removeAt)) {
 //                            addContentList.remove(removeAt)
 //                        }
-                        Log.e("tag", "size~~~~dd" + addGoods.content!!.size)
+
                         for (item in addContentList) {
                             if (item.id == removeAt.id) {
                                 addContentList.remove(item)

@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.model;
 
+import com.qiushi.wechatshop.util.Push;
 import com.umeng.analytics.MobclickAgent;
 
 import io.realm.Realm;
@@ -143,4 +144,14 @@ public class User extends RealmObject {
         });
         return cur[0];
     }
+
+    public static void logout() {
+        if (getCurrent() != null) {
+            long id = getCurrent().getId();
+            setCurrent(null);
+
+        }
+
+    }
+
 }

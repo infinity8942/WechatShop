@@ -4,6 +4,12 @@ package com.qiushi.wechatshop
  * Created by Rylynn on 2018-05-18.
  */
 object Constants {
+
+    /**
+     * 手机号验证
+     */
+    const val REGEX_MOBILE = "^1(3|4|5|7|8)\\d{9}$"
+
     //测试图片
     const val AVATAR = "https://static.chiphell.com/forum/201806/06/111637jjxw8cwnj88xss8k.jpg"
 

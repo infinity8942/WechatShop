@@ -66,7 +66,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             R.id.layout_feedback -> startActivity(Intent(this@SettingActivity, FeedbackActivity::class.java))
             R.id.layout_about_us -> startActivity(Intent(this@SettingActivity, AboutUsActivity::class.java))
             R.id.logout -> {//TODO 登出
-
+    
             }
         }
     }
