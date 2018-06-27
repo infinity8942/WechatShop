@@ -78,6 +78,8 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
+        password.setText("")
+
         val disposable = RetrofitManager.service.sendVerifyCode(phone.text.toString().trim())
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<String>() {

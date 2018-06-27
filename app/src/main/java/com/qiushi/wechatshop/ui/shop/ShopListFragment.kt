@@ -3,7 +3,10 @@ package com.qiushi.wechatshop.ui.shop
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.view.View
+import android.widget.Button
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
@@ -21,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_shop_list.*
 /**
  * 串门Fragment
  */
-class ShopListFragment : BaseFragment() {
+class ShopListFragment : BaseFragment(), View.OnClickListener {
 
     private var shopList = ArrayList<Shop>()
     private val tabList = ArrayList<String>()
@@ -53,11 +56,10 @@ class ShopListFragment : BaseFragment() {
                     ImageHelper.loadImage(context, cover, shopList[position].cover)
             }
         })
-        btn_edit.setOnClickListener {
-            val intent = Intent(activity, ShopEditActivity::class.java)
-            intent.putExtra("shops", shopList)
-            startActivityForResult(intent, 1000)
-        }
+        btn_edit.setOnClickListener(this)
+        empty_view.findViewById<TextView>(R.id.title).text = "您还没有关注任何店铺呦～"
+        empty_view.findViewById<Button>(R.id.empty_view_tv).text = "去关注"
+        empty_view.findViewById<Button>(R.id.empty_view_tv).setOnClickListener(this)
     }
 
     override fun lazyLoad() {
@@ -70,8 +72,9 @@ class ShopListFragment : BaseFragment() {
                     }
 
                     override fun onHandleError(error: Error) {
-                        if (error.code == 111) {//无店铺时
-
+                        if (error.code == -1001) {//无店铺时
+                            StatusBarUtil.setPaddingSmart(context!!, empty_view)
+                            empty_view.visibility = View.VISIBLE
                         } else {
                             ToastUtils.showError(error.msg)
                         }
@@ -81,6 +84,8 @@ class ShopListFragment : BaseFragment() {
     }
 
     private fun setDatas() {
+        tabList.clear()
+        fragments.clear()
         for (shop in shopList) {
             tabList.add(shop.name)
             fragments.add(ShopFragment.getInstance(shop.id))
@@ -88,7 +93,24 @@ class ShopListFragment : BaseFragment() {
 
         viewpager.adapter = BaseFragmentAdapter(childFragmentManager, fragments, tabList)
         tab.setViewPager(viewpager)
-        ImageHelper.loadImage(context, cover, shopList[0].cover)
+        if (shopList.isNotEmpty()) {
+            if (null != shopList[0].cover)
+                ImageHelper.loadImage(context, cover, shopList[0].cover)
+            empty_view.visibility = View.GONE
+        } else {
+            empty_view.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.empty_view_tv,
+            R.id.btn_edit -> {
+                val intent = Intent(activity, ShopEditActivity::class.java)
+                intent.putExtra("shops", shopList)
+                startActivityForResult(intent, 1000)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

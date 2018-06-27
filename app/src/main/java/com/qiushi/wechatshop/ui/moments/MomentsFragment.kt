@@ -2,13 +2,17 @@ package com.qiushi.wechatshop.ui.moments
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Moment
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
@@ -58,13 +62,15 @@ class MomentsFragment : BaseFragment() {
             when (view.id) {
                 R.id.edit -> goToEditMoments(adapter.data[position] as Moment)
                 R.id.del -> {
-                    android.support.v7.app.AlertDialog.Builder(context!!)
+                    val dialog = AlertDialog.Builder(activity!!)
                             .setMessage("您确定要删除该素材吗？")
                             .setPositiveButton("删除") { _, _ ->
                                 mAdapter.remove(position)
                                 delMoment((adapter.data[position] as Moment).id)
-                            }
-                            .setNegativeButton("取消", null).show()
+                            }.setNegativeButton("取消", null).create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
                 }
             }
         }
@@ -72,8 +78,8 @@ class MomentsFragment : BaseFragment() {
 
     override fun lazyLoad() {
         val disposable = RetrofitManager.service.getMoments(
-                10091  //TODO 测试数据
-                , status, (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM)
+                User.getCurrent().shop_id, status,
+                (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Moment>>() {
                     override fun onHandleSuccess(t: ArrayList<Moment>) {

@@ -44,6 +44,7 @@
         android:paddingTop="17dp"
         android:paddingRight="16dp"
         android:textColor="@color/black_90"
+        android:textCursorDrawable="@drawable/cursor_color"
         android:textSize="14sp" />
 
     <LinearLayout

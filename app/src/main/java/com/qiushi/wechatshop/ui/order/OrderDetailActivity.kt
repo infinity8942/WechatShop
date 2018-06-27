@@ -8,10 +8,14 @@ import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Order
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.util.*
+import com.qiushi.wechatshop.util.DateUtil
+import com.qiushi.wechatshop.util.ImageHelper
+import com.qiushi.wechatshop.util.StatusBarUtil
+import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_order_detail.*
 
 /**
@@ -45,8 +49,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun getData() {
-        val disposable = RetrofitManager.service.getOrderDetail(10091,//TODO 测试数据
-                orderID)
+        val disposable = RetrofitManager.service.getOrderDetail(
+                User.getCurrent().shop_id, orderID)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Order>() {
                     override fun onHandleSuccess(t: Order) {
@@ -98,7 +102,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.back -> finish()
             R.id.phone -> {
-                if (null != order && order!!.type != 1){}
+                if (null != order && order!!.type != 1) {
+                }
 //                    Utils.call(this, order!!.user.mobile)
             }
             R.id.copy -> {

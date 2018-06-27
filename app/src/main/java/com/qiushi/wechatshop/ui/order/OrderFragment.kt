@@ -2,14 +2,17 @@ package com.qiushi.wechatshop.ui.order
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -73,7 +76,7 @@ class OrderFragment : BaseFragment() {
                     when (order.status) {
                         0 -> {
                             if ((activity as OrderActivity).isManage) {//提醒支付
-                                notifyToPay(order.id)
+                                notifyToPay(order.id, position)
                             }
                         }
                         1 -> {
@@ -85,7 +88,7 @@ class OrderFragment : BaseFragment() {
                                     markAsDeliver(order.id, numbers)
                                 }
                             } else {//提醒发货
-                                notifyToDeliver(order.id)
+                                notifyToDeliver(order.id, position)
                             }
                         }
                         2 -> {
@@ -211,8 +214,10 @@ class OrderFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
-                            ToastUtils.showMessage("发货完成")
+                        if (t) {
+                            ToastUtils.showMessage("已发货")
+                            getOrders()
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
@@ -225,13 +230,16 @@ class OrderFragment : BaseFragment() {
     /**
      * 提醒支付
      */
-    private fun notifyToPay(order_id: Long) {
+    private fun notifyToPay(order_id: Long, position: Int) {
         val disposable = RetrofitManager.service.notifyToPay(order_id)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
-                            ToastUtils.showMessage("已发出提醒")
+                        if (t) {
+                            ToastUtils.showMessage("已发送提醒")
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
@@ -244,13 +252,16 @@ class OrderFragment : BaseFragment() {
     /**
      * 提醒发货
      */
-    private fun notifyToDeliver(order_id: Long) {
+    private fun notifyToDeliver(order_id: Long, position: Int) {
         val disposable = RetrofitManager.service.notifyToDeliver(order_id)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
-                            ToastUtils.showMessage("已发出提醒")
+                        if (t) {
+                            ToastUtils.showMessage("已发送提醒")
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
@@ -268,8 +279,10 @@ class OrderFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
-                            ToastUtils.showMessage("发货完成")
+                        if (t) {
+                            ToastUtils.showMessage("交易完成")
+                            getOrders()
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
@@ -284,7 +297,7 @@ class OrderFragment : BaseFragment() {
         et.hint = "请输入价格"
         et.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
 
-        AlertDialog.Builder(context!!).setTitle("价格").setView(et)
+        val dialog = AlertDialog.Builder(context!!).setView(et)
                 .setPositiveButton("修改") { _, _ ->
                     val price = et.text.toString().trim()
                     if (price.isEmpty()) {
@@ -293,7 +306,10 @@ class OrderFragment : BaseFragment() {
                         editOrderPrice(order_id, price.toDouble())
                     }
                 }
-                .setNegativeButton("取消", null).show()
+                .setNegativeButton("取消", null).create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
     }
 
     /**
@@ -304,8 +320,10 @@ class OrderFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
+                        if (t) {
                             ToastUtils.showMessage("修改成功")
+                            getOrders()
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
@@ -319,14 +337,17 @@ class OrderFragment : BaseFragment() {
      * 删除订单
      */
     private fun delOrder(order_id: Long) {
-        AlertDialog.Builder(context!!).setMessage("您确定要删除该订单吗？")
+        val dialog = AlertDialog.Builder(context!!)
+                .setMessage("您确定要删除该订单吗？")
                 .setPositiveButton("删除") { _, _ ->
                     val disposable = RetrofitManager.service.delOrder(order_id)
                             .compose(SchedulerUtils.ioToMain())
                             .subscribeWith(object : BaseObserver<Boolean>() {
                                 override fun onHandleSuccess(t: Boolean) {
-                                    if (t)
+                                    if (t) {
                                         ToastUtils.showMessage("删除成功")
+                                        getOrders()
+                                    }
                                 }
 
                                 override fun onHandleError(error: Error) {
@@ -334,8 +355,10 @@ class OrderFragment : BaseFragment() {
                                 }
                             })
                     addSubscription(disposable)
-                }
-                .setNegativeButton("取消", null).show()
+                }.setNegativeButton("取消", null).create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
     }
 
     private fun goToOrderDetails(id: Long) {

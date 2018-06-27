@@ -92,7 +92,8 @@
                     style="@style/Edit_style"
                     android:hint="输入价格"
                     android:inputType="numberDecimal"
-                    android:textColorHint="@color/color_more" />
+                    android:textColorHint="@color/color_more"
+                    android:textCursorDrawable="@drawable/cursor_color" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -135,7 +136,8 @@
                     android:hint="产品数量"
                     android:inputType="number"
                     android:text="1"
-                    android:textColorHint="@color/color_more" />
+                    android:textColorHint="@color/color_more"
+                    android:textCursorDrawable="@drawable/cursor_color" />
             </FrameLayout>
 
             <LinearLayout
@@ -204,6 +206,7 @@
                 android:paddingTop="10dp"
                 android:textColor="@color/black_90"
                 android:textColorHint="@color/color_more"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:textSize="14sp" />
 
             <TextView

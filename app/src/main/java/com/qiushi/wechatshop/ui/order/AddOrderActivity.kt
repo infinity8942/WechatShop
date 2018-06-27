@@ -8,22 +8,24 @@ import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Goods
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.goods.GoodsListActivity
+import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_add_order.*
 
 /**
- * 添加订单
+ * 手动创建订单
  */
 class AddOrderActivity : BaseActivity() {
 
-    var goods_id: Long = 0L
-    var price: Double = 0.00
-    var amount: Int = 1
+    private var goodsID: Long = 0L
+    private var price: Double = 0.00
+    private var amount: Int = 1
 
     override fun layoutId(): Int = R.layout.activity_add_order
 
@@ -60,8 +62,6 @@ class AddOrderActivity : BaseActivity() {
     }
 
     override fun getData() {
-
-
     }
 
     private val clickListener = View.OnClickListener { v ->
@@ -94,14 +94,20 @@ class AddOrderActivity : BaseActivity() {
             1000 -> {//选择返回
                 if (null != data) {
                     val goods = data.getSerializableExtra("goods") as Goods
-                    goods_id = goods.id
+                    ImageHelper.loadImageWithCorner(this@AddOrderActivity, add, goods.cover, 64, 64, 5.toFloat())
+                    et_price.setText(goods.price.toString())
+                    calculatePirce()
+                    goodsID = goods.id
                 }
             }
         }
     }
 
+    /**
+     * 手动添加订单
+     */
     private fun addOrder() {
-        if (goods_id == 0L) {
+        if (goodsID == 0L) {
             ToastUtils.showWarning("请选择产品")
             return
         }
@@ -126,11 +132,9 @@ class AddOrderActivity : BaseActivity() {
             return
         }
         val disposable = RetrofitManager.service.addOrder(
-                10091,//TODO 测试数据
-                goods_id,
+                User.getCurrent().shop_id, goodsID,
                 et_des.text.toString().trim(),
-                price,
-                amount)
+                price, amount)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {

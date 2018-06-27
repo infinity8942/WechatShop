@@ -8,8 +8,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.R.id.auth
-import com.qiushi.wechatshop.R.id.phone
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -20,8 +18,7 @@ import com.qiushi.wechatshop.ui.manage.DecorateActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_bind.*
-import io.reactivex.functions.Consumer
-
+import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
 import java.util.regex.Pattern
 
 /**
@@ -39,7 +36,6 @@ class BindActivity : BaseActivity(), View.OnClickListener {
             super.handleMessage(msg)
             if (interval > 0) {
                 interval--
-
                 auth.text = String.format("%sS", interval)
                 sendEmptyMessageDelayed(100, 1000)
             } else {
@@ -58,7 +54,7 @@ class BindActivity : BaseActivity(), View.OnClickListener {
         bind.setOnClickListener(this)
         password.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                bind()
+                UIUtil.hideKeyboard(this)
             }
             false
         }
@@ -74,7 +70,7 @@ class BindActivity : BaseActivity(), View.OnClickListener {
                     getAuthCode()
                 }
             }
-            R.id.bind -> bind()
+            R.id.bind -> bindPhone()
             R.id.back -> finish()
         }
     }
@@ -84,6 +80,8 @@ class BindActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showWarning("请填写手机号")
             return
         }
+
+        password.setText("")
 
         val disposable = RetrofitManager.service.sendVerifyCode(phone.text.toString().trim())
                 .compose(SchedulerUtils.ioToMain())
@@ -101,7 +99,7 @@ class BindActivity : BaseActivity(), View.OnClickListener {
         addSubscription(disposable)
     }
 
-    private fun bind() {
+    private fun bindPhone() {
         if (TextUtils.isEmpty(password.text.toString().trim())) {
             ToastUtils.showWarning("请填写验证码")
             return

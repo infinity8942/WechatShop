@@ -45,6 +45,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         login.setOnClickListener(this)
         phone.setOnClickListener(this)
         protocol.setOnClickListener(this)
+
         if (User.getCurrent() != null) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
@@ -56,16 +57,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.login -> {
-                //TODO 测试，直接进入首页
-//                startActivity(Intent(this, MainActivity::class.java))
-//                finish()
-                loginWX()
-//                loginWXX()
-            }
-            R.id.phone -> {//手机号登录
-                startActivity(Intent(this, PhoneActivity::class.java))
-            }
+            R.id.login -> loginWX()
+            R.id.phone -> startActivity(Intent(this, PhoneActivity::class.java))
             R.id.protocol -> {//H5协议
                 val intent = Intent(this, WebActivity::class.java)
                 intent.putExtra(WebActivity.PARAM_TITLE, "协议")

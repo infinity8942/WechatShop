@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        app:indicatorColor="@color/colorAccent"
+        app:indicatorColor="@color/coupon_yellow"
         app:indicatorName="BallTrianglePathIndicator" />
 
     <TextView
@@ -24,6 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="加载中..."
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/coupon_yellow"
         android:textSize="14sp" />
 </LinearLayout>

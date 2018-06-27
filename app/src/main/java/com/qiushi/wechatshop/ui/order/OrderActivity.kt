@@ -11,8 +11,10 @@ import android.widget.TextView
 import cn.qqtheme.framework.picker.DatePicker
 import cn.qqtheme.framework.util.ConvertUtils
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.util.DateUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
@@ -75,7 +77,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         if (isManage) {
             title = "订单管理"
             layout_order.visibility = View.VISIBLE
-            shopID = 10091 //TODO 测试数据
+            shopID = User.getCurrent().shop_id
         } else {
             title = "我的订单"
             layout_order.visibility = View.GONE
@@ -237,23 +239,23 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
             source = chooseSource
             when (chooseSource) {
                 1 -> {
-                    sourceAPP!!.setTextColor(ContextCompat.getColor(this, R.color.coupon_yellow))
+                    sourceAPP!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.coupon_yellow))
                     sourceAPP!!.setBackgroundResource(R.drawable.bg_order_filter_item_selected)
-                    sourceWeChat!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+                    sourceWeChat!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
                     sourceWeChat!!.setBackgroundResource(R.drawable.bg_order_filter_item)
                 }
                 2 -> {
-                    sourceWeChat!!.setTextColor(ContextCompat.getColor(this, R.color.coupon_yellow))
+                    sourceWeChat!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.coupon_yellow))
                     sourceWeChat!!.setBackgroundResource(R.drawable.bg_order_filter_item_selected)
-                    sourceAPP!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+                    sourceAPP!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
                     sourceAPP!!.setBackgroundResource(R.drawable.bg_order_filter_item)
                 }
             }
         } else {
             source = 0
-            sourceWeChat!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+            sourceWeChat!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
             sourceWeChat!!.setBackgroundResource(R.drawable.bg_order_filter_item)
-            sourceAPP!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+            sourceAPP!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
             sourceAPP!!.setBackgroundResource(R.drawable.bg_order_filter_item)
         }
     }
@@ -263,27 +265,27 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
 
             when (chooseDate) {
                 1 -> {
-                    dateWeek!!.setTextColor(ContextCompat.getColor(this, R.color.coupon_yellow))
+                    dateWeek!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.coupon_yellow))
                     dateWeek!!.setBackgroundResource(R.drawable.bg_order_filter_item_selected)
-                    dateMonth!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+                    dateMonth!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
                     dateMonth!!.setBackgroundResource(R.drawable.bg_order_filter_item)
-                    dateYear!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+                    dateYear!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
                     dateYear!!.setBackgroundResource(R.drawable.bg_order_filter_item)
                 }
                 2 -> {
-                    dateWeek!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+                    dateWeek!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
                     dateWeek!!.setBackgroundResource(R.drawable.bg_order_filter_item)
-                    dateMonth!!.setTextColor(ContextCompat.getColor(this, R.color.coupon_yellow))
+                    dateMonth!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.coupon_yellow))
                     dateMonth!!.setBackgroundResource(R.drawable.bg_order_filter_item_selected)
-                    dateYear!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+                    dateYear!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
                     dateYear!!.setBackgroundResource(R.drawable.bg_order_filter_item)
                 }
                 3 -> {
-                    dateWeek!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+                    dateWeek!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
                     dateWeek!!.setBackgroundResource(R.drawable.bg_order_filter_item)
-                    dateMonth!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+                    dateMonth!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
                     dateMonth!!.setBackgroundResource(R.drawable.bg_order_filter_item)
-                    dateYear!!.setTextColor(ContextCompat.getColor(this, R.color.coupon_yellow))
+                    dateYear!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.coupon_yellow))
                     dateYear!!.setBackgroundResource(R.drawable.bg_order_filter_item_selected)
                 }
             }
@@ -293,11 +295,11 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
             end_time!!.text = ""
         } else {
             time = 0
-            dateWeek!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+            dateWeek!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
             dateWeek!!.setBackgroundResource(R.drawable.bg_order_filter_item)
-            dateMonth!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+            dateMonth!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
             dateMonth!!.setBackgroundResource(R.drawable.bg_order_filter_item)
-            dateYear!!.setTextColor(ContextCompat.getColor(this, R.color.gray1))
+            dateYear!!.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
             dateYear!!.setBackgroundResource(R.drawable.bg_order_filter_item)
         }
     }
@@ -307,13 +309,13 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         picker.setCanceledOnTouchOutside(true)
         picker.setUseWeight(true)
         picker.setSubmitText("确认")
-        picker.setSubmitTextColor(ContextCompat.getColor(this, R.color.coupon_yellow))
+        picker.setSubmitTextColor(ContextCompat.getColor(WAppContext.context, R.color.coupon_yellow))
         picker.setCancelText("清除")
-        picker.setCancelTextColor(ContextCompat.getColor(this, R.color.gray1))
-        picker.setTitleTextColor(ContextCompat.getColor(this, R.color.color_item_text))
-        picker.setTextColor(ContextCompat.getColor(this, R.color.coupon_yellow))
-        picker.setLabelTextColor(ContextCompat.getColor(this, R.color.color_item_text))
-        picker.setTopPadding(ConvertUtils.toPx(this, 10f))
+        picker.setCancelTextColor(ContextCompat.getColor(WAppContext.context, R.color.gray1))
+        picker.setTitleTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_item_text))
+        picker.setTextColor(ContextCompat.getColor(WAppContext.context, R.color.coupon_yellow))
+        picker.setLabelTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_item_text))
+        picker.setTopPadding(ConvertUtils.toPx(WAppContext.context, 10f))
         picker.setRangeStart(2018, 1, 1)
         picker.setRangeEnd(2118, 12, 31)
         picker.setSelectedItem(2018, 6, 25)

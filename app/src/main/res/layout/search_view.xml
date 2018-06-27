@@ -52,7 +52,7 @@
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray_50"
-                android:textCursorDrawable="@null" />
+                android:textCursorDrawable="@drawable/cursor_color" />
 
             <ImageButton
                 android:id="@+id/action_voice"
