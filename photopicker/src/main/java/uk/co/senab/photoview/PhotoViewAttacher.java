@@ -1152,7 +1152,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 
             // We haven't hit our target scale yet, so post ourselves again
             if (t < 1f) {
-                Compat.postOnAnimation(imageView, this);
+                PhotoViewCompat.postOnAnimation(imageView, this);
             }
         }
 
@@ -1249,7 +1249,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
                 mCurrentY = newY;
 
                 // Post On animation
-                Compat.postOnAnimation(imageView, this);
+                PhotoViewCompat.postOnAnimation(imageView, this);
             }
         }
     }

@@ -285,7 +285,6 @@ class OrderFragment : BaseFragment() {
         et.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
 
         AlertDialog.Builder(context!!).setTitle("价格").setView(et)
-//                .setIcon(android.R.drawable.ic_dialog_info)
                 .setPositiveButton("修改") { _, _ ->
                     val price = et.text.toString().trim()
                     if (price.isEmpty()) {

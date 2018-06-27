@@ -6,6 +6,7 @@ import android.view.View
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
@@ -28,14 +29,16 @@ class UserFragment : BaseFragment(), View.OnClickListener {
         deliver.setOnClickListener(this)
         finish.setOnClickListener(this)
         all.setOnClickListener(this)
-        layout_credit.setOnClickListener(this)
-        layout_coupon.setOnClickListener(this)
+//        layout_credit.setOnClickListener(this)
+//        layout_coupon.setOnClickListener(this)
         layout_cart.setOnClickListener(this)
         layout_address.setOnClickListener(this)
 
-        //TODO 测试数据
-        ImageHelper.loadAvatar(context, avatar, Constants.AVATAR, 48)
-        name.text = "尼萌酱"
+        val user = User.getCurrent()
+        if (null != user) {
+            ImageHelper.loadAvatar(context, avatar, user.avatar, 48)
+            name.text = user.nick
+        }
     }
 
     override fun lazyLoad() {
@@ -64,10 +67,10 @@ class UserFragment : BaseFragment(), View.OnClickListener {
                 intent.putExtra(WebActivity.PARAM_URL, Constants.ADDRESS)
                 startActivity(intent)
             }
-            R.id.layout_credit -> {
-            }
-            R.id.layout_coupon -> {
-            }
+//            R.id.layout_credit -> {
+//            }
+//            R.id.layout_coupon -> {
+//            }
         }
     }
 
@@ -76,10 +79,6 @@ class UserFragment : BaseFragment(), View.OnClickListener {
         intent.putExtra("isManage", false)
         intent.putExtra("type", type)
         startActivity(intent)
-//        val intent = Intent(activity, WebActivity::class.java)
-//        intent.putExtra(WebActivity.PARAM_TITLE, "我的订单")
-//        intent.putExtra(WebActivity.PARAM_URL, Constants.ORDER+"/10091")
-//        startActivity(intent)
     }
 
     companion object {

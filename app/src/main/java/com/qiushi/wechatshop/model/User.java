@@ -1,6 +1,5 @@
 package com.qiushi.wechatshop.model;
 
-import com.qiushi.wechatshop.util.Push;
 import com.umeng.analytics.MobclickAgent;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +51,10 @@ public class User extends RealmObject {
     }
 
     public String getNick() {
-        return nick;
+        if (null != nick) {
+            return nick;
+        }
+        return "";
     }
 
     public void setNick(String nick) {
@@ -60,7 +62,10 @@ public class User extends RealmObject {
     }
 
     public String getAvatar() {
-        return avatar;
+        if (null != avatar) {
+            return avatar;
+        }
+        return "";
     }
 
     public void setAvatar(String avatar) {

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.view.KeyEvent
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.ui.login.LoginActivity
 import com.qiushi.wechatshop.ui.manage.ManageFragment
 import com.qiushi.wechatshop.ui.shop.ShopListFragment
 import com.qiushi.wechatshop.ui.user.UserFragment
@@ -64,6 +65,13 @@ class MainActivity : BaseActivity() {
                 val orderType = intent.getIntExtra("jumpToOrder", -1)
                 if (orderType != -1) {
                     (mFragments[0] as ManageFragment).goToOrderActivity(orderType)
+                }
+            }
+            if (intent.hasExtra("logout")) {//帐号登出
+                val isLogout = intent.getBooleanExtra("logout", false)
+                if (isLogout) {
+                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                    finish()
                 }
             }
         }

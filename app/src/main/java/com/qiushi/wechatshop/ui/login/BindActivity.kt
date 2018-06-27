@@ -2,7 +2,6 @@ package com.qiushi.wechatshop.ui.login
 
 import android.os.Handler
 import android.os.Looper
-import android.os.Looper.*
 import android.os.Message
 import android.text.TextUtils
 import android.view.View
@@ -52,6 +51,7 @@ class BindActivity : BaseActivity(), View.OnClickListener {
 
     override fun init() {
         StatusBarUtil.immersive(this)
+        StatusBarUtil.setPadding(this, toolbar)
 
         back.setOnClickListener(this)
         auth.setOnClickListener(this)
@@ -104,11 +104,6 @@ class BindActivity : BaseActivity(), View.OnClickListener {
     private fun bind() {
         if (TextUtils.isEmpty(password.text.toString().trim())) {
             ToastUtils.showWarning("请填写验证码")
-            return
-        }
-
-        if (authCode != password.text.toString().trim()) {
-            ToastUtils.showWarning("验证码不正确")
             return
         }
 

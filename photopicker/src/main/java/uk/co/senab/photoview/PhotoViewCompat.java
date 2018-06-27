@@ -6,7 +6,7 @@ import android.os.Build.VERSION_CODES;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class Compat {
+public class PhotoViewCompat {
 
     private static final int SIXTY_FPS_INTERVAL = 1000 / 60;
 
@@ -24,16 +24,7 @@ public class Compat {
     }
 
     public static int getPointerIndex(int action) {
-        if (VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB)
-            return getPointerIndexHoneyComb(action);
-        else
-            return getPointerIndexEclair(action);
-    }
-
-    @SuppressWarnings("deprecation")
-    @TargetApi(VERSION_CODES.ECLAIR)
-    private static int getPointerIndexEclair(int action) {
-        return (action & MotionEvent.ACTION_POINTER_ID_MASK) >> MotionEvent.ACTION_POINTER_ID_SHIFT;
+        return getPointerIndexHoneyComb(action);
     }
 
     @TargetApi(VERSION_CODES.HONEYCOMB)
