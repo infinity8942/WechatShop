@@ -45,7 +45,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/des"
+            android:id="@+id/shop_id"
             android:layout_width="match_parent"
             android:layout_height="24dp"
             android:layout_below="@id/name"

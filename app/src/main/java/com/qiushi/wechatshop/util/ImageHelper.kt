@@ -49,6 +49,7 @@ object ImageHelper {
                     .into(view)
         } else {
             GlideApp.with(ctx!!).load(DEFAULT_AVATAR).placeholder(DEFAULT_AVATAR).transform(CircleCrop())
+                    .override(DensityUtils.dp2px(size.toFloat()), DensityUtils.dp2px(size.toFloat()))
                     .dontAnimate().into(view)
         }
     }
@@ -59,7 +60,7 @@ object ImageHelper {
         if (url.isNotEmpty()) {
             loadImage(ctx, view, url, width, height, PLACEHOLDER)
         } else {
-            GlideApp.with(ctx).load(PLACEHOLDER)
+            GlideApp.with(ctx).load(PLACEHOLDER).override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
                     .dontAnimate().into(view)
         }
     }
@@ -86,7 +87,8 @@ object ImageHelper {
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(view)
         } else {
-            GlideApp.with(ctx).load(PLACEHOLDER)
+            GlideApp.with(ctx).load(PLACEHOLDER).transforms(CenterCrop(),
+                    RoundedCornersTransformation(DensityUtils.dp2px(radius), 0))
                     .dontAnimate().into(view)
         }
     }
@@ -109,9 +111,8 @@ object ImageHelper {
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .into(view)
             }
-
         } else {
-            GlideApp.with(ctx).load(PLACEHOLDER)
+            GlideApp.with(ctx).load(PLACEHOLDER).transforms(CenterCrop(), corner)
                     .dontAnimate().into(view)
         }
     }
@@ -128,8 +129,7 @@ object ImageHelper {
                 .priority(Priority.HIGH)
                 .transforms(CenterCrop(),
                         BlurTransformation(6)
-                )
-                .into(view)
+                ).into(view)
     }
 
     /**

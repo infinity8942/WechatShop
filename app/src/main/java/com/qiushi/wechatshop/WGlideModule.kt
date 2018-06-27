@@ -28,7 +28,6 @@ class WGlideModule : AppGlideModule() {
 
     private val mRequestOption: RequestOptions = RequestOptions()
             .format(DecodeFormat.PREFER_RGB_565)
-//            .placeholder(R.color.imageBackground)
             .error(R.color.imageBackground)
             .centerCrop()
             .disallowHardwareConfig()

@@ -3,6 +3,7 @@ package com.qiushi.wechatshop.ui.order
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.qiushi.wechatshop.R
@@ -12,10 +13,8 @@ import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.util.DateUtil
-import com.qiushi.wechatshop.util.ImageHelper
-import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.*
+import com.qiushi.wechatshop.util.web.WebActivity
 import kotlinx.android.synthetic.main.activity_order_detail.*
 
 /**
@@ -59,8 +58,10 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                             layout_user.visibility = View.GONE
                             line_user.visibility = View.GONE
                         } else {
-//                            name.text = t.user.receiver + "  " + t.user.mobile
-//                            address.text = t.user.address
+                            if (null != t.user) {
+                                name.text = t.user.receiver + "  " + t.user.mobile
+                                address.text = t.user.address
+                            }
                         }
 
                         ImageHelper.loadAvatar(this@OrderDetailActivity, logo, t.shop.logo, 24)
@@ -103,8 +104,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
             R.id.back -> finish()
             R.id.phone -> {
                 if (null != order && order!!.type != 1) {
+                    Utils.call(this, order!!.user.mobile)
                 }
-//                    Utils.call(this, order!!.user.mobile)
             }
             R.id.copy -> {
                 ToastUtils.showMessage("已复制到剪贴板")
@@ -112,8 +113,17 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 cm.primaryClip = ClipData.newPlainText("Label", number.text.toString().replace("订单编号：", ""))
             }
             R.id.layout_express -> {
-                //TODO 物流H5
+                if (null != order) {
+                    goToExpress(order!!.id)
+                }
             }
         }
+    }
+
+    private fun goToExpress(order_id: Long) { //TODO 物流H5
+        val intent = Intent(this, WebActivity::class.java)
+        intent.putExtra(WebActivity.PARAM_TITLE, "物流信息")
+        intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
+        startActivity(intent)
     }
 }

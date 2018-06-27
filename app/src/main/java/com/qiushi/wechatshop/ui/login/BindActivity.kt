@@ -146,5 +146,4 @@ class BindActivity : BaseActivity(), View.OnClickListener {
         }
         return true
     }
-
 }

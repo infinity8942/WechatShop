@@ -44,7 +44,7 @@ class MomentsFragment : BaseFragment() {
         mAdapter = MomentsAdapter()
         mAdapter.openLoadAnimation()
         mRecyclerView.addItemDecoration(SpaceItemDecoration(0, DensityUtils.dp2px(3.toFloat())))
-        mRecyclerView.adapter = mAdapter
+        mAdapter.bindToRecyclerView(mRecyclerView)
 
         notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }

@@ -46,7 +46,7 @@ class ShopFragment : BaseFragment() {
         mAdapter = ShopAdapter()
         mAdapter.openLoadAnimation()
         mRecyclerView.addItemDecoration(GridSpaceItemDecoration(DensityUtils.dp2px(9.toFloat()), DensityUtils.dp2px(8.toFloat())))
-        mRecyclerView.adapter = mAdapter
+        mAdapter.bindToRecyclerView(mRecyclerView)
 
         notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }
@@ -132,7 +132,7 @@ class ShopFragment : BaseFragment() {
         ImageHelper.loadAvatar(context, headerView.findViewById(R.id.logo), shop.logo, 48)
         headerView.findViewById<TextView>(R.id.name).text = shop.name
         headerView.findViewById<TextView>(R.id.name).paint.isFakeBoldText = true
-        headerView.findViewById<TextView>(R.id.des).text = shop.des
+        headerView.findViewById<TextView>(R.id.shop_id).text = "ID：" + shop.id
 
         //优惠券
 //        headerView.findViewById<RecyclerView>(R.id.rv_coupon).layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)

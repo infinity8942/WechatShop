@@ -19,9 +19,7 @@ import com.qiushi.wechatshop.util.DateUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.search.MaterialSearchView
-import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
 import com.qiushi.wechatshop.view.tab.listener.OnTabSelectListener
-import com.qiushi.wechatshop.view.tab.listener.TabEntity
 import kotlinx.android.synthetic.main.activity_order.*
 
 /**
@@ -34,7 +32,6 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
     var isManage: Boolean = true //true店铺订单管理,false用户订单
     var title = "订单管理" //标题名
     private val tabList = ArrayList<String>()
-    private val mTabEntities = ArrayList<CustomTabEntity>()
     private val fragments = ArrayList<Fragment>()
 
     //筛选条件
@@ -90,25 +87,22 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         tabList.add("待发货")
         tabList.add("已发货")
         tabList.add("已完成")
-        mTabEntities.add(TabEntity("全部", 0, 0))
-        mTabEntities.add(TabEntity("待支付", 0, 0))
-        mTabEntities.add(TabEntity("待发货", 0, 0))
-        mTabEntities.add(TabEntity("已发货", 0, 0))
-        mTabEntities.add(TabEntity("已完成", 0, 0))
         fragments.add(OrderFragment.getInstance(100))//status
         fragments.add(OrderFragment.getInstance(1))
         fragments.add(OrderFragment.getInstance(2))
         fragments.add(OrderFragment.getInstance(3))
         fragments.add(OrderFragment.getInstance(4))
-//        if (isManage) {
-//            tabList.add("自建订单")
-//            mTabEntities.add(TabEntity("自建订单", 0, 0))
-//            fragments.add(OrderFragment.getInstance(5))
-//        }
+        if (isManage) {
+            tabList.add("自建订单")
+            fragments.add(OrderFragment.getInstance(5))
+        }
 
-        viewpager.offscreenPageLimit = 5
+        tabList.add("已取消")
+        fragments.add(OrderFragment.getInstance(6))
+
+        viewpager.offscreenPageLimit = 7
         viewpager.adapter = BaseFragmentAdapter(supportFragmentManager, fragments, tabList)
-        tab.setTabData(mTabEntities)
+        tab.setViewPager(viewpager)
 
         initFilterDialog()
 

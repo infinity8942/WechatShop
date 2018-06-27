@@ -52,7 +52,7 @@ interface ApiService {
     fun getOrders(@Field("shop_id") shop_id: Long, @Field("numbers") numbers: String,
                   @Field("pay_time") pay_time: Int, @Field("key") key: String,
                   @Field("start_time") start_time: Long, @Field("end_time") end_time: Long,
-                  @Field("from") from: Int, @Field("state") state: Int,
+                  @Field("from") from: Int, @Field("status") status: Int,
                   @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Order>>>
 
     /**
@@ -75,14 +75,14 @@ interface ApiService {
      * 提醒支付
      */
     @FormUrlEncoded
-    @POST("Order/remind_payment")
+    @POST("Order/remind_pay")
     fun notifyToPay(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
      * 提醒发货
      */
     @FormUrlEncoded
-    @POST("MobileApp/order/remind_payment")
+    @POST("Order/remind_send")
     fun notifyToDeliver(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
@@ -197,7 +197,7 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("Shop/shop_todo")
-    fun getToDo(@Field("shop_id") shop_id: Long): Observable<BaseResponse<Boolean>>
+    fun getToDo(@Field("shop_id") shop_id: Long): Observable<BaseResponse<Todo>>
 
     //==============================================================================================
     /**
@@ -220,7 +220,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("Goods/shop_goods")
-    fun getMnagerGoods(@Field("shop_id") shop_id: Long, @Field("state") state: Int, @Field("keyword") keyword: String): Observable<BaseResponse<List<Goods>>>
+    fun getMnagerGoods(@Field("shop_id") shop_id: Long, @Field("status") status: Int, @Field("keyword") keyword: String): Observable<BaseResponse<List<Goods>>>
 
     @FormUrlEncoded
     @POST("Oss/get_token")

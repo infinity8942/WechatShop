@@ -23,6 +23,7 @@ import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_order.*
 
@@ -47,7 +48,7 @@ class OrderFragment : BaseFragment() {
         mAdapter = OrderAdapter((activity as OrderActivity).isManage)
         mAdapter.openLoadAnimation()
         mRecyclerView.addItemDecoration(SpaceItemDecoration(0, DensityUtils.dp2px(8.toFloat())))
-        mRecyclerView.adapter = mAdapter
+        mAdapter.bindToRecyclerView(mRecyclerView)
 
         notDataView = layoutInflater.inflate(R.layout.empty_order_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }
@@ -60,6 +61,10 @@ class OrderFragment : BaseFragment() {
             lazyLoad()
         }
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
+
+        mAdapter.setOnItemClickListener { adapter, _, position ->
+            goToOrderDetails((adapter.data[position] as Order).id)
+        }
 
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
 
@@ -81,7 +86,7 @@ class OrderFragment : BaseFragment() {
                         }
                         1 -> {
                             if ((activity as OrderActivity).isManage) {//标记发货
-                                val numbers = (adapter.getViewByPosition(position, R.id.numbers) as EditText).text.toString().trim()
+                                val numbers = (mAdapter.getViewByPosition(position, R.id.numbers) as EditText).text.toString().trim()
                                 if (numbers.isEmpty()) {
                                     ToastUtils.showError("请填写运单号")
                                 } else {
@@ -113,7 +118,7 @@ class OrderFragment : BaseFragment() {
                             }
                         }
                         2 -> {//查看物流
-
+                            goToExpress(order.id)
                         }
                         3 -> {
                             if ((activity as OrderActivity).isManage) {//客户备注
@@ -139,9 +144,6 @@ class OrderFragment : BaseFragment() {
                     }
                 }
             }
-            mAdapter.setOnItemClickListener { adapter, _, position ->
-                goToOrderDetails((adapter.data[position] as Order).id)
-            }
         }
     }
 
@@ -158,8 +160,7 @@ class OrderFragment : BaseFragment() {
                 (activity as OrderActivity).pay_time, (activity as OrderActivity).keywords,
                 (activity as OrderActivity).startTime, (activity as OrderActivity).endTime,
                 (activity as OrderActivity).from, status,
-                (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM
-        )
+                (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
                     override fun onHandleSuccess(t: ArrayList<Order>) {
@@ -244,6 +245,10 @@ class OrderFragment : BaseFragment() {
 
                     override fun onHandleError(error: Error) {
                         ToastUtils.showError(error.msg)
+                        if (error.code == 1004) {
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                        }
                     }
                 })
         addSubscription(disposable)
@@ -266,6 +271,10 @@ class OrderFragment : BaseFragment() {
 
                     override fun onHandleError(error: Error) {
                         ToastUtils.showError(error.msg)
+                        if (error.code == 1004) {
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                        }
                     }
                 })
         addSubscription(disposable)
@@ -275,21 +284,28 @@ class OrderFragment : BaseFragment() {
      * 标记完成
      */
     private fun markAsDone(order_id: Long) {
-        val disposable = RetrofitManager.service.markAsDone(order_id)
-                .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<Boolean>() {
-                    override fun onHandleSuccess(t: Boolean) {
-                        if (t) {
-                            ToastUtils.showMessage("交易完成")
-                            getOrders()
-                        }
-                    }
+        val dialog = AlertDialog.Builder(context!!)
+                .setMessage("您要确认收货吗？")
+                .setPositiveButton("确认") { _, _ ->
+                    val disposable = RetrofitManager.service.markAsDone(order_id)
+                            .compose(SchedulerUtils.ioToMain())
+                            .subscribeWith(object : BaseObserver<Boolean>() {
+                                override fun onHandleSuccess(t: Boolean) {
+                                    if (t) {
+                                        ToastUtils.showMessage("交易完成")
+                                        getOrders()
+                                    }
+                                }
 
-                    override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
-                    }
-                })
-        addSubscription(disposable)
+                                override fun onHandleError(error: Error) {
+                                    ToastUtils.showError(error.msg)
+                                }
+                            })
+                    addSubscription(disposable)
+                }.setNegativeButton("取消", null).create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
     }
 
     private fun showEditPriceDialog(order_id: Long) {
@@ -364,6 +380,13 @@ class OrderFragment : BaseFragment() {
     private fun goToOrderDetails(id: Long) {
         val intent = Intent(activity, OrderDetailActivity::class.java)
         intent.putExtra("id", id)
+        startActivity(intent)
+    }
+
+    private fun goToExpress(order_id: Long) {
+        val intent = Intent(activity, WebActivity::class.java)
+        intent.putExtra(WebActivity.PARAM_TITLE, "物流信息")
+        intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
         startActivity(intent)
     }
 

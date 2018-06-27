@@ -22,12 +22,12 @@ import com.qiushi.wechatshop.util.ImageHelper
  */
 class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_moment, null) {
 
-    private val avatar = User.getCurrent().avatar
-//    private val shopName = User.getCurrent().shop_name
+    private val avatar = User.getCurrent().shop_logo
+    private val shopName = User.getCurrent().shop_name
 
     override fun convert(helper: BaseViewHolder, moment: Moment) {
-        ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), avatar, 42)//TODO 测试数据 卖家信息
-        helper.setText(R.id.name, "咪蒙韩国代购" + helper.adapterPosition)
+        ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), avatar, 42)
+        helper.setText(R.id.name, shopName)
         helper.setText(R.id.content, moment.content)
 
         val nineGrid = helper.getView<NineGridImageView<NineImage>>(R.id.nine_grid)

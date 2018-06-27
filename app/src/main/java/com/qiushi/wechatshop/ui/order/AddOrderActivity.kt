@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_add_order.*
 /**
  * 手动创建订单
  */
-class AddOrderActivity : BaseActivity() {
+class AddOrderActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
     private var goodsID: Long = 0L
     private var price: Double = 0.00
@@ -33,43 +33,32 @@ class AddOrderActivity : BaseActivity() {
         StatusBarUtil.immersive(this)
         StatusBarUtil.setPaddingSmart(this, toolbar)
 
-        back.setOnClickListener(clickListener)
-        add.setOnClickListener(clickListener)
-        commit.setOnClickListener(clickListener)
-        et_price.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                calculatePirce()
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-
-        et_amount.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                calculatePirce()
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
+        back.setOnClickListener(this)
+        add.setOnClickListener(this)
+        commit.setOnClickListener(this)
+        et_price.addTextChangedListener(this)
+        et_amount.addTextChangedListener(this)
     }
 
     override fun getData() {
     }
 
-    private val clickListener = View.OnClickListener { v ->
+    override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
             R.id.add -> GoodsListActivity.startOrderListActivity(this)
             R.id.commit -> addOrder()
         }
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+        calculatePirce()
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
     }
 
     private fun calculatePirce() {

@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
-import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.text.TextUtils
@@ -18,6 +17,7 @@ import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
@@ -25,7 +25,6 @@ import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.oss.Error
 import com.qiushi.wechatshop.util.oss.OnUploadListener
 import com.qiushi.wechatshop.util.oss.UploadManager
-import io.reactivex.functions.Consumer
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.activity_decorate.*
 import me.weyye.hipermission.HiPermission
@@ -39,14 +38,15 @@ import java.io.File
  * 店铺装修
  */
 class DecorateActivity : BaseActivity(), View.OnClickListener {
-    var shop_name: String = ""
-    var bgUrl: String = ""
-    var logoUrl: String = ""
-    var isLogo: Boolean = false
-    var shop_id: Long = 0
-    var oss_id = ""
-    var bg_oss_id = ""
-    var mHandler = Handler()
+
+    private var shop_name: String = ""
+    private var bgUrl: String = ""
+    private var logoUrl: String = ""
+    private var isLogo: Boolean = false
+    private var shop_id: Long = 0
+    private var oss_id = ""
+    private var bg_oss_id = ""
+
     override fun layoutId(): Int = R.layout.activity_decorate
 
     override fun init() {
@@ -81,12 +81,8 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
-            R.id.logo -> {
-                choicePhotoWrapper(1, Constants.ADDIMG_LOGO)
-            }
-            R.id.cover -> {
-                choicePhotoWrapper(1, Constants.ADDIMG_GOODS_BG)
-            }
+            R.id.logo -> choicePhotoWrapper(1, Constants.ADDIMG_LOGO)
+            R.id.cover -> choicePhotoWrapper(1, Constants.ADDIMG_GOODS_BG)
             R.id.commit -> edit()
         }
     }
@@ -111,12 +107,15 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                     override fun onHandleSuccess(t: String) {
                         if (t.isNotEmpty()) {
                             //开店, 保存到本地
-                            User.editCurrent { u -> u!!.shop_id=t.toLong() }
+                            User.editCurrent { u -> u!!.shop_id = t.toLong() }
                             ToastUtils.showMessage("开店铺成功")
                         } else {
                             ToastUtils.showMessage("装修店铺成功")
+                            val intent = Intent(this@DecorateActivity, MainActivity::class.java)
+                            intent.putExtra("refreshManage", true)
+                            startActivity(intent)
+                            finish()
                         }
-
                     }
 
                     override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {
@@ -159,25 +158,19 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-//            mHandler.postDelayed({
-//
-//
-//
-//            },600)
             dismissLoading()
             when (isLogo) {
                 false -> {
-                    bg_oss_id=id.toString()
+                    bg_oss_id = id.toString()
                     ImageHelper.loadImageWithCorner(application, cover, ("file://" + file!!.path), 343, 178,
                             RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
                 }
                 true -> {
-                    oss_id=id.toString()
+                    oss_id = id.toString()
                     ImageHelper.loadImageWithCorner(application, logo, ("file://" + file!!.path), 64, 64,
                             RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
                 }
             }
-
         }
 
         override fun onFailure(file: File?, error: Error?) {
