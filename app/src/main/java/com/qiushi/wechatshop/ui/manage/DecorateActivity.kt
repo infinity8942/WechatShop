@@ -13,18 +13,17 @@ import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
-import com.qiushi.wechatshop.util.DensityUtils
-import com.qiushi.wechatshop.util.ImageHelper
-import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.*
 import com.qiushi.wechatshop.util.oss.Error
 import com.qiushi.wechatshop.util.oss.OnUploadListener
 import com.qiushi.wechatshop.util.oss.UploadManager
+import io.reactivex.functions.Consumer
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.activity_decorate.*
 import me.weyye.hipermission.HiPermission
@@ -109,6 +108,8 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                             //开店, 保存到本地
                             User.editCurrent { u -> u!!.shop_id = t.toLong() }
                             ToastUtils.showMessage("开店铺成功")
+                            RxBus.getInstance().post(Notifycation(1, 0L))
+                            finish()
                         } else {
                             ToastUtils.showMessage("装修店铺成功")
                             val intent = Intent(this@DecorateActivity, MainActivity::class.java)

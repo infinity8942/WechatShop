@@ -6,11 +6,13 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.view.LoadingDialog
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : Fragment(), Consumer<Notifycation> {
 
     /**
      * 视图是否加载完毕
@@ -98,5 +100,9 @@ abstract class BaseFragment : Fragment() {
         dismissLoading()
         loadingDialog = null
         super.onDestroy()
+    }
+
+    override fun accept(t: Notifycation?) {
+
     }
 }

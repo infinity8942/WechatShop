@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -17,10 +18,8 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
+import com.qiushi.wechatshop.model.*
 import com.qiushi.wechatshop.model.Function
-import com.qiushi.wechatshop.model.Goods
-import com.qiushi.wechatshop.model.Shop
-import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -404,6 +403,11 @@ class ManageFragment : BaseFragment() {
         intent.putExtra("isManage", true)
         intent.putExtra("type", type)
         startActivity(intent)
+    }
+
+    override fun accept(t: Notifycation?) {
+        super.accept(t)
+        Log.e("tag", "notifa~~~~~~~~~~~~~~~~~~")
     }
 
 

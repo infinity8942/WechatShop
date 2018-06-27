@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.view.LoadingDialog
 import io.reactivex.disposables.CompositeDisposable
@@ -12,7 +13,7 @@ import io.reactivex.functions.Consumer
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity
 
 
-abstract class BaseActivity : SwipeBackActivity(), View.OnClickListener {
+abstract class BaseActivity : SwipeBackActivity(), View.OnClickListener, Consumer<Notifycation> {
 
     var loadingDialog: LoadingDialog? = null
 
@@ -85,5 +86,9 @@ abstract class BaseActivity : SwipeBackActivity(), View.OnClickListener {
         super.onNewIntent(intent)
         getParams(intent!!)
         setIntent(intent)
+    }
+
+    override fun accept(t: Notifycation?) {
+
     }
 }

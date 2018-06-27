@@ -20,9 +20,7 @@ public class Notifycation {
             @Override
             public void accept(Throwable throwable) throws Exception {
                 throwable.printStackTrace();
-
             }
-
 
         });
     }
