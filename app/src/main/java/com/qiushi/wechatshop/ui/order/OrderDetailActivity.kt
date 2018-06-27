@@ -3,6 +3,7 @@ package com.qiushi.wechatshop.ui.order
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.qiushi.wechatshop.R
@@ -13,6 +14,7 @@ import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.*
+import com.qiushi.wechatshop.util.web.WebActivity
 import kotlinx.android.synthetic.main.activity_order_detail.*
 
 /**
@@ -109,8 +111,17 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 cm.primaryClip = ClipData.newPlainText("Label", number.text.toString().replace("订单编号：", ""))
             }
             R.id.layout_express -> {
-                //TODO 物流H5
+                if (null != order) {
+                    goToExpress(order!!.id)
+                }
             }
         }
+    }
+
+    private fun goToExpress(order_id: Long) { //TODO 物流H5
+        val intent = Intent(this, WebActivity::class.java)
+        intent.putExtra(WebActivity.PARAM_TITLE, "物流信息")
+        intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
+        startActivity(intent)
     }
 }

@@ -41,6 +41,7 @@ class MomentsActivity : BaseActivity(), View.OnClickListener {
         fragments.add(MomentsFragment.getInstance(2))
         fragments.add(MomentsFragment.getInstance(3))
 
+        viewpager.offscreenPageLimit = 3
         viewpager.adapter = BaseFragmentAdapter(supportFragmentManager, fragments, tabList)
         tab.setTabData(mTabEntities)
 

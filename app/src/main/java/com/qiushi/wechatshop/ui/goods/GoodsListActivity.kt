@@ -17,21 +17,18 @@ import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.ui.order.AddOrderActivity
-import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
+import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_order_list.*
-
 
 /**
  * 商品列表页
  */
 class GoodsListActivity : BaseActivity() {
-    private lateinit var headerView: View
+    //    private lateinit var headerView: View
     private lateinit var notDataView: View
     private lateinit var errorView: View
     private var page = 1
-    var mList: ArrayList<Goods>? = ArrayList()
     private val mGrideManager by lazy {
         GridLayoutManager(this, 2)
     }
@@ -51,19 +48,17 @@ class GoodsListActivity : BaseActivity() {
         errorView = layoutInflater.inflate(R.layout.empty_network_view, mRecyclerView.parent as ViewGroup, false)
         errorView.setOnClickListener { getData() }
 
-        headerView = layoutInflater.inflate(R.layout.orderlist_header, mRecyclerView.parent as ViewGroup, false)
+//        headerView = layoutInflater.inflate(R.layout.orderlist_header, mRecyclerView.parent as ViewGroup, false)
 
         mRecyclerView.layoutManager = mGrideManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         mRecyclerView.adapter = mGrideAdapter
-        mGrideAdapter.addHeaderView(headerView)
+//        mGrideAdapter.addHeaderView(headerView)
 
         //Listener
         back.setOnClickListener(this)
 
         mGrideAdapter.onItemChildClickListener = onItemchildListener
-
-
 
         mRefreshLayout.setOnRefreshListener {
             page = 1
@@ -73,7 +68,6 @@ class GoodsListActivity : BaseActivity() {
     }
 
     override fun getData() {
-
         val subscribeWith: BaseObserver<SelectOrder> = RetrofitManager.service.checkGoods(User.getCurrent().shop_id, page)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<SelectOrder>() {
@@ -99,6 +93,12 @@ class GoodsListActivity : BaseActivity() {
                         } else {
                             mRefreshLayout.finishRefresh(false)
                         }
+
+                        if (error.code == -1001) {
+                            mGrideAdapter.emptyView = notDataView
+                        } else {
+                            ToastUtils.showError(error.msg)
+                        }
                     }
                 })
         addSubscription(subscribeWith)
@@ -121,10 +121,9 @@ class GoodsListActivity : BaseActivity() {
     }
 
     private val onItemchildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        var data = adapter.getItem(position) as Goods
         when (view!!.id) {
             R.id.iv_add -> {
-                selectGoods(data)
+                selectGoods(adapter.getItem(position) as Goods)
             }
         }
     }

@@ -2,15 +2,11 @@ package com.qiushi.wechatshop.model;
 
 import com.umeng.analytics.MobclickAgent;
 
-import org.jetbrains.annotations.NotNull;
-
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import io.realm.annotations.PrimaryKey;
-import kotlin.jvm.functions.Function1;
 
 public class User extends RealmObject {
     /**
@@ -100,7 +96,10 @@ public class User extends RealmObject {
     private String shop_logo;
 
     public String getShop_name() {
-        return shop_name;
+        if (null != shop_name) {
+            return shop_name;
+        }
+        return "";
     }
 
     public void setShop_name(String shop_name) {
@@ -108,7 +107,10 @@ public class User extends RealmObject {
     }
 
     public String getShop_logo() {
-        return shop_logo;
+        if (null != shop_logo) {
+            return shop_logo;
+        }
+        return "";
     }
 
     public void setShop_logo(String shop_logo) {

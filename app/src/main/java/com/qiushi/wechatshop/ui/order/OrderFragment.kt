@@ -23,6 +23,7 @@ import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_order.*
 
@@ -117,7 +118,7 @@ class OrderFragment : BaseFragment() {
                             }
                         }
                         2 -> {//查看物流
-
+                            goToExpress(order.id)
                         }
                         3 -> {
                             if ((activity as OrderActivity).isManage) {//客户备注
@@ -275,21 +276,28 @@ class OrderFragment : BaseFragment() {
      * 标记完成
      */
     private fun markAsDone(order_id: Long) {
-        val disposable = RetrofitManager.service.markAsDone(order_id)
-                .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<Boolean>() {
-                    override fun onHandleSuccess(t: Boolean) {
-                        if (t) {
-                            ToastUtils.showMessage("交易完成")
-                            getOrders()
-                        }
-                    }
+        val dialog = AlertDialog.Builder(context!!)
+                .setMessage("您要确认收货吗？")
+                .setPositiveButton("确认") { _, _ ->
+                    val disposable = RetrofitManager.service.markAsDone(order_id)
+                            .compose(SchedulerUtils.ioToMain())
+                            .subscribeWith(object : BaseObserver<Boolean>() {
+                                override fun onHandleSuccess(t: Boolean) {
+                                    if (t) {
+                                        ToastUtils.showMessage("交易完成")
+                                        getOrders()
+                                    }
+                                }
 
-                    override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
-                    }
-                })
-        addSubscription(disposable)
+                                override fun onHandleError(error: Error) {
+                                    ToastUtils.showError(error.msg)
+                                }
+                            })
+                    addSubscription(disposable)
+                }.setNegativeButton("取消", null).create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
     }
 
     private fun showEditPriceDialog(order_id: Long) {
@@ -364,6 +372,13 @@ class OrderFragment : BaseFragment() {
     private fun goToOrderDetails(id: Long) {
         val intent = Intent(activity, OrderDetailActivity::class.java)
         intent.putExtra("id", id)
+        startActivity(intent)
+    }
+
+    private fun goToExpress(order_id: Long) {
+        val intent = Intent(activity, WebActivity::class.java)
+        intent.putExtra(WebActivity.PARAM_TITLE, "物流信息")
+        intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
         startActivity(intent)
     }
 
