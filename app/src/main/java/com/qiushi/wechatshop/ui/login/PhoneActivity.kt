@@ -1,6 +1,9 @@
 package com.qiushi.wechatshop.ui.login
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -22,9 +25,22 @@ import kotlinx.android.synthetic.main.activity_phone.*
 class PhoneActivity : BaseActivity(), View.OnClickListener {
 
     private var authCode = "" //验证码
-
+    private val INTERVAL = 60//验证码倒计时
+    private var interval = INTERVAL
     override fun layoutId(): Int = R.layout.activity_phone
-
+    val tHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            if (interval > 0) {
+                interval--
+                auth.text = String.format("%sS", interval)
+                sendEmptyMessageDelayed(100, 1000)
+            } else {
+                interval = INTERVAL
+                auth.text = "重新发送"
+            }
+        }
+    }
     override fun init() {
         setSwipeBackEnable(false)
         StatusBarUtil.immersive(this)
@@ -68,6 +84,7 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
                     override fun onHandleSuccess(t: String) {
                         ToastUtils.showMessage("发送成功")
                         authCode = t
+                        tHandler.sendEmptyMessage(100)
                     }
 
                     override fun onHandleError(error: Error) {
