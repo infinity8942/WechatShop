@@ -12,10 +12,7 @@ import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.util.DateUtil
-import com.qiushi.wechatshop.util.ImageHelper
-import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.*
 import kotlinx.android.synthetic.main.activity_order_detail.*
 
 /**
@@ -59,8 +56,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                             layout_user.visibility = View.GONE
                             line_user.visibility = View.GONE
                         } else {
-//                            name.text = t.user.receiver + "  " + t.user.mobile
-//                            address.text = t.user.address
+                            name.text = t.user.receiver + "  " + t.user.mobile
+                            address.text = t.user.address
                         }
 
                         ImageHelper.loadAvatar(this@OrderDetailActivity, logo, t.shop.logo, 24)
@@ -103,8 +100,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
             R.id.back -> finish()
             R.id.phone -> {
                 if (null != order && order!!.type != 1) {
+                    Utils.call(this, order!!.user.mobile)
                 }
-//                    Utils.call(this, order!!.user.mobile)
             }
             R.id.copy -> {
                 ToastUtils.showMessage("已复制到剪贴板")

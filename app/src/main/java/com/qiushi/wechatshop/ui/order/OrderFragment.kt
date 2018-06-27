@@ -47,7 +47,7 @@ class OrderFragment : BaseFragment() {
         mAdapter = OrderAdapter((activity as OrderActivity).isManage)
         mAdapter.openLoadAnimation()
         mRecyclerView.addItemDecoration(SpaceItemDecoration(0, DensityUtils.dp2px(8.toFloat())))
-        mRecyclerView.adapter = mAdapter
+        mAdapter.bindToRecyclerView(mRecyclerView)
 
         notDataView = layoutInflater.inflate(R.layout.empty_order_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }
@@ -60,6 +60,10 @@ class OrderFragment : BaseFragment() {
             lazyLoad()
         }
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
+
+        mAdapter.setOnItemClickListener { adapter, _, position ->
+            goToOrderDetails((adapter.data[position] as Order).id)
+        }
 
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
 
@@ -81,7 +85,7 @@ class OrderFragment : BaseFragment() {
                         }
                         1 -> {
                             if ((activity as OrderActivity).isManage) {//标记发货
-                                val numbers = (adapter.getViewByPosition(position, R.id.numbers) as EditText).text.toString().trim()
+                                val numbers = (mAdapter.getViewByPosition(position, R.id.numbers) as EditText).text.toString().trim()
                                 if (numbers.isEmpty()) {
                                     ToastUtils.showError("请填写运单号")
                                 } else {
@@ -139,9 +143,6 @@ class OrderFragment : BaseFragment() {
                     }
                 }
             }
-            mAdapter.setOnItemClickListener { adapter, _, position ->
-                goToOrderDetails((adapter.data[position] as Order).id)
-            }
         }
     }
 
@@ -158,8 +159,7 @@ class OrderFragment : BaseFragment() {
                 (activity as OrderActivity).pay_time, (activity as OrderActivity).keywords,
                 (activity as OrderActivity).startTime, (activity as OrderActivity).endTime,
                 (activity as OrderActivity).from, status,
-                (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM
-        )
+                (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Order>>() {
                     override fun onHandleSuccess(t: ArrayList<Order>) {

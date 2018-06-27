@@ -46,7 +46,7 @@ class ShopFragment : BaseFragment() {
         mAdapter = ShopAdapter()
         mAdapter.openLoadAnimation()
         mRecyclerView.addItemDecoration(GridSpaceItemDecoration(DensityUtils.dp2px(9.toFloat()), DensityUtils.dp2px(8.toFloat())))
-        mRecyclerView.adapter = mAdapter
+        mAdapter.bindToRecyclerView(mRecyclerView)
 
         notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { lazyLoad() }

@@ -26,7 +26,7 @@ object Constants {
     const val IS_DEVELOPER = true //TODO 开发模式开关,发版时置为false
     const val DEBUG = true //是否测试环境
     @JvmField
-    val HOST = if (DEBUG) "http://wechatshop.qiushizixun.com/" else "http://wap.top6000.com/MobileApp/"
+    val HOST = if (DEBUG) "http://wechatshop.qiushizixun.com/" else "http://wap.top6000.com/MobileApp/"//TODO 正式地址
 
     //H5
     const val GOODS_DETAIL = "http://wechatshop.qiushizixun.com/H5/detail/id/"
@@ -49,7 +49,6 @@ object Constants {
     const val WX_ID = "wx5e51e01dcf0bf531"
 
     //Code
-
     const val ADDIMG_RESUALT = 1003 //foot添加产品相册回调
     const val ADDIMG_ITEM_REQUEST = 1004 //ITEM添加产品相册回调
     const val EDIT_TEXT_REQUEST = 1005 //编辑文本的回调
@@ -59,8 +58,4 @@ object Constants {
 
     const val ADDIMG_LOGO = 1007//店铺装修logo
     const val ADDIMG_GOODS_BG = 1008//店铺装修背景
-
-
-    const val TOKEN = "2813c9014ff9581978e3f616e09b1d79"
-    const val CILIENT = "9939e296d7e891ef87a2fa7f521b874a"
 }
