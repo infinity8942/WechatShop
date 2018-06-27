@@ -402,10 +402,7 @@ class AddGoodsActivity : BaseActivity() {
                                 item.is_del = 1
                             }
                         }
-//                        if (addGoods.content!!.contains(removeAt)) {
-//                            addGoods.content!![addGoods.content!!.indexOf(removeAt)].is_del = 1
-//                        }
-                        isVisible()
+                        isVisibleEdit()
                         mAdapter.setNewData(contentList)
                     }
 
@@ -419,6 +416,27 @@ class AddGoodsActivity : BaseActivity() {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * 编辑时候得展示盒影藏
+     */
+    private fun isVisibleEdit() {
+        if (contentList != null && contentList!!.size > 0) {
+            rl_layout.visibility = View.VISIBLE
+            fl_addlayout.visibility = View.GONE
+            foot_layout.visibility = View.VISIBLE
+            mRecyclerView.visibility = View.VISIBLE
+            foot_add_img.setOnClickListener(onclicklistener)
+            foot_add_text.setOnClickListener(onclicklistener)
+        } else {
+            rl_layout.visibility = View.GONE
+            foot_layout.visibility = View.GONE
+            fl_addlayout.visibility = View.VISIBLE
+            mRecyclerView.visibility = View.GONE
+            item_add_img.setOnClickListener(onclicklistener)
+            item_add_text.setOnClickListener(onclicklistener)
         }
     }
 }

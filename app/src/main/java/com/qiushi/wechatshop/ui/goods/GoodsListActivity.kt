@@ -60,7 +60,7 @@ class GoodsListActivity : BaseActivity() {
         //Listener
         back.setOnClickListener(this)
 
-        mGrideAdapter.setOnItemChildClickListener(onItemchildListener)
+        mGrideAdapter.onItemChildClickListener = onItemchildListener
 
 
 

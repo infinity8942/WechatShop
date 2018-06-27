@@ -157,7 +157,11 @@ class ManageFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
-                        if (t != null && t.is_boss.isNotEmpty() && t.is_boss == "1") {
+                        if (t != null) {
+                            if (mAdapter.emptyView != null){
+                                (mAdapter.emptyView as ViewGroup).removeAllViews()
+                            }
+
                             mShop = t
                             mAdapter.removeAllHeaderView()
                             mAdapter.addHeaderView(headerView)
@@ -184,9 +188,6 @@ class ManageFragment : BaseFragment() {
                             } else {
                                 mRefreshLayout.setNoMoreData(true)
                             }
-                        } else {
-                            mRefreshLayout.finishRefresh(false)
-                            mAdapter.emptyView = notShop
                         }
                     }
 
@@ -200,7 +201,7 @@ class ManageFragment : BaseFragment() {
                             if (error.code == ErrorStatus.NETWORK_ERROR) {
                                 mAdapter.emptyView = errorView
                             } else {
-                                if (User.getCurrent() != null && User.getCurrent().phone.isEmpty()) {
+                                if (User.getCurrent() != null && (User.getCurrent().phone.isEmpty() || (User.getCurrent().shop_id == null))) {
                                     mAdapter.emptyView = notShop
                                 } else {
                                     mAdapter.emptyView = notDataView
@@ -296,7 +297,7 @@ class ManageFragment : BaseFragment() {
                     5 -> {
                         //店铺装修
                         if (mShop?.cover == null) {
-                            mShop?.cover = Constants.GOOD0
+                            mShop?.cover = ""
                         }
                         DecorateActivity.startDecorateActivity(this.context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
                     }

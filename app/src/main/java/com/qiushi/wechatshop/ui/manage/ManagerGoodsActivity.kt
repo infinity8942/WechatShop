@@ -17,6 +17,7 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Goods
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -113,7 +114,7 @@ class ManagerGoodsActivity : BaseActivity() {
     override fun getData() {
 
         val subscribeWith: BaseObserver<List<Goods>> = RetrofitManager.service
-                .getMnagerGoods(Constants.SHOP_ID, state, keyword)
+                .getMnagerGoods(User.getCurrent().shop_id, state, keyword)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<List<Goods>>() {
                     override fun onHandleSuccess(t: List<Goods>) {
