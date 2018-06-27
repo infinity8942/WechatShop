@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/contentBackground">
@@ -30,12 +29,12 @@
 
 
         <TextView
-            android:gravity="center_vertical"
             android:id="@+id/tv_ok"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/padding_tab_layout_top"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
             android:text="完成"
             android:textColor="@color/title"
             android:textSize="16sp" />
@@ -61,6 +60,7 @@
         android:paddingLeft="30dp"
         android:paddingTop="32dp"
         android:textColor="@color/color_add_goods"
+        android:textCursorDrawable="@drawable/cursor_color"
         android:textSize="16sp" />
 
 

@@ -155,6 +155,7 @@
             android:inputType="number"
             android:textColor="@color/color_item_text"
             android:textColorHint="@color/color_more"
+            android:textCursorDrawable="@drawable/cursor_color"
             android:textSize="14sp"
             android:visibility="gone" />
     </RelativeLayout>

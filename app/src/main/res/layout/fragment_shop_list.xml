@@ -18,6 +18,11 @@
         android:layout_height="250dp"
         android:background="@drawable/mask_shop_header" />
 
+    <include
+        android:id="@+id/empty_view"
+        layout="@layout/empty_shop_view"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"

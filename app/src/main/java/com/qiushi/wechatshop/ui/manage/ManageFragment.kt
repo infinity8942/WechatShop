@@ -15,6 +15,7 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.model.Goods
@@ -92,11 +93,12 @@ class ManageFragment : BaseFragment() {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(activity!!)
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
-        color1 = ContextCompat.getColor(context!!, R.color.translate)
-        color2 = ContextCompat.getColor(context!!, R.color.colorPrimaryDark)
+        color1 = ContextCompat.getColor(WAppContext.context, R.color.translate)
+        color2 = ContextCompat.getColor(WAppContext.context, R.color.colorPrimaryDark)
         //RecyclerView
 
         notShop = layoutInflater.inflate(R.layout.empty_shop_view, mRecyclerView.parent as ViewGroup, false)
+        StatusBarUtil.setPaddingSmart(context!!, notShop)
         notShop.findViewById<Button>(R.id.empty_view_tv).setOnClickListener {
             if (User.getCurrent() != null && User.getCurrent().phone.isNotEmpty()) {
                 DecorateActivity.startDecorateActivity(this.context!!, "", "", "")

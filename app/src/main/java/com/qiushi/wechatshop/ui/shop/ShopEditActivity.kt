@@ -3,6 +3,8 @@ package com.qiushi.wechatshop.ui.shop
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -14,6 +16,7 @@ import com.heaven7.android.dragflowlayout.DragAdapter
 import com.heaven7.android.dragflowlayout.DragFlowLayout
 import com.heaven7.android.dragflowlayout.IViewObserver
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -124,12 +127,14 @@ class ShopEditActivity : Activity(), View.OnClickListener {
             }
             R.id.btn_close -> {
                 if (isEdit) {//确认关闭提示
-                    android.support.v7.app.AlertDialog.Builder(this)
-                            .setMessage("正在编辑，您确定要现在返回吗？")
-                            .setPositiveButton("返回") { _, _ ->
+                    val dialog = AlertDialog.Builder(this@ShopEditActivity)
+                            .setMessage("正在编辑，您确定要现在退出吗？")
+                            .setPositiveButton("退出") { _, _ ->
                                 finish()
-                            }
-                            .setNegativeButton("取消", null).show()
+                            }.setNegativeButton("取消", null).create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
                 } else {
                     if (isChange) {
                         val intent = Intent(this@ShopEditActivity, ShopListFragment::class.java)

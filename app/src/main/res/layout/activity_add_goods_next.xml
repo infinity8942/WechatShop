@@ -22,7 +22,6 @@
             android:padding="5dp"
             android:src="@mipmap/ic_goods_back" />
 
-
         <TextView
             android:id="@+id/tv_header_title"
             android:layout_width="wrap_content"
@@ -32,16 +31,14 @@
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
-
     </android.support.v7.widget.Toolbar>
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/manager_item_shape_10dp"
         android:orientation="vertical">
 
@@ -92,7 +89,6 @@
                 android:textColor="@color/black_30"
                 android:textSize="14sp" />
 
-
             <EditText
                 android:id="@+id/et_count"
                 android:layout_width="114dp"
@@ -103,22 +99,22 @@
                 android:background="@drawable/addgood_count_100dp"
                 android:hint="输入产品数量"
                 android:inputType="number"
-                android:paddingBottom="6dp"
                 android:paddingLeft="15dp"
-                android:paddingRight="4dp"
                 android:paddingTop="6dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="6dp"
                 android:textColor="@color/color_more"
+                android:textCursorDrawable="@drawable/cursor_color"
                 android:textSize="14sp" />
         </RelativeLayout>
-
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="26dp"
-        android:layout_marginRight="25dp"
         android:layout_marginTop="8dp"
+        android:layout_marginRight="25dp"
         android:lineSpacingExtra="4dp"
         android:text="您未开启积分抵扣，该产品买家将享受不到购物即可获得积分的权益"
         android:textColor="@color/color_add_goods"
@@ -129,35 +125,35 @@
         android:layout_width="match_parent"
         android:layout_height="117dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/manager_item_shape_10dp"
         android:gravity="top"
         android:hint="输入100字以内备注"
         android:paddingLeft="12dp"
         android:paddingTop="12dp"
         android:textColor="@color/color_add_goods"
+        android:textCursorDrawable="@drawable/cursor_color"
         android:textSize="14sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="26dp"
-        android:layout_marginRight="25dp"
         android:layout_marginTop="8dp"
+        android:layout_marginRight="25dp"
         android:lineSpacingExtra="4dp"
         android:text="促销备注可增加买家多商品购买成单率"
         android:textColor="@color/color_add_goods"
         android:textSize="12sp" />
-
 
     <RelativeLayout
         android:id="@+id/up_layout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="36dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/add_goods_yellow_shape">
 
         <TextView
@@ -168,7 +164,6 @@
             android:text="2/2"
             android:textColor="@color/title"
             android:textSize="16sp" />
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -186,6 +181,5 @@
             android:layout_marginRight="25.3dp"
             android:padding="3dp"
             android:src="@mipmap/ic_next" />
-
     </RelativeLayout>
 </LinearLayout>

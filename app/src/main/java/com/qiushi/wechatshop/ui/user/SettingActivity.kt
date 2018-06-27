@@ -2,8 +2,11 @@ package com.qiushi.wechatshop.ui.user
 
 import android.Manifest
 import android.content.Intent
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.view.View
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.ui.MainActivity
@@ -68,7 +71,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             R.id.layout_feedback -> startActivity(Intent(this@SettingActivity, FeedbackActivity::class.java))
             R.id.layout_about_us -> startActivity(Intent(this@SettingActivity, AboutUsActivity::class.java))
             R.id.logout -> {
-                android.support.v7.app.AlertDialog.Builder(this)
+                val dialog = AlertDialog.Builder(this@SettingActivity)
                         .setMessage("您确定要登出当前账户吗？")
                         .setPositiveButton("退出") { _, _ ->
                             User.logout()
@@ -76,8 +79,10 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                             intent.putExtra("logout", true)
                             startActivity(intent)
                             finish()
-                        }
-                        .setNegativeButton("取消", null).show()
+                        }.setNegativeButton("取消", null).create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
             }
         }
     }

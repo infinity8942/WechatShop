@@ -32,6 +32,7 @@
             android:imeOptions="actionNext"
             android:inputType="number"
             android:textColorHint="@color/color_more"
+            android:textCursorDrawable="@drawable/cursor_color"
             android:textSize="14sp" />
 
         <View
@@ -66,6 +67,7 @@
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:textColorHint="@color/color_more"
+            android:textCursorDrawable="@drawable/cursor_color"
             android:textSize="14sp" />
 
         <View

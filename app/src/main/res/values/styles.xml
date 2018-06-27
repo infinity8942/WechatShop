@@ -40,7 +40,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="dialogstyle">
+    <style name="dialogstyle" parent="Theme.AppCompat.Light.NoActionBar">
         <!--设置dialog的背景-->
         <item name="android:windowBackground">@android:color/transparent</item>
         <!--设置Dialog的windowFrame框为无-->
@@ -113,5 +113,11 @@
         <item name="android:textColorHint">@color/gray1</item>
         <item name="android:hint">@string/search</item>
         <item name="android:inputType">textCapWords</item>
+    </style>
+
+    <!-- EditText下划线-->
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+        <item name="colorControlActivated">@color/coupon_yellow</item>
     </style>
 </resources>

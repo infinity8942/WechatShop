@@ -2,6 +2,7 @@ package com.qiushi.wechatshop.ui.order
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -284,7 +286,7 @@ class OrderFragment : BaseFragment() {
         et.hint = "请输入价格"
         et.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
 
-        AlertDialog.Builder(context!!).setTitle("价格").setView(et)
+        val dialog = AlertDialog.Builder(context!!).setView(et)
                 .setPositiveButton("修改") { _, _ ->
                     val price = et.text.toString().trim()
                     if (price.isEmpty()) {
@@ -293,7 +295,10 @@ class OrderFragment : BaseFragment() {
                         editOrderPrice(order_id, price.toDouble())
                     }
                 }
-                .setNegativeButton("取消", null).show()
+                .setNegativeButton("取消", null).create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
     }
 
     /**
@@ -319,7 +324,8 @@ class OrderFragment : BaseFragment() {
      * 删除订单
      */
     private fun delOrder(order_id: Long) {
-        AlertDialog.Builder(context!!).setMessage("您确定要删除该订单吗？")
+        val dialog = AlertDialog.Builder(context!!)
+                .setMessage("您确定要删除该订单吗？")
                 .setPositiveButton("删除") { _, _ ->
                     val disposable = RetrofitManager.service.delOrder(order_id)
                             .compose(SchedulerUtils.ioToMain())
@@ -334,8 +340,10 @@ class OrderFragment : BaseFragment() {
                                 }
                             })
                     addSubscription(disposable)
-                }
-                .setNegativeButton("取消", null).show()
+                }.setNegativeButton("取消", null).create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
     }
 
     private fun goToOrderDetails(id: Long) {
