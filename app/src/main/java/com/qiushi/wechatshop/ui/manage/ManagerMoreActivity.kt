@@ -11,6 +11,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.MenuInfo
 import com.qiushi.wechatshop.model.More
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
@@ -63,7 +64,7 @@ class ManagerMoreActivity : BaseActivity() {
      * 请求接口数据
      */
     override fun getData() {
-        val subscribeWith: BaseObserver<More> = RetrofitManager.service.getMore(Constants.SHOP_ID)
+        val subscribeWith: BaseObserver<More> = RetrofitManager.service.getMore(User.getCurrent().shop_id)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<More>() {
                     override fun onHandleSuccess(t: More) {
@@ -124,7 +125,7 @@ class ManagerMoreActivity : BaseActivity() {
                 when (view.id) {
                     R.id.iv_remove -> {
                         useGrideAdapter.setIsOnclick(false)
-                        menuMore(Constants.SHOP_ID, data.menu_id, "0")
+                        menuMore(User.getCurrent().shop_id, data.menu_id, "0")
                     }
                 }
             }
@@ -139,7 +140,7 @@ class ManagerMoreActivity : BaseActivity() {
                     R.id.iv_add -> {
 //                        ToastUtils.showSuccess("拼接id(增加)")
                         noUserGrideAdapter.setIsOnclick(false)
-                        menuMore(Constants.SHOP_ID, data.menu_id, "1")
+                        menuMore(User.getCurrent().shop_id, data.menu_id, "1")
                     }
                 }
             }

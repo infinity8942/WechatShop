@@ -15,6 +15,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Moment
 import com.qiushi.wechatshop.model.NineImage
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
@@ -153,7 +154,7 @@ class CreateMomentsActivity : BaseActivity() {
     }
 
     private fun postData(mJson: String) {
-        val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.addMoments(type, moment.id, moment.content, Constants.SHOP_ID, mJson)
+        val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.addMoments(type, moment.id, moment.content, User.getCurrent().shop_id, mJson)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {

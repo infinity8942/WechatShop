@@ -234,7 +234,7 @@ class ManagerGoodsActivity : BaseActivity() {
                 adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
             }
             R.id.iv_edit -> {
-                AddGoodsActivity.startAddGoodsActivity(this, mData.id.toLong())
+                AddGoodsActivity.startAddGoodsActivity(this, mData.id)
             }
 
 
@@ -295,7 +295,7 @@ class ManagerGoodsActivity : BaseActivity() {
     /**
      * 筛选弹窗
      */
-    fun setBottomSheet() {
+    private fun setBottomSheet() {
         val dialogView = layoutInflater.inflate(R.layout.filter_dialog_layout, null)
 
         tvAll = dialogView.findViewById(R.id.tv_all)

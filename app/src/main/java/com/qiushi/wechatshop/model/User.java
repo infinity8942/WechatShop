@@ -94,6 +94,36 @@ public class User extends RealmObject {
     private String avatar;
     private String phone;
     boolean isLogin;
+    private long shop_id;
+    private String bind;
+    private String shop_name;
+    private String shop_logo;
+
+    public String getShop_name() {
+        return shop_name;
+    }
+
+    public void setShop_name(String shop_name) {
+        this.shop_name = shop_name;
+    }
+
+    public String getShop_logo() {
+        return shop_logo;
+    }
+
+    public void setShop_logo(String shop_logo) {
+        this.shop_logo = shop_logo;
+    }
+
+
+    public String getBind() {
+        return bind;
+    }
+
+    public void setBind(String bind) {
+        this.bind = bind;
+    }
+
 
     public long getShop_id() {
         return shop_id;
@@ -102,8 +132,6 @@ public class User extends RealmObject {
     public void setShop_id(long shop_id) {
         this.shop_id = shop_id;
     }
-
-    private long shop_id;
 
 
     private static User current;

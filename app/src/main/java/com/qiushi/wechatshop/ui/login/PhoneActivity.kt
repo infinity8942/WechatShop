@@ -7,6 +7,7 @@ import android.os.Message
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -17,7 +18,9 @@ import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
+
 import kotlinx.android.synthetic.main.activity_phone.*
+import java.util.regex.Pattern
 
 /**
  * 手机号验证码登录
@@ -41,6 +44,7 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
+
     override fun init() {
         setSwipeBackEnable(false)
         StatusBarUtil.immersive(this)
@@ -61,7 +65,11 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.auth -> getAuthCode()
+            R.id.auth -> {
+                if (canSendCode()){
+                    getAuthCode()
+                }
+            }
             R.id.login -> login()
             R.id.protocol -> {//H5协议
                 val intent = Intent(this, WebActivity::class.java)
@@ -77,9 +85,7 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showWarning("请填写手机号")
             return
         }
-
         password.setText("")
-
         val disposable = RetrofitManager.service.sendVerifyCode(phone.text.toString().trim())
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<String>() {
@@ -124,5 +130,25 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
                     }
                 })
         addSubscription(disposable)
+    }
+
+    /**
+     * 是否可发送验证码
+     */
+    private fun canSendCode(): Boolean {
+        if (interval != INTERVAL) {
+            ToastUtils.showWarning(String.format("%sS后可重新发送验证码", interval))
+            return false
+        }
+        val account = phone.text.toString().trim()
+        if (TextUtils.isEmpty(account)) {
+            ToastUtils.showWarning("请输入手机号")
+            return false
+        }
+        if (!Pattern.matches(Constants.REGEX_MOBILE, phone.text.toString().trim())) {
+            ToastUtils.showWarning("手机号输入不正确")
+            return false
+        }
+        return true
     }
 }

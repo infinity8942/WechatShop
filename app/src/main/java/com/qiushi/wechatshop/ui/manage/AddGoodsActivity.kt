@@ -16,6 +16,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.AddGoods
 import com.qiushi.wechatshop.model.Content
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
@@ -184,7 +185,7 @@ class AddGoodsActivity : BaseActivity() {
 
     private fun isDataNull() {
 
-        addGoods.shop_id = Constants.SHOP_ID
+        addGoods.shop_id = User.getCurrent().shop_id
         if (et_brief.text.toString().isNotEmpty()) {
             addGoods.brief = et_brief.text.toString()
         }
