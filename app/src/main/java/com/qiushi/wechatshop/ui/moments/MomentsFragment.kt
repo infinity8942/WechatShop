@@ -12,6 +12,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Moment
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
@@ -77,8 +78,8 @@ class MomentsFragment : BaseFragment() {
 
     override fun lazyLoad() {
         val disposable = RetrofitManager.service.getMoments(
-                10091  //TODO 测试数据
-                , status, (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM)
+                User.getCurrent().shop_id, status,
+                (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<ArrayList<Moment>>() {
                     override fun onHandleSuccess(t: ArrayList<Moment>) {

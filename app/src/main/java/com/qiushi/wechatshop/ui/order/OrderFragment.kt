@@ -9,6 +9,7 @@ import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
@@ -75,7 +76,7 @@ class OrderFragment : BaseFragment() {
                     when (order.status) {
                         0 -> {
                             if ((activity as OrderActivity).isManage) {//提醒支付
-                                notifyToPay(order.id)
+                                notifyToPay(order.id, position)
                             }
                         }
                         1 -> {
@@ -87,7 +88,7 @@ class OrderFragment : BaseFragment() {
                                     markAsDeliver(order.id, numbers)
                                 }
                             } else {//提醒发货
-                                notifyToDeliver(order.id)
+                                notifyToDeliver(order.id, position)
                             }
                         }
                         2 -> {
@@ -213,8 +214,10 @@ class OrderFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
-                            ToastUtils.showMessage("发货完成")
+                        if (t) {
+                            ToastUtils.showMessage("已发货")
+                            getOrders()
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
@@ -227,13 +230,16 @@ class OrderFragment : BaseFragment() {
     /**
      * 提醒支付
      */
-    private fun notifyToPay(order_id: Long) {
+    private fun notifyToPay(order_id: Long, position: Int) {
         val disposable = RetrofitManager.service.notifyToPay(order_id)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
-                            ToastUtils.showMessage("已发出提醒")
+                        if (t) {
+                            ToastUtils.showMessage("已发送提醒")
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
@@ -246,13 +252,16 @@ class OrderFragment : BaseFragment() {
     /**
      * 提醒发货
      */
-    private fun notifyToDeliver(order_id: Long) {
+    private fun notifyToDeliver(order_id: Long, position: Int) {
         val disposable = RetrofitManager.service.notifyToDeliver(order_id)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
-                            ToastUtils.showMessage("已发出提醒")
+                        if (t) {
+                            ToastUtils.showMessage("已发送提醒")
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
@@ -270,8 +279,10 @@ class OrderFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
-                            ToastUtils.showMessage("发货完成")
+                        if (t) {
+                            ToastUtils.showMessage("交易完成")
+                            getOrders()
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
@@ -309,8 +320,10 @@ class OrderFragment : BaseFragment() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
+                        if (t) {
                             ToastUtils.showMessage("修改成功")
+                            getOrders()
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
@@ -331,8 +344,10 @@ class OrderFragment : BaseFragment() {
                             .compose(SchedulerUtils.ioToMain())
                             .subscribeWith(object : BaseObserver<Boolean>() {
                                 override fun onHandleSuccess(t: Boolean) {
-                                    if (t)
+                                    if (t) {
                                         ToastUtils.showMessage("删除成功")
+                                        getOrders()
+                                    }
                                 }
 
                                 override fun onHandleError(error: Error) {

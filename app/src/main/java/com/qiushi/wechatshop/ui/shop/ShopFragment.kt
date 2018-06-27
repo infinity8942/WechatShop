@@ -36,6 +36,7 @@ class ShopFragment : BaseFragment() {
 
     private var shopID: Long = 0
     private var page = 1
+    private var isFirst = true
 
     override fun getLayoutId(): Int = R.layout.fragment_shop
 
@@ -151,7 +152,8 @@ class ShopFragment : BaseFragment() {
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
-                            ToastUtils.showMessage("添加成功")
+                            ToastUtils.showMessage(if (isFirst) "添加成功，请到我的购物车查看" else "添加成功")
+                            isFirst = false
                         }
                     }
 

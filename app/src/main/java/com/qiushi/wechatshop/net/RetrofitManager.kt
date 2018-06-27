@@ -75,8 +75,6 @@ object RetrofitManager {
                     .header("version", PhoneInfo.getInstance().version)
                     .header("channel", PhoneInfo.getInstance().channel)
                     .header("device", "android")
-//                    .header("client-id", Constants.CILIENT)
-//                    .header("access-token", Constants.TOKEN)
                     .method(originalRequest.method(), originalRequest.body())
 
             val headers = Utils.getHttpHeaders()

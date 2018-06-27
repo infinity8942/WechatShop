@@ -36,7 +36,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
             }
             1 -> {
                 if (isManage) {
-                    helper.setText(R.id.status, "买家已付款").setText(R.id.action, "标记发货")
+                    helper.setText(R.id.status, "买家已付款").setText(R.id.action, "确认发货")
                             .setGone(R.id.numbers, true)
                 } else {
                     helper.setText(R.id.status, "等待卖家发货").setText(R.id.action, "提醒发货")

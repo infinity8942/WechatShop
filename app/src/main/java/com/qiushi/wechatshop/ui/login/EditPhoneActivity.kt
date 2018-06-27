@@ -14,6 +14,7 @@ import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_phone_edit.*
+import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
 
 /**
  * 修改手机号
@@ -33,7 +34,7 @@ class EditPhoneActivity : BaseActivity(), View.OnClickListener {
         protocol.setOnClickListener(this)
         password.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                login()
+                UIUtil.hideKeyboard(this)
             }
             false
         }
@@ -45,7 +46,7 @@ class EditPhoneActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.auth -> getAuthCode()
-            R.id.login -> login()
+            R.id.login -> loginPhone()
         }
     }
 
@@ -54,6 +55,8 @@ class EditPhoneActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showWarning("请填写手机号")
             return
         }
+
+        password.setText("")
 
         val disposable = RetrofitManager.service.sendVerifyCode(phone.text.toString().trim())
                 .compose(SchedulerUtils.ioToMain())
@@ -70,18 +73,13 @@ class EditPhoneActivity : BaseActivity(), View.OnClickListener {
         addSubscription(disposable)
     }
 
-    private fun login() {
+    private fun loginPhone() {
         if (TextUtils.isEmpty(password.text.toString().trim())) {
             ToastUtils.showWarning("请填写验证码")
             return
         }
 
-        if (authCode != password.text.toString().trim()) {
-            ToastUtils.showWarning("验证码不正确")
-            return
-        }
-
-        //TODO 手机号登录接口
+        //TODO 修改手机号接口
         val disposable = RetrofitManager.service.loginPhone(phone.text.toString().trim(),
                 password.text.toString().trim())
                 .compose(SchedulerUtils.ioToMain())

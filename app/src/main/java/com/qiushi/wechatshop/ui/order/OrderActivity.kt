@@ -14,6 +14,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.util.DateUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
@@ -76,7 +77,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         if (isManage) {
             title = "订单管理"
             layout_order.visibility = View.VISIBLE
-            shopID = 10091 //TODO 测试数据
+            shopID = User.getCurrent().shop_id
         } else {
             title = "我的订单"
             layout_order.visibility = View.GONE

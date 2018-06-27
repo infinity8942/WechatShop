@@ -22,7 +22,8 @@ import com.qiushi.wechatshop.util.ImageHelper
  */
 class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_moment, null) {
 
-    val avatar = User.getCurrent().avatar
+    private val avatar = User.getCurrent().avatar
+//    private val shopName = User.getCurrent().shop_name
 
     override fun convert(helper: BaseViewHolder, moment: Moment) {
         ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), avatar, 42)//TODO 测试数据 卖家信息
