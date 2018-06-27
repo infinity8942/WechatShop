@@ -58,8 +58,10 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                             layout_user.visibility = View.GONE
                             line_user.visibility = View.GONE
                         } else {
-                            name.text = t.user.receiver + "  " + t.user.mobile
-                            address.text = t.user.address
+                            if (null != t.user) {
+                                name.text = t.user.receiver + "  " + t.user.mobile
+                                address.text = t.user.address
+                            }
                         }
 
                         ImageHelper.loadAvatar(this@OrderDetailActivity, logo, t.shop.logo, 24)

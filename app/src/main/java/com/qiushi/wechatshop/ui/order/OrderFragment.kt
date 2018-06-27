@@ -245,6 +245,10 @@ class OrderFragment : BaseFragment() {
 
                     override fun onHandleError(error: Error) {
                         ToastUtils.showError(error.msg)
+                        if (error.code == 1004) {
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                        }
                     }
                 })
         addSubscription(disposable)
@@ -267,6 +271,10 @@ class OrderFragment : BaseFragment() {
 
                     override fun onHandleError(error: Error) {
                         ToastUtils.showError(error.msg)
+                        if (error.code == 1004) {
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
+                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                        }
                     }
                 })
         addSubscription(disposable)

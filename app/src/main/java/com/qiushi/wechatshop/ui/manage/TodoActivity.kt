@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.Todo
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -72,11 +73,11 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
         val disposable = RetrofitManager.service.getToDo(
                 User.getCurrent().shop_id)
                 .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<Boolean>() {
-                    override fun onHandleSuccess(t: Boolean) {
-                        if (t) {
-
-                        }
+                .subscribeWith(object : BaseObserver<Todo>() {
+                    override fun onHandleSuccess(t: Todo) {
+                        deliver.text = t.wait_send.toString()
+                        pay.text = t.wait_pay.toString()
+                        amount.text = t.num_notice.toString()
                     }
 
                     override fun onHandleError(error: Error) {

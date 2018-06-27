@@ -197,7 +197,7 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("Shop/shop_todo")
-    fun getToDo(@Field("shop_id") shop_id: Long): Observable<BaseResponse<Boolean>>
+    fun getToDo(@Field("shop_id") shop_id: Long): Observable<BaseResponse<Todo>>
 
     //==============================================================================================
     /**
