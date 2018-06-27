@@ -11,17 +11,19 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity
+import org.reactivestreams.Subscription
 
 
 abstract class BaseActivity : SwipeBackActivity(), View.OnClickListener, Consumer<Notifycation> {
 
     var loadingDialog: LoadingDialog? = null
-
+    var notification: Subscription? = null
     var compositeDisposable = CompositeDisposable()//订阅集合
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId())
+        notification = Notifycation.register(this)
         getParams(intent)
         init()
         getData()
@@ -46,6 +48,7 @@ abstract class BaseActivity : SwipeBackActivity(), View.OnClickListener, Consume
         if (!compositeDisposable.isDisposed) {
             compositeDisposable.clear()
         }
+        notification!!.cancel()
         dismissLoading()
         loadingDialog = null
         super.onDestroy()
@@ -91,4 +94,6 @@ abstract class BaseActivity : SwipeBackActivity(), View.OnClickListener, Consume
     override fun accept(t: Notifycation?) {
 
     }
+
+
 }

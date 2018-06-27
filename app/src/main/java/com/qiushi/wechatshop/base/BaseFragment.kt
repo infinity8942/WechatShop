@@ -3,6 +3,7 @@ package com.qiushi.wechatshop.base
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import com.qiushi.wechatshop.view.LoadingDialog
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
+import org.reactivestreams.Subscription
+
 
 abstract class BaseFragment : Fragment(), Consumer<Notifycation> {
 
@@ -21,10 +24,16 @@ abstract class BaseFragment : Fragment(), Consumer<Notifycation> {
     /**
      * 数据是否加载过了
      */
+    private var notification: Subscription? = null
     private var hasLoadData = false
 
     protected var loadingDialog: LoadingDialog? = null
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        notification = Notifycation.register(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(getLayoutId(), null)
@@ -35,6 +44,7 @@ abstract class BaseFragment : Fragment(), Consumer<Notifycation> {
         if (isVisibleToUser) {
             lazyLoadDataIfPrepared()
         }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,6 +107,7 @@ abstract class BaseFragment : Fragment(), Consumer<Notifycation> {
         if (!compositeDisposable.isDisposed) {
             compositeDisposable.clear()
         }
+        notification!!.cancel()
         dismissLoading()
         loadingDialog = null
         super.onDestroy()
@@ -104,5 +115,6 @@ abstract class BaseFragment : Fragment(), Consumer<Notifycation> {
 
     override fun accept(t: Notifycation?) {
 
+        Log.e("Tag","nihO")
     }
 }

@@ -111,6 +111,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                             RxBus.getInstance().post(Notifycation(1, 0L))
                             finish()
                         } else {
+                            RxBus.getInstance().post(Notifycation(1, 0L))
                             ToastUtils.showMessage("装修店铺成功")
                             val intent = Intent(this@DecorateActivity, MainActivity::class.java)
                             intent.putExtra("refreshManage", true)
