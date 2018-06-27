@@ -42,7 +42,7 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Shop/edit_shop")
     fun editShop(@Field("name") name: String, @Field("oss_id") oss_id: String,
-                 @Field("shop_id") shop_id: Long, @Field("bg_oss_id") bg_oss_id: String): Observable<BaseResponse<Boolean>>
+                 @Field("shop_id") shop_id: Long, @Field("bg_oss_id") bg_oss_id: String): Observable<BaseResponse<String>>
 
     /**
      * 店铺、用户订单列表
@@ -125,7 +125,7 @@ interface ApiService {
      * 手机号登录
      */
     @FormUrlEncoded
-    @POST("MobileApp/user/login")
+    @POST("User/mobile_login")
     fun loginPhone(@Field("phone") phone: String, @Field("password") password: String): Observable<BaseResponse<Boolean>>
 
     /**
@@ -140,7 +140,7 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("User/mobile_bind")
-    fun bindPhone(@Field("phone") phone: String, @Field("verify_code") verify_code: String): Observable<BaseResponse<Boolean>>
+    fun bindPhone(@Field("phone") phone: String, @Field("verify_code") verify_code: String): Observable<BaseResponse<String>>
 
     /**
      * 发送验证码
@@ -226,9 +226,9 @@ interface ApiService {
     @POST("Oss/get_token")
     fun gUploadFile(@Field("md5") md5: String): Observable<BaseResponse<UploadFile>>
 
-
+    @FormUrlEncoded
     @POST("User/my_shop")
-    fun getMyshop(): Observable<BaseResponse<Shop>>
+    fun getMyshop(@Field("offset") offset: Int): Observable<BaseResponse<Shop>>
 
     @FormUrlEncoded
     @POST("Menu/get_menu_info")

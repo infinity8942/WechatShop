@@ -10,14 +10,18 @@ import android.view.inputmethod.EditorInfo
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.R.id.auth
+import com.qiushi.wechatshop.R.id.phone
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.manage.DecorateActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_bind.*
+import io.reactivex.functions.Consumer
 
 import java.util.regex.Pattern
 
@@ -36,6 +40,7 @@ class BindActivity : BaseActivity(), View.OnClickListener {
             super.handleMessage(msg)
             if (interval > 0) {
                 interval--
+
                 auth.text = String.format("%sS", interval)
                 sendEmptyMessageDelayed(100, 1000)
             } else {
@@ -110,10 +115,14 @@ class BindActivity : BaseActivity(), View.OnClickListener {
         val disposable = RetrofitManager.service.bindPhone(phone.text.toString().trim(),
                 password.text.toString().trim())
                 .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<Boolean>() {
-                    override fun onHandleSuccess(t: Boolean) {
-                        if (t) {
+                .subscribeWith(object : BaseObserver<String>() {
+                    override fun onHandleSuccess(t: String) {
+                        if (t.isNotEmpty()) {
                             ToastUtils.showMessage("绑定成功")
+                            User.editCurrent { u ->
+                                u!!.phone = t
+                            }
+                            DecorateActivity.startDecorateActivity(this@BindActivity, "", "", "")
                             finish()
                         }
                     }

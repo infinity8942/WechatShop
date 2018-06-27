@@ -100,6 +100,7 @@ class ManageFragment : BaseFragment() {
         notShop.findViewById<Button>(R.id.empty_view_tv).setOnClickListener {
             if (User.getCurrent() != null && User.getCurrent().phone.isNotEmpty()) {
                 DecorateActivity.startDecorateActivity(this.context!!, "", "", "")
+
             } else {
                 startActivity(Intent(context, BindActivity::class.java))
             }
@@ -152,7 +153,7 @@ class ManageFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        val subscribeWith: BaseObserver<Shop> = RetrofitManager.service.getMyshop()
+        val subscribeWith: BaseObserver<Shop> = RetrofitManager.service.getMyshop(page)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
@@ -174,8 +175,12 @@ class ManageFragment : BaseFragment() {
                                 mRefreshLayout.finishRefresh(true)
                             }
                             if (t.goods != null) {
-                                mRefreshLayout.setNoMoreData(t.goods.size < Constants.PAGE_NUM)
-                                page++
+                                if (t.goods.size < Constants.PAGE_NUM) {
+                                    mRefreshLayout.setNoMoreData(true)
+                                } else {
+                                    mRefreshLayout.setNoMoreData(false)
+                                    page++
+                                }
                             } else {
                                 mRefreshLayout.setNoMoreData(true)
                             }
@@ -183,8 +188,6 @@ class ManageFragment : BaseFragment() {
                             mRefreshLayout.finishRefresh(false)
                             mAdapter.emptyView = notShop
                         }
-
-
                     }
 
                     override fun onHandleError(error: Error) {

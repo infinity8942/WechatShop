@@ -3,10 +3,15 @@ package com.qiushi.wechatshop.model;
 import com.qiushi.wechatshop.util.Push;
 import com.umeng.analytics.MobclickAgent;
 
+import org.jetbrains.annotations.NotNull;
+
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import io.realm.annotations.PrimaryKey;
+import kotlin.jvm.functions.Function1;
 
 public class User extends RealmObject {
     /**
@@ -85,6 +90,16 @@ public class User extends RealmObject {
     private String phone;
     boolean isLogin;
 
+    public long getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(long shop_id) {
+        this.shop_id = shop_id;
+    }
+
+    private long shop_id;
+
 
     private static User current;
 
@@ -153,5 +168,26 @@ public class User extends RealmObject {
         }
 
     }
+
+    /**
+     * 更改某些值
+     */
+    public static void editCurrent(final Consumer<User> consumer) {
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<User> result = realm.where(User.class)
+                        .equalTo("isLogin", true).findAll();
+                if (result.size() == 1) {
+                    try {
+                        consumer.accept(result.first());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
 
 }
