@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
@@ -83,9 +84,9 @@ class EditPhoneActivity : BaseActivity(), View.OnClickListener {
         val disposable = RetrofitManager.service.loginPhone(phone.text.toString().trim(),
                 password.text.toString().trim())
                 .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<Boolean>() {
-                    override fun onHandleSuccess(t: Boolean) {
-                        if (t) {
+                .subscribeWith(object : BaseObserver<User>() {
+                    override fun onHandleSuccess(t: User) {
+                        if (t != null) {
                             startActivity(Intent(this@EditPhoneActivity, MainActivity::class.java))
                             finish()
                         }

@@ -7,9 +7,14 @@ import android.os.Message
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import cn.sharesdk.framework.Platform
+import cn.sharesdk.framework.PlatformActionListener
+import cn.sharesdk.framework.ShareSDK
+import cn.sharesdk.wechat.friends.Wechat
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
@@ -17,9 +22,11 @@ import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
 
 import kotlinx.android.synthetic.main.activity_phone.*
+import java.util.HashMap
 import java.util.regex.Pattern
 
 /**
@@ -66,7 +73,7 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.auth -> {
-                if (canSendCode()){
+                if (canSendCode()) {
                     getAuthCode()
                 }
             }
@@ -112,21 +119,32 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showWarning("验证码不正确")
             return
         }
-
+        val callback: Callback<User> = LoginCallback()
+        callback.onStart()
         //TODO 手机号登录接口
         val disposable = RetrofitManager.service.loginPhone(phone.text.toString().trim(),
                 password.text.toString().trim())
                 .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<Boolean>() {
-                    override fun onHandleSuccess(t: Boolean) {
-                        if (t) {
-                            startActivity(Intent(this@PhoneActivity, MainActivity::class.java))
-                            finish()
+                .subscribeWith(object : BaseObserver<User>() {
+                    override fun onHandleSuccess(t: User) {
+                        if (t != null && t.bind.isNotEmpty()) {
+                            when (t.bind) {
+                                "0" -> {
+                                    //没绑定,拉起微信绑定
+                                    loginWX(t.phone, callback)
+                                }
+                                "1" -> {
+                                    //已经绑定
+                                    User.setCurrent(t)
+                                    callback.onSuccess(t)
+                                }
+                            }
                         }
                     }
 
                     override fun onHandleError(error: Error) {
                         ToastUtils.showError(error.msg)
+                        callback.onFail(error.msg)
                     }
                 })
         addSubscription(disposable)
@@ -150,5 +168,83 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
             return false
         }
         return true
+    }
+
+    internal inner class LoginCallback : Callback.SimpleCallback<User>() {
+        override fun onStart() {
+            super.onStart()
+            showLoading()
+        }
+
+        override fun onAfter() {
+            super.onAfter()
+            dismissLoading()
+        }
+
+        override fun onSuccess(user: User) {
+//            when (user.bind) {
+//                "0" -> {
+//                    //bind微信
+//                }
+//                "1" -> {
+//                    dismissLoading()
+//                    startActivity(Intent(this@PhoneActivity, MainActivity::class.java))
+//                    finish()
+//                }
+//            }
+            dismissLoading()
+            startActivity(Intent(this@PhoneActivity, MainActivity::class.java))
+            finish()
+        }
+
+        override fun onFail(error: String) {
+            dismissLoading()
+            ToastUtils.showError(error)
+        }
+    }
+
+
+    private fun loginWX(phone: String, callback: Callback<User>) {
+
+        val platform = ShareSDK.getPlatform(Wechat.NAME)
+        if (platform.isAuthValid) {
+            platform.removeAccount(true)
+        }
+        platform.SSOSetting(false)
+        platform.platformActionListener = object : PlatformActionListener {
+            override fun onComplete(platform: Platform, i: Int, hashMap: HashMap<String, Any>) {
+                val platDB = platform.db
+//                val params = HashMap<String, String>()
+//                params["push"] = Push.getDeviceToken()
+//                params["token"] = platDB.token
+////                params["username"] = platDB.userName
+//                params["uid"] = platDB.userId
+//                params["brand"] = "2"
+//                params["type"] = "weixin"
+
+                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, phone)
+                        .compose(SchedulerUtils.ioToMain())
+                        .subscribeWith(object : BaseObserver<User>() {
+                            override fun onHandleSuccess(t: User) {
+                                User.setCurrent(t)
+                                callback.onSuccess(t)
+                            }
+
+                            override fun onHandleError(error: Error) {
+                                callback.onFail(error.msg)
+                            }
+                        })
+                addSubscription(disposable)
+            }
+
+            override fun onError(platform: Platform, i: Int, throwable: Throwable) {
+                callback.onFail(throwable.message)
+            }
+
+            override fun onCancel(platform: Platform, i: Int) {
+                callback.onAfter()
+            }
+        }
+        platform.showUser(null)
     }
 }

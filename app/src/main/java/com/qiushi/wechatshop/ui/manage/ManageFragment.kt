@@ -101,8 +101,7 @@ class ManageFragment : BaseFragment() {
         StatusBarUtil.setPaddingSmart(context!!, notShop)
         notShop.findViewById<Button>(R.id.empty_view_tv).setOnClickListener {
             if (User.getCurrent() != null && User.getCurrent().phone.isNotEmpty()) {
-                DecorateActivity.startDecorateActivity(this.context!!, "", "", "")
-
+                DecorateActivity.startDecorateActivity(context!!, "", "", "")
             } else {
                 startActivity(Intent(context, BindActivity::class.java))
             }
@@ -160,7 +159,7 @@ class ManageFragment : BaseFragment() {
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
                         if (t != null) {
-                            if (mAdapter.emptyView != null){
+                            if (mAdapter.emptyView != null) {
                                 (mAdapter.emptyView as ViewGroup).removeAllViews()
                             }
 
@@ -203,7 +202,7 @@ class ManageFragment : BaseFragment() {
                             if (error.code == ErrorStatus.NETWORK_ERROR) {
                                 mAdapter.emptyView = errorView
                             } else {
-                                if (User.getCurrent() != null && (User.getCurrent().phone.isEmpty() || (User.getCurrent().shop_id == null))) {
+                                if (User.getCurrent() != null && (User.getCurrent().phone.isEmpty() || (User.getCurrent().shop_id == null || User.getCurrent().shop_id == 0L))) {
                                     mAdapter.emptyView = notShop
                                 } else {
                                     mAdapter.emptyView = notDataView
@@ -301,7 +300,7 @@ class ManageFragment : BaseFragment() {
                         if (mShop?.cover == null) {
                             mShop?.cover = ""
                         }
-                        DecorateActivity.startDecorateActivity(this.context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
+                        DecorateActivity.startDecorateActivity(context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
                     }
                     else -> {//TODO
                         ToastUtils.showError("敬请期待")
@@ -340,8 +339,10 @@ class ManageFragment : BaseFragment() {
         override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (mItemPosition != -1) {
-                mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
-                mItemPosition = -1
+                if (mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape) != null) {
+                    mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
+                    mItemPosition = -1
+                }
             }
         }
     }
@@ -404,4 +405,6 @@ class ManageFragment : BaseFragment() {
         intent.putExtra("type", type)
         startActivity(intent)
     }
+
+
 }

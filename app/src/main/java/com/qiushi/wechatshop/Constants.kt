@@ -60,6 +60,8 @@ object Constants {
     const val ADDIMG_LOGO = 1007//店铺装修logo
     const val ADDIMG_GOODS_BG = 1008//店铺装修背景
 
+    const val DESCORA_REQUEST = 1011//店铺装修request
+
 
     const val TOKEN = "2813c9014ff9581978e3f616e09b1d79"
     const val CILIENT = "9939e296d7e891ef87a2fa7f521b874a"

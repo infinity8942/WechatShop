@@ -4,10 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.view.LoadingDialog
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity
+
 
 abstract class BaseActivity : SwipeBackActivity(), View.OnClickListener {
 

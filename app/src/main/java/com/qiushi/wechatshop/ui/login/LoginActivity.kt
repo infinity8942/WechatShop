@@ -57,7 +57,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.login -> loginWX()
+            R.id.login -> {
+                loginWX()
+            }
             R.id.phone -> startActivity(Intent(this, PhoneActivity::class.java))
             R.id.protocol -> {//H5协议
                 val intent = Intent(this, WebActivity::class.java)
@@ -123,7 +125,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 //                params["brand"] = "2"
 //                params["type"] = "weixin"
 
-                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId)
+                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, "")
                         .compose(SchedulerUtils.ioToMain())
                         .subscribeWith(object : BaseObserver<User>() {
                             override fun onHandleSuccess(t: User) {
