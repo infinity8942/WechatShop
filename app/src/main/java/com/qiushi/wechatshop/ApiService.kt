@@ -196,7 +196,7 @@ interface ApiService {
      * 删除素材
      */
     @FormUrlEncoded
-    @POST("MobileApp/shop/moments/del")
+    @POST("shop/moments_del")
     fun delMoments(@Field("moment_id") moment_id: Long): Observable<BaseResponse<Boolean>>
 
     /**

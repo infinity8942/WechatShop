@@ -82,4 +82,8 @@ class MainActivity : BaseActivity() {
             }
         }
     }
+
+    fun updateCover(img: String) {
+        (mFragments[1] as ShopListFragment).updateCover(img)
+    }
 }

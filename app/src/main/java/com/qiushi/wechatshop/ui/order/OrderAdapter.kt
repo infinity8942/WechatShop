@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.util.ImageHelper
@@ -23,7 +24,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
         ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), order.shop.logo, 24)
         helper.setText(R.id.name, order.shop.name)
         when (order.status) {
-            0 -> {
+            Constants.READY_TO_PAY -> {
                 if (isManage) {
                     helper.setText(R.id.status, "等待买家付款").setText(R.id.action, "提醒支付")
                     helper.setGone(R.id.action1, true).setText(R.id.action1, "修改价格")
@@ -35,7 +36,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                 }
                 helper.setGone(R.id.action, true).setGone(R.id.numbers, false)
             }
-            1 -> {
+            Constants.PAYED -> {
                 if (isManage) {
                     helper.setText(R.id.status, "买家已付款").setText(R.id.action, "确认发货")
                             .setGone(R.id.numbers, true)
@@ -45,7 +46,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                 }
                 helper.setGone(R.id.action1, false).setGone(R.id.action2, false)
             }
-            2 -> {
+            Constants.DELIVERED -> {
                 if (isManage) {
                     helper.setText(R.id.status, "等待买家收货").setGone(R.id.action, false)
                 } else {
@@ -55,7 +56,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                 helper.setGone(R.id.action1, true).setText(R.id.action1, "查看物流")
                         .setGone(R.id.action2, false).setGone(R.id.numbers, false)
             }
-            3 -> {
+            Constants.DONE -> {
                 if (isManage) {
                     helper.setGone(R.id.action, false).setGone(R.id.action2, false)
                     helper.setText(R.id.action1, "删除订单")
@@ -68,7 +69,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                 helper.setText(R.id.status, "已完成").setGone(R.id.action1, true)
                         .setGone(R.id.numbers, false)
             }
-            5 -> {
+            Constants.CUSTOM -> {
                 if (isManage) {
                     helper.setGone(R.id.action, false)
                     helper.setGone(R.id.action1, true).setText(R.id.action1, "删除订单")
