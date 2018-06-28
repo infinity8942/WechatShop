@@ -86,7 +86,7 @@ interface ApiService {
     fun notifyToDeliver(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
-     * 标记完成
+     * 确认收货
      */
     @FormUrlEncoded
     @POST("Order/achieve_order")
@@ -105,6 +105,13 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Order/del_order")
     fun delOrder(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 取消订单
+     */
+    @FormUrlEncoded
+    @POST("Order/cancel_order")
+    fun cancelOrder(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
      * 订单详情

@@ -97,10 +97,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
             fragments.add(OrderFragment.getInstance(5))
         }
 
-        tabList.add("已取消")
-        fragments.add(OrderFragment.getInstance(6))
-
-        viewpager.offscreenPageLimit = 7
+        viewpager.offscreenPageLimit = 6
         viewpager.adapter = BaseFragmentAdapter(supportFragmentManager, fragments, tabList)
         tab.setViewPager(viewpager)
 

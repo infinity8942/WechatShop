@@ -8,6 +8,7 @@ import cn.sharesdk.framework.Platform
 import cn.sharesdk.framework.PlatformActionListener
 import cn.sharesdk.framework.ShareSDK
 import cn.sharesdk.wechat.friends.Wechat
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppLike
 import com.qiushi.wechatshop.base.BaseActivity
@@ -58,14 +59,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.login -> {
-                loginWX()
-            }
+            R.id.login -> loginWX()
             R.id.phone -> startActivity(Intent(this, PhoneActivity::class.java))
             R.id.protocol -> {//H5协议
                 val intent = Intent(this, WebActivity::class.java)
                 intent.putExtra(WebActivity.PARAM_TITLE, "协议")
-                intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
+                intent.putExtra(WebActivity.PARAM_URL, Constants.PROTOCOL)
                 startActivity(intent)
             }
         }

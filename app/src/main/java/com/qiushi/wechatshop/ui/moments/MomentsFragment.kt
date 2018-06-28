@@ -65,8 +65,8 @@ class MomentsFragment : BaseFragment() {
                     val dialog = AlertDialog.Builder(activity!!)
                             .setMessage("您确定要删除该素材吗？")
                             .setPositiveButton("删除") { _, _ ->
-                                mAdapter.remove(position)
                                 delMoment((adapter.data[position] as Moment).id)
+                                mAdapter.remove(position)
                             }.setNegativeButton("取消", null).create()
                     dialog.show()
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))

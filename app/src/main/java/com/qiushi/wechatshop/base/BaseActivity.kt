@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Notifycation
-import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.view.LoadingDialog
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -92,8 +91,5 @@ abstract class BaseActivity : SwipeBackActivity(), View.OnClickListener, Consume
     }
 
     override fun accept(t: Notifycation?) {
-
     }
-
-
 }
