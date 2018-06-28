@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Order
@@ -120,10 +121,10 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun goToExpress(order_id: Long) { //TODO 物流H5
+    private fun goToExpress(order_id: Long) {
         val intent = Intent(this, WebActivity::class.java)
         intent.putExtra(WebActivity.PARAM_TITLE, "物流信息")
-        intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
+        intent.putExtra(WebActivity.PARAM_URL, Constants.EXPRESS + order_id)
         startActivity(intent)
     }
 }

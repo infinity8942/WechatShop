@@ -77,14 +77,13 @@ class OrderFragment : BaseFragment() {
                     startActivity(intent)
                     (activity as OrderActivity).finish()
                 }
-                R.id.action -> {
+                R.id.action ->
                     when (order.status) {
-                        0 -> {
+                        0 ->
                             if ((activity as OrderActivity).isManage) {//提醒支付
                                 notifyToPay(order.id, position)
                             }
-                        }
-                        1 -> {
+                        1 ->
                             if ((activity as OrderActivity).isManage) {//标记发货
                                 val numbers = (mAdapter.getViewByPosition(position, R.id.numbers) as EditText).text.toString().trim()
                                 if (numbers.isEmpty()) {
@@ -95,54 +94,44 @@ class OrderFragment : BaseFragment() {
                             } else {//提醒发货
                                 notifyToDeliver(order.id, position)
                             }
-                        }
-                        2 -> {
-                            if ((activity as OrderActivity).isManage) {//标记收货
-                                markAsDone(order.id)
-                            } else {//确认收货
+                        2 ->
+                            if (!(activity as OrderActivity).isManage) {//确认收货
                                 markAsDone(order.id)
                             }
-                        }
-                        3 -> {
+                        3 ->
                             if (!(activity as OrderActivity).isManage) {//再次购买
 
                             }
-                        }
                     }
-                }
-                R.id.action1 -> {
+                R.id.action1 ->
                     when (order.status) {
-                        0 -> {
+                        0 ->
                             if ((activity as OrderActivity).isManage) {//修改价格
                                 showEditPriceDialog(order.id)
+                            } else {//取消订单
+                                cancelOrder(order.id)
                             }
-                        }
-                        2 -> {//查看物流
-                            goToExpress(order.id)
-                        }
-                        3 -> {
-                            if ((activity as OrderActivity).isManage) {//客户备注
-
+                        2 -> goToExpress(order.id)//查看物流
+                        3 ->
+                            if ((activity as OrderActivity).isManage) {//删除订单
+                                delOrder(order.id)
                             } else {//删除订单
                                 delOrder(order.id)
                             }
-                        }
+                        5 -> delOrder(order.id)//自建订单，删除订单
                     }
-                }
-                R.id.action2 -> {
+
+                R.id.action2 ->
                     when (order.status) {
-                        0 -> {
+                        0 ->
                             if ((activity as OrderActivity).isManage) {//删除订单
                                 delOrder(order.id)
                             }
-                        }
-                        3 -> {
-                            if ((activity as OrderActivity).isManage) {//删除订单
-                                delOrder(order.id)
+                        3 ->
+                            if (!(activity as OrderActivity).isManage) {//查看物流
+                                goToExpress(order.id)
                             }
-                        }
                     }
-                }
             }
         }
     }
@@ -281,7 +270,7 @@ class OrderFragment : BaseFragment() {
     }
 
     /**
-     * 标记完成
+     * 确认收货
      */
     private fun markAsDone(order_id: Long) {
         val dialog = AlertDialog.Builder(context!!)
@@ -377,6 +366,34 @@ class OrderFragment : BaseFragment() {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
     }
 
+    /**
+     * 取消订单
+     */
+    private fun cancelOrder(order_id: Long) {
+        val dialog = AlertDialog.Builder(context!!)
+                .setMessage("您确定要取消该订单吗？")
+                .setPositiveButton("确定") { _, _ ->
+                    val disposable = RetrofitManager.service.cancelOrder(order_id)
+                            .compose(SchedulerUtils.ioToMain())
+                            .subscribeWith(object : BaseObserver<Boolean>() {
+                                override fun onHandleSuccess(t: Boolean) {
+                                    if (t) {
+                                        ToastUtils.showMessage("已取消")
+                                        getOrders()
+                                    }
+                                }
+
+                                override fun onHandleError(error: Error) {
+                                    ToastUtils.showError(error.msg)
+                                }
+                            })
+                    addSubscription(disposable)
+                }.setNegativeButton("取消", null).create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
+    }
+
     private fun goToOrderDetails(id: Long) {
         val intent = Intent(activity, OrderDetailActivity::class.java)
         intent.putExtra("id", id)
@@ -386,7 +403,7 @@ class OrderFragment : BaseFragment() {
     private fun goToExpress(order_id: Long) {
         val intent = Intent(activity, WebActivity::class.java)
         intent.putExtra(WebActivity.PARAM_TITLE, "物流信息")
-        intent.putExtra(WebActivity.PARAM_URL, "http://www.top6000.com")
+        intent.putExtra(WebActivity.PARAM_URL, Constants.EXPRESS + order_id)
         startActivity(intent)
     }
 

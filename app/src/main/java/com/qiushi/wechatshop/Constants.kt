@@ -5,24 +5,6 @@ package com.qiushi.wechatshop
  */
 object Constants {
 
-    /**
-     * 手机号验证
-     */
-    const val REGEX_MOBILE = "^1(3|4|5|7|8)\\d{9}$"
-
-    //测试店铺ID
-    const val SHOP_ID: Long = 10091
-
-    //主页测试图片
-    const val GOOD0 = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1528702578&di=a30dcf155043b230465a96ef469c5d41&src=http://pic15.photophoto.cn/20100429/0035035090388467_b.jpg"
-    const val GOOD1 = "http://pic29.photophoto.cn/20131010/0035035066575835_b.jpg"
-    const val GOOD2 = "http://pic29.nipic.com/20130507/3822951_123501747000_2.jpg"
-    const val GOOD3 = "http://pic33.photophoto.cn/20141119/0035035080831168_b.jpg"
-    const val GOOD4 = "http://pic21.photophoto.cn/20111116/0035035024493346_b.jpg"
-    const val GOOD5 = "http://pic29.nipic.com/20130507/3822951_123515435000_2.jpg"
-    const val GOOD6 = "http://img5.duitang.com/uploads/item/201509/26/20150926093118_S2PQj.thumb.700_0.jpeg"
-    const val GOOD7 = "http://pic150.nipic.com/file/20171227/21540071_114434490000_2.jpg"
-
     const val IS_DEVELOPER = true //TODO 开发模式开关,发版时置为false
     const val DEBUG = true //是否测试环境
     @JvmField
@@ -32,13 +14,19 @@ object Constants {
     const val GOODS_DETAIL = "http://wechatshop.qiushizixun.com/H5/detail/id/"
     const val SHOPCART = "http://wechatshop.qiushizixun.com/H5/car"
     const val ADDRESS = "http://wechatshop.qiushizixun.com/H5/address"
+    const val EXPRESS = "http://wechatshop.qiushizixun.com/H5/address"//TODO 物流H5
+    const val PROTOCOL = "http://wechatshop.qiushizixun.com/H5/address"//TODO 协议H5
 
     //OSS
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"
     @JvmField
     val OssCallback = HOST + "Oss/app_response_call_back" //"http://192.168.1.82:81"
 
-    const val PAGE_NUM = 15 //每页请求数量
+    //每页请求数量
+    const val PAGE_NUM = 15
+
+    //手机号验证
+    const val REGEX_MOBILE = "^1(3|4|5|7|8)\\d{9}$"
 
     //Key
     const val ALI_OSS_APPKEY = "rCbpsTRroEUuf4hS"
@@ -63,8 +51,4 @@ object Constants {
 
     const val ADD_IMG_REFRESH = 1012// 添加产品 刷新回调
     const val OPEN_SHOP_OR_ZX = 1013//开店 或者 装修
-
-
-    const val TOKEN = "2813c9014ff9581978e3f616e09b1d79"
-    const val CILIENT = "9939e296d7e891ef87a2fa7f521b874a"
 }

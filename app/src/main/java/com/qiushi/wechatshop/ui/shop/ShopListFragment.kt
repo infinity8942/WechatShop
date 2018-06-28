@@ -53,7 +53,7 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
 
             override fun onPageSelected(position: Int) {
                 if (!shopList.isEmpty() && position < shopList.size)
-                    ImageHelper.loadImage(context, cover, shopList[position].cover)
+                    updateCover(shopList[position].cover)
             }
         })
         btn_edit.setOnClickListener(this)
@@ -95,7 +95,7 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
         tab.setViewPager(viewpager)
         if (shopList.isNotEmpty()) {
             if (null != shopList[0].cover)
-                ImageHelper.loadImage(context, cover, shopList[0].cover)
+                updateCover(shopList[0].cover)
             empty_view.visibility = View.GONE
         } else {
             empty_view.visibility = View.VISIBLE
@@ -131,6 +131,11 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
             return ShopListFragment()
         }
     }
+
+    /**
+     * 更新店铺背景图
+     */
+    fun updateCover(img: String) = ImageHelper.loadImage(context, cover, img)
 
     /**
      * 跳转置顶店铺页面

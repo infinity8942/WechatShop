@@ -30,7 +30,8 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                             .setGone(R.id.action2, true).setText(R.id.action2, "删除订单")
                 } else {
                     helper.setText(R.id.status, "等待付款").setText(R.id.action, "立即付款")
-                    helper.setGone(R.id.action1, false).setGone(R.id.action2, false)
+                    helper.setGone(R.id.action1, true).setText(R.id.action1, "取消订单")
+                            .setGone(R.id.action2, false)
                 }
                 helper.setGone(R.id.action, true).setGone(R.id.numbers, false)
             }
@@ -46,25 +47,34 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
             }
             2 -> {
                 if (isManage) {
-                    helper.setText(R.id.status, "等待买家收货").setText(R.id.action, "标记收货")
+                    helper.setText(R.id.status, "等待买家收货").setGone(R.id.action, false)
                 } else {
-                    helper.setText(R.id.status, "卖家已发货").setText(R.id.action, "确认收货")
+                    helper.setText(R.id.status, "卖家已发货")
+                            .setGone(R.id.action, true).setText(R.id.action, "确认收货")
                 }
-                helper.setGone(R.id.action, true)
-                        .setGone(R.id.action1, true).setText(R.id.action1, "查看物流")
+                helper.setGone(R.id.action1, true).setText(R.id.action1, "查看物流")
                         .setGone(R.id.action2, false).setGone(R.id.numbers, false)
             }
             3 -> {
                 if (isManage) {
-                    helper.setGone(R.id.action, false)
-                    helper.setGone(R.id.action1, true).setText(R.id.action1, "客户备注")
-                            .setGone(R.id.action2, true).setText(R.id.action2, "删除订单")
+                    helper.setGone(R.id.action, false).setGone(R.id.action2, false)
+                    helper.setText(R.id.action1, "删除订单")
                 } else {
                     helper.setGone(R.id.action, true).setText(R.id.action, "再次购买")
+                    helper.setText(R.id.action1, "删除订单")
+                    helper.setGone(R.id.action2, true).setText(R.id.action2, "查看物流")
+
+                }
+                helper.setText(R.id.status, "已完成").setGone(R.id.action1, true)
+                        .setGone(R.id.numbers, false)
+            }
+            5 -> {
+                if (isManage) {
+                    helper.setGone(R.id.action, false)
                     helper.setGone(R.id.action1, true).setText(R.id.action1, "删除订单")
                             .setGone(R.id.action2, false)
                 }
-                helper.setText(R.id.status, "已完成").setGone(R.id.numbers, false)
+                helper.setText(R.id.status, "").setGone(R.id.numbers, false)
             }
         }
         helper.setText(R.id.amount, "共计" + order.num + "件商品")
