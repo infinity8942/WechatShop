@@ -75,10 +75,7 @@ public class Push {
 
             @Override
             public void openUrl(Context context, final UMessage uMessage) {
-//                Intent starter = new Intent(context, WebActivity.class);
-//                starter.putExtra("url", uMessage.url);
-//                starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(starter);
+
 
                 if (uMessage.extra != null) {
 
@@ -87,30 +84,6 @@ public class Push {
         });
     }
 
-//    private static void setRead(Long nId) {
-//        Subscription subscribe = ApiService.Creator.get().setReadDy(String.valueOf(nId))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .flatMap(new FlatMapResponse<TopResponse<Void>>())
-//                .subscribe(new Subscriber<TopResponse<Void>>() {
-//                    @Override
-//                    public void onCompleted() {
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                    }
-//
-//                    @Override
-//                    public void onNext(TopResponse<Void> voidTopResponse) {
-//                        if (voidTopResponse.getCode() == 200) {
-//                            //通知刷新
-//                            RxBus.getDefault().post(new org.wb.frame.config.Notification(Constant.DYNAMIC, 999));
-//                        }
-//                    }
-//                });
-//        mCompositeSubscription.add(subscribe);
-//    }
 
     public static void enable() {
         PushAgent.getInstance(WAppContext.context).enable(new IUmengCallback() {
