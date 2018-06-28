@@ -61,6 +61,9 @@ object Constants {
 
     const val DESCORA_REQUEST = 1011//店铺装修request
 
+    const val ADD_IMG_REFRESH = 1012// 添加产品 刷新回调
+    const val OPEN_SHOP_OR_ZX = 1013//开店 或者 装修
+
 
     const val TOKEN = "2813c9014ff9581978e3f616e09b1d79"
     const val CILIENT = "9939e296d7e891ef87a2fa7f521b874a"

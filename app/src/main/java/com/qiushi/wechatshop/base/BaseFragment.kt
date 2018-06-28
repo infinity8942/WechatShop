@@ -115,6 +115,5 @@ abstract class BaseFragment : Fragment(), Consumer<Notifycation> {
 
     override fun accept(t: Notifycation?) {
 
-        Log.e("Tag","nihO")
     }
 }

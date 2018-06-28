@@ -407,7 +407,18 @@ class ManageFragment : BaseFragment() {
 
     override fun accept(t: Notifycation?) {
         super.accept(t)
-        Log.e("tag", "notifa~~~~~~~~~~~~~~~~~~")
+        when (t!!.code) {
+            Constants.ADD_IMG_REFRESH -> {
+                page = 1
+                lazyLoad()
+            }
+            Constants.OPEN_SHOP_OR_ZX -> {
+
+                page = 1
+                lazyLoad()
+                //开店或者装修回调
+            }
+        }
     }
 
 

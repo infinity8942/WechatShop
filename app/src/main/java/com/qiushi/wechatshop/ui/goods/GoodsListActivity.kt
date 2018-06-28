@@ -80,8 +80,12 @@ class GoodsListActivity : BaseActivity() {
                             mRefreshLayout.finishRefresh(true)
                         }
                         if (t.goods_list != null) {
-                            mRefreshLayout.setNoMoreData(t.goods_list!!.size < Constants.PAGE_NUM)
-                            page++
+                            if(t.goods_list!!.size<Constants.PAGE_NUM){
+                                mRefreshLayout.setNoMoreData(true)
+                            }else{
+                                mRefreshLayout.setNoMoreData(false)
+                                page++
+                            }
                         } else {
                             mRefreshLayout.setNoMoreData(true)
                         }

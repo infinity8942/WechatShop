@@ -5,11 +5,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
+import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
+import cn.qqtheme.framework.util.LogUtils
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
@@ -45,6 +48,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
     private var shop_id: Long = 0
     private var oss_id = ""
     private var bg_oss_id = ""
+    private var mHandler= Handler()
 
     override fun layoutId(): Int = R.layout.activity_decorate
 
@@ -108,14 +112,14 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                             //开店, 保存到本地
                             User.editCurrent { u -> u!!.shop_id = t.toLong() }
                             ToastUtils.showMessage("开店铺成功")
-                            RxBus.getInstance().post(Notifycation(1, 0L))
+                            RxBus.getInstance().post(Notifycation( Constants.OPEN_SHOP_OR_ZX, 0L))
                             finish()
                         } else {
-                            RxBus.getInstance().post(Notifycation(1, 0L))
                             ToastUtils.showMessage("装修店铺成功")
-                            val intent = Intent(this@DecorateActivity, MainActivity::class.java)
-                            intent.putExtra("refreshManage", true)
-                            startActivity(intent)
+                            RxBus.getInstance().post(Notifycation(Constants.OPEN_SHOP_OR_ZX, 0L))
+//                            val intent = Intent(this@DecorateActivity, MainActivity::class.java)
+//                            intent.putExtra("refreshManage", true)
+//                            startActivity(intent)
                             finish()
                         }
                     }
@@ -160,19 +164,24 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            dismissLoading()
-            when (isLogo) {
-                false -> {
-                    bg_oss_id = id.toString()
-                    ImageHelper.loadImageWithCorner(application, cover, ("file://" + file!!.path), 343, 178,
-                            RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+            mHandler.postDelayed(Runnable {
+                dismissLoading()
+                when (isLogo) {
+                    false -> {
+                        Log.e("tag", file!!.path+"~~is~~~")
+                        bg_oss_id = id.toString()
+                        ImageHelper.loadImageWithCorner(application, cover, ("file://" + file!!.path), 343, 178,
+                                RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+                    }
+                    true -> {
+                        Log.e("tag", file!!.path)
+                        oss_id = id.toString()
+                        ImageHelper.loadImageWithCorner(application, logo, ("file://" + file!!.path), 64, 64,
+                                RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+                    }
                 }
-                true -> {
-                    oss_id = id.toString()
-                    ImageHelper.loadImageWithCorner(application, logo, ("file://" + file!!.path), 64, 64,
-                            RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
-                }
-            }
+            },300)
+
         }
 
         override fun onFailure(file: File?, error: Error?) {

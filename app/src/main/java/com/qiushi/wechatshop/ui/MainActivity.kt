@@ -53,11 +53,11 @@ class MainActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         if (null != intent) {
-            if (intent.hasExtra("refreshManage")) {//刷新“我的店”数据
-                if (navigation.currentTab != 0)
-                    navigation.currentTab = 0
-                (mFragments[0] as ManageFragment).lazyLoad()
-            }
+//            if (intent.hasExtra("refreshManage")) {//刷新“我的店”数据
+//                if (navigation.currentTab != 0)
+//                    navigation.currentTab = 0
+//                (mFragments[0] as ManageFragment).lazyLoad()
+//            }
 
             if (intent.hasExtra("jumpToShop")) {//跳转“串门”店铺页
                 if (navigation.currentTab != 1)

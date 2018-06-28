@@ -133,7 +133,7 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("User/third_login")
-    fun loginWX(@Field("third_token") third_token: String, @Field("openid") openid: String,@Field("mobile")mobile:String): Observable<BaseResponse<User>>
+    fun loginWX(@Field("third_token") third_token: String, @Field("openid") openid: String, @Field("mobile") mobile: String): Observable<BaseResponse<User>>
 
     /**
      * 绑定手机号
@@ -220,7 +220,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("Goods/shop_goods")
-    fun getMnagerGoods(@Field("shop_id") shop_id: Long, @Field("status") status: Int, @Field("keyword") keyword: String): Observable<BaseResponse<List<Goods>>>
+    fun getMnagerGoods(@Field("shop_id") shop_id: Long, @Field("status") status: Int, @Field("keyword") keyword: String, @Field("page") page: Int): Observable<BaseResponse<List<Goods>>>
 
     @FormUrlEncoded
     @POST("Oss/get_token")

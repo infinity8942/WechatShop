@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.ui.manage
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -8,13 +9,16 @@ import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
 import com.google.gson.Gson
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.AddGoods
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.util.RxBus
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_add_goods_next.*
@@ -66,7 +70,10 @@ class AddGoodsNextActivity : BaseActivity() {
 
 
     companion object {
-        fun startAddGoodsNextActivity(context: Context, addGoods: AddGoods) {
+        private lateinit var mContext: Activity
+
+        fun startAddGoodsNextActivity(context: Activity, addGoods: AddGoods) {
+            this.mContext = context
             val intent = Intent()
             //获取intent对象
             intent.putExtra("addGoods", addGoods)
@@ -127,10 +134,15 @@ class AddGoodsNextActivity : BaseActivity() {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        if (t)
+                        if (t) {
                             ToastUtils.showSuccess("上传成功")
-                        else
+                            RxBus.getInstance().post(Notifycation(Constants.ADD_IMG_REFRESH, 0L))
+                            mContext.finish()
+                            finish()
+                        } else {
                             ToastUtils.showError("上传失败")
+                        }
+
                     }
 
                     override fun onHandleError(error: Error) {

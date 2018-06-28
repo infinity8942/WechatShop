@@ -40,9 +40,9 @@ class AddGoodsActivity : BaseActivity() {
     var goods_id: Long = 0
     var isBg: Boolean = false
     var addGoods = AddGoods()
-    var mHandler = Handler()
     var addContentList = ArrayList<Content>()
     var contentList = ArrayList<Content>()
+    private var mHandler = Handler()
     /**
      * 整体recyclerview adapter
      */
@@ -102,12 +102,14 @@ class AddGoodsActivity : BaseActivity() {
                         override fun onHandleSuccess(t: AddGoods) {
                             addGoods = t
                             addGoods.content = t.content
-
                             isVisible()
+                            setData(addGoods)
+//                            if (addGoods!=null&&(addGoods.content==null|| addGoods.content!!.size<=0)){
+//                                contentList.addAll(addGoods.content!!)
+//                            }
                             if (addGoods != null && addGoods.content != null && addGoods.content!!.size > 0) {
                                 contentList.addAll(addGoods.content!!)
                                 //展示数据
-                                setData(addGoods)
                                 mAdapter.setNewData(contentList)
                             }
                         }
@@ -219,9 +221,17 @@ class AddGoodsActivity : BaseActivity() {
             ToastUtils.showError("库存数量为设置")
             return
         }
-        if (addGoods.content == null || addGoods.content!!.size <= 0) {
-            ToastUtils.showError("产品详情未设置")
-            return
+        if(goods_id!=null&&goods_id!=0.toLong()){
+            if (contentList == null || contentList.size <= 0) {
+                ToastUtils.showError("产品详情未设置")
+                return
+            }
+        }else{
+            if (addGoods.content == null || addGoods.content!!.size <= 0) {
+                ToastUtils.showError("产品详情未设置")
+                return
+            }
+
         }
 
         if (goods_id != 0.toLong() && addContentList != null && addContentList.size > 0) {
@@ -286,6 +296,7 @@ class AddGoodsActivity : BaseActivity() {
                         //去上传
                         val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
+                        showLoading("正在上传,请等待....")
                     }
                 }
             }
@@ -297,6 +308,7 @@ class AddGoodsActivity : BaseActivity() {
                         //去上传
                         val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
+                        showLoading("正在上传,请等待....")
                     }
                 }
             }
@@ -309,7 +321,7 @@ class AddGoodsActivity : BaseActivity() {
                         contentList.add(content)
                         addContentList.add(content)
 //                    addGoods.content = contentList
-                        isVisible()
+                        isVisibleEdit()
                         mAdapter.setNewData(contentList)
                     } else {
                         val content = Content()
@@ -329,6 +341,7 @@ class AddGoodsActivity : BaseActivity() {
                     if (selected != null && selected.size > 0) {
                         val mFile = File(selected[0])
                         UploadManager.getInstance().add(mFile)
+                        showLoading("正在上传,请等待....")
                     }
                 }
             }
@@ -340,13 +353,15 @@ class AddGoodsActivity : BaseActivity() {
      */
     private val uploadListener = object : OnUploadListener {
         override fun onFailure(file: File?, error: com.qiushi.wechatshop.util.oss.Error?) {
+            dismissLoading()
         }
 
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            mHandler.postDelayed({
+            mHandler.postDelayed(Runnable {
+                dismissLoading()
                 if (isBg) {
                     addGoods.cover = id.toString()
                     //如果是背景 ,显示背景
@@ -362,7 +377,7 @@ class AddGoodsActivity : BaseActivity() {
                         addContentList.add(content)
 //                        addGoods.content = contentList
                         if (file != null && file.path != null) {
-                            isVisible()
+                            isVisibleEdit()
                             mAdapter.setNewData(contentList)
                         }
                     } else {
@@ -377,7 +392,8 @@ class AddGoodsActivity : BaseActivity() {
                         }
                     }
                 }
-            }, 500)
+            }, 300)
+
         }
     }
 

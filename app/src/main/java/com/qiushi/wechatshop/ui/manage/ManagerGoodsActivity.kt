@@ -17,6 +17,7 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Goods
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -114,7 +115,7 @@ class ManagerGoodsActivity : BaseActivity() {
     override fun getData() {
 
         val subscribeWith: BaseObserver<List<Goods>> = RetrofitManager.service
-                .getMnagerGoods(User.getCurrent().shop_id, state, keyword)
+                .getMnagerGoods(User.getCurrent().shop_id, state, keyword,page)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<List<Goods>>() {
                     override fun onHandleSuccess(t: List<Goods>) {
@@ -129,8 +130,13 @@ class ManagerGoodsActivity : BaseActivity() {
                             mAdapter.emptyView = notDataView
                         }
                         if (t != null) {
-                            mRefreshLayout.setNoMoreData(t.size < Constants.PAGE_NUM)
-                            page++
+
+                            if (t.size<Constants.PAGE_NUM){
+                                mRefreshLayout.setNoMoreData(true)
+                            }else{
+                                mRefreshLayout.setNoMoreData(false)
+                                page++
+                            }
                         } else {
                             mRefreshLayout.setNoMoreData(true)
                         }
@@ -498,6 +504,16 @@ class ManagerGoodsActivity : BaseActivity() {
 
                 tvJf!!.setTextColor(resources.getColor(R.color.gray3))
                 ivJf!!.visibility = View.GONE
+            }
+        }
+    }
+
+    override fun accept(t: Notifycation?) {
+        super.accept(t)
+        when (t!!.code) {
+            Constants.ADD_IMG_REFRESH -> {
+                page = 1
+                getData()
             }
         }
     }
