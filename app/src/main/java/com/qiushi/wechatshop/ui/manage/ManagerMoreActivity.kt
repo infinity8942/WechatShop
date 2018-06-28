@@ -151,7 +151,7 @@ class ManagerMoreActivity : BaseActivity() {
      * 增加或者移除的请求
      */
 
-    fun menuMore(shopId: Long, menu_id: String, is_del: String) {
+    private fun menuMore(shopId: Long, menu_id: String, is_del: String) {
         val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.menuMore(shopId, menu_id, is_del)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {

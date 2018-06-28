@@ -130,6 +130,37 @@ class CreateMomentsActivity : BaseActivity() {
                         }
                     }
                 }
+                if (id != 0.toLong()) {
+                    if (moment.images != null && moment.images!!.size > 0) {
+                        for (item in moment.images!!) {
+                            when (item.type) {
+                                "1" -> {
+                                    ToastUtils.showError("还有图片正在上传，请稍候")
+                                    return
+                                }
+                                "2" -> {
+                                    ToastUtils.showError("还有图片上传失败，是否重新上传")
+                                    return
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    for (item in mNineList) {
+                        when (item.type) {
+                            "1" -> {
+                                ToastUtils.showError("还有图片正在上传，请稍候")
+                                return
+                            }
+                            "2" -> {
+                                ToastUtils.showError("还有图片上传失败，是否重新上传")
+                                return
+                            }
+                        }
+                    }
+
+                }
+
                 mJson = if (id != 0.toLong()) {
                     if (moment.images!!.contains(mNineImage)) {
                         moment.images!!.remove(mNineImage)
@@ -240,7 +271,8 @@ class CreateMomentsActivity : BaseActivity() {
                 mGrideAdapter.setNewData(mNineList)
             } else {
                 size = moment.images!!.size
-                mNineList = moment.images!!
+                mNineList.addAll(moment.images!!)
+//                mNineList = moment.images!!
                 for (item in moment.images!!) {
                     item.size = 1
                 }
@@ -342,7 +374,7 @@ class CreateMomentsActivity : BaseActivity() {
                                 mGrideAdapter.setNewData(moment.images)
                             }
                         }
-
+                        showLoading("正在上传中...请稍候")
                         UploadManager.getInstance().add(mFileList)
                     }
                 }
@@ -350,18 +382,33 @@ class CreateMomentsActivity : BaseActivity() {
         }
     }
 
+    /**
+     * type  0 上传成功， 1，上传中，2 上传失败
+     */
     private val uploadListener = object : OnUploadListener {
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
+            val nineImage = findPictureByFile(file!!)
+            if (nineImage != null) {
+                nineImage.type = "1"
+            }
         }
 
         override fun onSuccess(file: File?, id: Long) {
             val nineImage = findPictureByFile(file!!)
+            dismissLoading()
             if (nineImage != null) {
                 nineImage.oss_id = id
+                nineImage.type = "0"
             }
         }
 
         override fun onFailure(file: File?, error: Error?) {
+            val nineImage = findPictureByFile(file!!)
+            dismissLoading()
+            if (nineImage != null) {
+                nineImage.oss_id = id
+                nineImage.type = "2"
+            }
         }
     }
 
