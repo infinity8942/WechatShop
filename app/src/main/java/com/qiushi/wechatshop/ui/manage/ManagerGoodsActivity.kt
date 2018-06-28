@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
@@ -104,6 +105,7 @@ class ManagerGoodsActivity : BaseActivity() {
         mRefreshLayout.setOnLoadMoreListener { getData() }
         setBottomSheet()
         tv_add.setOnClickListener({ _: View? ->
+            setVisible(mItemPosition)
             AddGoodsActivity.startAddGoodsActivity(this, 0)
         })
 
@@ -113,9 +115,9 @@ class ManagerGoodsActivity : BaseActivity() {
     }
 
     override fun getData() {
-
+        setVisible(mItemPosition)
         val subscribeWith: BaseObserver<List<Goods>> = RetrofitManager.service
-                .getMnagerGoods(User.getCurrent().shop_id, state, keyword,page)
+                .getMnagerGoods(User.getCurrent().shop_id, state, keyword, page)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<List<Goods>>() {
                     override fun onHandleSuccess(t: List<Goods>) {
@@ -131,9 +133,9 @@ class ManagerGoodsActivity : BaseActivity() {
                         }
                         if (t != null) {
 
-                            if (t.size<Constants.PAGE_NUM){
+                            if (t.size < Constants.PAGE_NUM) {
                                 mRefreshLayout.setNoMoreData(true)
-                            }else{
+                            } else {
                                 mRefreshLayout.setNoMoreData(false)
                                 page++
                             }
@@ -227,23 +229,31 @@ class ManagerGoodsActivity : BaseActivity() {
             R.id.tv_delete -> {
                 type = TYPE_DELETE
                 setTop(mData.id, type)
-                adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
+                setVisible(position)
             }
             R.id.tv_xj -> {
                 type = TYPE_XJ
                 setTop(mData.id, type)
-                adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
+                setVisible(position)
             }
             R.id.tv_zd -> {
                 type = TYPE_ZD
                 setTop(mData.id, type)
-                adapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
+                setVisible(position)
             }
             R.id.iv_edit -> {
+                setVisible(position)
                 AddGoodsActivity.startAddGoodsActivity(this, mData.id)
             }
 
 
+        }
+    }
+
+    private fun setVisible(position: Int) {
+
+        if (mItemPosition != -1 && mAdapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape) != null) {
+            mAdapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
         }
     }
 
