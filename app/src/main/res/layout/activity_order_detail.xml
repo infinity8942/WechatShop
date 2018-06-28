@@ -75,6 +75,23 @@
             android:textColor="@color/gray1"
             android:textSize="13sp"
             android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/numbers"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8.5dp"
+            android:layout_toLeftOf="@id/action2"
+            android:background="@drawable/bg_order_filter_input"
+            android:gravity="center"
+            android:hint="请填写物流单号"
+            android:inputType="number"
+            android:textColor="@color/color_item_text"
+            android:textColorHint="@color/color_more"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="14sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <ScrollView

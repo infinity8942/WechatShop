@@ -9,9 +9,11 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.GlideApp
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
+import com.qiushi.wechatshop.util.web.WebActivity
 
 /**
  * Created by Rylynn on 2018-06-08.
@@ -98,14 +100,21 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
         recyclerView.adapter = mAdapterGoods
         mAdapterGoods.setNewData(order.goods)
 
-        mAdapterGoods.setOnItemClickListener { _, _, _ ->
-            val intent = Intent(mContext, OrderDetailActivity::class.java)
-            intent.putExtra("id", order.id)
-            intent.putExtra("isManage", isManage)
-            mContext.startActivity(intent)
+        mAdapterGoods.setOnItemClickListener { _, _, position ->
+            goToGoodsDetails(order.goods[position])
         }
 
         helper.addOnClickListener(R.id.layout_shop).addOnClickListener(R.id.action)
                 .addOnClickListener(R.id.action1).addOnClickListener(R.id.action2)
+    }
+
+    /**
+     * 跳转商品详情页
+     */
+    private fun goToGoodsDetails(goods: Goods) {
+        val intent = Intent(mContext, WebActivity::class.java)
+        intent.putExtra(WebActivity.PARAM_TITLE, goods.name)
+        intent.putExtra(WebActivity.PARAM_URL, Constants.GOODS_DETAIL + goods.id)
+        mContext.startActivity(intent)
     }
 }

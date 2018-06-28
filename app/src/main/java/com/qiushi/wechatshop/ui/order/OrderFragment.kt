@@ -393,6 +393,9 @@ class OrderFragment : BaseFragment() {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
     }
 
+    /**
+     * 跳转订单详情页
+     */
     private fun goToOrderDetails(id: Long) {
         val intent = Intent(activity, OrderDetailActivity::class.java)
         intent.putExtra("id", id)
@@ -400,6 +403,9 @@ class OrderFragment : BaseFragment() {
         startActivity(intent)
     }
 
+    /**
+     * 跳转物流H5页
+     */
     private fun goToExpress(order_id: Long) {
         val intent = Intent(activity, WebActivity::class.java)
         intent.putExtra(WebActivity.PARAM_TITLE, "物流信息")

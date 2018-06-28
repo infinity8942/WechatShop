@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -32,6 +31,7 @@ import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.web.WebActivity
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.manager_item_icon.view.*
@@ -396,6 +396,16 @@ class ManageFragment : BaseFragment() {
                     }
                 })
         addSubscription(disposable)
+    }
+
+    /**
+     * 跳转商品详情页
+     */
+    private fun goToGoodsDetails(goods: Goods) {
+        val intent = Intent(activity, WebActivity::class.java)
+        intent.putExtra(WebActivity.PARAM_TITLE, goods.name)
+        intent.putExtra(WebActivity.PARAM_URL, Constants.GOODS_DETAIL + goods.id)
+        startActivity(intent)
     }
 
     fun goToOrderActivity(type: Int) {

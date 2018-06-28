@@ -17,6 +17,7 @@ import com.qiushi.wechatshop.GlideApp
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -56,7 +57,13 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         back.setOnClickListener(this)
         copy.setOnClickListener(this)
         phone.setOnClickListener(this)
+        action.setOnClickListener(this)
+        action1.setOnClickListener(this)
+        action2.setOnClickListener(this)
         layout_express.setOnClickListener(this)
+        mAdapter.setOnItemClickListener { adapter, _, position ->
+            goToGoodsDetails(adapter.data[position] as Goods)
+        }
     }
 
     override fun getData() {
@@ -141,6 +148,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 if (isManage) {
                     status.text = "买家已付款"
                     action.text = "确认发货"
+                    numbers.visibility = View.VISIBLE
                 } else {
                     status.text = "等待卖家发货"
                     action.text = "提醒发货"
@@ -391,6 +399,19 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
     }
 
+    /**
+     * 跳转商品详情页
+     */
+    private fun goToGoodsDetails(goods: Goods) {
+        val intent = Intent(this, WebActivity::class.java)
+        intent.putExtra(WebActivity.PARAM_TITLE, goods.name)
+        intent.putExtra(WebActivity.PARAM_URL, Constants.GOODS_DETAIL + goods.id)
+        startActivity(intent)
+    }
+
+    /**
+     * 跳转物流H5页
+     */
     private fun goToExpress(order_id: Long) {
         val intent = Intent(this, WebActivity::class.java)
         intent.putExtra(WebActivity.PARAM_TITLE, "物流信息")
