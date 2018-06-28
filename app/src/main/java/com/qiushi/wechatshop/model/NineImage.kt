@@ -11,7 +11,7 @@ import com.previewlibrary.enitity.IThumbViewInfo
  *
  * 素材宫格图片
  */
-data class NineImage(var img_url: String, var oss_url: String, var mBounds: Rect?, var oss_id: Long, var size: Int, var is_del: Int) : IThumbViewInfo, Parcelable, MultiItemEntity {
+data class NineImage(var img_url: String, var oss_url: String, var mBounds: Rect?, var oss_id: Long, var size: Int, var is_del: Int, var type: String) : IThumbViewInfo, Parcelable, MultiItemEntity {
 
     override fun getItemType(): Int {
         return if (size == 0) {
@@ -21,11 +21,17 @@ data class NineImage(var img_url: String, var oss_url: String, var mBounds: Rect
         }
     }
 
-    override fun getUrl(): String = oss_url
+    override fun getUrl(): String {
+        return if (oss_url != null && oss_url.isNotEmpty()) {
+            oss_url
+        } else {
+            img_url
+        }
+    }
 
     override fun getBounds(): Rect? = mBounds
 
-    constructor() : this("", "", null, 0, 0, 0)
+    constructor() : this("", "", null, 0, 0, 0, "0")
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),
@@ -33,7 +39,8 @@ data class NineImage(var img_url: String, var oss_url: String, var mBounds: Rect
             parcel.readParcelable(Rect::class.java.classLoader),
             parcel.readLong(),
             parcel.readInt(),
-            parcel.readInt()
+            parcel.readInt(),
+            parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -43,6 +50,7 @@ data class NineImage(var img_url: String, var oss_url: String, var mBounds: Rect
         parcel.writeLong(oss_id)
         parcel.writeInt(size)
         parcel.writeInt(is_del)
+        parcel.writeString(type)
     }
 
     override fun describeContents(): Int = 0
