@@ -16,6 +16,7 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.ToastUtils
@@ -129,7 +130,7 @@ class ShopFragment : BaseFragment() {
     }
 
     private fun setHeaderData(shop: Shop) {
-        (activity as ShopListFragment).updateCover(shop.cover)
+        (activity as MainActivity).updateCover(shop.cover)
         ImageHelper.loadAvatar(context, headerView.findViewById(R.id.logo), shop.logo, 48)
         headerView.findViewById<TextView>(R.id.name).text = shop.name
         headerView.findViewById<TextView>(R.id.name).paint.isFakeBoldText = true

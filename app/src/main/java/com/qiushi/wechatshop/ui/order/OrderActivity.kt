@@ -199,9 +199,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.back -> finish()
             R.id.btn_search -> search_view.openSearch()
-            R.id.filter -> {//筛选弹框
-                showBottomFilterDialog()
-            }
+            R.id.filter -> showBottomFilterDialog()//筛选弹框
             R.id.add -> startActivityForResult(Intent(this, AddOrderActivity::class.java), 1000)
 
         //筛选

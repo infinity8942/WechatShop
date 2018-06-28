@@ -33,7 +33,7 @@ class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_mo
         val nineGrid = helper.getView<NineGridImageView<NineImage>>(R.id.nine_grid)
         nineGrid.setAdapter(object : NineGridImageViewAdapter<NineImage>() {
             override fun onDisplayImage(context: Context, imageView: ImageView, t: NineImage) {
-                ImageHelper.loadImage(context, imageView, t.img_url)
+                ImageHelper.loadImage(context, imageView, t.url)
             }
         })
         nineGrid.setImagesData(moment.images)
@@ -62,7 +62,7 @@ class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_mo
                 thumbView.getGlobalVisibleRect(bounds)
             }
             list[i].mBounds = bounds
-            list[i].img_url = list[i].url
+            list[i].oss_url = list[i].url
         }
     }
 }

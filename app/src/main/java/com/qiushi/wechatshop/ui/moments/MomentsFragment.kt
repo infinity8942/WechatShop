@@ -65,8 +65,7 @@ class MomentsFragment : BaseFragment() {
                     val dialog = AlertDialog.Builder(activity!!)
                             .setMessage("您确定要删除该素材吗？")
                             .setPositiveButton("删除") { _, _ ->
-                                delMoment((adapter.data[position] as Moment).id)
-                                mAdapter.remove(position)
+                                delMoment(position)
                             }.setNegativeButton("取消", null).create()
                     dialog.show()
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
@@ -126,13 +125,14 @@ class MomentsFragment : BaseFragment() {
         addSubscription(disposable)
     }
 
-    private fun delMoment(id: Long) {
-        val disposable = RetrofitManager.service.delMoments(id)
+    private fun delMoment(position: Int) {
+        val disposable = RetrofitManager.service.delMoments((mAdapter.data[position] as Moment).id)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
                             ToastUtils.showMessage("删除成功")
+                            mAdapter.remove(position)
                         }
                     }
 

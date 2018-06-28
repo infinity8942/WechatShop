@@ -115,14 +115,13 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            1000 -> {//编辑店铺返回
+            1000 -> //编辑店铺返回
                 if (null != data) {
                     shopList = data.getSerializableExtra("shops") as ArrayList<Shop>
                     tabList.clear()
                     fragments.clear()
                     setDatas()
                 }
-            }
         }
     }
 
@@ -135,7 +134,9 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
     /**
      * 更新店铺背景图
      */
-    fun updateCover(img: String) = ImageHelper.loadImage(context, cover, img)
+    fun updateCover(img: String) {
+        ImageHelper.loadImage(context, cover, img)
+    }
 
     /**
      * 跳转置顶店铺页面

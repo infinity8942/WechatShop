@@ -36,6 +36,14 @@ object Constants {
     const val UMENG_SECRET = "17c7e39d636a0b8fba2fbeef778aee02"
     const val WX_ID = "wx5e51e01dcf0bf531"
 
+    //Order Status
+    const val READY_TO_PAY = 0
+    const val PAYED = 1
+    const val DELIVERED = 2
+    const val DONE = 3
+    const val CANCEL = 4
+    const val CUSTOM = 5
+
     //Code
     const val ADDIMG_RESUALT = 1003 //foot添加产品相册回调
     const val ADDIMG_ITEM_REQUEST = 1004 //ITEM添加产品相册回调

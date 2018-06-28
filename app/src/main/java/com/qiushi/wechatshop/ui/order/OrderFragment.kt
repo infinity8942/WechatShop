@@ -79,11 +79,11 @@ class OrderFragment : BaseFragment() {
                 }
                 R.id.action ->
                     when (order.status) {
-                        0 ->
+                        Constants.READY_TO_PAY ->
                             if ((activity as OrderActivity).isManage) {//提醒支付
                                 notifyToPay(order.id, position)
                             }
-                        1 ->
+                        Constants.PAYED ->
                             if ((activity as OrderActivity).isManage) {//标记发货
                                 val numbers = (mAdapter.getViewByPosition(position, R.id.numbers) as EditText).text.toString().trim()
                                 if (numbers.isEmpty()) {
@@ -94,40 +94,39 @@ class OrderFragment : BaseFragment() {
                             } else {//提醒发货
                                 notifyToDeliver(order.id, position)
                             }
-                        2 ->
+                        Constants.DELIVERED ->
                             if (!(activity as OrderActivity).isManage) {//确认收货
                                 markAsDone(order.id)
                             }
-                        3 ->
+                        Constants.DONE ->
                             if (!(activity as OrderActivity).isManage) {//再次购买
 
                             }
                     }
                 R.id.action1 ->
                     when (order.status) {
-                        0 ->
+                        Constants.READY_TO_PAY ->
                             if ((activity as OrderActivity).isManage) {//修改价格
                                 showEditPriceDialog(order.id)
                             } else {//取消订单
                                 cancelOrder(order.id)
                             }
-                        2 -> goToExpress(order.id)//查看物流
-                        3 ->
+                        Constants.DELIVERED -> goToExpress(order.id)//查看物流
+                        Constants.DONE ->
                             if ((activity as OrderActivity).isManage) {//删除订单
                                 delOrder(order.id)
                             } else {//删除订单
                                 delOrder(order.id)
                             }
-                        5 -> delOrder(order.id)//自建订单，删除订单
+                        Constants.CUSTOM -> delOrder(order.id)//自建订单，删除订单
                     }
-
                 R.id.action2 ->
                     when (order.status) {
-                        0 ->
+                        Constants.READY_TO_PAY ->
                             if ((activity as OrderActivity).isManage) {//删除订单
                                 delOrder(order.id)
                             }
-                        3 ->
+                        Constants.DONE ->
                             if (!(activity as OrderActivity).isManage) {//查看物流
                                 goToExpress(order.id)
                             }
