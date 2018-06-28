@@ -75,7 +75,6 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                     helper.setGone(R.id.action, true).setText(R.id.action, "再次购买")
                     helper.setText(R.id.action1, "删除订单")
                     helper.setGone(R.id.action2, true).setText(R.id.action2, "查看物流")
-
                 }
                 helper.setText(R.id.status, "已完成").setGone(R.id.action1, true)
                         .setGone(R.id.numbers, false)
@@ -102,6 +101,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
         mAdapterGoods.setOnItemClickListener { _, _, _ ->
             val intent = Intent(mContext, OrderDetailActivity::class.java)
             intent.putExtra("id", order.id)
+            intent.putExtra("isManage", isManage)
             mContext.startActivity(intent)
         }
 

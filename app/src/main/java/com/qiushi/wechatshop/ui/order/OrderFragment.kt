@@ -396,6 +396,7 @@ class OrderFragment : BaseFragment() {
     private fun goToOrderDetails(id: Long) {
         val intent = Intent(activity, OrderDetailActivity::class.java)
         intent.putExtra("id", id)
+        intent.putExtra("isManage", (activity as OrderActivity).isManage)
         startActivity(intent)
     }
 
