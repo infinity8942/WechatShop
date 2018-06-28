@@ -170,7 +170,7 @@ public class DateUtil {
     //
     public static String getMillon(long time) {
         if (time != 0)
-            return new SimpleDateFormat(FORMAT_YMDHMS).format(time);
+            return new SimpleDateFormat(FORMAT_YMDHMS).format(time * 1000);
         else
             return "暂无";
     }

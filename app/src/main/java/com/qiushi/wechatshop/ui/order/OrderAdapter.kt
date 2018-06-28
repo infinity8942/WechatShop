@@ -3,11 +3,14 @@ package com.qiushi.wechatshop.ui.order
 import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.Constants
+import com.qiushi.wechatshop.GlideApp
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Order
+import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 
 /**
@@ -18,11 +21,19 @@ import com.qiushi.wechatshop.util.ImageHelper
  * isManage 是否为卖家的订单管理
  */
 class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, BaseViewHolder>(R.layout.item_order, null) {
-
     override fun convert(helper: BaseViewHolder, order: Order) {
 
-        ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), order.shop.logo, 24)
+        if (order.type == 1) {
+            GlideApp.with(mContext).load(R.mipmap.ic_custom)
+                    .override(DensityUtils.dp2px(24.toFloat()), DensityUtils.dp2px(24.toFloat()))
+                    .transform(CircleCrop())
+                    .into(helper.getView(R.id.logo))
+        } else {
+            ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), order.shop.logo, 24)
+        }
+
         helper.setText(R.id.name, order.shop.name)
+
         when (order.status) {
             Constants.READY_TO_PAY -> {
                 if (isManage) {
@@ -78,6 +89,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                 helper.setText(R.id.status, "").setGone(R.id.numbers, false)
             }
         }
+
         helper.setText(R.id.amount, "共计" + order.num + "件商品")
         helper.setText(R.id.price, "￥" + order.price)
 

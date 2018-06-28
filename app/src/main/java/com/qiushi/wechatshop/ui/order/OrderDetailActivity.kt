@@ -56,8 +56,12 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     override fun onHandleSuccess(t: Order) {
 
                         if (t.type == 1) {//自建订单
+                            layout_status.visibility = View.GONE
+                            layout_express.visibility = View.GONE
                             layout_user.visibility = View.GONE
                             line_user.visibility = View.GONE
+                            layout_message.visibility = View.GONE
+                            layout_phone.visibility = View.GONE
                         } else {
                             if (null != t.user) {
                                 name.text = t.user.receiver + "  " + t.user.mobile

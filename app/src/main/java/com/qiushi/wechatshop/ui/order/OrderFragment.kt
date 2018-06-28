@@ -120,7 +120,6 @@ class OrderFragment : BaseFragment() {
                             }
                         Constants.CUSTOM -> delOrder(order.id)//自建订单，删除订单
                     }
-
                 R.id.action2 ->
                     when (order.status) {
                         Constants.READY_TO_PAY ->
