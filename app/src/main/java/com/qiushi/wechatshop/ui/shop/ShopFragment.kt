@@ -73,10 +73,7 @@ class ShopFragment : BaseFragment() {
             }
         }
         mAdapter.setOnItemClickListener { adapter, _, position ->
-            val intent = Intent(activity, WebActivity::class.java)
-            intent.putExtra(WebActivity.PARAM_TITLE, (adapter.data[position] as Goods).name)
-            intent.putExtra(WebActivity.PARAM_URL, Constants.GOODS_DETAIL + (adapter.data[position] as Goods).id)
-            startActivity(intent)
+            goToGoodsDetails(adapter.data[position] as Goods)
         }
     }
 
@@ -164,6 +161,16 @@ class ShopFragment : BaseFragment() {
                     }
                 })
         addSubscription(disposable)
+    }
+
+    /**
+     * 跳转商品详情页
+     */
+    private fun goToGoodsDetails(goods: Goods) {
+        val intent = Intent(activity, WebActivity::class.java)
+        intent.putExtra(WebActivity.PARAM_TITLE, goods.name)
+        intent.putExtra(WebActivity.PARAM_URL, Constants.GOODS_DETAIL + goods.id)
+        startActivity(intent)
     }
 
     companion object {

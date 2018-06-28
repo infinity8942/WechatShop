@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".ui.order.OrderDetailActivity">
 
     <RelativeLayout
@@ -35,20 +36,62 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
+        android:gravity="right"
         android:paddingRight="16dp">
 
         <TextView
-            android:id="@+id/btn_finish"
+            android:id="@+id/action"
             android:layout_width="74dp"
             android:layout_height="26dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
             android:background="@drawable/bg_order_notify"
             android:gravity="center"
             android:text="确认收货"
             android:textColor="@color/coupon_yellow"
             android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/action1"
+            android:layout_width="74dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="8.5dp"
+            android:layout_toLeftOf="@id/action"
+            android:background="@drawable/bg_order_copy"
+            android:gravity="center"
+            android:textColor="@color/gray1"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/action2"
+            android:layout_width="74dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="8.5dp"
+            android:layout_toLeftOf="@id/action1"
+            android:background="@drawable/bg_order_copy"
+            android:gravity="center"
+            android:textColor="@color/gray1"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/numbers"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8.5dp"
+            android:layout_toLeftOf="@id/action2"
+            android:background="@drawable/bg_order_filter_input"
+            android:gravity="center"
+            android:hint="请填写物流单号"
+            android:inputType="number"
+            android:textColor="@color/color_item_text"
+            android:textColorHint="@color/color_more"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="14sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <ScrollView
@@ -412,24 +455,24 @@
                     android:textSize="13sp" />
             </RelativeLayout>
 
-            <View
+            <LinearLayout
+                android:id="@+id/layout_time1"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@color/line" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:paddingLeft="38dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
                 android:paddingRight="16dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line" />
 
                 <TextView
                     android:id="@+id/pay_time"
                     android:layout_width="match_parent"
                     android:layout_height="27dp"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="16dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:textColor="@color/color_item_text"
@@ -439,33 +482,32 @@
                     android:id="@+id/payment"
                     android:layout_width="match_parent"
                     android:layout_height="27dp"
-                    android:layout_below="@id/pay_time"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="16dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:text="支付方式：暂无"
                     android:textColor="@color/color_item_text"
                     android:textSize="13sp" />
-            </RelativeLayout>
+            </LinearLayout>
 
-            <View
+            <LinearLayout
+                android:id="@+id/layout_time2"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@color/line" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:paddingLeft="38dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
                 android:paddingRight="16dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line" />
 
                 <TextView
                     android:id="@+id/deliver_time"
                     android:layout_width="match_parent"
                     android:layout_height="27dp"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="16dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:textColor="@color/color_item_text"
@@ -475,13 +517,17 @@
                     android:id="@+id/achieve_time"
                     android:layout_width="match_parent"
                     android:layout_height="27dp"
-                    android:layout_below="@id/deliver_time"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="16dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:textColor="@color/color_item_text"
                     android:textSize="13sp" />
-            </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/divider" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

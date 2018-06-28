@@ -21,6 +21,7 @@ import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.search.MaterialSearchView
 import com.qiushi.wechatshop.view.tab.listener.OnTabSelectListener
 import kotlinx.android.synthetic.main.activity_order.*
+import java.util.*
 
 /**
  * Created by Rylynn on 2018-06-12.
@@ -307,7 +308,8 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         picker.setTopPadding(ConvertUtils.toPx(WAppContext.context, 10f))
         picker.setRangeStart(2018, 1, 1)
         picker.setRangeEnd(2118, 12, 31)
-        picker.setSelectedItem(2018, 6, 25)
+        val date = Calendar.getInstance()
+        picker.setSelectedItem(date.get(Calendar.YEAR), date.get(Calendar.MONTH) + 1, date.get(Calendar.DAY_OF_MONTH))
         picker.setResetWhileWheel(false)
         picker.setOnWheelListener(object : DatePicker.OnWheelListener {
             override fun onYearWheeled(index: Int, year: String) {

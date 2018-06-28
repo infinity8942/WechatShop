@@ -28,6 +28,7 @@ import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.web.WebActivity
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_manager_goods.*
 import java.util.*
@@ -97,6 +98,9 @@ class ManagerGoodsActivity : BaseActivity() {
         mRecyclerView.adapter = mAdapter
         mAdapter.onItemChildClickListener = itemChildClickListener
         mRecyclerView.addOnScrollListener(scrollListener)
+        mAdapter.setOnItemClickListener { adapter, _, position ->
+            goToGoodsDetails(adapter.data[position] as Goods)
+        }
 
         mRefreshLayout.setOnRefreshListener {
             page = 1
@@ -398,124 +402,134 @@ class ManagerGoodsActivity : BaseActivity() {
         mFilterDialog.show()
         when (state) {
             0 -> {
-                tvAll!!.setTextColor(resources.getColor(R.color.filter_color))
+                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
                 ivAll!!.visibility = View.VISIBLE
 
-                tvZd!!.setTextColor(resources.getColor(R.color.gray3))
+                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivZd!!.visibility = View.GONE
 
-                tvSj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivSj!!.visibility = View.GONE
 
-                tvXj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivXj!!.visibility = View.GONE
 
-                tvJf!!.setTextColor(resources.getColor(R.color.gray3))
+                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivJf!!.visibility = View.GONE
 
-                tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivYhj!!.visibility = View.GONE
             }
             1 -> {
-                tvZd!!.setTextColor(resources.getColor(R.color.filter_color))
+                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
                 ivZd!!.visibility = View.VISIBLE
 
-                tvAll!!.setTextColor(resources.getColor(R.color.gray3))
+                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivAll!!.visibility = View.GONE
 
-                tvSj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivSj!!.visibility = View.GONE
 
-                tvXj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivXj!!.visibility = View.GONE
 
-                tvJf!!.setTextColor(resources.getColor(R.color.gray3))
+                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivJf!!.visibility = View.GONE
 
-                tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivYhj!!.visibility = View.GONE
 
             }
             2 -> {
-                tvSj!!.setTextColor(resources.getColor(R.color.filter_color))
+                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
                 ivSj!!.visibility = View.VISIBLE
 
-                tvAll!!.setTextColor(resources.getColor(R.color.gray3))
+                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivAll!!.visibility = View.GONE
 
-                tvZd!!.setTextColor(resources.getColor(R.color.gray3))
+                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivZd!!.visibility = View.GONE
 
-                tvXj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivXj!!.visibility = View.GONE
 
-                tvJf!!.setTextColor(resources.getColor(R.color.gray3))
+                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivJf!!.visibility = View.GONE
 
-                tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivYhj!!.visibility = View.GONE
 
             }
             3 -> {
-                tvXj!!.setTextColor(resources.getColor(R.color.filter_color))
+                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
                 ivXj!!.visibility = View.VISIBLE
 
-                tvAll!!.setTextColor(resources.getColor(R.color.gray3))
+                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivAll!!.visibility = View.GONE
 
-                tvZd!!.setTextColor(resources.getColor(R.color.gray3))
+                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivZd!!.visibility = View.GONE
 
-                tvSj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivSj!!.visibility = View.GONE
 
-                tvJf!!.setTextColor(resources.getColor(R.color.gray3))
+                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivJf!!.visibility = View.GONE
 
-                tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivYhj!!.visibility = View.GONE
             }
             4 -> {
-                tvJf!!.setTextColor(resources.getColor(R.color.filter_color))
+                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
                 ivJf!!.visibility = View.VISIBLE
 
-                tvAll!!.setTextColor(resources.getColor(R.color.gray3))
+                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivAll!!.visibility = View.GONE
 
-                tvZd!!.setTextColor(resources.getColor(R.color.gray3))
+                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivZd!!.visibility = View.GONE
 
-                tvSj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivSj!!.visibility = View.GONE
 
-                tvXj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivXj!!.visibility = View.GONE
 
-                tvYhj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivYhj!!.visibility = View.GONE
 
             }
             5 -> {
-                tvYhj!!.setTextColor(resources.getColor(R.color.filter_color))
+                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
                 ivYhj!!.visibility = View.VISIBLE
 
 
-                tvAll!!.setTextColor(resources.getColor(R.color.gray3))
+                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivAll!!.visibility = View.GONE
 
-                tvZd!!.setTextColor(resources.getColor(R.color.gray3))
+                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivZd!!.visibility = View.GONE
 
-                tvSj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivSj!!.visibility = View.GONE
 
-                tvXj!!.setTextColor(resources.getColor(R.color.gray3))
+                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivXj!!.visibility = View.GONE
 
-                tvJf!!.setTextColor(resources.getColor(R.color.gray3))
+                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivJf!!.visibility = View.GONE
             }
         }
+    }
+
+    /**
+     * 跳转商品详情页
+     */
+    private fun goToGoodsDetails(goods: Goods) {
+        val intent = Intent(this, WebActivity::class.java)
+        intent.putExtra(WebActivity.PARAM_TITLE, goods.name)
+        intent.putExtra(WebActivity.PARAM_URL, Constants.GOODS_DETAIL + goods.id)
+        startActivity(intent)
     }
 
     override fun accept(t: Notifycation?) {
