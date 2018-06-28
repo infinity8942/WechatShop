@@ -126,14 +126,14 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("User/mobile_login")
-    fun loginPhone(@Field("phone") phone: String, @Field("verify_code") verify_code: String): Observable<BaseResponse<User>>
+    fun loginPhone(@Field("phone") phone: String, @Field("verify_code") verify_code: String,@Field("push_token")push_token:String,@Field("push_type")push_type: Int): Observable<BaseResponse<User>>
 
     /**
      * 微信登录
      */
     @FormUrlEncoded
     @POST("User/third_login")
-    fun loginWX(@Field("third_token") third_token: String, @Field("openid") openid: String, @Field("mobile") mobile: String): Observable<BaseResponse<User>>
+    fun loginWX(@Field("third_token") third_token: String, @Field("openid") openid: String, @Field("mobile") mobile: String,@Field("push_token")push_token:String,@Field("push_type")push_type: Int): Observable<BaseResponse<User>>
 
     /**
      * 绑定手机号

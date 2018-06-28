@@ -20,6 +20,7 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
+import com.qiushi.wechatshop.util.Push
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.share.Callback
@@ -123,7 +124,7 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
         callback.onStart()
         //TODO 手机号登录接口
         val disposable = RetrofitManager.service.loginPhone(phone.text.toString().trim(),
-                password.text.toString().trim())
+                password.text.toString().trim(), Push.getDeviceToken(), 1)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<User>() {
                     override fun onHandleSuccess(t: User) {
@@ -222,7 +223,7 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
 //                params["brand"] = "2"
 //                params["type"] = "weixin"
 
-                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, phone)
+                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, phone,Push.getDeviceToken(),1)
                         .compose(SchedulerUtils.ioToMain())
                         .subscribeWith(object : BaseObserver<User>() {
                             override fun onHandleSuccess(t: User) {

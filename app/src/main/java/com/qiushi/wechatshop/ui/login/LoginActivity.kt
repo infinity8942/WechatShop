@@ -17,6 +17,7 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
+import com.qiushi.wechatshop.util.Push
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.share.Callback
@@ -125,7 +126,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 //                params["brand"] = "2"
 //                params["type"] = "weixin"
 
-                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, "")
+                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, "",Push.getDeviceToken(),1)
                         .compose(SchedulerUtils.ioToMain())
                         .subscribeWith(object : BaseObserver<User>() {
                             override fun onHandleSuccess(t: User) {

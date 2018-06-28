@@ -12,6 +12,7 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
+import com.qiushi.wechatshop.util.Push
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_phone_edit.*
@@ -82,7 +83,7 @@ class EditPhoneActivity : BaseActivity(), View.OnClickListener {
 
         //TODO 修改手机号接口
         val disposable = RetrofitManager.service.loginPhone(phone.text.toString().trim(),
-                password.text.toString().trim())
+                password.text.toString().trim(),Push.getDeviceToken(),1)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<User>() {
                     override fun onHandleSuccess(t: User) {

@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.model;
 
+import com.qiushi.wechatshop.util.Push;
 import com.umeng.analytics.MobclickAgent;
 
 import io.reactivex.functions.Consumer;
@@ -199,7 +200,7 @@ public class User extends RealmObject {
         if (getCurrent() != null) {
             long id = getCurrent().getId();
             setCurrent(null);
-
+            Push.disable();
         }
 
     }

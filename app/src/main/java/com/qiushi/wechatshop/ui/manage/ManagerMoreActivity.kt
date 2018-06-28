@@ -11,11 +11,13 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.MenuInfo
 import com.qiushi.wechatshop.model.More
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.util.RxBus
 import com.qiushi.wechatshop.util.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_manager_more.*
 
@@ -155,6 +157,10 @@ class ManagerMoreActivity : BaseActivity() {
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
                         getData()
+                        if (t) {
+                            //刷新主页界面
+                            RxBus.getInstance().post(Notifycation(Constants.OPEN_SHOP_OR_ZX, 0L))
+                        }
                     }
 
                     override fun onHandleError(error: Error) {
