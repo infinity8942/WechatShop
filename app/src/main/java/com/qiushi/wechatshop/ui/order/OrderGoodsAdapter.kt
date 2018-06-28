@@ -14,6 +14,6 @@ import com.qiushi.wechatshop.util.ImageHelper
 class OrderGoodsAdapter : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.item_order_goods, null) {
     override fun convert(helper: BaseViewHolder, goods: Goods) {
         ImageHelper.loadImageWithCorner(mContext, helper.getView(R.id.logo), goods.cover, 64, 64, 5.toFloat())
-        helper.setText(R.id.name, goods.name)
+        helper.setText(R.id.name, goods.name).setText(R.id.price, "￥" + goods.price).setText(R.id.num, "X " + goods.num)
     }
 }

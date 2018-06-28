@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.GlideApp
@@ -198,6 +197,60 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 if (null != order) {
                     goToExpress(order!!.id)
                 }
+            R.id.action ->
+                when (order!!.status) {
+                    Constants.READY_TO_PAY ->
+                        if (isManage) {//提醒支付
+                            notifyToPay(order!!.id)
+                        }
+                    Constants.PAYED ->
+                        if (isManage) {//标记发货
+                            val numbers = numbers.text.toString().trim()
+                            if (numbers.isEmpty()) {
+                                ToastUtils.showError("请填写运单号")
+                            } else {
+                                markAsDeliver(order!!.id, numbers)
+                            }
+                        } else {//提醒发货
+                            notifyToDeliver(order!!.id)
+                        }
+                    Constants.DELIVERED ->
+                        if (!isManage) {//确认收货
+                            markAsDone(order!!.id)
+                        }
+                    Constants.DONE ->
+                        if (!isManage) {//再次购买
+
+                        }
+                }
+            R.id.action1 ->
+                when (order!!.status) {
+                    Constants.READY_TO_PAY ->
+                        if (isManage) {//修改价格
+                            showEditPriceDialog(order!!.id)
+                        } else {//取消订单
+                            cancelOrder(order!!.id)
+                        }
+                    Constants.DELIVERED -> goToExpress(order!!.id)//查看物流
+                    Constants.DONE ->
+                        if (isManage) {//删除订单
+                            delOrder(order!!.id)
+                        } else {//删除订单
+                            delOrder(order!!.id)
+                        }
+                    Constants.CUSTOM -> delOrder(order!!.id)//自建订单，删除订单
+                }
+            R.id.action2 ->
+                when (order!!.status) {
+                    Constants.READY_TO_PAY ->
+                        if (isManage) {//删除订单
+                            delOrder(order!!.id)
+                        }
+                    Constants.DONE ->
+                        if (!isManage) {//查看物流
+                            goToExpress(order!!.id)
+                        }
+                }
         }
     }
 
@@ -225,23 +278,23 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     /**
      * 提醒支付
      */
-    private fun notifyToPay(order_id: Long, position: Int) {
+    private fun notifyToPay(order_id: Long) {
         val disposable = RetrofitManager.service.notifyToPay(order_id)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
                             ToastUtils.showMessage("已发送提醒")
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                            action.text = "已提醒"
+                            action.isEnabled = false
                         }
                     }
 
                     override fun onHandleError(error: Error) {
                         ToastUtils.showError(error.msg)
                         if (error.code == 1004) {
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                            action.text = "已提醒"
+                            action.isEnabled = false
                         }
                     }
                 })
@@ -251,23 +304,23 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     /**
      * 提醒发货
      */
-    private fun notifyToDeliver(order_id: Long, position: Int) {
+    private fun notifyToDeliver(order_id: Long) {
         val disposable = RetrofitManager.service.notifyToDeliver(order_id)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
                             ToastUtils.showMessage("已发送提醒")
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                            action.text = "已提醒"
+                            action.isEnabled = false
                         }
                     }
 
                     override fun onHandleError(error: Error) {
                         ToastUtils.showError(error.msg)
                         if (error.code == 1004) {
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+                            action.text = "已提醒"
+                            action.isEnabled = false
                         }
                     }
                 })
