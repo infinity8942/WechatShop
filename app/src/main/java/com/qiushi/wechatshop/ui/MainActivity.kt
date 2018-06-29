@@ -53,25 +53,12 @@ class MainActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         if (null != intent) {
-//            if (intent.hasExtra("refreshManage")) {//刷新“我的店”数据
-//                if (navigation.currentTab != 0)
-//                    navigation.currentTab = 0
-//                (mFragments[0] as ManageFragment).lazyLoad()
-//            }
-
             if (intent.hasExtra("jumpToShop")) {//跳转“串门”店铺页
                 if (navigation.currentTab != 1)
                     navigation.currentTab = 1
                 (mFragments[1] as ShopListFragment).selectShop(
                         intent.getLongExtra("jumpToShop", -1)
                 )
-            }
-
-            if (intent.hasExtra("jumpToOrder")) {//跳转订单页
-                val orderType = intent.getIntExtra("jumpToOrder", -1)
-                if (orderType != -1) {
-                    (mFragments[0] as ManageFragment).goToOrderActivity(orderType)
-                }
             }
             if (intent.hasExtra("logout")) {//帐号登出
                 val isLogout = intent.getBooleanExtra("logout", false)

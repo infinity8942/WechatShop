@@ -10,7 +10,7 @@ import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.ui.MainActivity
+import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_todo.*
@@ -42,21 +42,10 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.layout_deliver -> {//待发货
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("jumpToOrder", 2)
-                startActivity(intent)
-                finish()
-            }
-            R.id.layout_pay -> {//待付款
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("jumpToOrder", 1)
-                startActivity(intent)
-                finish()
-            }
-            R.id.layout_amount -> {//库存量紧缺
-                ManagerGoodsActivity.startManagerGoodsActivity(this, 0)
-            }
+            R.id.back -> finish()
+            R.id.layout_deliver -> goToOrderActivity(2)//待发货
+            R.id.layout_pay -> goToOrderActivity(1)//待付款
+            R.id.layout_amount -> ManagerGoodsActivity.startManagerGoodsActivity(this, 0)//库存量紧缺
 //            R.id.layout_chat -> {//需沟通人员
 //
 //            }
@@ -65,7 +54,6 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
 //            }
 //            R.id.layout_coupon_amount -> {//优惠券剩余数量
 //            }
-            R.id.back -> finish()
         }
     }
 
@@ -85,5 +73,12 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
                     }
                 })
         addSubscription(disposable)
+    }
+
+    private fun goToOrderActivity(type: Int) {
+        val intent = Intent(this, OrderActivity::class.java)
+        intent.putExtra("isManage", true)
+        intent.putExtra("type", type)
+        startActivity(intent)
     }
 }
