@@ -21,13 +21,13 @@ import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.Push
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.permission.HiPermission
+import com.qiushi.wechatshop.util.permission.PermissionCallback
+import com.qiushi.wechatshop.util.permission.PermissionItem
 import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import kotlinx.android.synthetic.main.activity_login.*
-import me.weyye.hipermission.HiPermission
-import me.weyye.hipermission.PermissionCallback
-import me.weyye.hipermission.PermissionItem
 import java.util.HashMap
 import kotlin.collections.ArrayList
 
@@ -125,7 +125,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 //                params["brand"] = "2"
 //                params["type"] = "weixin"
 
-                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, "",Push.getDeviceToken(),1)
+                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, "", Push.getDeviceToken(), 1)
                         .compose(SchedulerUtils.ioToMain())
                         .subscribeWith(object : BaseObserver<User>() {
                             override fun onHandleSuccess(t: User) {

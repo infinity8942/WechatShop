@@ -1,10 +1,7 @@
 package com.qiushi.wechatshop.ui.manage
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.InputFilter
 import android.util.Log
@@ -23,8 +20,6 @@ import com.qiushi.wechatshop.util.RxBus
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_add_goods_next.*
-import kotlinx.android.synthetic.main.addgoods_header.*
-
 
 @Suppress("UNREACHABLE_CODE")
 class AddGoodsNextActivity : BaseActivity() {
