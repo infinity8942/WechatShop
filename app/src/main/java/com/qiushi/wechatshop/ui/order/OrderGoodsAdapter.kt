@@ -11,9 +11,11 @@ import com.qiushi.wechatshop.util.ImageHelper
  *
  * 订单下商品Adapter
  */
-class OrderGoodsAdapter : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.item_order_goods, null) {
+class OrderGoodsAdapter(private val isManage: Boolean) : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.item_order_goods, null) {
     override fun convert(helper: BaseViewHolder, goods: Goods) {
         ImageHelper.loadImageWithCorner(mContext, helper.getView(R.id.logo), goods.cover, 64, 64, 5.toFloat())
-        helper.setText(R.id.name, goods.name).setText(R.id.price, "￥" + goods.price).setText(R.id.num, "X " + goods.num)
+        helper.setText(R.id.name, goods.name)
+        if (!isManage)
+            helper.setText(R.id.price, "￥" + goods.price).setText(R.id.num, "X " + goods.num)
     }
 }

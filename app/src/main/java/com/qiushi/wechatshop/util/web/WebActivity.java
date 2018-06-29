@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -12,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.qiushi.wechatshop.R;
 import com.qiushi.wechatshop.model.PhoneInfo;
 import com.qiushi.wechatshop.util.Utils;
@@ -31,6 +33,7 @@ public class WebActivity extends SwipeBackActivity {
     public final static String PARAM_URL = "param_url";
     public final static String PARAM_TITLE = "param_title";
     private SonicSession sonicSession;
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +77,20 @@ public class WebActivity extends SwipeBackActivity {
         if (!TextUtils.isEmpty(title)) {
             ((TextView) findViewById(R.id.title)).setText(title);
         }
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        WebView webView = (WebView) findViewById(R.id.webview);
+        webView = (WebView) findViewById(R.id.webview);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 if (sonicSession != null) {
+                    Logger.e("onPageFinished = " + url);
                     sonicSession.getSessionClient().pageFinish(url);
                 }
             }
@@ -96,6 +106,7 @@ public class WebActivity extends SwipeBackActivity {
                 if (sonicSession != null) {
                     //step 6: Call sessionClient.requestResource when host allow the application
                     // to return the local data .
+                    Logger.e("shouldInterceptRequest = " + url);
                     return (WebResourceResponse) sonicSession.getSessionClient().requestResource(url);
                 }
                 return null;
@@ -130,7 +141,11 @@ public class WebActivity extends SwipeBackActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

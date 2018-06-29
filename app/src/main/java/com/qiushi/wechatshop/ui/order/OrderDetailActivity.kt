@@ -50,7 +50,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         isManage = intent.getBooleanExtra("isManage", true)
 
         mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mAdapter = OrderGoodsAdapter()
+        mAdapter = OrderGoodsAdapter(isManage)
         mRecyclerView.adapter = mAdapter
 
         back.setOnClickListener(this)
@@ -185,7 +185,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.back -> finish()
             R.id.phone ->
-                if (null != order && order!!.type != 1) {
+                if (null != order && null != order!!.user && order!!.type != 1) {
                     Utils.call(this, order!!.user.mobile)
                 }
             R.id.copy -> {
@@ -201,7 +201,11 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 when (order!!.status) {
                     Constants.READY_TO_PAY ->
                         if (isManage) {//提醒支付
-                            notifyToPay(order!!.id)
+                            if (order!!.remind_pay == 0) {
+                                notifyToPay(order!!.id)
+                            } else {
+                                ToastUtils.showWarning("已发出过提醒，请等待买家支付")
+                            }
                         }
                     Constants.PAYED ->
                         if (isManage) {//标记发货
@@ -212,7 +216,11 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                                 markAsDeliver(order!!.id, numbers)
                             }
                         } else {//提醒发货
-                            notifyToDeliver(order!!.id)
+                            if (order!!.remind_send == 0) {
+                                notifyToDeliver(order!!.id)
+                            } else {
+                                ToastUtils.showWarning("已发出过提醒，请等待卖家发货")
+                            }
                         }
                     Constants.DELIVERED ->
                         if (!isManage) {//确认收货
@@ -220,7 +228,14 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                         }
                     Constants.DONE ->
                         if (!isManage) {//再次购买
-
+                            if (order!!.goods.size == 1) {
+                                goToGoodsDetails(order!!.goods[0])
+                            } else {
+                                val intent = Intent()
+                                intent.putExtra("shop_id", order!!.shop.id)
+                                setResult(RESULT_OK, intent)
+                                finish()
+                            }
                         }
                 }
             R.id.action1 ->

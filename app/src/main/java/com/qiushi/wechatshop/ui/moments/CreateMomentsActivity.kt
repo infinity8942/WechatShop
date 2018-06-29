@@ -69,13 +69,12 @@ class CreateMomentsActivity : BaseActivity() {
         if (id != 0.toLong()) {
             tv_title.text = "编辑素材"
         }
+        mRecyclerView.layoutManager = mGrideManager
+        mRecyclerView.adapter = mGrideAdapter
 
         //Listener
         back.setOnClickListener(this)
         tv_ok.setOnClickListener(this)
-
-        mRecyclerView.layoutManager = mGrideManager
-        mRecyclerView.adapter = mGrideAdapter
 
         mGrideAdapter.onItemChildClickListener = itemchildListener
     }
@@ -191,6 +190,7 @@ class CreateMomentsActivity : BaseActivity() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
                             ToastUtils.showSuccess("发布成功")
+                            setResult(RESULT_OK)
                             finish()
                         } else {
                             ToastUtils.showError("发布失败")

@@ -15,6 +15,7 @@ import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
 import com.qiushi.wechatshop.model.User
+import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.DateUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
@@ -84,7 +85,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         tv_title.text = title
 
         tabList.add("全部")
-        tabList.add("代付款")
+        tabList.add("待付款")
         tabList.add("待发货")
         tabList.add("已发货")
         tabList.add("已完成")
@@ -386,13 +387,27 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            1000 -> {
+            1000 ->
                 if (resultCode == RESULT_OK) {//手动创建订单成功后返回
                     viewpager.currentItem = 0
                     (fragments[0] as OrderFragment).getOrders()//刷新
                 }
-            }
+            2000 ->
+                if (resultCode == RESULT_OK) {//跳转订单详情页后返回再次购买
+                    val shopID = data!!.getLongExtra("shop_id", -1)
+                    returnToShop(shopID)
+                }
         }
+    }
+
+    /**
+     * 返回店铺
+     */
+    fun returnToShop(shop_id: Long) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("jumpToShop", shop_id)
+        startActivity(intent)
+        finish()
     }
 
     override fun onBackPressed() {

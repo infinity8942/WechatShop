@@ -19,7 +19,7 @@ class ShopAdapter : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.item_shop_g
                 RoundedCornersTransformation(DensityUtils.dp2px(10f), 0, RoundedCornersTransformation.CornerType.TOP))
         helper.setText(R.id.tv_title, goods.name)
         helper.setText(R.id.price, "￥" + goods.price)
-        helper.setText(R.id.amount, "已售" + goods.views)
+        helper.setText(R.id.amount, "已售" + goods.sold)
 
         helper.addOnClickListener(R.id.cart)
     }
