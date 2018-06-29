@@ -227,7 +227,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("Goods/shop_goods")
-    fun getMnagerGoods(@Field("shop_id") shop_id: Long, @Field("status") status: Int, @Field("keyword") keyword: String, @Field("page") page: Int): Observable<BaseResponse<List<Goods>>>
+    fun getMnagerGoods(@Field("shop_id") shop_id: Long, @Field("status") status: Int, @Field("keywords") keywords: String, @Field("page") page: Int): Observable<BaseResponse<List<Goods>>>
 
     @FormUrlEncoded
     @POST("Oss/get_token")

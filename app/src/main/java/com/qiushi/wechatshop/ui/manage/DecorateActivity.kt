@@ -117,9 +117,6 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                         } else {
                             ToastUtils.showMessage("装修店铺成功")
                             RxBus.getInstance().post(Notifycation(Constants.OPEN_SHOP_OR_ZX, 0L))
-//                            val intent = Intent(this@DecorateActivity, MainActivity::class.java)
-//                            intent.putExtra("refreshManage", true)
-//                            startActivity(intent)
                             finish()
                         }
                     }
