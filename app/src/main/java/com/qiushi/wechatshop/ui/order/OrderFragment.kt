@@ -76,7 +76,11 @@ class OrderFragment : BaseFragment() {
                     when (order.status) {
                         Constants.READY_TO_PAY ->
                             if ((activity as OrderActivity).isManage) {//提醒支付
-                                notifyToPay(order.id, position)
+                                if (order.remind_pay == 0) {
+                                    notifyToPay(order.id, position)
+                                } else {
+                                    ToastUtils.showWarning("已发出过提醒，请等待买家支付")
+                                }
                             }
                         Constants.PAYED ->
                             if ((activity as OrderActivity).isManage) {//标记发货
@@ -87,7 +91,11 @@ class OrderFragment : BaseFragment() {
                                     markAsDeliver(order.id, numbers)
                                 }
                             } else {//提醒发货
-                                notifyToDeliver(order.id, position)
+                                if (order.remind_send == 0) {
+                                    notifyToDeliver(order.id, position)
+                                } else {
+                                    ToastUtils.showWarning("已发出过提醒，请等待卖家发货")
+                                }
                             }
                         Constants.DELIVERED ->
                             if (!(activity as OrderActivity).isManage) {//确认收货

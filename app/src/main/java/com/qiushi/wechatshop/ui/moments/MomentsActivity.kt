@@ -77,12 +77,7 @@ class MomentsActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
-            R.id.add -> {
-                val intent = Intent(this, CreateMomentsActivity::class.java)
-                intent.putExtra("id", 0)
-                intent.putExtra("type", viewpager.currentItem + 1)
-                startActivity(intent)
-            }
+            R.id.add -> startActivity(Intent(this, MomentsTypeActivity::class.java))
         }
     }
 }

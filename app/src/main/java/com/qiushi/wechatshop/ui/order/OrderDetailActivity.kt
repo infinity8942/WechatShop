@@ -201,7 +201,11 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 when (order!!.status) {
                     Constants.READY_TO_PAY ->
                         if (isManage) {//提醒支付
-                            notifyToPay(order!!.id)
+                            if (order!!.remind_pay == 0) {
+                                notifyToPay(order!!.id)
+                            } else {
+                                ToastUtils.showWarning("已发出过提醒，请等待买家支付")
+                            }
                         }
                     Constants.PAYED ->
                         if (isManage) {//标记发货
@@ -212,7 +216,11 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                                 markAsDeliver(order!!.id, numbers)
                             }
                         } else {//提醒发货
-                            notifyToDeliver(order!!.id)
+                            if (order!!.remind_send == 0) {
+                                notifyToDeliver(order!!.id)
+                            } else {
+                                ToastUtils.showWarning("已发出过提醒，请等待卖家发货")
+                            }
                         }
                     Constants.DELIVERED ->
                         if (!isManage) {//确认收货

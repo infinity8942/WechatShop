@@ -39,7 +39,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
         when (order.status) {
             Constants.READY_TO_PAY -> {
                 if (isManage) {
-                    helper.setText(R.id.status, "等待买家付款").setText(R.id.action, "提醒支付")
+                    helper.setText(R.id.status, "等待买家付款").setText(R.id.action, if (order.remind_pay == 0) "提醒支付" else "已提醒")
                     helper.setGone(R.id.action1, true).setText(R.id.action1, "修改价格")
                             .setGone(R.id.action2, true).setText(R.id.action2, "删除订单")
                 } else {
@@ -54,7 +54,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                     helper.setText(R.id.status, "买家已付款").setText(R.id.action, "确认发货")
                             .setGone(R.id.numbers, true)
                 } else {
-                    helper.setText(R.id.status, "等待卖家发货").setText(R.id.action, "提醒发货")
+                    helper.setText(R.id.status, "等待卖家发货").setText(R.id.action, if (order.remind_send == 0) "提醒发货" else "已提醒")
                     helper.setGone(R.id.numbers, false)
                 }
                 helper.setGone(R.id.action1, false).setGone(R.id.action2, false)

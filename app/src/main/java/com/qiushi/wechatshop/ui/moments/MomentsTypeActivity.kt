@@ -20,6 +20,7 @@ class MomentsTypeActivity : BaseActivity(), View.OnClickListener {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
+
         back.setOnClickListener(this)
         type1.setOnClickListener(this)
         type2.setOnClickListener(this)
@@ -44,6 +45,7 @@ class MomentsTypeActivity : BaseActivity(), View.OnClickListener {
     private fun goToCreateMoments(type: Int) {
         val intent = Intent(this, CreateMomentsActivity::class.java)
         intent.putExtra("type", type)
+        intent.putExtra("id", 0)
         startActivity(intent)
         finish()
     }
