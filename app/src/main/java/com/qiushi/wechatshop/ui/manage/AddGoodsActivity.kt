@@ -467,12 +467,12 @@ class AddGoodsActivity : BaseActivity() {
 
     private val textWatcherListener = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            if (s.toString().length < 100) {
-                tv_count.text = "描述(" + s.toString().length.toString() + "/100)"
-            } else {
-                tv_count.text = "描述(" + 100 + "/100)"
-                ToastUtils.showError("最多只能输入100个字")
-            }
+//            if (s.toString().length < 100) {
+//                tv_count.text = "描述(" + s.toString().length.toString() + "/100)"
+//            } else {
+//                tv_count.text = "描述(" + 100 + "/100)"
+//                ToastUtils.showError("最多只能输入100个字")
+//            }
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
