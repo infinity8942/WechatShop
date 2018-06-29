@@ -6,6 +6,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.text.InputFilter
 import android.util.Log
 import android.view.View
 import com.google.gson.Gson
@@ -22,6 +23,7 @@ import com.qiushi.wechatshop.util.RxBus
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_add_goods_next.*
+import kotlinx.android.synthetic.main.addgoods_header.*
 
 
 @Suppress("UNREACHABLE_CODE")
@@ -39,6 +41,8 @@ class AddGoodsNextActivity : BaseActivity() {
     override fun init() {
         StatusBarUtil.immersive(this!!)
         StatusBarUtil.setPaddingSmart(this!!, toolbar)
+
+        et_bz.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(100))
         isSwitch = if (addGoods != null) {
             addGoods!!.is_todo
         } else {
@@ -130,6 +134,7 @@ class AddGoodsNextActivity : BaseActivity() {
     private fun putData() {
         var gson = Gson()
         val toJson = gson.toJson(addGoods)
+        Log.e("tag", "toJson~~~~~~~~~~~~~~~~~$toJson")
         val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.postGoods(toJson)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {

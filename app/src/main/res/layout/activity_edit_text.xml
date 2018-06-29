@@ -30,45 +30,52 @@
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/et_text"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:background="@null"
-        android:enabled="true"
-        android:gravity="top"
-        android:hint="给您的产品详情添加一段吸引人的文字描述吧～"
-        android:maxLines="1"
-        android:paddingLeft="16dp"
-        android:paddingTop="17dp"
-        android:paddingRight="16dp"
-        android:textColor="@color/black_90"
-        android:textCursorDrawable="@drawable/cursor_color"
-        android:textSize="14sp" />
+        android:layout_below="@+id/toolbar">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="27dp"
-        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/commit"
+        <EditText
+            android:id="@+id/et_text"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/add_goods_yellow_shape">
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:enabled="true"
+            android:gravity="top"
+            android:hint="给您的产品详情添加一段吸引人的文字描述吧～"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="17dp"
+            android:textColor="@color/black_90"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="提交"
-                android:textColor="@color/title"
-                android:textSize="18sp" />
-        </RelativeLayout>
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="27dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/commit"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/add_goods_yellow_shape">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="提交"
+                    android:textColor="@color/title"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </FrameLayout>
 </RelativeLayout>

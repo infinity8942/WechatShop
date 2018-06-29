@@ -86,7 +86,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="5dp"
                 android:layout_toLeftOf="@id/tv_deliver"
-                android:text="36"
+                android:text=""
                 android:textColor="@color/black_90"
                 android:textSize="16sp" />
 
@@ -120,8 +120,8 @@
                 android:id="@+id/tv_pay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
                 android:layout_marginBottom="5dp"
                 android:text="个提醒"
                 android:textColor="@color/text"
@@ -135,7 +135,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="5dp"
                 android:layout_toLeftOf="@id/tv_pay"
-                android:text="6"
+                android:text=""
                 android:textColor="@color/black_90"
                 android:textSize="16sp" />
 
@@ -326,7 +326,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="5dp"
                     android:layout_toLeftOf="@id/tv_amount"
-                    android:text="0"
+                    android:text=""
                     android:textColor="@color/black_90"
                     android:textSize="16sp" />
 

@@ -423,10 +423,13 @@ class ManageFragment : BaseFragment() {
                 lazyLoad()
             }
             Constants.OPEN_SHOP_OR_ZX -> {
-
                 page = 1
                 lazyLoad()
                 //开店或者装修回调
+            }
+            Constants.MANAGER_GOODS->{
+                page = 1
+                lazyLoad()
             }
         }
     }

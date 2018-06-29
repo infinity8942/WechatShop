@@ -15,10 +15,12 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Moment
 import com.qiushi.wechatshop.model.NineImage
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.util.RxBus
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.oss.Error
@@ -190,7 +192,8 @@ class CreateMomentsActivity : BaseActivity() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
                             ToastUtils.showSuccess("发布成功")
-                            setResult(RESULT_OK)
+//                            setResult(RESULT_OK)
+                            RxBus.getInstance().post(Notifycation(Constants.MOMENT_FRESH, type.toLong()))
                             finish()
                         } else {
                             ToastUtils.showError("发布失败")

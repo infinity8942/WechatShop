@@ -26,11 +26,14 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.util.RxBus
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
+import com.qiushi.wechatshop.view.search.MaterialSearchView
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_manager_goods.*
+
 import java.util.*
 
 
@@ -44,6 +47,7 @@ class ManagerGoodsActivity : BaseActivity() {
     var mItemPosition: Int = -1
     var state: Int = -1
     var keyword: String = ""
+    var tv_header_title = "订单管理" //标题名
     private lateinit var mFilterDialog: BottomSheetDialog //底部Dialog
 
 
@@ -88,6 +92,41 @@ class ManagerGoodsActivity : BaseActivity() {
     override fun init() {
         StatusBarUtil.immersive(this)
         StatusBarUtil.setPaddingSmart(this, toolbar)
+        StatusBarUtil.setPaddingSmart(this, search_view)
+
+        search_view.adjustTintAlpha(0.8f)
+        search_view.setCloseOnTintClick(true)
+
+        search_view.setSearchViewListener(object : MaterialSearchView.SearchViewListener {
+            override fun onSearchViewClosed() {
+                if (search_view.currentQuery.isEmpty()) {
+                    keyword = ""
+                    getData()
+                }
+                search_view.setShouldAnimate(true)
+            }
+
+            override fun onSearchViewOpened() {
+                search_view.setShouldAnimate(false)
+            }
+        })
+
+
+        search_view.setOnItemClickListener { _, _, position, _ ->
+            val suggestion = search_view.getSuggestionAtPosition(position)
+            search_view.setQuery(suggestion, true)
+        }
+        search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                keyword = query
+                getData()
+                return false
+            }
+        })
 
         notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)
         notDataView.setOnClickListener { getData() }
@@ -108,14 +147,12 @@ class ManagerGoodsActivity : BaseActivity() {
         }
         mRefreshLayout.setOnLoadMoreListener { getData() }
         setBottomSheet()
-        tv_add.setOnClickListener({ _: View? ->
-            setVisible(mItemPosition)
-            AddGoodsActivity.startAddGoodsActivity(this, 0)
-        })
 
-        tv_filter.setOnClickListener({ _: View? ->
-            showBottomFilterDialog()
-        })
+        search_bar.setOnClickListener(onclickListener)
+
+        tv_add.setOnClickListener(onclickListener)
+
+        tv_filter.setOnClickListener(onclickListener)
     }
 
     override fun getData() {
@@ -283,6 +320,8 @@ class ManagerGoodsActivity : BaseActivity() {
                                 }
                                 page = 1
                                 getData()
+                                //通知首页刷新
+                                RxBus.getInstance().post(Notifycation( Constants.MANAGER_GOODS, 0L))
                             }
                             TYPE_XJ -> {
                                 if (t) {
@@ -292,6 +331,8 @@ class ManagerGoodsActivity : BaseActivity() {
                                 }
                                 page = 1
                                 getData()
+                                //通知首页刷新
+                                RxBus.getInstance().post(Notifycation( Constants.MANAGER_GOODS, 0L))
                             }
                             else -> {
                                 if (t) {
@@ -301,6 +342,8 @@ class ManagerGoodsActivity : BaseActivity() {
                                 }
                                 page = 1
                                 getData()
+                                //通知首页刷新
+                                RxBus.getInstance().post(Notifycation( Constants.MANAGER_GOODS, 0L))
                             }
                         }
                     }
@@ -538,6 +581,21 @@ class ManagerGoodsActivity : BaseActivity() {
             Constants.ADD_IMG_REFRESH -> {
                 page = 1
                 getData()
+            }
+        }
+    }
+
+    private val onclickListener = View.OnClickListener { v ->
+        when (v.id) {
+            R.id.search_bar -> {
+                search_view.openSearch()
+            }
+            R.id.tv_filter -> {
+                showBottomFilterDialog()
+            }
+            R.id.tv_add -> {
+                setVisible(mItemPosition)
+                AddGoodsActivity.startAddGoodsActivity(this, 0)
             }
         }
     }

@@ -1,12 +1,15 @@
 package com.qiushi.wechatshop.ui.moments
 
+import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.View
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
 import com.qiushi.wechatshop.view.tab.listener.OnTabSelectListener
@@ -78,6 +81,15 @@ class MomentsActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.back -> finish()
             R.id.add -> startActivity(Intent(this, MomentsTypeActivity::class.java))
+        }
+    }
+
+    override fun accept(t: Notifycation?) {
+        super.accept(t)
+        when (t!!.code) {
+            Constants.MOMENT_FRESH -> {
+                viewpager.currentItem = t.id.toInt() - 1
+            }
         }
     }
 }

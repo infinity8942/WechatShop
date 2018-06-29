@@ -8,6 +8,9 @@ import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.InputFilter
+import android.text.TextWatcher
 import android.view.View
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -68,7 +71,9 @@ class AddGoodsActivity : BaseActivity() {
         mAdapter.onItemChildClickListener = itemchildListener
         ic_bg.setOnClickListener(onclicklistener)
         rl_next.setOnClickListener(onclicklistener)
-
+        et_brief.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(100))
+        et_name.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
+        et_brief.addTextChangedListener(textWatcherListener)
     }
 
     private fun isVisible() {
@@ -187,7 +192,10 @@ class AddGoodsActivity : BaseActivity() {
 
     private fun isDataNull() {
 
-        addGoods.shop_id = User.getCurrent().shop_id
+        if (User.getCurrent() != null && User.getCurrent().shop_id != null) {
+            addGoods.shop_id = User.getCurrent().shop_id
+        }
+
         if (et_brief.text.toString().isNotEmpty()) {
             addGoods.brief = et_brief.text.toString()
         }
@@ -195,10 +203,10 @@ class AddGoodsActivity : BaseActivity() {
             addGoods.name = et_name.text.toString()
         }
         if (price.text.toString().isNotEmpty()) {
-            addGoods.price = price.text.toString().toLong()
+            addGoods.price = price.text.toString().toDouble().toLong()
         }
         if (stock.text.toString().isNotEmpty()) {
-            addGoods.stock = stock.text.toString().toLong()
+            addGoods.stock = stock.text.toString().toDouble().toLong()
         }
 
         if (addGoods == null) {
@@ -221,12 +229,12 @@ class AddGoodsActivity : BaseActivity() {
             ToastUtils.showError("库存数量为设置")
             return
         }
-        if(goods_id!=null&&goods_id!=0.toLong()){
+        if (goods_id != null && goods_id != 0.toLong()) {
             if (contentList == null || contentList.size <= 0) {
                 ToastUtils.showError("产品详情未设置")
                 return
             }
-        }else{
+        } else {
             if (addGoods.content == null || addGoods.content!!.size <= 0) {
                 ToastUtils.showError("产品详情未设置")
                 return
@@ -234,9 +242,9 @@ class AddGoodsActivity : BaseActivity() {
 
         }
 
-        if (goods_id != 0.toLong() && addContentList != null && addContentList.size > 0) {
+        if (goods_id != null && goods_id != 0.toLong() && addContentList != null && addContentList.size > 0) {
             for (item in addContentList) {
-                if (!addGoods.content!!.contains(item)) {
+                if (addGoods != null && addGoods.content != null && !addGoods.content!!.contains(item)) {
                     addGoods.content!!.add(item)
                 }
             }
@@ -454,6 +462,37 @@ class AddGoodsActivity : BaseActivity() {
             mRecyclerView.visibility = View.GONE
             item_add_img.setOnClickListener(onclicklistener)
             item_add_text.setOnClickListener(onclicklistener)
+        }
+    }
+
+    private val textWatcherListener = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            if (s.toString().length < 100) {
+                tv_count.text = "描述(" + s.toString().length.toString() + "/100)"
+            } else {
+                tv_count.text = "描述(" + 100 + "/100)"
+                ToastUtils.showError("最多只能输入100个字")
+            }
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (s.toString().length < 100) {
+                tv_count.text = "描述(" + s.toString().length.toString() + "/100)"
+            } else {
+                tv_count.text = "描述(" + 100 + "/100)"
+                ToastUtils.showError("最多只能输入100个字")
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (textWatcherListener != null && et_brief != null) {
+            et_brief.removeTextChangedListener(textWatcherListener)
         }
     }
 }
