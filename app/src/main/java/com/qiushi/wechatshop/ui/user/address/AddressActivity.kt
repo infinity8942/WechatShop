@@ -60,7 +60,7 @@ class AddressActivity : BaseActivity(), View.OnClickListener {
 
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
-                R.id.edit -> goToEditActivity()
+                R.id.edit -> goToEditActivity(true, adapter.data[position] as Buyer)
             }
         }
 
@@ -119,11 +119,15 @@ class AddressActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.back -> finish()
-            R.id.layout_add -> goToEditActivity()
+            R.id.layout_add -> goToEditActivity(false, null)
         }
     }
 
-    private fun goToEditActivity() {
-        startActivity(Intent(this, AddressEditActivity::class.java))
+    private fun goToEditActivity(isEdit: Boolean, address: Buyer?) {
+        val intent = Intent(this, AddressEditActivity::class.java)
+        intent.putExtra("isEdit", isEdit)
+        if (isEdit)
+            intent.putExtra("address", address)
+        startActivityForResult(intent, 1000)
     }
 }

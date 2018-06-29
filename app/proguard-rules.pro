@@ -29,3 +29,8 @@
 #SearchView
 -keep class br.com.mauker.MsvAuthority
 -keepclassmembers class br.com.mauker.** { *; }
+
+#Picker
+-keepattributes InnerClasses,Signature
+-keepattributes *Annotation*
+-keep class cn.qqtheme.framework.entity.** { *;}

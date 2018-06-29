@@ -26,9 +26,64 @@
             android:layout_height="@dimen/padding_tab_layout_top"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
-            android:text="编辑地址"
+            android:text="用户地址"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="132dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/bg_todo_item"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="12dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/bg_todo_item"
+        android:minHeight="132dp"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="12dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp">
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/bg_todo_item"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/bg_logout"
+        android:gravity="center"
+        android:text="保存"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 </LinearLayout>

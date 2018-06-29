@@ -202,7 +202,30 @@ interface ApiService {
      * 我的地址
      */
     @POST("User/my_address")
-    fun getAddress(): Observable<BaseResponse<java.util.ArrayList<Buyer>>>
+    fun getAddress(): Observable<BaseResponse<ArrayList<Buyer>>>
+
+    /**
+     * 添加地址
+     */
+    @FormUrlEncoded
+    @POST("User/address_edit")
+    fun addAddress(@Field("name") name: String, @Field("phone") phone: String, @Field("area") area: String, @Field("address") address: String,
+                   @Field("is_default") is_default: Boolean): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 编辑地址
+     */
+    @FormUrlEncoded
+    @POST("User/address_edit/address_id")
+    fun editAddress(@Field("name") name: String, @Field("phone") phone: String, @Field("area") area: String, @Field("address") address: String,
+                    @Field("is_default") is_default: Boolean, @Field("address_id") shop_id: Long): Observable<BaseResponse<Boolean>>
+
+    /**
+     * 删除地址
+     */
+    @FormUrlEncoded
+    @POST("User/address_delete")
+    fun delAddress(@Field("address_id") shop_id: Long): Observable<BaseResponse<Boolean>>
 
     //==============================================================================================
     /**
