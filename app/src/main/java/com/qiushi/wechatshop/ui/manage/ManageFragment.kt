@@ -153,6 +153,7 @@ class ManageFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+        mItemPosition = -1
         val subscribeWith: BaseObserver<Shop> = RetrofitManager.service.getMyshop(page)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {

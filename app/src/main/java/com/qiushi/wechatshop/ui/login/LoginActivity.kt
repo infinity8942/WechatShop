@@ -83,6 +83,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private fun getPermission() {
         val permissionItems = ArrayList<PermissionItem>()
+        permissionItems.add(PermissionItem(Manifest.permission.READ_PHONE_STATE, "读取手机", R.drawable.permission_ic_phone))
         permissionItems.add(PermissionItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera))
         permissionItems.add(PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, "存储", R.drawable.permission_ic_storage))
         permissionItems.add(PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, "定位", R.drawable.permission_ic_location))

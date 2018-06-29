@@ -151,7 +151,7 @@ class ManagerGoodsActivity : BaseActivity() {
     }
 
     override fun getData() {
-        setVisible(mItemPosition)
+        mItemPosition=-1
         val subscribeWith: BaseObserver<List<Goods>> = RetrofitManager.service
                 .getMnagerGoods(User.getCurrent().shop_id, state, keyword, page)
                 .compose(SchedulerUtils.ioToMain())

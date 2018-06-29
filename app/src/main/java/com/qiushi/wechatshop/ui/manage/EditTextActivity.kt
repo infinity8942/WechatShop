@@ -2,12 +2,14 @@ package com.qiushi.wechatshop.ui.manage
 
 import android.app.Activity
 import android.content.Intent
+import android.text.InputFilter
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_edit_text.*
+
 
 class EditTextActivity : BaseActivity() {
 
@@ -18,7 +20,7 @@ class EditTextActivity : BaseActivity() {
     override fun init() {
         StatusBarUtil.immersive(this)
         StatusBarUtil.setPaddingSmart(this, toolbar)
-
+        et_text.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(100))
         if (!mText.contentEquals("")) {
             et_text.setText(mText)
         }

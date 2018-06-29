@@ -46,6 +46,7 @@ class AddGoodsActivity : BaseActivity() {
     var addContentList = ArrayList<Content>()
     var contentList = ArrayList<Content>()
     private var mHandler = Handler()
+    var size: Int = 0
     /**
      * 整体recyclerview adapter
      */
@@ -109,9 +110,6 @@ class AddGoodsActivity : BaseActivity() {
                             addGoods.content = t.content
                             isVisible()
                             setData(addGoods)
-//                            if (addGoods!=null&&(addGoods.content==null|| addGoods.content!!.size<=0)){
-//                                contentList.addAll(addGoods.content!!)
-//                            }
                             if (addGoods != null && addGoods.content != null && addGoods.content!!.size > 0) {
                                 contentList.addAll(addGoods.content!!)
                                 //展示数据
@@ -129,6 +127,13 @@ class AddGoodsActivity : BaseActivity() {
     }
 
     fun setData(addGoods: AddGoods) {
+        if (addGoods.content != null) {
+            for (item in addGoods.content!!) {
+                if (item.content.isEmpty()) {
+                    size += 1
+                }
+            }
+        }
         //背景图
         if (addGoods.cover_url != null && addGoods.cover_url.isNotEmpty()) {
             ImageHelper.loadImageWithCorner(application, ic_bg, addGoods.cover_url, 94, 94,
@@ -167,10 +172,20 @@ class AddGoodsActivity : BaseActivity() {
         when (v?.id) {
             R.id.foot_add_img -> {
                 //进入相册
-                choicePhotoWrapper(1, Constants.ADDIMG_RESUALT)
+                if (size < 10) {
+                    choicePhotoWrapper(1, Constants.ADDIMG_RESUALT)
+                } else {
+                    ToastUtils.showError("最多能上传10张图片")
+                }
+
             }
             R.id.item_add_img -> {
-                choicePhotoWrapper(1, Constants.ADDIMG_ITEM_REQUEST)
+                if (size < 10) {
+                    choicePhotoWrapper(1, Constants.ADDIMG_ITEM_REQUEST)
+                } else {
+                    ToastUtils.showError("最多能上传10张图片")
+                }
+
             }
             R.id.item_add_text -> {
                 //跳转编辑文本 Activity
@@ -385,6 +400,7 @@ class AddGoodsActivity : BaseActivity() {
                         addContentList.add(content)
 //                        addGoods.content = contentList
                         if (file != null && file.path != null) {
+                            size += 1
                             isVisibleEdit()
                             mAdapter.setNewData(contentList)
                         }
@@ -395,6 +411,7 @@ class AddGoodsActivity : BaseActivity() {
                         contentList.add(content)
                         addGoods.content = contentList
                         if (file != null && file.path != null) {
+                            size += 1
                             isVisible()
                             mAdapter.setNewData(addGoods.content)
                         }
@@ -413,19 +430,21 @@ class AddGoodsActivity : BaseActivity() {
                     if (contentList != null && contentList.size > 0 && contentList.size > position) {
                         val removeAt = contentList.removeAt(position)
 
-//                        if (addContentList != null && addContentList.size > 0 && addContentList.contains(removeAt)) {
-//                            addContentList.remove(removeAt)
-//                        }
-
-                        for (item in addContentList) {
-                            if (item.id == removeAt.id) {
-                                addContentList.remove(item)
-                            }
+                        if(addContentList.contains(removeAt)){
+                            addContentList.remove(removeAt)
                         }
+//                        for (item in addContentList) {
+//                            if (item.id == removeAt.id) {
+//                                addContentList.remove(item)
+//                            }
+//                        }
                         for (item in addGoods.content!!) {
                             if (item.id == removeAt.id) {
                                 item.is_del = 1
                             }
+                        }
+                        if (removeAt.content.isEmpty()) {
+                            size -= 1
                         }
                         isVisibleEdit()
                         mAdapter.setNewData(contentList)
@@ -434,7 +453,10 @@ class AddGoodsActivity : BaseActivity() {
                 } else {
                     //新增
                     if (contentList != null && contentList.size > 0 && contentList.size > position) {
-                        contentList.removeAt(position)
+                        val removeAt = contentList.removeAt(position)
+                        if (removeAt.content.isEmpty()) {
+                            size -= 1
+                        }
                         addGoods.content = contentList
                         isVisible()
                         mAdapter.setNewData(addGoods.content)
@@ -467,12 +489,12 @@ class AddGoodsActivity : BaseActivity() {
 
     private val textWatcherListener = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            if (s.toString().length < 100) {
-                tv_count.text = "描述(" + s.toString().length.toString() + "/100)"
-            } else {
-                tv_count.text = "描述(" + 100 + "/100)"
-                ToastUtils.showError("最多只能输入100个字")
-            }
+//            if (s.toString().length < 100) {
+//                tv_count.text = "描述(" + s.toString().length.toString() + "/100)"
+//            } else {
+//                tv_count.text = "描述(" + 100 + "/100)"
+//                ToastUtils.showError("最多只能输入100个字")
+//            }
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
