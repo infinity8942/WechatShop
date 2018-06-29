@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/contentBackground"
     android:orientation="vertical"
-    tools:context=".ui.user.FeedbackActivity">
+    tools:context=".ui.user.setting.FeedbackActivity">
 
     <RelativeLayout
         android:id="@+id/toolbar"

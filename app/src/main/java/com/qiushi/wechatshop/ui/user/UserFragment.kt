@@ -8,6 +8,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.ui.order.OrderActivity
+import com.qiushi.wechatshop.ui.user.setting.SettingActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.web.WebActivity
@@ -46,9 +47,7 @@ class UserFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.setting -> {
-                startActivity(Intent(activity, SettingActivity::class.java))
-            }
+            R.id.setting -> startActivity(Intent(activity, SettingActivity::class.java))
             R.id.pay -> goToOrder(1)
             R.id.deliver -> goToOrder(2)
             R.id.finish -> goToOrder(4)
@@ -62,6 +61,9 @@ class UserFragment : BaseFragment(), View.OnClickListener {
             }
 
             R.id.layout_address -> {
+                //TODO 我的地址
+//                startActivity(Intent(activity, AddressActivity::class.java))
+
                 val intent = Intent(activity, WebActivity::class.java)
                 intent.putExtra(WebActivity.PARAM_TITLE, "我的地址")
                 intent.putExtra(WebActivity.PARAM_URL, Constants.ADDRESS)

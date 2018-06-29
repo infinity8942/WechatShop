@@ -5,4 +5,4 @@ package com.qiushi.wechatshop.model
  *
  * 买家
  */
-data class Buyer(var id: Long, var receiver: String, var avatar: String, var mobile: String, var address: String)
+data class Buyer(var id: Long, var receiver: String, var avatar: String, var mobile: String, var address: String, var area: String, var is_default: Int)

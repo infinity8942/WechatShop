@@ -1,4 +1,4 @@
-package com.qiushi.wechatshop.ui.user
+package com.qiushi.wechatshop.ui.user.setting
 
 import android.text.TextUtils
 import android.view.View

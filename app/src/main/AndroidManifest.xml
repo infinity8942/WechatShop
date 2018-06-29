@@ -70,16 +70,22 @@
             android:name=".ui.manage.DecorateActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.SettingActivity"
+            android:name=".ui.user.setting.SettingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.FeedbackActivity"
+            android:name=".ui.user.setting.FeedbackActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.AboutUsActivity"
+            android:name=".ui.user.setting.AboutUsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.InfoActivity"
+            android:name=".ui.user.setting.InfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.address.AddressActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.address.AddressEditActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.login.PhoneActivity"

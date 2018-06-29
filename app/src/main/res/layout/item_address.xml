@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:background="@drawable/bg_todo_item"
+    android:paddingLeft="12dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
+
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="46dp"
+        android:layout_height="41dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerInside"
+        android:src="@mipmap/ic_edit" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="20.5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/color_item_text"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/default_address"
+        android:layout_width="35dp"
+        android:layout_height="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/name"
+        android:background="@drawable/bg_orange_commit"
+        android:gravity="center"
+        android:text="默认"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="20.5dp"
+        android:layout_below="@id/name"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray1"
+        android:textSize="12sp" />
+</RelativeLayout>

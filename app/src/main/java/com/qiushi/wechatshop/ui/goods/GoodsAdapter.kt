@@ -15,7 +15,6 @@ class GoodsAdapter(data: List<Goods>) : BaseQuickAdapter<Goods, BaseViewHolder>(
     override fun convert(helper: BaseViewHolder?, item: Goods?) {
         ImageHelper.loadImageWithCorner(mContext, helper?.getView(R.id.img)!!, item?.cover!!, 167, 167,
                 RoundedCornersTransformation(DensityUtils.dp2px(10.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
-        helper!!.setText(R.id.tv_name, item.name)
-        helper!!.addOnClickListener(R.id.iv_add)
+        helper!!.setText(R.id.tv_name, item.name).addOnClickListener(R.id.iv_add)
     }
 }

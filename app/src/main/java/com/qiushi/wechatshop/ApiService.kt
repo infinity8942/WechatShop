@@ -1,6 +1,5 @@
 package com.qiushi.wechatshop
 
-import android.location.Address
 import com.qiushi.wechatshop.model.*
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.util.oss.UploadFile
@@ -202,9 +201,8 @@ interface ApiService {
     /**
      * 我的地址
      */
-    @FormUrlEncoded
     @POST("User/my_address")
-    fun getAddress(@Field("shop_id") shop_id: Long): Observable<BaseResponse<Address>>
+    fun getAddress(): Observable<BaseResponse<java.util.ArrayList<Buyer>>>
 
     //==============================================================================================
     /**
