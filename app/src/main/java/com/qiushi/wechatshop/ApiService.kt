@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop
 
+import android.location.Address
 import com.qiushi.wechatshop.model.*
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.util.oss.UploadFile
@@ -133,14 +134,14 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("User/mobile_login")
-    fun loginPhone(@Field("phone") phone: String, @Field("verify_code") verify_code: String,@Field("push_token")push_token:String,@Field("push_type")push_type: Int): Observable<BaseResponse<User>>
+    fun loginPhone(@Field("phone") phone: String, @Field("verify_code") verify_code: String, @Field("push_token") push_token: String, @Field("push_type") push_type: Int): Observable<BaseResponse<User>>
 
     /**
      * 微信登录
      */
     @FormUrlEncoded
     @POST("User/third_login")
-    fun loginWX(@Field("third_token") third_token: String, @Field("openid") openid: String, @Field("mobile") mobile: String,@Field("push_token")push_token:String,@Field("push_type")push_type: Int): Observable<BaseResponse<User>>
+    fun loginWX(@Field("third_token") third_token: String, @Field("openid") openid: String, @Field("mobile") mobile: String, @Field("push_token") push_token: String, @Field("push_type") push_type: Int): Observable<BaseResponse<User>>
 
     /**
      * 绑定手机号
@@ -184,14 +185,6 @@ interface ApiService {
     @POST("Shop/moments")
     fun getMoments(@Field("shop_id") shop_id: Long, @Field("type") type: Int, @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<ArrayList<Moment>>>
 
-
-    /**
-     * 素材编辑
-     */
-    @FormUrlEncoded
-    @POST("Shop/moments_edit")
-    fun editMoments(@Field("id") moments_id: Long, @Field("type") type: Int, @Field("content") content: String): Observable<BaseResponse<Boolean>>
-
     /**
      * 删除素材
      */
@@ -205,6 +198,13 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Shop/shop_todo")
     fun getToDo(@Field("shop_id") shop_id: Long): Observable<BaseResponse<Todo>>
+
+    /**
+     * 我的地址
+     */
+    @FormUrlEncoded
+    @POST("User/my_address")
+    fun getAddress(@Field("shop_id") shop_id: Long): Observable<BaseResponse<Address>>
 
     //==============================================================================================
     /**

@@ -11,10 +11,10 @@ import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.*
+import com.qiushi.wechatshop.util.permission.HiPermission
+import com.qiushi.wechatshop.util.permission.PermissionCallback
 import com.qiushi.wechatshop.view.search.MaterialSearchView
 import kotlinx.android.synthetic.main.activity_setting.*
-import me.weyye.hipermission.HiPermission
-import me.weyye.hipermission.PermissionCallback
 import java.io.File
 
 /**

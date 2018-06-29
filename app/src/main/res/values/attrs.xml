@@ -240,4 +240,14 @@
         <attr name="android:textColorHint" />
         <attr name="android:inputType" />
     </declare-styleable>
+
+    <!-- Permission -->
+    <attr name="PermissionBackround" format="reference" />
+    <attr name="PermissionTitleColor" format="color" />
+    <attr name="PermissionMsgColor" format="color" />
+    <attr name="PermissionItemTextColor" format="color" />
+    <attr name="PermissionButtonTextColor" format="color" />
+    <attr name="PermissionButtonBackground" format="reference" />
+    <attr name="PermissionBgFilterColor" format="color" />
+    <attr name="PermissionIconFilterColor" format="color" />
 </resources>

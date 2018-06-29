@@ -23,11 +23,11 @@ import com.qiushi.wechatshop.util.*
 import com.qiushi.wechatshop.util.oss.Error
 import com.qiushi.wechatshop.util.oss.OnUploadListener
 import com.qiushi.wechatshop.util.oss.UploadManager
+import com.qiushi.wechatshop.util.permission.HiPermission
+import com.qiushi.wechatshop.util.permission.PermissionCallback
+import com.qiushi.wechatshop.util.permission.PermissionItem
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.activity_decorate.*
-import me.weyye.hipermission.HiPermission
-import me.weyye.hipermission.PermissionCallback
-import me.weyye.hipermission.PermissionItem
 import java.io.File
 
 /**

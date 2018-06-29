@@ -26,6 +26,5 @@ class AddGoodsAdapter(data: List<Content>) : BaseQuickAdapter<Content, BaseViewH
                     RoundedCornersTransformation(DensityUtils.dp2px(10.toFloat()), 0, RoundedCornersTransformation.CornerType.LEFT))
             helper?.addOnClickListener(R.id.iv_remove)
         }
-
     }
 }

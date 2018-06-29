@@ -126,6 +126,11 @@
             android:exported="false"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".util.permission.PermissionActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/CustomTheme_Dialog" />
         <!-- S8 S8+ -->
         <meta-data
             android:name="android.max_aspect"
@@ -158,15 +163,15 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.manage.AddGoodsActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".ui.manage.EditTextActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.manage.AddGoodsNextActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".ui.order.AddOrderActivity"
             android:screenOrientation="portrait" />

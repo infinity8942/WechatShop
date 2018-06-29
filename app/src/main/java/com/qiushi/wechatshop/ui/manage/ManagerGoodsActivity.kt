@@ -1,6 +1,5 @@
 package com.qiushi.wechatshop.ui.manage
 
-
 import android.content.Context
 import android.content.Intent
 import android.support.design.widget.BottomSheetDialog
@@ -13,7 +12,6 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
@@ -33,9 +31,7 @@ import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.search.MaterialSearchView
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_manager_goods.*
-
 import java.util.*
-
 
 class ManagerGoodsActivity : BaseActivity() {
     var type = 0
@@ -49,7 +45,6 @@ class ManagerGoodsActivity : BaseActivity() {
     var keyword: String = ""
     var tv_header_title = "订单管理" //标题名
     private lateinit var mFilterDialog: BottomSheetDialog //底部Dialog
-
 
     private var tvAll: TextView? = null
     private var ivAll: ImageView? = null
@@ -202,7 +197,6 @@ class ManagerGoodsActivity : BaseActivity() {
                     }
                 })
         addSubscription(subscribeWith)
-
     }
 
 
@@ -321,7 +315,7 @@ class ManagerGoodsActivity : BaseActivity() {
                                 page = 1
                                 getData()
                                 //通知首页刷新
-                                RxBus.getInstance().post(Notifycation( Constants.MANAGER_GOODS, 0L))
+                                RxBus.getInstance().post(Notifycation(Constants.MANAGER_GOODS, 0L))
                             }
                             TYPE_XJ -> {
                                 if (t) {
@@ -332,7 +326,7 @@ class ManagerGoodsActivity : BaseActivity() {
                                 page = 1
                                 getData()
                                 //通知首页刷新
-                                RxBus.getInstance().post(Notifycation( Constants.MANAGER_GOODS, 0L))
+                                RxBus.getInstance().post(Notifycation(Constants.MANAGER_GOODS, 0L))
                             }
                             else -> {
                                 if (t) {
@@ -343,7 +337,7 @@ class ManagerGoodsActivity : BaseActivity() {
                                 page = 1
                                 getData()
                                 //通知首页刷新
-                                RxBus.getInstance().post(Notifycation( Constants.MANAGER_GOODS, 0L))
+                                RxBus.getInstance().post(Notifycation(Constants.MANAGER_GOODS, 0L))
                             }
                         }
                     }
