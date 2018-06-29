@@ -14,8 +14,8 @@ object Constants {
     const val GOODS_DETAIL = "http://wechatshop.qiushizixun.com/H5/detail/id/"
     const val SHOPCART = "http://wechatshop.qiushizixun.com/H5/car"
     const val ADDRESS = "http://wechatshop.qiushizixun.com/H5/address"
-    const val EXPRESS = "http://wechatshop.qiushizixun.com/H5/address"//TODO 物流H5
-    const val PROTOCOL = "http://wechatshop.qiushizixun.com/H5/address"//TODO 协议H5
+    const val EXPRESS = "http://wechatshop.qiushizixun.com/H5/logistics/number/"
+    const val PROTOCOL = "http://wechatshop.qiushizixun.com/H5/notice"
 
     //OSS
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"
@@ -60,5 +60,5 @@ object Constants {
     const val ADD_IMG_REFRESH = 1012// 添加产品 刷新回调
     const val OPEN_SHOP_OR_ZX = 1013//开店 或者 装修
     const val MANAGER_GOODS = 1014//产品管理 置顶删除 等 刷新
-    const  val MOMENT_FRESH=1015//素材刷新
+    const val MOMENT_FRESH = 1015//素材刷新
 }

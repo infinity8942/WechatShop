@@ -25,9 +25,8 @@ import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
-
 import kotlinx.android.synthetic.main.activity_phone.*
-import java.util.HashMap
+import java.util.*
 import java.util.regex.Pattern
 
 /**
@@ -122,7 +121,6 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
         }
         val callback: Callback<User> = LoginCallback()
         callback.onStart()
-        //TODO 手机号登录接口
         val disposable = RetrofitManager.service.loginPhone(phone.text.toString().trim(),
                 password.text.toString().trim(), Push.getDeviceToken(), 1)
                 .compose(SchedulerUtils.ioToMain())

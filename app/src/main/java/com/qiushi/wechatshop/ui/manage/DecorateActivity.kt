@@ -100,7 +100,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        val disposable = RetrofitManager.service.editShop(name, oss_id, shop_id, bg_oss_id)//TODO oss id
+        val disposable = RetrofitManager.service.editShop(name, oss_id, shop_id, bg_oss_id)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<String>() {
                     override fun onHandleSuccess(t: String) {
