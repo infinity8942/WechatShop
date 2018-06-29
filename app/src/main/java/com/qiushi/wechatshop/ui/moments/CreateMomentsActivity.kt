@@ -7,7 +7,7 @@ import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.GridLayoutManager
 import android.util.Log
 import android.view.View
-import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
+import cnn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.gson.Gson
 import com.qiushi.wechatshop.Constants

@@ -10,7 +10,7 @@ import android.support.v4.content.res.ResourcesCompat
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
+import cnn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
