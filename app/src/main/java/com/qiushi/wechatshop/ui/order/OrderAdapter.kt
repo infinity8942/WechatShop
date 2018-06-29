@@ -96,7 +96,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
 
         val recyclerView: RecyclerView = helper.getView(R.id.mRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(mContext)
-        val mAdapterGoods = OrderGoodsAdapter()
+        val mAdapterGoods = OrderGoodsAdapter(isManage)
         recyclerView.adapter = mAdapterGoods
         mAdapterGoods.setNewData(order.goods)
 

@@ -14,13 +14,13 @@ import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
+import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
@@ -71,12 +71,7 @@ class OrderFragment : BaseFragment() {
             val order = adapter.data[position] as Order
 
             when (view.id) {
-                R.id.layout_shop -> {
-                    val intent = Intent(activity, MainActivity::class.java)
-                    intent.putExtra("jumpToShop", order.shop.id)
-                    startActivity(intent)
-                    (activity as OrderActivity).finish()
-                }
+                R.id.layout_shop -> (activity as OrderActivity).returnToShop(order.shop.id)
                 R.id.action ->
                     when (order.status) {
                         Constants.READY_TO_PAY ->
@@ -100,7 +95,11 @@ class OrderFragment : BaseFragment() {
                             }
                         Constants.DONE ->
                             if (!(activity as OrderActivity).isManage) {//再次购买
-
+                                if (order.goods.size == 1) {
+                                    goToGoodsDetails(order.goods[0])
+                                } else {
+                                    (activity as OrderActivity).returnToShop(order.shop.id)
+                                }
                             }
                     }
                 R.id.action1 ->
@@ -394,13 +393,23 @@ class OrderFragment : BaseFragment() {
     }
 
     /**
+     * 跳转商品详情页
+     */
+    private fun goToGoodsDetails(goods: Goods) {
+        val intent = Intent(activity, WebActivity::class.java)
+        intent.putExtra(WebActivity.PARAM_TITLE, goods.name)
+        intent.putExtra(WebActivity.PARAM_URL, Constants.GOODS_DETAIL + goods.id)
+        startActivity(intent)
+    }
+
+    /**
      * 跳转订单详情页
      */
     private fun goToOrderDetails(id: Long) {
         val intent = Intent(activity, OrderDetailActivity::class.java)
         intent.putExtra("id", id)
         intent.putExtra("isManage", (activity as OrderActivity).isManage)
-        startActivity(intent)
+        startActivityForResult(intent, 2000)
     }
 
     /**

@@ -37,12 +37,12 @@ object Constants {
     const val WX_ID = "wx5e51e01dcf0bf531"
 
     //Order Status
-    const val READY_TO_PAY = 0
-    const val PAYED = 1
-    const val DELIVERED = 2
-    const val DONE = 3
-    const val CANCEL = 4
-    const val CUSTOM = 5
+    const val READY_TO_PAY = 0  //待付款
+    const val PAYED = 1         //待发货
+    const val DELIVERED = 2     //已发货
+    const val DONE = 3          //已完成
+    const val CANCEL = 4        //已取消
+    const val CUSTOM = 5        //自建订单
 
     //Code
     const val ADDIMG_RESUALT = 1003 //foot添加产品相册回调
