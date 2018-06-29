@@ -33,6 +33,7 @@ public class WebActivity extends SwipeBackActivity {
     public final static String PARAM_URL = "param_url";
     public final static String PARAM_TITLE = "param_title";
     private SonicSession sonicSession;
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +84,7 @@ public class WebActivity extends SwipeBackActivity {
             }
         });
 
-        WebView webView = (WebView) findViewById(R.id.webview);
+        webView = (WebView) findViewById(R.id.webview);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -140,7 +141,11 @@ public class WebActivity extends SwipeBackActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
