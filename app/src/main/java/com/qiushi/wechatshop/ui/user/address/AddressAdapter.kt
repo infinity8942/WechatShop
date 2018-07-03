@@ -18,6 +18,6 @@ class AddressAdapter : BaseQuickAdapter<Buyer, BaseViewHolder>(R.layout.item_add
         else
             helper.setGone(R.id.default_address, false)
         helper.setText(R.id.address, address.address)
-        helper.addOnClickListener(R.id.edit)
+        helper.addOnClickListener(R.id.edit).addOnClickListener(R.id.del)
     }
 }

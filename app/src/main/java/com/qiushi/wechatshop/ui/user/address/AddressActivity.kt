@@ -1,11 +1,14 @@
 package com.qiushi.wechatshop.ui.user.address
 
 import android.content.Intent
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
+import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.Buyer
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -61,6 +64,7 @@ class AddressActivity : BaseActivity(), View.OnClickListener {
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
                 R.id.edit -> goToEditActivity(true, adapter.data[position] as Buyer)
+                R.id.del -> delAddress(position)
             }
         }
 
@@ -121,6 +125,43 @@ class AddressActivity : BaseActivity(), View.OnClickListener {
             R.id.back -> finish()
             R.id.layout_add -> goToEditActivity(false, null)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            1000 ->
+                if (resultCode == RESULT_OK) {
+                    getData()
+                }
+        }
+    }
+
+    /**
+     * 删除地址
+     */
+    private fun delAddress(position: Int) {
+        val dialog = AlertDialog.Builder(this)
+                .setMessage(if (mAdapter.data.size == 1) "您确定要删除最后一条地址吗？" else "您确定要删除该地址吗？")
+                .setPositiveButton("删除") { _, _ ->
+                    val disposable = RetrofitManager.service.delAddress((mAdapter.data[position] as Buyer).id)
+                            .compose(SchedulerUtils.ioToMain())
+                            .subscribeWith(object : BaseObserver<Boolean>() {
+                                override fun onHandleSuccess(t: Boolean) {
+                                    if (t) {
+                                        ToastUtils.showMessage("删除成功")
+                                        mAdapter.remove(position)
+                                    }
+                                }
+
+                                override fun onHandleError(error: Error) {
+                                    ToastUtils.showError(error.msg)
+                                }
+                            })
+                    addSubscription(disposable)
+                }.setNegativeButton("取消", null).create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
     }
 
     private fun goToEditActivity(isEdit: Boolean, address: Buyer?) {

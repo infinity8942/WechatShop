@@ -200,7 +200,7 @@
                 android:background="@drawable/add_goods_et_shape"
                 android:gravity="top"
                 android:hint="输入100字以内备注内容"
-                android:maxLines="1"
+                android:maxLength="100"
                 android:minHeight="72dp"
                 android:paddingLeft="12dp"
                 android:paddingTop="10dp"

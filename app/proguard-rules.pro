@@ -34,3 +34,14 @@
 -keepattributes InnerClasses,Signature
 -keepattributes *Annotation*
 -keep class cn.qqtheme.framework.entity.** { *;}
+
+#umeng
+-dontwarn com.umeng.**
+-dontwarn com.taobao.**
+-dontwarn anet.channel.**
+-dontwarn anetwork.channel.**
+-dontwarn org.android.**
+-dontwarn org.apache.thrift.**
+-dontwarn com.xiaomi.**
+-dontwarn com.huawei.**
+-dontwarn com.meizu.**

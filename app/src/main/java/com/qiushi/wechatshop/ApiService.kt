@@ -210,7 +210,7 @@ interface ApiService {
     @FormUrlEncoded
     @POST("User/address_edit")
     fun addAddress(@Field("name") name: String, @Field("phone") phone: String, @Field("area") area: String, @Field("address") address: String,
-                   @Field("is_default") is_default: Boolean): Observable<BaseResponse<Boolean>>
+                   @Field("is_default") is_default: Boolean): Observable<BaseResponse<Buyer>>
 
     /**
      * 编辑地址
@@ -218,7 +218,7 @@ interface ApiService {
     @FormUrlEncoded
     @POST("User/address_edit/address_id")
     fun editAddress(@Field("name") name: String, @Field("phone") phone: String, @Field("area") area: String, @Field("address") address: String,
-                    @Field("is_default") is_default: Boolean, @Field("address_id") shop_id: Long): Observable<BaseResponse<Boolean>>
+                    @Field("is_default") is_default: Boolean, @Field("address_id") shop_id: Long): Observable<BaseResponse<Buyer>>
 
     /**
      * 删除地址

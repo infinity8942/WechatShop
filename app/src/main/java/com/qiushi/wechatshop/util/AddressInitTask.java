@@ -1,7 +1,6 @@
 package com.qiushi.wechatshop.util;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.annotation.WorkerThread;
 
@@ -19,7 +18,6 @@ import cn.qqtheme.framework.util.ConvertUtils;
  */
 public class AddressInitTask extends AsyncTask<Void, Void, ArrayList<Province>> {
     private WeakReference<Activity> activityReference;// 2018/2/1 StaticFieldLeak
-    private ProgressDialog dialog;
     private InitCallback callback;
     private ArrayList<Province> provinces;
 
@@ -30,10 +28,6 @@ public class AddressInitTask extends AsyncTask<Void, Void, ArrayList<Province>> 
 
     @Override
     protected void onPreExecute() {
-        Activity activity = activityReference.get();
-        if (activity != null) {
-            dialog = ProgressDialog.show(activity, null, "正在初始化数据...", true, true);
-        }
     }
 
     @Override
@@ -53,9 +47,6 @@ public class AddressInitTask extends AsyncTask<Void, Void, ArrayList<Province>> 
 
     @Override
     protected void onPostExecute(ArrayList<Province> result) {
-        if (dialog != null) {
-            dialog.dismiss();
-        }
         if (result == null || result.size() == 0) {
             callback.onDataInitFailure();
         } else {
@@ -77,15 +68,13 @@ public class AddressInitTask extends AsyncTask<Void, Void, ArrayList<Province>> 
             }
             String code = codeAndName[0];
             String name = codeAndName[1];
-            if (code.substring(2, 6).equals("0000")) {
-                //省份
+            if (code.substring(2, 6).equals("0000")) { //省份
                 Province province = new Province();
                 province.setAreaId(code);
                 province.setAreaName(name);
                 province.setCities(new ArrayList<City>());
                 provinces.add(province);
-            } else if (code.substring(4, 6).equals("00")) {
-                //地市
+            } else if (code.substring(4, 6).equals("00")) { //地市
                 Province province = findProvinceByCode(code.substring(0, 2));
                 if (province != null) {
                     City city = new City();
@@ -94,8 +83,7 @@ public class AddressInitTask extends AsyncTask<Void, Void, ArrayList<Province>> 
                     city.setCounties(new ArrayList<County>());
                     province.getCities().add(city);
                 }
-            } else {
-                //区县
+            } else { //区县
                 City city = findCityByCode(code.substring(0, 2), code.substring(2, 4));
                 if (city != null) {
                     County county = new County();
