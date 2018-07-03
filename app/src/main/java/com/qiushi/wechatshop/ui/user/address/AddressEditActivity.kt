@@ -142,10 +142,10 @@ class AddressEditActivity : BaseActivity(), View.OnClickListener {
 
         val observer = if (isEdit) {//编辑
             RetrofitManager.service.editAddress(name.text.toString().trim(), phone.text.toString().trim(),
-                    area.text.toString().trim(), address.text.toString().trim(), isDefault, buyer!!.id)
+                    area.text.toString().trim(), address.text.toString().trim(), if (isDefault) 1 else 0, buyer!!.id)
         } else {//添加
             RetrofitManager.service.addAddress(name.text.toString().trim(), phone.text.toString().trim(),
-                    area.text.toString().trim(), address.text.toString().trim(), isDefault)
+                    area.text.toString().trim(), address.text.toString().trim(), if (isDefault) 1 else 0)
         }
 
         val disposable = observer.compose(SchedulerUtils.ioToMain())
