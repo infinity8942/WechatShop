@@ -53,7 +53,6 @@ class UserFragment : BaseFragment(), View.OnClickListener {
             R.id.deliver -> goToOrder(2)
             R.id.finish -> goToOrder(4)
             R.id.all -> goToOrder(0)
-
             R.id.layout_cart -> {
                 val intent = Intent(activity, WebActivity::class.java)
                 intent.putExtra(WebActivity.PARAM_TITLE, "我的购物车")

@@ -71,12 +71,12 @@ interface ApiService {
     @POST("Order/shipping_order")
     fun markAsDeliver(@Field("order_id") order_id: Long, @Field("express_number") express_number: String): Observable<BaseResponse<Boolean>>
 
-    /**
-     * 提醒支付
-     */
-    @FormUrlEncoded
-    @POST("Order/remind_pay")
-    fun notifyToPay(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
+//    /**
+//     * 提醒支付
+//     */
+//    @FormUrlEncoded
+//    @POST("Order/remind_pay")
+//    fun notifyToPay(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
      * 提醒发货

@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_toRightOf="@id/ic_express"
-                    android:text="已签收，本人签收"
+                    android:text="物流信息"
                     android:textColor="@color/color_item_text"
                     android:textSize="14sp" />
 
@@ -157,7 +157,6 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="3dp"
                     android:layout_toRightOf="@id/ic_express"
-                    android:text="2018-05-21 12:31:39"
                     android:textColor="@color/color_date"
                     android:textSize="12sp" />
 
@@ -416,7 +415,7 @@
                 android:id="@+id/layout_number"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
-                android:paddingLeft="38dp"
+                android:paddingLeft="16dp"
                 android:paddingRight="16dp">
 
                 <TextView

@@ -75,12 +75,14 @@ class OrderFragment : BaseFragment() {
                 R.id.action ->
                     when (order.status) {
                         Constants.READY_TO_PAY ->
-                            if ((activity as OrderActivity).isManage) {//提醒支付
-                                if (order.remind_pay == 0) {
-                                    notifyToPay(order.id, position)
-                                } else {
-                                    ToastUtils.showWarning("已发出过提醒，请等待买家支付")
-                                }
+                            if (!(activity as OrderActivity).isManage) {//立即支付
+                                goToOrderDetails(true, (adapter.data[position] as Order).id)
+                            } else {//提醒支付
+//                                if (order.remind_pay == 0) {
+//                                    notifyToPay(order.id, position)
+//                                } else {
+//                                    ToastUtils.showWarning("已发出过提醒，请等待买家支付")
+//                                }
                             }
                         Constants.PAYED ->
                             if ((activity as OrderActivity).isManage) {//标记发货
@@ -223,31 +225,31 @@ class OrderFragment : BaseFragment() {
         addSubscription(disposable)
     }
 
-    /**
-     * 提醒支付
-     */
-    private fun notifyToPay(order_id: Long, position: Int) {
-        val disposable = RetrofitManager.service.notifyToPay(order_id)
-                .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<Boolean>() {
-                    override fun onHandleSuccess(t: Boolean) {
-                        if (t) {
-                            ToastUtils.showMessage("已发送提醒")
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
-                        }
-                    }
-
-                    override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
-                        if (error.code == 1004) {
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
-                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
-                        }
-                    }
-                })
-        addSubscription(disposable)
-    }
+//    /**
+//     * 提醒支付
+//     */
+//    private fun notifyToPay(order_id: Long, position: Int) {
+//        val disposable = RetrofitManager.service.notifyToPay(order_id)
+//                .compose(SchedulerUtils.ioToMain())
+//                .subscribeWith(object : BaseObserver<Boolean>() {
+//                    override fun onHandleSuccess(t: Boolean) {
+//                        if (t) {
+//                            ToastUtils.showMessage("已发送提醒")
+//                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
+//                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+//                        }
+//                    }
+//
+//                    override fun onHandleError(error: Error) {
+//                        ToastUtils.showError(error.msg)
+//                        if (error.code == 1004) {
+//                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
+//                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
+//                        }
+//                    }
+//                })
+//        addSubscription(disposable)
+//    }
 
     /**
      * 提醒发货
@@ -414,8 +416,16 @@ class OrderFragment : BaseFragment() {
      * 跳转订单详情页
      */
     private fun goToOrderDetails(id: Long) {
+        goToOrderDetails(false, id)
+    }
+
+    /**
+     * 跳转订单详情页
+     */
+    private fun goToOrderDetails(payNow: Boolean, id: Long) {
         val intent = Intent(activity, OrderDetailActivity::class.java)
         intent.putExtra("id", id)
+        intent.putExtra("payNow", payNow)
         intent.putExtra("isManage", (activity as OrderActivity).isManage)
         startActivityForResult(intent, 2000)
     }

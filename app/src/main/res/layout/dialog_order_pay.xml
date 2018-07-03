@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:text="确认付款"
+        android:textColor="@color/color_item_text"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="29dp"
+        android:layout_height="29dp"
+        android:layout_marginLeft="16dp"
+        android:scaleType="centerInside"
+        android:src="@mipmap/ic_close_small" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/close"
+        android:layout_marginTop="7dp"
+        android:background="@color/line" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:text="2323"
+        android:textColor="@color/color_item_text"
+        android:textSize="17sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/price"
+        android:layout_toLeftOf="@id/price"
+        android:text="￥"
+        android:textColor="@color/color_item_text"
+        android:textSize="13sp" />
+
+    <!-- WX ALI-->
+    <LinearLayout
+        android:id="@+id/layout_pay_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/price"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/layout_wx"
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:drawableLeft="@mipmap/ic_order_wx"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:text="微信支付"
+                android:textColor="@color/black_90"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rb_wx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:button="@drawable/selector_radiobutton"
+                android:checked="true" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line" />
+
+        <RelativeLayout
+            android:id="@+id/layout_ali"
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:drawableLeft="@mipmap/ic_order_ali"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:text="支付宝支付"
+                android:textColor="@color/black_90"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rb_ali"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:button="@drawable/selector_radiobutton"
+                android:checked="false" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/pay"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/layout_pay_type"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/bg_confirm"
+        android:gravity="center"
+        android:text="确认支付"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+</RelativeLayout>
