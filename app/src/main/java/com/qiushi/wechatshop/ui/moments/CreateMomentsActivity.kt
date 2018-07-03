@@ -3,6 +3,7 @@ package com.qiushi.wechatshop.ui.moments
 import android.Manifest
 import android.content.Intent
 import android.os.Environment
+import android.os.Handler
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.GridLayoutManager
 import android.util.Log
@@ -50,7 +51,7 @@ class CreateMomentsActivity : BaseActivity() {
     var gson = Gson()
     var mJson: String = ""
     var mNineImage = NineImage()
-
+    private var mHandler = Handler()
     private val mGrideManager by lazy {
         GridLayoutManager(this, 3)
     }
@@ -131,6 +132,11 @@ class CreateMomentsActivity : BaseActivity() {
                         }
                     }
                 }
+                if (size == 0) {
+                    ToastUtils.showError("未添加图片")
+                    return
+                }
+
                 if (id != 0.toLong()) {
                     if (moment.images != null && moment.images!!.size > 0) {
                         for (item in moment.images!!) {
@@ -169,6 +175,8 @@ class CreateMomentsActivity : BaseActivity() {
                     addNineList
                             .filterNot { moment.images!!.contains(it) }
                             .forEach { moment.images!!.add(it) }
+                    size = moment.images!!.size
+
                     gson.toJson(moment.images)
                 } else {
                     if (size < 9) {
@@ -223,7 +231,7 @@ class CreateMomentsActivity : BaseActivity() {
                         if (moment.images!!.contains(removeAt)) {
                             moment.images!![moment.images!!.indexOf(removeAt)].is_del = 1
                         }
-                        size = mNineList.size
+                        size = mNineList.size - 1
                         mGrideAdapter.setNewData(mNineList)
                     } else {
                         val removeAt = mNineList.removeAt(position)
@@ -237,7 +245,6 @@ class CreateMomentsActivity : BaseActivity() {
                         mNineList.add(mNineImage)
                         mGrideAdapter.setNewData(mNineList)
                     }
-                    Log.e("tag", "momentsize======" + moment.images!!.size)
                 } else {
                     //新添加
                     if (size < 9) {
@@ -397,12 +404,15 @@ class CreateMomentsActivity : BaseActivity() {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            val nineImage = findPictureByFile(file!!)
-            dismissLoading()
-            if (nineImage != null) {
-                nineImage.oss_id = id
-                nineImage.type = "0"
-            }
+            mHandler.postDelayed(Runnable {
+                val nineImage = findPictureByFile(file!!)
+                dismissLoading()
+                if (nineImage != null) {
+                    nineImage.oss_id = id
+                    nineImage.type = "0"
+                }
+            }, 300)
+
         }
 
         override fun onFailure(file: File?, error: Error?) {

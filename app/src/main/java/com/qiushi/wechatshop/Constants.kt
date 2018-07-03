@@ -61,4 +61,5 @@ object Constants {
     const val OPEN_SHOP_OR_ZX = 1013//开店 或者 装修
     const val MANAGER_GOODS = 1014//产品管理 置顶删除 等 刷新
     const val MOMENT_FRESH = 1015//素材刷新
+    const val T_LOGIN = 1016//踢登录
 }

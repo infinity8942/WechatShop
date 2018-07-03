@@ -66,12 +66,12 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 
     @Override
     public void onResp(BaseResp baseResp) {
-        if (baseResp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {//登陆
-            Log.i("ansen", "微信登录操作.....");
-            SendAuth.Resp authResp = (SendAuth.Resp) baseResp;
-//            WeiXin weiXin=new WeiXin(1,resp.errCode,authResp.code);
-//            EventBus.getDefault().post(weiXin);
-        }
+//        if (baseResp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {//登陆
+//            Log.i("ansen", "微信登录操作.....");
+//            SendAuth.Resp authResp = (SendAuth.Resp) baseResp;
+////            WeiXin weiXin=new WeiXin(1,resp.errCode,authResp.code);
+////            EventBus.getDefault().post(weiXin);
+//        }
 
     }
 }

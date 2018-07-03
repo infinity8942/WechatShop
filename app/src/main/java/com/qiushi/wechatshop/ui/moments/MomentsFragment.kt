@@ -1,12 +1,24 @@
 package com.qiushi.wechatshop.ui.moments
 
 import android.content.Intent
+import android.graphics.Picture
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import cn.sharesdk.framework.Platform
+import cn.sharesdk.framework.PlatformActionListener
+import cn.sharesdk.framework.ShareSDK
+import cn.sharesdk.wechat.friends.Wechat
+import cn.sharesdk.wechat.moments.WechatMoments
+import com.google.gson.annotations.Until
+import com.mob.MobSDK.getUser
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
@@ -24,6 +36,7 @@ import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_moments.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 素材Fragment
@@ -33,9 +46,10 @@ class MomentsFragment : BaseFragment() {
     private lateinit var mAdapter: MomentsAdapter
     private lateinit var notDataView: View
     private lateinit var errorView: View
-
+    private var mPlatform: Platform? = null
     private var status = 1
     private var page = 1
+
 
     override fun getLayoutId(): Int = R.layout.fragment_moments
 
@@ -60,6 +74,7 @@ class MomentsFragment : BaseFragment() {
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
 
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
+            val moment = adapter.data[position] as Moment
             when (view.id) {
                 R.id.edit -> goToEditMoments(adapter.data[position] as Moment)
                 R.id.del -> {
@@ -71,6 +86,22 @@ class MomentsFragment : BaseFragment() {
                     dialog.show()
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
                     dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
+                }
+                R.id.share -> {
+                    //分享图片
+                    showLoading("正在分享中....")
+                    if (moment?.images != null && moment.images!!.size > 0) {
+                        var imgArrayList = arrayOfNulls<String>(moment.images!!.size)
+                        for (i in 0 until moment.images!!.size) {
+                            imgArrayList[i] = moment.images!![i].oss_url
+                        }
+                        dismissLoading()
+                        this@MomentsFragment.mPlatform = ShareSDK.getPlatform(WechatMoments.NAME)
+                        this@MomentsFragment!!.mPlatform!!.platformActionListener = platListener
+                        this@MomentsFragment!!.mPlatform!!.share(getShareParams(imgArrayList as Array<String>))
+                    } else {
+                        dismissLoading()
+                    }
                 }
             }
         }
@@ -166,12 +197,55 @@ class MomentsFragment : BaseFragment() {
 
     override fun accept(t: Notifycation?) {
         super.accept(t)
-        when(t!!.code){
-            Constants.MOMENT_FRESH->{
+        when (t!!.code) {
+            Constants.MOMENT_FRESH -> {
                 page = 1
                 lazyLoad()
             }
         }
     }
 
+    private fun getShareParams(imgArrayList: Array<String>): Platform.ShareParams {
+        val sp = Platform.ShareParams()
+        sp.shareType = Platform.SHARE_IMAGE
+        sp.imageArray = imgArrayList
+//        sp.imageUrl=Constants.GOODS_DETAIL
+//        sp.title = "df"
+
+        return sp
+    }
+
+    private val platListener = object : PlatformActionListener {
+        override fun onComplete(p0: Platform?, p1: Int, p2: HashMap<String, Any>?) {
+            mHandler.sendEmptyMessage(1)
+        }
+
+        override fun onCancel(p0: Platform?, p1: Int) {
+            mHandler.sendEmptyMessage(2)
+        }
+
+        override fun onError(p0: Platform?, p1: Int, p2: Throwable?) {
+            mHandler.sendEmptyMessage(3)
+        }
+    }
+
+    private var mHandler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            when (msg!!.what) {
+                0 -> {
+                    //错误
+                    dismissLoading()
+                }
+                1 -> {
+                    //成功
+                    dismissLoading()
+                }
+                2 -> {
+                    //取消
+                    dismissLoading()
+                }
+            }
+        }
+    }
 }

@@ -3,8 +3,11 @@ package com.qiushi.wechatshop.ui
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.view.KeyEvent
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.Notifycation
+import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.ui.login.LoginActivity
 import com.qiushi.wechatshop.ui.manage.ManageFragment
 import com.qiushi.wechatshop.ui.shop.ShopListFragment
@@ -13,6 +16,7 @@ import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
 import com.qiushi.wechatshop.view.tab.listener.TabEntity
 import kotlinx.android.synthetic.main.activity_main.*
+import xyz.bboylin.universialtoast.UniversalToast
 import java.util.*
 
 class MainActivity : BaseActivity() {
@@ -72,5 +76,17 @@ class MainActivity : BaseActivity() {
 
     fun updateCover(img: String) {
         (mFragments[1] as ShopListFragment).updateCover(img)
+    }
+
+    override fun accept(t: Notifycation?) {
+        super.accept(t)
+        when (t!!.code) {
+            Constants.T_LOGIN -> {
+                ToastUtils.showWarning("您的账号已在其它设备登录，请重新登录", UniversalToast.EMPHASIZE)
+                startActivityForResult(Intent(this, LoginActivity::class.java), 100)
+                User.logout()
+                finish()
+            }
+        }
     }
 }
