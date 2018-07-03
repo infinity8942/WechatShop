@@ -7,7 +7,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.orhanobut.logger.Logger;
+import com.qiushi.wechatshop.Constants;
 import com.qiushi.wechatshop.WAppContext;
+import com.qiushi.wechatshop.model.Notifycation;
 import com.umeng.message.IUmengCallback;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -56,6 +58,8 @@ public class Push {
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
+                        //踢登录
+                        RxBus.getInstance().post(new Notifycation(Constants.T_LOGIN, 2L));
                     }
                 });
             }

@@ -46,7 +46,7 @@ class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_mo
                     .setType(GPreviewBuilder.IndicatorType.Dot)
                     .start()
         }
-        helper.addOnClickListener(R.id.edit).addOnClickListener(R.id.del)
+        helper.addOnClickListener(R.id.edit).addOnClickListener(R.id.del).addOnClickListener(R.id.share)
     }
 
     /**

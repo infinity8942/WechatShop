@@ -221,7 +221,7 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
 //                params["brand"] = "2"
 //                params["type"] = "weixin"
 
-                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, phone,Push.getDeviceToken(),1)
+                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, phone, Push.getDeviceToken(), 1)
                         .compose(SchedulerUtils.ioToMain())
                         .subscribeWith(object : BaseObserver<User>() {
                             override fun onHandleSuccess(t: User) {
