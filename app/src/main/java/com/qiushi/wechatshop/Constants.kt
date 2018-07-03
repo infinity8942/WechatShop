@@ -13,7 +13,6 @@ object Constants {
     //H5
     const val GOODS_DETAIL = "http://wechatshop.qiushizixun.com/H5/detail/id/"
     const val SHOPCART = "http://wechatshop.qiushizixun.com/H5/car"
-    const val ADDRESS = "http://wechatshop.qiushizixun.com/H5/address"
     const val EXPRESS = "http://wechatshop.qiushizixun.com/H5/logistics/number/"
     const val PROTOCOL = "http://wechatshop.qiushizixun.com/H5/notice"
 

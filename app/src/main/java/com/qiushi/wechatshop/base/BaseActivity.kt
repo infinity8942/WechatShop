@@ -6,6 +6,7 @@ import android.view.View
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.view.LoadingDialog
+import com.umeng.message.PushAgent
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
@@ -21,6 +22,7 @@ abstract class BaseActivity : SwipeBackActivity(), View.OnClickListener, Consume
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        PushAgent.getInstance(this).onAppStart()
         setContentView(layoutId())
         notification = Notifycation.register(this)
         getParams(intent)

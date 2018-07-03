@@ -4,13 +4,16 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
 import android.view.View
-import android.widget.EditText
+import android.widget.*
+import com.alipay.sdk.app.PayTask
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.GlideApp
 import com.qiushi.wechatshop.R
@@ -23,8 +26,15 @@ import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
+import com.qiushi.wechatshop.ui.pay.PayResultActivity
 import com.qiushi.wechatshop.util.*
 import com.qiushi.wechatshop.util.web.WebActivity
+import com.qiushi.wechatshop.wxapi.WXPayEntryActivity
+import com.tencent.mm.opensdk.modelpay.PayReq
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observers.DisposableObserver
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_order_detail.*
 
 /**
@@ -38,6 +48,15 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     private var order: Order? = null
     private var orderID: Long = 0
     private lateinit var mAdapter: OrderGoodsAdapter
+    //pay
+    private lateinit var mPayDialog: BottomSheetDialog //底部Dialog
+    private var priceTv: TextView? = null
+    private var close: ImageView? = null
+    private var layout_wx: RelativeLayout? = null
+    private var layout_ali: RelativeLayout? = null
+    private var rb_wx: RadioButton? = null
+    private var rb_ali: RadioButton? = null
+    private var pay: TextView? = null
 
     override fun layoutId(): Int = R.layout.activity_order_detail
 
@@ -53,6 +72,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         mAdapter = OrderGoodsAdapter(isManage)
         mRecyclerView.adapter = mAdapter
 
+        initPayDialog()
+
         back.setOnClickListener(this)
         copy.setOnClickListener(this)
         phone.setOnClickListener(this)
@@ -63,6 +84,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         mAdapter.setOnItemClickListener { adapter, _, position ->
             goToGoodsDetails(adapter.data[position] as Goods)
         }
+
+        if (intent.getBooleanExtra("payNow", false))//立即支付
+            showPayDialog()
     }
 
     override fun getData() {
@@ -132,7 +156,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
             Constants.READY_TO_PAY ->
                 if (isManage) {
                     status.text = "等待买家付款"
-                    action.text = "提醒支付"
+//                    action.text = "提醒支付"
+                    action.visibility = View.GONE
                     action1.visibility = View.VISIBLE
                     action1.text = "修改价格"
                     action2.visibility = View.VISIBLE
@@ -200,12 +225,14 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
             R.id.action ->
                 when (order!!.status) {
                     Constants.READY_TO_PAY ->
-                        if (isManage) {//提醒支付
-                            if (order!!.remind_pay == 0) {
-                                notifyToPay(order!!.id)
-                            } else {
-                                ToastUtils.showWarning("已发出过提醒，请等待买家支付")
-                            }
+                        if (!isManage) {//立即支付
+                            showPayDialog()
+                        } else {//提醒支付
+//                            if (order!!.remind_pay == 0) {
+//                                notifyToPay(order!!.id)
+//                            } else {
+//                                ToastUtils.showWarning("已发出过提醒，请等待买家支付")
+//                            }
                         }
                     Constants.PAYED ->
                         if (isManage) {//标记发货
@@ -266,6 +293,24 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                             goToExpress(order!!.id)
                         }
                 }
+        //pay
+            R.id.close -> mPayDialog.dismiss()
+            R.id.layout_wx -> {
+                rb_wx!!.isChecked = true
+                rb_ali!!.isChecked = false
+            }
+            R.id.layout_ali -> {
+                rb_wx!!.isChecked = false
+                rb_ali!!.isChecked = true
+            }
+            R.id.pay -> {
+                if (rb_wx!!.isChecked) {
+                    getWechatPay(order!!.numbers)
+                } else {
+                    getAliPay(order!!.numbers)
+                }
+                mPayDialog.dismiss()
+            }
         }
     }
 
@@ -290,31 +335,31 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         addSubscription(disposable)
     }
 
-    /**
-     * 提醒支付
-     */
-    private fun notifyToPay(order_id: Long) {
-        val disposable = RetrofitManager.service.notifyToPay(order_id)
-                .compose(SchedulerUtils.ioToMain())
-                .subscribeWith(object : BaseObserver<Boolean>() {
-                    override fun onHandleSuccess(t: Boolean) {
-                        if (t) {
-                            ToastUtils.showMessage("已发送提醒")
-                            action.text = "已提醒"
-                            action.isEnabled = false
-                        }
-                    }
-
-                    override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
-                        if (error.code == 1004) {
-                            action.text = "已提醒"
-                            action.isEnabled = false
-                        }
-                    }
-                })
-        addSubscription(disposable)
-    }
+//    /**
+//     * 提醒支付
+//     */
+//    private fun notifyToPay(order_id: Long) {
+//        val disposable = RetrofitManager.service.notifyToPay(order_id)
+//                .compose(SchedulerUtils.ioToMain())
+//                .subscribeWith(object : BaseObserver<Boolean>() {
+//                    override fun onHandleSuccess(t: Boolean) {
+//                        if (t) {
+//                            ToastUtils.showMessage("已发送提醒")
+//                            action.text = "已提醒"
+//                            action.isEnabled = false
+//                        }
+//                    }
+//
+//                    override fun onHandleError(error: Error) {
+//                        ToastUtils.showError(error.msg)
+//                        if (error.code == 1004) {
+//                            action.text = "已提醒"
+//                            action.isEnabled = false
+//                        }
+//                    }
+//                })
+//        addSubscription(disposable)
+//    }
 
     /**
      * 提醒发货
@@ -465,6 +510,104 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
+    }
+
+    private fun initPayDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_order_pay, null)
+        priceTv = dialogView.findViewById(R.id.price)
+        close = dialogView.findViewById(R.id.close)
+        layout_wx = dialogView.findViewById(R.id.layout_wx)
+        layout_ali = dialogView.findViewById(R.id.layout_ali)
+        rb_wx = dialogView.findViewById(R.id.rb_wx)
+        rb_ali = dialogView.findViewById(R.id.rb_ali)
+        pay = dialogView.findViewById(R.id.pay)
+
+        close!!.setOnClickListener(this)
+        layout_wx!!.setOnClickListener(this)
+        layout_ali!!.setOnClickListener(this)
+        pay!!.setOnClickListener(this)
+
+        mPayDialog = BottomSheetDialog(this)
+        mPayDialog.setContentView(dialogView)
+    }
+
+    private fun showPayDialog() {
+        mPayDialog.show()
+    }
+
+    /**
+     * 微信
+     */
+    private fun getWechatPay(numbers: String) {
+        val disposable = RetrofitManager.service.getWechatPay(numbers)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : BaseObserver<PayReq>() {
+                    override fun onHandleSuccess(payReq: PayReq) {
+                        if (null != payReq) {
+                            if (!WXPayEntryActivity.pay(applicationContext, payReq)) {
+                                ToastUtils.showWarning("未安装微信客户端")
+                            }
+                        }
+                    }
+
+                    override fun onHandleError(e: Error) {
+                        ToastUtils.showError(e.msg)
+                    }
+                })
+        addSubscription(disposable)
+    }
+
+    /**
+     * 支付宝
+     */
+    private fun getAliPay(numbers: String) {
+        val disposable = RetrofitManager.service.getAliPay(numbers)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .flatMap { s ->
+                    val pay = PayTask(this@OrderDetailActivity)
+                    Observable.just(pay.payV2(s.data, true))
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableObserver<Map<String, String>>() {
+                    override fun onNext(map: Map<String, String>) {
+                        Logger.d("aliResp status = " + map["resultStatus"])
+                        Logger.d("aliResp result = " + map["result"])
+                        Logger.d("aliResp memo = " + map["memo"])
+
+                        when (map["resultStatus"]) {
+                            "9000" -> startActivity(Intent(this@OrderDetailActivity, PayResultActivity::class.java))
+                            "8000", "6004" -> {
+                                ToastUtils.showError("支付状态异常")
+                                startActivity(Intent(this@OrderDetailActivity, PayResultActivity::class.java))
+                            }
+                            "4000" -> startActivity(Intent(this@OrderDetailActivity, PayResultActivity::class.java))
+                            "5000" -> ToastUtils.showWarning("重复请求")
+                            "6001" -> ToastUtils.showWarning("您已取消支付")
+                            "6002" -> ToastUtils.showError("网络错误")
+                            else -> {
+                                ToastUtils.showError("支付错误")
+                                startActivity(Intent(this@OrderDetailActivity, PayResultActivity::class.java))
+                            }
+                        }//PayResultActivity.SUCCESS
+                        //PayResultActivity.FAILED
+                        //PayResultActivity.FAILED
+                        //PayResultActivity.FAILED
+                    }
+
+                    override fun onError(e: Throwable) {
+                        if (e != null) {
+                            e.printStackTrace()
+                            ToastUtils.showError(e.message)
+                        } else {
+                            ToastUtils.showError("获取订单信息失败，请重试")
+                        }
+                    }
+
+                    override fun onComplete() {}
+                })
+        addSubscription(disposable)
     }
 
     /**

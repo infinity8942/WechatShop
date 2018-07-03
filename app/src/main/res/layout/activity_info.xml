@@ -6,7 +6,7 @@
     android:background="@color/contentBackground"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".ui.user.InfoActivity">
+    tools:context=".ui.user.setting.InfoActivity">
 
     <RelativeLayout
         android:id="@+id/toolbar"

@@ -1,6 +1,5 @@
 package com.qiushi.wechatshop
 
-import android.location.Address
 import com.qiushi.wechatshop.model.*
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.util.oss.UploadFile
@@ -72,12 +71,12 @@ interface ApiService {
     @POST("Order/shipping_order")
     fun markAsDeliver(@Field("order_id") order_id: Long, @Field("express_number") express_number: String): Observable<BaseResponse<Boolean>>
 
-    /**
-     * 提醒支付
-     */
-    @FormUrlEncoded
-    @POST("Order/remind_pay")
-    fun notifyToPay(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
+//    /**
+//     * 提醒支付
+//     */
+//    @FormUrlEncoded
+//    @POST("Order/remind_pay")
+//    fun notifyToPay(@Field("order_id") order_id: Long): Observable<BaseResponse<Boolean>>
 
     /**
      * 提醒发货
@@ -202,9 +201,31 @@ interface ApiService {
     /**
      * 我的地址
      */
-    @FormUrlEncoded
     @POST("User/my_address")
-    fun getAddress(@Field("shop_id") shop_id: Long): Observable<BaseResponse<Address>>
+    fun getAddress(): Observable<BaseResponse<ArrayList<Buyer>>>
+
+    /**
+     * 添加地址
+     */
+    @FormUrlEncoded
+    @POST("User/address_edit")
+    fun addAddress(@Field("name") name: String, @Field("phone") phone: String, @Field("area") area: String, @Field("address") address: String,
+                   @Field("is_default") is_default: Int): Observable<BaseResponse<Buyer>>
+
+    /**
+     * 编辑地址
+     */
+    @FormUrlEncoded
+    @POST("User/address_edit/address_id")
+    fun editAddress(@Field("name") name: String, @Field("phone") phone: String, @Field("area") area: String, @Field("address") address: String,
+                    @Field("is_default") is_default: Int, @Field("address_id") shop_id: Long): Observable<BaseResponse<Buyer>>
+
+    /**
+     * 删除地址
+     */
+    @FormUrlEncoded
+    @POST("User/address_delete")
+    fun delAddress(@Field("address_id") shop_id: Long): Observable<BaseResponse<Boolean>>
 
     //==============================================================================================
     /**

@@ -19,9 +19,6 @@ import com.umeng.message.entity.UMessage;
 
 import static android.os.Looper.getMainLooper;
 
-/**
- * Created by 王冰 on 2017/2/9.
- */
 public class Push {
     private static String DeviceToken;
 
@@ -79,8 +76,6 @@ public class Push {
 
             @Override
             public void openUrl(Context context, final UMessage uMessage) {
-
-
                 if (uMessage.extra != null) {
 
                 }
