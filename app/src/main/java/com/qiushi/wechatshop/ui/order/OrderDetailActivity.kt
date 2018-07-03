@@ -150,6 +150,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
 
         amount.text = "共计" + t.num + "件商品"
         price.text = "￥" + t.price
+        if (null != priceTv) {
+            priceTv!!.text = t.price.toString()
+        }
         number.text = "订单编号：" + t.numbers
         create_time.text = "创建时间：" + DateUtil.getMillon(t.create_time)
         when (t.status) {
