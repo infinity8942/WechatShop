@@ -1,24 +1,18 @@
 package com.qiushi.wechatshop.ui.moments
 
 import android.content.Intent
-import android.graphics.Picture
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import cn.sharesdk.framework.Platform
 import cn.sharesdk.framework.PlatformActionListener
 import cn.sharesdk.framework.ShareSDK
-import cn.sharesdk.wechat.friends.Wechat
 import cn.sharesdk.wechat.moments.WechatMoments
-import com.google.gson.annotations.Until
-import com.mob.MobSDK.getUser
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
@@ -36,20 +30,17 @@ import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_moments.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * 素材Fragment
  */
 class MomentsFragment : BaseFragment() {
-
     private lateinit var mAdapter: MomentsAdapter
     private lateinit var notDataView: View
     private lateinit var errorView: View
     private var mPlatform: Platform? = null
     private var status = 1
     private var page = 1
-
 
     override fun getLayoutId(): Int = R.layout.fragment_moments
 
@@ -90,15 +81,15 @@ class MomentsFragment : BaseFragment() {
                 R.id.share -> {
                     //分享图片
                     showLoading("正在分享中....")
-                    if (moment?.images != null && moment.images!!.size > 0) {
-                        var imgArrayList = arrayOfNulls<String>(moment.images!!.size)
+                    if (moment.images != null && moment.images!!.size > 0) {
+                        val imgArrayList = arrayOfNulls<String>(moment.images!!.size)
                         for (i in 0 until moment.images!!.size) {
                             imgArrayList[i] = moment.images!![i].oss_url
                         }
                         dismissLoading()
                         this@MomentsFragment.mPlatform = ShareSDK.getPlatform(WechatMoments.NAME)
-                        this@MomentsFragment!!.mPlatform!!.platformActionListener = platListener
-                        this@MomentsFragment!!.mPlatform!!.share(getShareParams(imgArrayList as Array<String>))
+                        this@MomentsFragment.mPlatform!!.platformActionListener = platListener
+                        this@MomentsFragment.mPlatform!!.share(getShareParams(imgArrayList as Array<String>))
                     } else {
                         dismissLoading()
                     }
@@ -211,7 +202,6 @@ class MomentsFragment : BaseFragment() {
         sp.imageArray = imgArrayList
 //        sp.imageUrl=Constants.GOODS_DETAIL
 //        sp.title = "df"
-
         return sp
     }
 
