@@ -94,8 +94,8 @@ class MomentsFragment : BaseFragment() {
                 R.id.share -> {
                     //分享图片
 
-                    PosterXQImgCache.getInstance().removeImgCache() //先清空路径缓存
-                    ImgFileUtils.deleteDir()//删除本地缓存的图片
+//                    PosterXQImgCache.getInstance().removeImgCache() //先清空路径缓存
+//                    ImgFileUtils.deleteDir()//删除本地缓存的图片
                     if (moment?.images != null && moment.images!!.size > 0) {
 
 //                        for (item in moment.images!!) {
