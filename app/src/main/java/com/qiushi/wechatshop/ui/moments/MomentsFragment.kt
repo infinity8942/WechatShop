@@ -1,7 +1,9 @@
 package com.qiushi.wechatshop.ui.moments
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Picture
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -17,9 +19,13 @@ import cn.sharesdk.framework.PlatformActionListener
 import cn.sharesdk.framework.ShareSDK
 import cn.sharesdk.wechat.friends.Wechat
 import cn.sharesdk.wechat.moments.WechatMoments
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.gson.annotations.Until
 import com.mob.MobSDK.getUser
 import com.qiushi.wechatshop.Constants
+import com.qiushi.wechatshop.GlideApp
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
@@ -31,10 +37,11 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.util.DensityUtils
-import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.*
 import com.qiushi.wechatshop.view.SpaceItemDecoration
+import io.reactivex.Flowable
 import kotlinx.android.synthetic.main.fragment_moments.*
+import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -89,13 +96,38 @@ class MomentsFragment : BaseFragment() {
                 }
                 R.id.share -> {
                     //分享图片
-                    showLoading("正在分享中....")
+
+                    PosterXQImgCache.getInstance().removeImgCache() //先清空路径缓存
+                    ImgFileUtils.deleteDir()//删除本地缓存的图片
                     if (moment?.images != null && moment.images!!.size > 0) {
+
+//                        for (item in moment.images!!) {
+//                            GlideApp.with(this)
+//                                    .asBitmap()
+//                                    .load(item.oss_url)
+//                                    .into(object : SimpleTarget<Bitmap>() {
+//                                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+//                                            ImgFileUtils.saveBitmap(context, resource, DateUtil.getTimeString())
+//                                        }
+//
+//                                    })
+//                        }
+//
+//                        mHandler.postDelayed(Runnable {
+//                            var imgCache = PosterXQImgCache.getInstance().imgCache
+//                            val uris = arrayOfNulls<Uri>(imgCache.size)
+//                            for (i in 0 until imgCache.size) {
+//                                uris[i] = Uri.fromFile(File(imgCache[i]))
+//                            }
+//                            var shareUtils = ShareUtils(context, "")
+//                            shareUtils.shareweipyqSomeImg(context, uris)
+//
+//                        }, 500)
+
                         var imgArrayList = arrayOfNulls<String>(moment.images!!.size)
                         for (i in 0 until moment.images!!.size) {
                             imgArrayList[i] = moment.images!![i].oss_url
                         }
-                        dismissLoading()
                         this@MomentsFragment.mPlatform = ShareSDK.getPlatform(WechatMoments.NAME)
                         this@MomentsFragment!!.mPlatform!!.platformActionListener = platListener
                         this@MomentsFragment!!.mPlatform!!.share(getShareParams(imgArrayList as Array<String>))
@@ -209,6 +241,9 @@ class MomentsFragment : BaseFragment() {
         val sp = Platform.ShareParams()
         sp.shareType = Platform.SHARE_IMAGE
         sp.imageArray = imgArrayList
+        sp.title = "你好，good"
+        sp.text = "你不好，nice"
+
 //        sp.imageUrl=Constants.GOODS_DETAIL
 //        sp.title = "df"
 
@@ -217,35 +252,30 @@ class MomentsFragment : BaseFragment() {
 
     private val platListener = object : PlatformActionListener {
         override fun onComplete(p0: Platform?, p1: Int, p2: HashMap<String, Any>?) {
-            mHandler.sendEmptyMessage(1)
+
         }
 
         override fun onCancel(p0: Platform?, p1: Int) {
-            mHandler.sendEmptyMessage(2)
+
         }
 
         override fun onError(p0: Platform?, p1: Int, p2: Throwable?) {
-            mHandler.sendEmptyMessage(3)
+
         }
     }
 
-    private var mHandler: Handler = object : Handler() {
-        override fun handleMessage(msg: Message?) {
-            super.handleMessage(msg)
-            when (msg!!.what) {
-                0 -> {
-                    //错误
-                    dismissLoading()
-                }
-                1 -> {
-                    //成功
-                    dismissLoading()
-                }
-                2 -> {
-                    //取消
-                    dismissLoading()
-                }
-            }
+
+    override fun onStop() {
+        super.onStop()
+        dismissLoading()
+    }
+
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        Log.e("tag", "hiden$hidden")
+        if(!hidden){
+            dismissLoading()
         }
     }
 }

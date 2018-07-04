@@ -12,6 +12,7 @@ import com.qiushi.wechatshop.ui.login.LoginActivity
 import com.qiushi.wechatshop.ui.manage.ManageFragment
 import com.qiushi.wechatshop.ui.shop.ShopListFragment
 import com.qiushi.wechatshop.ui.user.UserFragment
+import com.qiushi.wechatshop.util.Push
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
 import com.qiushi.wechatshop.view.tab.listener.TabEntity
@@ -36,6 +37,8 @@ class MainActivity : BaseActivity() {
         mFragments.add(UserFragment.getInstance())
         navigation.setTabData(mTabEntities, this, R.id.fl_container, mFragments)
         navigation.currentTab = 0
+
+        Push.enable()
     }
 
     override fun getData() {
