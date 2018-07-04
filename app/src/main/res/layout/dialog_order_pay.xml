@@ -38,8 +38,7 @@
         android:layout_below="@id/line"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="13dp"
-        android:text="2323"
-        android:textColor="@color/color_item_text"
+        android:textColor="@color/color_item_price"
         android:textSize="17sp" />
 
     <TextView
@@ -48,7 +47,7 @@
         android:layout_alignBottom="@id/price"
         android:layout_toLeftOf="@id/price"
         android:text="￥"
-        android:textColor="@color/color_item_text"
+        android:textColor="@color/color_item_price"
         android:textSize="13sp" />
 
     <!-- WX ALI-->

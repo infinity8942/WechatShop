@@ -43,20 +43,17 @@ import io.reactivex.Flowable
 import kotlinx.android.synthetic.main.fragment_moments.*
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * 素材Fragment
  */
 class MomentsFragment : BaseFragment() {
-
     private lateinit var mAdapter: MomentsAdapter
     private lateinit var notDataView: View
     private lateinit var errorView: View
     private var mPlatform: Platform? = null
     private var status = 1
     private var page = 1
-
 
     override fun getLayoutId(): Int = R.layout.fragment_moments
 
@@ -129,8 +126,8 @@ class MomentsFragment : BaseFragment() {
                             imgArrayList[i] = moment.images!![i].oss_url
                         }
                         this@MomentsFragment.mPlatform = ShareSDK.getPlatform(WechatMoments.NAME)
-                        this@MomentsFragment!!.mPlatform!!.platformActionListener = platListener
-                        this@MomentsFragment!!.mPlatform!!.share(getShareParams(imgArrayList as Array<String>))
+                        this@MomentsFragment.mPlatform!!.platformActionListener = platListener
+                        this@MomentsFragment.mPlatform!!.share(getShareParams(imgArrayList as Array<String>))
                     } else {
                         dismissLoading()
                     }
@@ -241,12 +238,8 @@ class MomentsFragment : BaseFragment() {
         val sp = Platform.ShareParams()
         sp.shareType = Platform.SHARE_IMAGE
         sp.imageArray = imgArrayList
-        sp.title = "你好，good"
-        sp.text = "你不好，nice"
-
 //        sp.imageUrl=Constants.GOODS_DETAIL
 //        sp.title = "df"
-
         return sp
     }
 
