@@ -2,7 +2,6 @@ package com.qiushi.wechatshop.ui.manage
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v4.content.ContextCompat
 import android.text.InputFilter
 import android.util.Log
 import android.view.View
@@ -34,8 +33,8 @@ class AddGoodsNextActivity : BaseActivity() {
     }
 
     override fun init() {
-        StatusBarUtil.immersive(this!!)
-        StatusBarUtil.setPaddingSmart(this!!, toolbar)
+        StatusBarUtil.immersive(this)
+        StatusBarUtil.setPaddingSmart(this, toolbar)
 
         et_bz.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(100))
         isSwitch = if (addGoods != null) {
@@ -72,12 +71,9 @@ class AddGoodsNextActivity : BaseActivity() {
 
         fun startAddGoodsNextActivity(context: Activity, addGoods: AddGoods) {
             this.mContext = context
-            val intent = Intent()
-            //获取intent对象
+            val intent = Intent(context, AddGoodsNextActivity::class.java)
             intent.putExtra("addGoods", addGoods)
-            intent.setClass(context, AddGoodsNextActivity::class.java)
-            // 获取class是使用::反射
-            ContextCompat.startActivity(context, intent, null)
+            context.startActivity(intent)
         }
     }
 
@@ -121,6 +117,14 @@ class AddGoodsNextActivity : BaseActivity() {
                 return
             }
         }
+
+        if (addGoods!!.is_todo) {
+            if (addGoods!!.left_todo >= addGoods!!.stock) {
+                ToastUtils.showError("库存提醒数量应小于库存量")
+                return
+            }
+        }
+
         //走接口
         putData()
     }

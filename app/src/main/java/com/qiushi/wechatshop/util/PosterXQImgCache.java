@@ -7,7 +7,6 @@ public class PosterXQImgCache {
     private List<String> imgCache = new ArrayList<>();//用于存放保存后的图片路径
     private static final PosterXQImgCache instance = new PosterXQImgCache();
 
-
     public static PosterXQImgCache getInstance() {
         return instance;
     }

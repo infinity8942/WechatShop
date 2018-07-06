@@ -60,7 +60,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                     helper.setText(R.id.status, "等待卖家发货").setText(R.id.action, if (order.remind_send == 0) "提醒发货" else "已提醒")
                     helper.setGone(R.id.numbers, false)
                 }
-                helper.setGone(R.id.action1, false).setGone(R.id.action2, false)
+                helper.setGone(R.id.action, true).setGone(R.id.action1, false).setGone(R.id.action2, false)
             }
             Constants.DELIVERED -> {
                 if (isManage) {

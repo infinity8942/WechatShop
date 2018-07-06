@@ -35,7 +35,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar">
 
-
         <EditText
             android:id="@+id/et_text"
             android:layout_width="match_parent"
@@ -45,8 +44,8 @@
             android:gravity="top"
             android:hint="给您的产品详情添加一段吸引人的文字描述吧～"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp"
             android:paddingTop="17dp"
+            android:paddingRight="16dp"
             android:textColor="@color/black_90"
             android:textCursorDrawable="@drawable/cursor_color"
             android:textSize="14sp" />
@@ -76,6 +75,5 @@
                     android:textSize="18sp" />
             </RelativeLayout>
         </LinearLayout>
-
     </FrameLayout>
 </RelativeLayout>

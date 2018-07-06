@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
+import android.text.TextUtils
 import android.view.View
 import android.widget.*
 import com.alipay.sdk.app.PayTask
@@ -129,8 +130,27 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         } else {
             ImageHelper.loadAvatar(this@OrderDetailActivity, logo, t.shop.logo, 24)
             if (null != t.user) {
-                name.text = t.user.receiver + "  " + t.user.mobile
-                address.text = t.user.address
+                var nameStr = "暂无"
+                var mobileStr = "暂无"
+                if (!TextUtils.isEmpty(t.user.receiver)) {
+                    nameStr = t.user.receiver
+                }
+                if (!TextUtils.isEmpty(t.user.mobile)) {
+                    mobileStr = t.user.mobile
+                }
+                if (nameStr == "暂无" && mobileStr == "暂无") {
+                    name.text = "暂无"
+                } else if (nameStr == "暂无") {
+                    name.text = mobileStr
+                } else if (mobileStr == "暂无") {
+                    name.text = nameStr
+                } else {
+                    name.text = nameStr + "  " + mobileStr
+                }
+                address.text = if (!TextUtils.isEmpty(t.user.address)) t.user.address else "暂无"
+            } else {
+                name.text = "暂无"
+                address.text = "暂无"
             }
 
             message.text = "买家留言：" + t.content

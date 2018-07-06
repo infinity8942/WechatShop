@@ -167,7 +167,6 @@ class ManagerGoodsActivity : BaseActivity() {
                             mAdapter.emptyView = notDataView
                         }
                         if (t != null) {
-
                             if (t.size < Constants.PAGE_NUM) {
                                 mRefreshLayout.setNoMoreData(true)
                             } else {
@@ -178,7 +177,6 @@ class ManagerGoodsActivity : BaseActivity() {
                             mRefreshLayout.setNoMoreData(true)
                         }
                     }
-
 
                     override fun onHandleError(error: Error) {
                         if (page == 1) {
@@ -206,12 +204,9 @@ class ManagerGoodsActivity : BaseActivity() {
 
     companion object {
         fun startManagerGoodsActivity(context: Context, state: Int) {
-            val intent = Intent()
-            //获取intent对象
+            val intent = Intent(context, ManagerGoodsActivity::class.java)
             intent.putExtra("state", state)
-            intent.setClass(context, ManagerGoodsActivity::class.java)
-            // 获取class是使用::反射
-            ContextCompat.startActivity(context, intent, null)
+            context.startActivity(intent)
         }
     }
 

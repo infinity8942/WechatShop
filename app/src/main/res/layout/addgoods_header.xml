@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="17dp"
     android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     android:layout_marginTop="18dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="17dp"
     android:clipChildren="false"
     android:orientation="vertical">
 
@@ -57,8 +57,8 @@
         android:hint="给您的商品添加一个吸引人的描述让买家快捷了解该商品吧~"
         android:maxEms="100"
         android:paddingLeft="12dp"
-        android:paddingRight="9dp"
         android:paddingTop="8dp"
+        android:paddingRight="9dp"
         android:textCursorDrawable="@drawable/cursor_color"
         android:textSize="14sp" />
 
@@ -185,12 +185,12 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="90dp"
                 android:background="@drawable/add_goods_up_shape"
-                android:drawablePadding="5dp"
                 android:drawableTop="@mipmap/ic_up_img"
-                android:paddingBottom="11dp"
+                android:drawablePadding="5dp"
                 android:paddingLeft="12dp"
-                android:paddingRight="12dp"
                 android:paddingTop="15dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="11dp"
                 android:text="添加图片"
                 android:textColor="@color/color_up_img"
                 android:textSize="12sp" />
@@ -202,12 +202,12 @@
                 android:layout_gravity="center_vertical|right"
                 android:layout_marginRight="89dp"
                 android:background="@drawable/add_goods_up_shape"
-                android:drawablePadding="5dp"
                 android:drawableTop="@mipmap/ic_up_text"
-                android:paddingBottom="11dp"
+                android:drawablePadding="5dp"
                 android:paddingLeft="12dp"
-                android:paddingRight="12dp"
                 android:paddingTop="15dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="11dp"
                 android:text="添加文本"
                 android:textColor="@color/color_up_img"
                 android:textSize="12sp" />
@@ -218,8 +218,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/add_goods_et_shape"
-            android:paddingBottom="14dp"
-            android:paddingTop="6dp">
+            android:paddingTop="6dp"
+            android:paddingBottom="14dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/mRecyclerView"

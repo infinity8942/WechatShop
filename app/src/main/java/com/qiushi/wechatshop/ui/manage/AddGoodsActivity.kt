@@ -70,6 +70,7 @@ class AddGoodsActivity : BaseActivity() {
 
         mAdapter.onItemChildClickListener = itemChildListener
         ic_bg.setOnClickListener(onClicklistener)
+        back.setOnClickListener(onClicklistener)
         rl_next.setOnClickListener(onClicklistener)
         et_brief.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(100))
         et_name.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
@@ -164,8 +165,9 @@ class AddGoodsActivity : BaseActivity() {
         }
     }
 
-    private val onClicklistener = View.OnClickListener { v: View? ->
-        when (v?.id) {
+    private val onClicklistener = View.OnClickListener { v: View ->
+        when (v.id) {
+            R.id.back -> finish()
             R.id.foot_add_img -> {
                 //进入相册
                 if (size < 10) {
@@ -181,7 +183,6 @@ class AddGoodsActivity : BaseActivity() {
                 } else {
                     ToastUtils.showError("最多能上传10张图片")
                 }
-
             }
             R.id.item_add_text -> {
                 //跳转编辑文本 Activity
@@ -202,7 +203,6 @@ class AddGoodsActivity : BaseActivity() {
     }
 
     private fun isDataNull() {
-
         if (User.getCurrent() != null && User.getCurrent().shop_id != null) {
             addGoods.shop_id = User.getCurrent().shop_id
         }
@@ -329,7 +329,7 @@ class AddGoodsActivity : BaseActivity() {
             }
             Constants.EDIT_TEXT_REQUEST -> {
                 val mText = data?.getStringExtra("text")
-                if (mText != null && !mText.equals("")) {
+                if (mText != null && mText != "") {
                     if (goods_id != 0.toLong()) {
                         val content = Content()
                         content.content = mText
@@ -385,7 +385,7 @@ class AddGoodsActivity : BaseActivity() {
                 } else {
                     if (goods_id != 0.toLong()) {
                         //编辑
-                        var content = Content()
+                        val content = Content()
                         content.oss_id = id
                         content.img = "file://" + file!!.path
                         contentList.add(content)
@@ -397,7 +397,7 @@ class AddGoodsActivity : BaseActivity() {
                             mAdapter.setNewData(contentList)
                         }
                     } else {
-                        var content = Content()
+                        val content = Content()
                         content.oss_id = id
                         content.img = "file://" + file!!.path
                         contentList.add(content)
@@ -462,7 +462,7 @@ class AddGoodsActivity : BaseActivity() {
      * 编辑时候得展示盒影藏
      */
     private fun isVisibleEdit() {
-        if (contentList != null && contentList!!.size > 0) {
+        if (contentList != null && contentList.size > 0) {
             rl_layout.visibility = View.VISIBLE
             fl_addlayout.visibility = View.GONE
             foot_layout.visibility = View.VISIBLE
