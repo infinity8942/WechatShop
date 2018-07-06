@@ -72,6 +72,9 @@ class CreateMomentsActivity : BaseActivity() {
         if (id != 0.toLong()) {
             tv_title.text = "编辑素材"
         }
+        if (type == 3) {
+            et_text.visibility = View.GONE
+        }
         mRecyclerView.layoutManager = mGrideManager
         mRecyclerView.adapter = mGrideAdapter
 

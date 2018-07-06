@@ -136,9 +136,8 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
     override fun accept(t: Notifycation?) {
         super.accept(t)
         when (t!!.code) {
-            Constants.OPEN_SHOP -> {
+            Constants.OPEN_SHOP, Constants.ZX_SHOP ->
                 lazyLoad()
-            }
         }
     }
 

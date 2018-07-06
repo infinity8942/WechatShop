@@ -109,12 +109,11 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                             User.editCurrent { u -> u!!.shop_id = t.toLong() }
                             ToastUtils.showMessage("开店铺成功")
                             RxBus.getInstance().post(Notifycation(Constants.OPEN_SHOP, 0L))
-                            finish()
                         } else {
                             ToastUtils.showMessage("装修店铺成功")
                             RxBus.getInstance().post(Notifycation(Constants.ZX_SHOP, 0L))
-                            finish()
                         }
+                        finish()
                     }
 
                     override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {

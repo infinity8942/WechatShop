@@ -130,6 +130,11 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                     val dialog = AlertDialog.Builder(this@ShopEditActivity)
                             .setMessage("正在编辑，您确定要现在退出吗？")
                             .setPositiveButton("退出") { _, _ ->
+                                if (isChange) {
+                                    val intent = Intent(this@ShopEditActivity, ShopListFragment::class.java)
+                                    intent.putExtra("shops", list)
+                                    setResult(RESULT_OK, intent)
+                                }
                                 finish()
                             }.setNegativeButton("取消", null).create()
                     dialog.show()

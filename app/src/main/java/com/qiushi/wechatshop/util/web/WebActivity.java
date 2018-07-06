@@ -73,7 +73,7 @@ public class WebActivity extends SwipeBackActivity {
             SonicEngine.createInstance(new HostSonicRuntime(getApplication()), new SonicConfig.Builder().build());
         }
 
-        SonicSessionClientImpl sonicSessionClient;
+        SonicSessionClientImpl sonicSessionClient = null;
 
         // step 2: Create SonicSession
         Map<String, String> header = Utils.getHttpHeaders();
@@ -85,7 +85,8 @@ public class WebActivity extends SwipeBackActivity {
         } else {
             // this only happen when a same sonic session is already running,
             // u can comment following codes to feedback as a default mode.
-            throw new UnknownError("create session fail!");
+            Logger.e("!!!!!!!! create session fail !!!!!!!!");
+//            throw new UnknownError("create session fail!");
         }
 
         // step 3: BindWebView for sessionClient and bindClient for SonicSession

@@ -1,31 +1,21 @@
 package com.qiushi.wechatshop.ui.moments
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Picture
-import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import cn.sharesdk.framework.Platform
 import cn.sharesdk.framework.PlatformActionListener
 import cn.sharesdk.framework.ShareSDK
-import cn.sharesdk.wechat.friends.Wechat
 import cn.sharesdk.wechat.moments.WechatMoments
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
-import com.google.gson.annotations.Until
-import com.mob.MobSDK.getUser
 import com.qiushi.wechatshop.Constants
-import com.qiushi.wechatshop.GlideApp
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
@@ -37,11 +27,10 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.util.*
+import com.qiushi.wechatshop.util.DensityUtils
+import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.SpaceItemDecoration
-import io.reactivex.Flowable
 import kotlinx.android.synthetic.main.fragment_moments.*
-import java.io.File
 import java.util.*
 
 /**
@@ -96,7 +85,7 @@ class MomentsFragment : BaseFragment() {
 
 //                    PosterXQImgCache.getInstance().removeImgCache() //先清空路径缓存
 //                    ImgFileUtils.deleteDir()//删除本地缓存的图片
-                    if (moment?.images != null && moment.images!!.size > 0) {
+                    if (moment.images != null && moment.images!!.size > 0) {
 
 //                        for (item in moment.images!!) {
 //                            GlideApp.with(this)
@@ -121,7 +110,11 @@ class MomentsFragment : BaseFragment() {
 //
 //                        }, 500)
 
-                        var imgArrayList = arrayOfNulls<String>(moment.images!!.size)
+                        ToastUtils.showMessage("素材内容已复制到剪贴板，可以在微信中进行粘贴")
+                        val cm: ClipboardManager = activity!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        cm.primaryClip = ClipData.newPlainText("Label", moment.content)
+
+                        val imgArrayList = arrayOfNulls<String>(moment.images!!.size)
                         for (i in 0 until moment.images!!.size) {
                             imgArrayList[i] = moment.images!![i].oss_url
                         }
@@ -267,7 +260,7 @@ class MomentsFragment : BaseFragment() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         Log.e("tag", "hiden$hidden")
-        if(!hidden){
+        if (!hidden) {
             dismissLoading()
         }
     }

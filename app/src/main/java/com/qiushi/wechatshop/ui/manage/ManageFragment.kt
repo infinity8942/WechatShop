@@ -39,7 +39,7 @@ import kotlinx.android.synthetic.main.manager_item_icon.view.*
 /**
  * 我的店Fragment
  */
-class ManageFragment : BaseFragment() {
+class ManageFragment : BaseFragment(), View.OnClickListener {
 
     var mItemPosition: Int = -1
     var distance: Int = 0
@@ -128,6 +128,20 @@ class ManageFragment : BaseFragment() {
             lazyLoad()
         }
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
+
+        iv_avaver.setOnClickListener(this)
+        tv_header_title.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.iv_shop, R.id.tv_shop_name -> {
+                if (mShop?.cover == null) {
+                    mShop?.cover = ""
+                }
+                DecorateActivity.startDecorateActivity(context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
+            }
+        }
     }
 
     /**

@@ -9,14 +9,13 @@
         android:layout_height="167dp"
         android:background="@mipmap/ic_myshop_bg">
 
-
         <TextView
             android:id="@+id/money_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="82dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginBottom="82dp"
             android:text="资产总额(元)"
             android:textColor="@android:color/white"
             android:textSize="11sp" />
@@ -26,8 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="44dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginBottom="44dp"
             android:text=""
             android:textColor="@android:color/white"
             android:textSize="32sp" />
@@ -37,33 +36,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="18dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginBottom="18dp"
             android:text="流动金额"
             android:textColor="@android:color/white"
             android:textSize="11sp" />
-
 
         <TextView
             android:id="@+id/cash_flow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginBottom="16dp"
             android:layout_toRightOf="@+id/money_zc"
             android:text=""
             android:textColor="@android:color/white"
             android:textSize="14sp" />
-
 
         <TextView
             android:id="@+id/money_dj"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="18dp"
             android:layout_marginLeft="154dp"
+            android:layout_marginBottom="18dp"
             android:text="冻结金额"
             android:textColor="@android:color/white"
             android:textSize="11sp" />
@@ -73,29 +70,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginBottom="16dp"
             android:layout_toRightOf="@+id/money_dj"
             android:text=""
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
-
         <TextView
-
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="51dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginRight="23dp"
-            android:drawablePadding="1.8dp"
+            android:layout_marginBottom="51dp"
             android:drawableRight="@mipmap/ic_tixian"
+            android:drawablePadding="1.8dp"
             android:text="提现"
             android:textColor="@android:color/white"
-            android:textSize="13sp" />
-
+            android:textSize="13sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <include layout="@layout/manager_item_icon"></include>
