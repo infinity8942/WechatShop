@@ -57,10 +57,9 @@ class OrderFragment : BaseFragment() {
 
         //Listener
         mRefreshLayout.setOnRefreshListener {
-            page = 1
             lazyLoad()
         }
-        mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
+        mRefreshLayout.setOnLoadMoreListener { getOrders() }
 
         mAdapter.setOnItemClickListener { adapter, _, position ->
             goToOrderDetails((adapter.data[position] as Order).id)
@@ -145,6 +144,7 @@ class OrderFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+        page = 1
         getOrders()
     }
 
@@ -290,7 +290,7 @@ class OrderFragment : BaseFragment() {
                                 override fun onHandleSuccess(t: Boolean) {
                                     if (t) {
                                         ToastUtils.showMessage("交易完成")
-                                        getOrders()
+                                        lazyLoad()
                                     }
                                 }
 
@@ -335,7 +335,7 @@ class OrderFragment : BaseFragment() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
                             ToastUtils.showMessage("修改成功")
-                            getOrders()
+                            lazyLoad()
                         }
                     }
 
@@ -359,7 +359,7 @@ class OrderFragment : BaseFragment() {
                                 override fun onHandleSuccess(t: Boolean) {
                                     if (t) {
                                         ToastUtils.showMessage("删除成功")
-                                        getOrders()
+                                        lazyLoad()
                                     }
                                 }
 
@@ -387,7 +387,7 @@ class OrderFragment : BaseFragment() {
                                 override fun onHandleSuccess(t: Boolean) {
                                     if (t) {
                                         ToastUtils.showMessage("已取消")
-                                        getOrders()
+                                        lazyLoad()
                                     }
                                 }
 
