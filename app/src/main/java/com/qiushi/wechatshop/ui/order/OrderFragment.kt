@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.text.InputType
+import android.text.InputType.TYPE_CLASS_NUMBER
+import android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -308,7 +309,7 @@ class OrderFragment : BaseFragment() {
     private fun showEditPriceDialog(order_id: Long) {
         val et = EditText(context)
         et.hint = "请输入价格"
-        et.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
+        et.inputType = TYPE_CLASS_NUMBER;TYPE_NUMBER_FLAG_DECIMAL
 
         val dialog = AlertDialog.Builder(context!!).setView(et)
                 .setPositiveButton("修改") { _, _ ->

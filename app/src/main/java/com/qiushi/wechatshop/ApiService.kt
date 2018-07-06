@@ -266,7 +266,6 @@ interface ApiService {
     @POST("Menu/menu_edit")
     fun menuMore(@Field("shop_id") shop_id: Long, @Field("menu_id") menu_id: String, @Field("is_del") is_del: String): Observable<BaseResponse<Boolean>>
 
-
     @FormUrlEncoded
     @POST("Goods/goods_edit")
     fun postGoods(@Field("json") json: String): Observable<BaseResponse<Boolean>>
@@ -275,7 +274,6 @@ interface ApiService {
     @POST("Goods/edit_goods_info")
     fun getGoods(@Field("goods_id") goods_id: Long): Observable<BaseResponse<AddGoods>>
 
-
     /**
      * 添加素材
      *
@@ -283,7 +281,6 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Shop/moments_edit")
     fun addMoments(@Field("type") type: Int, @Field("id") id: Long, @Field("content") content: String, @Field("shop_id") shop_id: Long, @Field("images") images: String): Observable<BaseResponse<Boolean>>
-
 
     /**
      * 信息编辑页面
@@ -296,13 +293,10 @@ interface ApiService {
     fun getWXtoken(@Query("appid") appid: String, @Query("secret") secret: String,
                    @Query("code") code: String, @Query("grant_type") grant_type: String)
 
-
     /**
      * 选择商品 (订单)
      */
     @FormUrlEncoded
     @POST("Order/check_goods")
     fun checkGoods(@Field("shop_id") shop_id: Long, @Field("page") page: Int): Observable<BaseResponse<SelectOrder>>
-
-
 }

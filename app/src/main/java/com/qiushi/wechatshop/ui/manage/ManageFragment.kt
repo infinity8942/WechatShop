@@ -41,7 +41,6 @@ import kotlinx.android.synthetic.main.manager_item_icon.view.*
  */
 class ManageFragment : BaseFragment() {
 
-
     var mItemPosition: Int = -1
     var distance: Int = 0
     var argbEvaluator = ArgbEvaluator()
@@ -79,7 +78,6 @@ class ManageFragment : BaseFragment() {
         GridLayoutManager(activity, 4)
     }
 
-
     private val mGrideAdapter by lazy {
         GrideAdapter(ArrayList())
     }
@@ -114,16 +112,13 @@ class ManageFragment : BaseFragment() {
         headerView = layoutInflater.inflate(R.layout.manager_item_head, mRecyclerView.parent as ViewGroup, false)
 
         //设置name,头像
-
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         mRecyclerView.adapter = mAdapter
 
-
         headerView.mRecyclerView.layoutManager = mGrideManager
         headerView.mRecyclerView.adapter = mGrideAdapter
         mGrideAdapter.onItemChildClickListener = mGrideItemClickListener
-
 
         mAdapter.onItemChildClickListener = itemChildClickListener
         mRecyclerView.addOnScrollListener(scrollListener)
@@ -148,7 +143,7 @@ class ManageFragment : BaseFragment() {
         headerView.findViewById<TextView>(R.id.cash_forzen).text = t.cash_forzen.toString()
         headerView.shop_more.setOnClickListener({ _: View? ->
             //跳转 产品管理
-            ManagerGoodsActivity.startManagerGoodsActivity(this!!.context!!, 0)
+            ManagerGoodsActivity.startManagerGoodsActivity(this.context!!, 0)
         })
     }
 
@@ -423,17 +418,15 @@ class ManageFragment : BaseFragment() {
                 page = 1
                 lazyLoad()
             }
-            Constants.OPEN_SHOP_OR_ZX -> {
+            Constants.OPEN_SHOP, Constants.ZX_SHOP -> {
                 page = 1
                 lazyLoad()
                 //开店或者装修回调
             }
-            Constants.MANAGER_GOODS->{
+            Constants.MANAGER_GOODS -> {
                 page = 1
                 lazyLoad()
             }
         }
     }
-
-
 }

@@ -21,12 +21,12 @@ import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_add_goods_next.*
 
-@Suppress("UNREACHABLE_CODE")
 class AddGoodsNextActivity : BaseActivity() {
+
     private var isSwitch: Boolean = false
     private var addGoods: AddGoods? = null
-    override fun getData() {
-    }
+
+    override fun layoutId(): Int = R.layout.activity_add_goods_next
 
     override fun getParams(intent: Intent) {
         super.getParams(intent)
@@ -55,7 +55,6 @@ class AddGoodsNextActivity : BaseActivity() {
             iv_switch.setImageResource(R.mipmap.ic_goods_open)
             line.visibility = View.VISIBLE
             countlayout.visibility = View.VISIBLE
-
         } else {
             line.visibility = View.GONE
             countlayout.visibility = View.GONE
@@ -65,8 +64,8 @@ class AddGoodsNextActivity : BaseActivity() {
         up_layout.setOnClickListener(onclickListener)
     }
 
-    override fun layoutId(): Int = R.layout.activity_add_goods_next
-
+    override fun getData() {
+    }
 
     companion object {
         private lateinit var mContext: Activity
@@ -127,8 +126,7 @@ class AddGoodsNextActivity : BaseActivity() {
     }
 
     private fun putData() {
-        var gson = Gson()
-        val toJson = gson.toJson(addGoods)
+        val toJson = Gson().toJson(addGoods)
         Log.e("tag", "toJson~~~~~~~~~~~~~~~~~$toJson")
         val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.postGoods(toJson)
                 .compose(SchedulerUtils.ioToMain())
@@ -142,7 +140,6 @@ class AddGoodsNextActivity : BaseActivity() {
                         } else {
                             ToastUtils.showError("上传失败")
                         }
-
                     }
 
                     override fun onHandleError(error: Error) {

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Environment
 import android.os.Handler
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
@@ -67,11 +66,11 @@ class AddGoodsActivity : BaseActivity() {
         StatusBarUtil.setPaddingSmart(this, toolbar)
         UploadManager.getInstance().register(uploadListener)
         mRecyclerView.layoutManager = linearLayoutManager
-        mRecyclerView.adapter = mAdapter
+        mAdapter.bindToRecyclerView(mRecyclerView)
 
-        mAdapter.onItemChildClickListener = itemchildListener
-        ic_bg.setOnClickListener(onclicklistener)
-        rl_next.setOnClickListener(onclicklistener)
+        mAdapter.onItemChildClickListener = itemChildListener
+        ic_bg.setOnClickListener(onClicklistener)
+        rl_next.setOnClickListener(onClicklistener)
         et_brief.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(100))
         et_name.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
         et_brief.addTextChangedListener(textWatcherListener)
@@ -83,15 +82,15 @@ class AddGoodsActivity : BaseActivity() {
             fl_addlayout.visibility = View.GONE
             foot_layout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.VISIBLE
-            foot_add_img.setOnClickListener(onclicklistener)
-            foot_add_text.setOnClickListener(onclicklistener)
+            foot_add_img.setOnClickListener(onClicklistener)
+            foot_add_text.setOnClickListener(onClicklistener)
         } else {
             rl_layout.visibility = View.GONE
             foot_layout.visibility = View.GONE
             fl_addlayout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.GONE
-            item_add_img.setOnClickListener(onclicklistener)
-            item_add_text.setOnClickListener(onclicklistener)
+            item_add_img.setOnClickListener(onClicklistener)
+            item_add_text.setOnClickListener(onClicklistener)
         }
     }
 
@@ -148,27 +147,24 @@ class AddGoodsActivity : BaseActivity() {
             et_brief.setText(addGoods.brief)
         }
         //单价
-        if (addGoods.price != null && addGoods.price != 0.toLong()) {
+        if (addGoods.price != null && addGoods.price != 0.toDouble()) {
             price.setText(addGoods.price.toString())
         }
         //库存
-        if (addGoods.stock != null && addGoods.stock != 0.toLong()) {
+        if (addGoods.stock != null && addGoods.stock != 0) {
             stock.setText(addGoods.stock.toString())
         }
     }
 
     companion object {
         fun startAddGoodsActivity(context: Context, goods_id: Long) {
-            val intent = Intent()
-            //获取intent对象
+            val intent = Intent(context, AddGoodsActivity::class.java)
             intent.putExtra("goods_id", goods_id)
-            intent.setClass(context, AddGoodsActivity::class.java)
-            // 获取class是使用::反射
-            ContextCompat.startActivity(context, intent, null)
+            context.startActivity(intent)
         }
     }
 
-    private val onclicklistener = View.OnClickListener { v: View? ->
+    private val onClicklistener = View.OnClickListener { v: View? ->
         when (v?.id) {
             R.id.foot_add_img -> {
                 //进入相册
@@ -218,10 +214,10 @@ class AddGoodsActivity : BaseActivity() {
             addGoods.name = et_name.text.toString()
         }
         if (price.text.toString().isNotEmpty()) {
-            addGoods.price = price.text.toString().toDouble().toLong()
+            addGoods.price = price.text.toString().toDouble()
         }
         if (stock.text.toString().isNotEmpty()) {
-            addGoods.stock = stock.text.toString().toDouble().toLong()
+            addGoods.stock = stock.text.toString().toInt()
         }
 
         if (addGoods == null) {
@@ -236,11 +232,11 @@ class AddGoodsActivity : BaseActivity() {
             ToastUtils.showError("封面图未上传")
             return
         }
-        if (addGoods.price == 0.toLong()) {
+        if (addGoods.price == 0.toDouble()) {
             ToastUtils.showError("单价未设置")
             return
         }
-        if (addGoods.stock == 0.toLong()) {
+        if (addGoods.stock == 0) {
             ToastUtils.showError("库存数量为设置")
             return
         }
@@ -254,17 +250,13 @@ class AddGoodsActivity : BaseActivity() {
                 ToastUtils.showError("产品详情未设置")
                 return
             }
-
         }
 
         if (goods_id != null && goods_id != 0.toLong() && addContentList != null && addContentList.size > 0) {
-            for (item in addContentList) {
-                if (addGoods != null && addGoods.content != null && !addGoods.content!!.contains(item)) {
-                    addGoods.content!!.add(item)
-                }
-            }
+            addContentList
+                    .filter { addGoods != null && addGoods.content != null && !addGoods.content!!.contains(it) }
+                    .forEach { addGoods.content!!.add(it) }
         }
-
 
         AddGoodsNextActivity.startAddGoodsNextActivity(this, addGoods)
     }
@@ -383,7 +375,7 @@ class AddGoodsActivity : BaseActivity() {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            mHandler.postDelayed(Runnable {
+            mHandler.postDelayed({
                 dismissLoading()
                 if (isBg) {
                     addGoods.cover = id.toString()
@@ -422,7 +414,7 @@ class AddGoodsActivity : BaseActivity() {
         }
     }
 
-    val itemchildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+    private val itemChildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
         when (view?.id) {
             R.id.iv_remove -> {
                 if (goods_id != 0.toLong()) {
@@ -430,7 +422,7 @@ class AddGoodsActivity : BaseActivity() {
                     if (contentList != null && contentList.size > 0 && contentList.size > position) {
                         val removeAt = contentList.removeAt(position)
 
-                        if(addContentList.contains(removeAt)){
+                        if (addContentList.contains(removeAt)) {
                             addContentList.remove(removeAt)
                         }
 //                        for (item in addContentList) {
@@ -475,15 +467,15 @@ class AddGoodsActivity : BaseActivity() {
             fl_addlayout.visibility = View.GONE
             foot_layout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.VISIBLE
-            foot_add_img.setOnClickListener(onclicklistener)
-            foot_add_text.setOnClickListener(onclicklistener)
+            foot_add_img.setOnClickListener(onClicklistener)
+            foot_add_text.setOnClickListener(onClicklistener)
         } else {
             rl_layout.visibility = View.GONE
             foot_layout.visibility = View.GONE
             fl_addlayout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.GONE
-            item_add_img.setOnClickListener(onclicklistener)
-            item_add_text.setOnClickListener(onclicklistener)
+            item_add_img.setOnClickListener(onClicklistener)
+            item_add_text.setOnClickListener(onClicklistener)
         }
     }
 
@@ -498,7 +490,6 @@ class AddGoodsActivity : BaseActivity() {
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

@@ -12,19 +12,19 @@ import com.qiushi.wechatshop.util.ImageHelper
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class AddGoodsAdapter(data: List<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(R.layout.addgoods_item, data) {
-    override fun convert(helper: BaseViewHolder?, item: Content?) {
+    override fun convert(helper: BaseViewHolder, item: Content?) {
 
         if (item!!.content.isNotEmpty()) {
-            helper?.getView<TextView>(R.id.tv_text)?.visibility = View.VISIBLE
-            helper?.getView<ImageView>(R.id.iv_img)?.visibility = View.GONE
-            helper?.setText(R.id.tv_text, item.content)
-            helper?.addOnClickListener(R.id.iv_remove)
+            helper.getView<TextView>(R.id.tv_text)?.visibility = View.VISIBLE
+            helper.getView<ImageView>(R.id.iv_img)?.visibility = View.GONE
+            helper.setText(R.id.tv_text, item.content)
+            helper.addOnClickListener(R.id.iv_remove)
         } else {
-            helper?.getView<TextView>(R.id.tv_text)?.visibility = View.GONE
-            helper?.getView<ImageView>(R.id.iv_img)?.visibility = View.VISIBLE
-            ImageHelper.loadImageWithCorner(mContext, helper?.getView(R.id.iv_img)!!, item.img, 327, 327,
+            helper.getView<TextView>(R.id.tv_text)?.visibility = View.GONE
+            helper.getView<ImageView>(R.id.iv_img)?.visibility = View.VISIBLE
+            ImageHelper.loadImageWithCorner(mContext, helper.getView(R.id.iv_img)!!, item.img, 327, 327,
                     RoundedCornersTransformation(DensityUtils.dp2px(10.toFloat()), 0, RoundedCornersTransformation.CornerType.LEFT))
-            helper?.addOnClickListener(R.id.iv_remove)
+            helper.addOnClickListener(R.id.iv_remove)
         }
     }
 }

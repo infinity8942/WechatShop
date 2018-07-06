@@ -143,15 +143,14 @@ class ManagerGoodsActivity : BaseActivity() {
         mRefreshLayout.setOnLoadMoreListener { getData() }
         setBottomSheet()
 
+        back.setOnClickListener(onclickListener)
         search_bar.setOnClickListener(onclickListener)
-
         tv_add.setOnClickListener(onclickListener)
-
         tv_filter.setOnClickListener(onclickListener)
     }
 
     override fun getData() {
-        mItemPosition=-1
+        mItemPosition = -1
         val subscribeWith: BaseObserver<List<Goods>> = RetrofitManager.service
                 .getMnagerGoods(User.getCurrent().shop_id, state, keyword, page)
                 .compose(SchedulerUtils.ioToMain())
@@ -217,7 +216,6 @@ class ManagerGoodsActivity : BaseActivity() {
     }
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
-
         override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (mItemPosition != -1 && mAdapter != null) {
@@ -280,13 +278,10 @@ class ManagerGoodsActivity : BaseActivity() {
                 setVisible(position)
                 AddGoodsActivity.startAddGoodsActivity(this, mData.id)
             }
-
-
         }
     }
 
     private fun setVisible(position: Int) {
-
         if (mItemPosition != -1 && mAdapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape) != null) {
             mAdapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
         }
@@ -581,12 +576,9 @@ class ManagerGoodsActivity : BaseActivity() {
 
     private val onclickListener = View.OnClickListener { v ->
         when (v.id) {
-            R.id.search_bar -> {
-                search_view.openSearch()
-            }
-            R.id.tv_filter -> {
-                showBottomFilterDialog()
-            }
+            R.id.back -> finish()
+            R.id.search_bar -> search_view.openSearch()
+            R.id.tv_filter -> showBottomFilterDialog()
             R.id.tv_add -> {
                 setVisible(mItemPosition)
                 AddGoodsActivity.startAddGoodsActivity(this, 0)

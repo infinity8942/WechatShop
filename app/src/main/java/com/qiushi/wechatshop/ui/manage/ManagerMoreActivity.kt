@@ -150,7 +150,6 @@ class ManagerMoreActivity : BaseActivity() {
     /**
      * 增加或者移除的请求
      */
-
     private fun menuMore(shopId: Long, menu_id: String, is_del: String) {
         val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.menuMore(shopId, menu_id, is_del)
                 .compose(SchedulerUtils.ioToMain())
@@ -159,7 +158,7 @@ class ManagerMoreActivity : BaseActivity() {
                         getData()
                         if (t) {
                             //刷新主页界面
-                            RxBus.getInstance().post(Notifycation(Constants.OPEN_SHOP_OR_ZX, 0L))
+                            RxBus.getInstance().post(Notifycation(Constants.ZX_SHOP, 0L))
                         }
                     }
 
