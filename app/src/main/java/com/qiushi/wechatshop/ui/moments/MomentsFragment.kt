@@ -110,9 +110,11 @@ class MomentsFragment : BaseFragment() {
 //
 //                        }, 500)
 
-                        ToastUtils.showMessage("素材内容已复制到剪贴板，可以在微信中进行粘贴")
-                        val cm: ClipboardManager = activity!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        cm.primaryClip = ClipData.newPlainText("Label", moment.content)
+                        if (moment.type != 3) {
+                            ToastUtils.showMessage("素材内容已复制到剪贴板，可以在微信中进行粘贴")
+                            val cm: ClipboardManager = activity!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            cm.primaryClip = ClipData.newPlainText("Label", moment.content)
+                        }
 
                         val imgArrayList = arrayOfNulls<String>(moment.images!!.size)
                         for (i in 0 until moment.images!!.size) {
@@ -238,24 +240,19 @@ class MomentsFragment : BaseFragment() {
 
     private val platListener = object : PlatformActionListener {
         override fun onComplete(p0: Platform?, p1: Int, p2: HashMap<String, Any>?) {
-
         }
 
         override fun onCancel(p0: Platform?, p1: Int) {
-
         }
 
         override fun onError(p0: Platform?, p1: Int, p2: Throwable?) {
-
         }
     }
-
 
     override fun onStop() {
         super.onStop()
         dismissLoading()
     }
-
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)

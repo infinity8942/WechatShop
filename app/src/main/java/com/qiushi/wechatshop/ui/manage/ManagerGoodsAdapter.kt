@@ -7,6 +7,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
+import com.qiushi.wechatshop.util.PriceUtil
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class ManagerGoodsAdapter(data: List<Goods>) : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.manager_item_orther, data) {
@@ -17,7 +18,7 @@ class ManagerGoodsAdapter(data: List<Goods>) : BaseQuickAdapter<Goods, BaseViewH
                 RoundedCornersTransformation(DensityUtils.dp2px(10.toFloat()), 0, RoundedCornersTransformation.CornerType.LEFT))
         helper.setText(R.id.tv_shop_name, item.name)
         helper.setText(R.id.views, item.views.toString() + "人已经浏览")
-        helper.setText(R.id.money, "¥ " + item.price)
+        helper.setText(R.id.money, "¥ " + PriceUtil.doubleTrans(item.price))
 
         if (item.is_top) {
             helper.setText(R.id.tv_zd, "取消")
@@ -30,6 +31,7 @@ class ManagerGoodsAdapter(data: List<Goods>) : BaseQuickAdapter<Goods, BaseViewH
         } else {
             helper.setText(R.id.tv_xj, "上架")
         }
+
         helper.addOnClickListener(R.id.iv_more)
                 .addOnClickListener(R.id.tv_zd)
                 .addOnClickListener(R.id.tv_delete)

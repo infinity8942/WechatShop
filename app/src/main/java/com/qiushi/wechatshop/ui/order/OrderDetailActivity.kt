@@ -70,7 +70,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         isManage = intent.getBooleanExtra("isManage", true)
 
         mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mAdapter = OrderGoodsAdapter(isManage)
+        mAdapter = OrderGoodsAdapter(false)
         mRecyclerView.adapter = mAdapter
 
         initPayDialog()
@@ -169,9 +169,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         mAdapter.setNewData(t.goods)
 
         amount.text = "共计" + t.num + "件商品"
-        price.text = "￥" + t.price
+        price.text = "￥" + PriceUtil.doubleTrans(t.price)
         if (null != priceTv) {
-            priceTv!!.text = t.price.toString()
+            priceTv!!.text = PriceUtil.doubleTrans(t.price)
         }
         number.text = "订单编号：" + t.numbers
         create_time.text = "创建时间：" + DateUtil.getMillon(t.create_time)

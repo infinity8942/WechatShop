@@ -22,15 +22,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="13dp"
-            android:layout_marginRight="2dp"
             android:layout_marginTop="7dp"
+            android:layout_marginRight="2dp"
             android:layout_toRightOf="@+id/iv_shop"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text=""
             android:textColor="@color/color_item_text"
             android:textSize="14sp" />
-
 
         <TextView
             android:id="@+id/views"
@@ -40,47 +38,42 @@
             android:layout_marginLeft="14.5dp"
             android:layout_marginTop="6dp"
             android:layout_toRightOf="@+id/iv_shop"
-            android:text=""
             android:textColor="@color/color_more"
             android:textSize="12sp" />
-
 
         <TextView
             android:id="@+id/money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="7dp"
             android:layout_marginLeft="13dp"
+            android:layout_marginBottom="7dp"
             android:layout_toRightOf="@+id/iv_shop"
-            android:text=""
             android:textColor="@color/color_item_price"
             android:textSize="17sp" />
-
 
         <ImageView
             android:id="@+id/iv_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="5dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginRight="3dp"
-            android:paddingBottom="3dp"
+            android:layout_marginBottom="5dp"
             android:paddingRight="5dp"
+            android:paddingBottom="3dp"
             android:src="@mipmap/ic_more_item" />
-
 
         <ImageView
             android:id="@+id/iv_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
             android:layout_marginRight="21dp"
+            android:layout_marginBottom="5dp"
             android:layout_toLeftOf="@+id/iv_more"
-            android:paddingBottom="3dp"
             android:paddingRight="3dp"
+            android:paddingBottom="3dp"
             android:src="@mipmap/ic_bj_item" />
 
         <RelativeLayout
@@ -101,7 +94,6 @@
                 android:textColor="@color/title"
                 android:textSize="14sp" />
 
-
             <TextView
                 android:id="@+id/tv_delete"
                 android:layout_width="44dp"
@@ -115,7 +107,6 @@
                 android:textColor="@color/title"
                 android:textSize="14sp" />
 
-
             <TextView
                 android:id="@+id/tv_xj"
                 android:layout_width="44dp"
@@ -128,8 +119,6 @@
                 android:text="下架"
                 android:textColor="@color/title"
                 android:textSize="14sp" />
-
-
         </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

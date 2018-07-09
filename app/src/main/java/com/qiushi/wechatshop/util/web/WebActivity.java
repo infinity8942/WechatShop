@@ -161,8 +161,12 @@ public class WebActivity extends SwipeBackActivity {
         webSettings.setLoadWithOverviewMode(true);
 
         // step 5: webview is ready now, just tell session client to bind
-        sonicSessionClient.bindWebView(webView);
-        sonicSessionClient.clientReady();
+        if (null != sonicSessionClient) {
+            sonicSessionClient.bindWebView(webView);
+            sonicSessionClient.clientReady();
+        } else {
+            webView.loadUrl(url);
+        }
     }
 
     /**

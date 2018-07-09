@@ -121,6 +121,9 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
         mGrideAdapter.onItemChildClickListener = mGrideItemClickListener
 
         mAdapter.onItemChildClickListener = itemChildClickListener
+        mAdapter.setOnItemClickListener { adapter, _, position ->
+            goToGoodsDetails(adapter.getItem(position) as Goods)
+        }
         mRecyclerView.addOnScrollListener(scrollListener)
 //        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         mRefreshLayout.setOnRefreshListener {
@@ -135,7 +138,7 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.iv_shop, R.id.tv_shop_name -> {
+            R.id.iv_avaver, R.id.tv_header_title -> {
                 if (mShop?.cover == null) {
                     mShop?.cover = ""
                 }

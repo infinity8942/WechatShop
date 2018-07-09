@@ -13,6 +13,7 @@ import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
+import com.qiushi.wechatshop.util.PriceUtil
 import com.qiushi.wechatshop.util.web.WebActivity
 
 /**
@@ -95,7 +96,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
         }
 
         helper.setText(R.id.amount, "共计" + order.num + "件商品")
-        helper.setText(R.id.price, "￥" + order.price)
+        helper.setText(R.id.price, "￥" + PriceUtil.doubleTrans(order.price))
 
         val recyclerView: RecyclerView = helper.getView(R.id.mRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(mContext)

@@ -106,7 +106,6 @@ class ManagerGoodsActivity : BaseActivity() {
             }
         })
 
-
         search_view.setOnItemClickListener { _, _, position, _ ->
             val suggestion = search_view.getSuggestionAtPosition(position)
             search_view.setQuery(suggestion, true)
@@ -419,9 +418,7 @@ class ManagerGoodsActivity : BaseActivity() {
                 getData()
 
             }
-            R.id.close_layout -> {
-                mFilterDialog.dismiss()
-            }
+            R.id.close_layout -> mFilterDialog.dismiss()
         }
     }
 
@@ -465,7 +462,6 @@ class ManagerGoodsActivity : BaseActivity() {
 
                 tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivYhj!!.visibility = View.GONE
-
             }
             2 -> {
                 tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
@@ -485,7 +481,6 @@ class ManagerGoodsActivity : BaseActivity() {
 
                 tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivYhj!!.visibility = View.GONE
-
             }
             3 -> {
                 tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
@@ -524,12 +519,10 @@ class ManagerGoodsActivity : BaseActivity() {
 
                 tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivYhj!!.visibility = View.GONE
-
             }
             5 -> {
                 tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
                 ivYhj!!.visibility = View.VISIBLE
-
 
                 tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
                 ivAll!!.visibility = View.GONE
