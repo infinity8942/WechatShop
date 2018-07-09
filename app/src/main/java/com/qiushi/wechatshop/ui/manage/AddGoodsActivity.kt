@@ -23,10 +23,7 @@ import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.util.DensityUtils
-import com.qiushi.wechatshop.util.ImageHelper
-import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.*
 import com.qiushi.wechatshop.util.oss.OnUploadListener
 import com.qiushi.wechatshop.util.oss.UploadManager
 import com.qiushi.wechatshop.util.permission.HiPermission
@@ -128,11 +125,9 @@ class AddGoodsActivity : BaseActivity() {
 
     fun setData(addGoods: AddGoods) {
         if (addGoods.content != null) {
-            for (item in addGoods.content!!) {
-                if (item.content.isEmpty()) {
-                    size += 1
-                }
-            }
+            addGoods.content!!
+                    .filter { it.content.isEmpty() }
+                    .forEach { size += 1 }
         }
         //背景图
         if (addGoods.cover_url != null && addGoods.cover_url.isNotEmpty()) {
@@ -149,7 +144,7 @@ class AddGoodsActivity : BaseActivity() {
         }
         //单价
         if (addGoods.price != null && addGoods.price != 0.toDouble()) {
-            price.setText(addGoods.price.toString())
+            price.setText(PriceUtil.doubleTrans(addGoods.price))
         }
         //库存
         if (addGoods.stock != null && addGoods.stock != 0) {

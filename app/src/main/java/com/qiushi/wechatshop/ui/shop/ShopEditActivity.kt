@@ -170,7 +170,12 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        if (error.msg == "店铺不存在") {
+                            et.setText("")
+                            ToastUtils.showError(code + "店铺不存在，请重新输入")
+                        } else {
+                            ToastUtils.showError(error.msg)
+                        }
                     }
                 })
         compositeDisposable.add(disposable)

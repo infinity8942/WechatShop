@@ -16,6 +16,4 @@ class AddGoods : Serializable {
     var cover_url: String = ""
     var sales_brief: String = ""
     var left_todo: Int = 0
-
-
 }
