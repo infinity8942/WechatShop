@@ -115,10 +115,10 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
         //设置name,头像
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
-        mRecyclerView.adapter = mAdapter
+        mAdapter.bindToRecyclerView(mRecyclerView)
 
         headerView.mRecyclerView.layoutManager = mGrideManager
-        headerView.mRecyclerView.adapter = mGrideAdapter
+        mGrideAdapter.bindToRecyclerView(headerView.mRecyclerView)
         mGrideAdapter.onItemChildClickListener = mGrideItemClickListener
 
         mAdapter.onItemChildClickListener = itemChildClickListener

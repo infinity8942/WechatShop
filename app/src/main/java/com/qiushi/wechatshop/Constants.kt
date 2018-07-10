@@ -24,6 +24,9 @@ object Constants {
     //每页请求数量
     const val PAGE_NUM = 15
 
+    //InputType
+    const val TYPE_NUMBER_FLAG_DECIMAL = 8194
+
     //手机号验证
     const val REGEX_MOBILE = "^1(3|4|5|7|8)\\d{9}$"
 

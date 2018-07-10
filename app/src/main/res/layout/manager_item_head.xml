@@ -16,7 +16,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="82dp"
-            android:text="资产总额(元)"
+            android:text="资产总额 (元)"
             android:textColor="@android:color/white"
             android:textSize="11sp" />
 
@@ -27,7 +27,6 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="44dp"
-            android:text=""
             android:textColor="@android:color/white"
             android:textSize="32sp" />
 
@@ -50,7 +49,6 @@
             android:layout_marginLeft="4dp"
             android:layout_marginBottom="16dp"
             android:layout_toRightOf="@+id/money_zc"
-            android:text=""
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
@@ -73,7 +71,6 @@
             android:layout_marginLeft="4dp"
             android:layout_marginBottom="16dp"
             android:layout_toRightOf="@+id/money_dj"
-            android:text=""
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
@@ -92,5 +89,5 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <include layout="@layout/manager_item_icon"></include>
+    <include layout="@layout/manager_item_icon" />
 </LinearLayout>

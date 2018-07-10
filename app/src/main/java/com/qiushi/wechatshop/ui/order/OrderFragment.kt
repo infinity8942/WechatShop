@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -307,7 +308,8 @@ class OrderFragment : BaseFragment() {
 
     private fun showEditPriceDialog(order_id: Long) {
         val et = EditText(context)
-        et.inputType = 8194
+        et.gravity = Gravity.CENTER
+        et.inputType = Constants.TYPE_NUMBER_FLAG_DECIMAL
         et.addTextChangedListener(PriceUtil.MoneyTextWatcher(et))
 
         val dialog = AlertDialog.Builder(context!!).setView(et).setTitle("修改价格")

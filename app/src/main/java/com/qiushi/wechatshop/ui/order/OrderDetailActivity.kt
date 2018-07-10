@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.View
 import android.widget.*
 import com.alipay.sdk.app.PayTask
@@ -439,8 +440,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
 
     private fun showEditPriceDialog(order_id: Long) {
         val et = EditText(this)
-        et.hint = "请输入价格"
-        et.inputType = 8194
+        et.gravity = Gravity.CENTER
+        et.inputType = Constants.TYPE_NUMBER_FLAG_DECIMAL
         et.addTextChangedListener(PriceUtil.MoneyTextWatcher(et))
 
         val dialog = AlertDialog.Builder(this).setView(et)

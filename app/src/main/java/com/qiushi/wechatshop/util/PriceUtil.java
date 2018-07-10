@@ -18,7 +18,7 @@ public class PriceUtil {
 
     public static class MoneyTextWatcher implements TextWatcher {
         private EditText editText;
-        private int digits = 2;
+        private int digits = 2;//默认最多保留两位小数
 
         public MoneyTextWatcher(EditText et) {
             editText = et;
