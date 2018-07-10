@@ -8,7 +8,6 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.text.InputType
 import android.text.TextUtils
 import android.view.View
 import android.widget.*
@@ -441,7 +440,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     private fun showEditPriceDialog(order_id: Long) {
         val et = EditText(this)
         et.hint = "请输入价格"
-        et.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
+        et.inputType = 8194
+        et.addTextChangedListener(PriceUtil.MoneyTextWatcher(et))
 
         val dialog = AlertDialog.Builder(this).setView(et)
                 .setPositiveButton("修改") { _, _ ->

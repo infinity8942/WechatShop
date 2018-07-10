@@ -16,7 +16,7 @@ class ManagerAdapter(data: List<Goods>) : BaseQuickAdapter<Goods, BaseViewHolder
         ImageHelper.loadImageWithCorner(mContext, helper.getView(R.id.iv_shop), item.cover, 93, 94,
                 RoundedCornersTransformation(DensityUtils.dp2px(10.toFloat()), 0, RoundedCornersTransformation.CornerType.LEFT))
         helper.setText(R.id.tv_shop_name, item.name)
-        helper.setText(R.id.views, item.views.toString() + "人已经浏览")
+        helper.setText(R.id.views, item.views.toString() + "人已浏览")
         helper.setText(R.id.money, "¥ " + PriceUtil.doubleTrans(item.price))
         if (item.is_top) {
             helper.setText(R.id.tv_zd, "取消")

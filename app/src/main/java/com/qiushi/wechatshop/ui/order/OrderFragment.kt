@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.text.InputType.TYPE_CLASS_NUMBER
-import android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -23,6 +21,7 @@ import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
+import com.qiushi.wechatshop.util.PriceUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.SpaceItemDecoration
@@ -308,10 +307,10 @@ class OrderFragment : BaseFragment() {
 
     private fun showEditPriceDialog(order_id: Long) {
         val et = EditText(context)
-        et.hint = "请输入价格"
-        et.inputType = TYPE_CLASS_NUMBER;TYPE_NUMBER_FLAG_DECIMAL
+        et.inputType = 8194
+        et.addTextChangedListener(PriceUtil.MoneyTextWatcher(et))
 
-        val dialog = AlertDialog.Builder(context!!).setView(et)
+        val dialog = AlertDialog.Builder(context!!).setView(et).setTitle("修改价格")
                 .setPositiveButton("修改") { _, _ ->
                     val price = et.text.toString().trim()
                     if (price.isEmpty()) {

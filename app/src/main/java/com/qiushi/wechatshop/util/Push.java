@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 import com.qiushi.wechatshop.Constants;
@@ -20,6 +19,7 @@ import com.umeng.message.entity.UMessage;
 import static android.os.Looper.getMainLooper;
 
 public class Push {
+
     private static String DeviceToken;
 
     public static String getDeviceToken() {
@@ -42,15 +42,20 @@ public class Push {
 
             @Override
             public void onFailure(String s, String s1) {
-                Logger.e("~~~~~~~~~~~~~~ PushAgent onFailure" + s + " " + s1);
+                Logger.e("~~~~~~~~~~~~~~ PushAgent onFailure" + s + "," + s1);
             }
         });
         mPushAgent.setMessageHandler(new UmengMessageHandler() {
             @Override
-            public Notification getNotification(Context context, UMessage msg) {
-                if (msg.extra != null) {
+            public Notification getNotification(Context context, UMessage uMessage) {
+                if (uMessage.extra != null) {
+                    for (String key : uMessage.extra.keySet()) {
+                        Logger.e("~~~~~~~~~~~~~~ getNotification : " +
+                                key + "=" + uMessage.extra.get(key));
+                    }
+
                 }
-                return super.getNotification(context, msg);
+                return super.getNotification(context, uMessage);
             }
 
             @Override
@@ -58,6 +63,10 @@ public class Push {
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
+                        for (String key : uMessage.extra.keySet()) {
+                            Logger.e("~~~~~~~~~~~~~~ dealWithCustomMessage : " +
+                                    key + "=" + uMessage.extra.get(key));
+                        }
                         //踢登录
                         RxBus.getInstance().post(new Notifycation(Constants.T_LOGIN, 2L));
                     }
@@ -69,20 +78,24 @@ public class Push {
             @Override
             public void openActivity(Context context, UMessage uMessage) {
                 if (uMessage.extra != null) {
-                    Log.e("tag", "ljl~~~~~id~~~~=" + uMessage.extra.get("aId"));
-
+                    for (String key : uMessage.extra.keySet()) {
+                        Logger.e("~~~~~~~~~~~~~~ openActivity : " +
+                                key + "=" + uMessage.extra.get(key));
+                    }
                 }
             }
 
             @Override
             public void openUrl(Context context, final UMessage uMessage) {
                 if (uMessage.extra != null) {
-
+                    for (String key : uMessage.extra.keySet()) {
+                        Logger.e("~~~~~~~~~~~~~~ openUrl : " +
+                                key + "=" + uMessage.extra.get(key));
+                    }
                 }
             }
         });
     }
-
 
     public static void enable() {
         PushAgent.getInstance(WAppContext.context).enable(new IUmengCallback() {

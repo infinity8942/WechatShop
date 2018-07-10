@@ -66,12 +66,13 @@ class AddGoodsActivity : BaseActivity() {
         mAdapter.bindToRecyclerView(mRecyclerView)
 
         mAdapter.onItemChildClickListener = itemChildListener
-        ic_bg.setOnClickListener(onClicklistener)
-        back.setOnClickListener(onClicklistener)
-        rl_next.setOnClickListener(onClicklistener)
+        ic_bg.setOnClickListener(onClickListener)
+        back.setOnClickListener(onClickListener)
+        rl_next.setOnClickListener(onClickListener)
         et_brief.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(100))
         et_name.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
         et_brief.addTextChangedListener(textWatcherListener)
+        price.addTextChangedListener(PriceUtil.MoneyTextWatcher(price))
     }
 
     private fun isVisible() {
@@ -80,15 +81,15 @@ class AddGoodsActivity : BaseActivity() {
             fl_addlayout.visibility = View.GONE
             foot_layout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.VISIBLE
-            foot_add_img.setOnClickListener(onClicklistener)
-            foot_add_text.setOnClickListener(onClicklistener)
+            foot_add_img.setOnClickListener(onClickListener)
+            foot_add_text.setOnClickListener(onClickListener)
         } else {
             rl_layout.visibility = View.GONE
             foot_layout.visibility = View.GONE
             fl_addlayout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.GONE
-            item_add_img.setOnClickListener(onClicklistener)
-            item_add_text.setOnClickListener(onClicklistener)
+            item_add_img.setOnClickListener(onClickListener)
+            item_add_text.setOnClickListener(onClickListener)
         }
     }
 
@@ -160,7 +161,7 @@ class AddGoodsActivity : BaseActivity() {
         }
     }
 
-    private val onClicklistener = View.OnClickListener { v: View ->
+    private val onClickListener = View.OnClickListener { v: View ->
         when (v.id) {
             R.id.back -> finish()
             R.id.foot_add_img -> {
@@ -201,7 +202,6 @@ class AddGoodsActivity : BaseActivity() {
         if (User.getCurrent() != null && User.getCurrent().shop_id != null) {
             addGoods.shop_id = User.getCurrent().shop_id
         }
-
         if (et_brief.text.toString().isNotEmpty()) {
             addGoods.brief = et_brief.text.toString()
         }
@@ -214,7 +214,6 @@ class AddGoodsActivity : BaseActivity() {
         if (stock.text.toString().isNotEmpty()) {
             addGoods.stock = stock.text.toString().toInt()
         }
-
         if (addGoods == null) {
             ToastUtils.showError("未填写数据")
             return
@@ -462,15 +461,15 @@ class AddGoodsActivity : BaseActivity() {
             fl_addlayout.visibility = View.GONE
             foot_layout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.VISIBLE
-            foot_add_img.setOnClickListener(onClicklistener)
-            foot_add_text.setOnClickListener(onClicklistener)
+            foot_add_img.setOnClickListener(onClickListener)
+            foot_add_text.setOnClickListener(onClickListener)
         } else {
             rl_layout.visibility = View.GONE
             foot_layout.visibility = View.GONE
             fl_addlayout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.GONE
-            item_add_img.setOnClickListener(onClicklistener)
-            item_add_text.setOnClickListener(onClicklistener)
+            item_add_img.setOnClickListener(onClickListener)
+            item_add_text.setOnClickListener(onClickListener)
         }
     }
 

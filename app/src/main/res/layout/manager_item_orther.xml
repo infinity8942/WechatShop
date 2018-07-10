@@ -15,13 +15,14 @@
         <ImageView
             android:id="@+id/iv_shop"
             android:layout_width="94dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginRight="4dp" />
 
         <TextView
             android:id="@+id/tv_shop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="13dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="7dp"
             android:layout_marginRight="2dp"
             android:layout_toRightOf="@+id/iv_shop"
@@ -31,13 +32,27 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/stock"
+            android:layout_width="wrap_content"
+            android:layout_height="14dp"
+            android:layout_below="@+id/tv_shop_name"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="6dp"
+            android:layout_toRightOf="@+id/iv_shop"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@color/color_more"
+            android:textSize="10sp" />
+
+        <TextView
             android:id="@+id/views"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_shop_name"
-            android:layout_marginLeft="14.5dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="6dp"
-            android:layout_toRightOf="@+id/iv_shop"
+            android:layout_toRightOf="@+id/stock"
             android:textColor="@color/color_more"
             android:textSize="12sp" />
 
@@ -46,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="13dp"
+            android:layout_marginLeft="9dp"
             android:layout_marginBottom="7dp"
             android:layout_toRightOf="@+id/iv_shop"
             android:textColor="@color/color_item_price"

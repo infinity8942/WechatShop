@@ -37,7 +37,12 @@ class AddOrderActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         back.setOnClickListener(this)
         add.setOnClickListener(this)
         commit.setOnClickListener(this)
-        et_price.addTextChangedListener(this)
+        et_price.addTextChangedListener(object : PriceUtil.MoneyTextWatcher(et_price) {
+            override fun afterTextChanged(s: Editable?) {
+                super.afterTextChanged(s)
+                calculatePirce()
+            }
+        })
         et_amount.addTextChangedListener(this)
     }
 

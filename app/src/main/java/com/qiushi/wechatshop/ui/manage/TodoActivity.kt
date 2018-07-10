@@ -45,7 +45,7 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
             R.id.back -> finish()
             R.id.layout_deliver -> goToOrderActivity(2)//待发货
             R.id.layout_pay -> goToOrderActivity(1)//待付款
-            R.id.layout_amount -> ManagerGoodsActivity.startManagerGoodsActivity(this, 0)//库存量紧缺
+            R.id.layout_amount -> ManagerGoodsActivity.startManagerGoodsActivity(this, 6)//库存量紧缺
 //            R.id.layout_chat -> {//需沟通人员
 //
 //            }
