@@ -189,6 +189,9 @@ class MomentsFragment : BaseFragment() {
                         if (t) {
                             ToastUtils.showMessage("删除成功")
                             mAdapter.remove(position)
+                            if (mAdapter.itemCount == 0) {
+                                mAdapter.emptyView = notDataView
+                            }
                         }
                     }
 

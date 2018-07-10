@@ -11,6 +11,7 @@ import android.view.View
 import cnn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.gson.Gson
+import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
@@ -82,7 +83,7 @@ class CreateMomentsActivity : BaseActivity() {
         back.setOnClickListener(this)
         tv_ok.setOnClickListener(this)
 
-        mGrideAdapter.onItemChildClickListener = itemchildListener
+        mGrideAdapter.onItemChildClickListener = itemChildListener
     }
 
     override fun getParams(intent: Intent) {
@@ -218,26 +219,22 @@ class CreateMomentsActivity : BaseActivity() {
         addSubscription(subscribeWith)
     }
 
-    private val itemchildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+    private val itemChildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
         when (view.id) {
-            R.id.foot -> {
-                choicePhotoWrapper((9 - size), Constants.ADDSC_IMG)
-            }
+            R.id.foot -> choicePhotoWrapper((9 - size), Constants.ADDSC_IMG)
             R.id.iv_remove -> {
                 if (id != 0.toLong()) {
                     //编辑
+                    val removeAt = mNineList.removeAt(position)
                     if (size < 9) {
-                        val removeAt = mNineList.removeAt(position)
-                        if (addNineList != null && addNineList.size > 0 && addNineList.contains(removeAt)) {
+                        if (null != addNineList && addNineList.size > 0 && addNineList.contains(removeAt)) {
                             addNineList.remove(removeAt)
                         }
                         if (moment.images!!.contains(removeAt)) {
                             moment.images!![moment.images!!.indexOf(removeAt)].is_del = 1
                         }
                         size = mNineList.size - 1
-                        mGrideAdapter.setNewData(mNineList)
                     } else {
-                        val removeAt = mNineList.removeAt(position)
                         if (moment.images!!.contains(removeAt)) {
                             moment.images!![moment.images!!.indexOf(removeAt)].is_del = 1
                         }
@@ -246,18 +243,16 @@ class CreateMomentsActivity : BaseActivity() {
                         }
                         size = mNineList.size
                         mNineList.add(mNineImage)
-                        mGrideAdapter.setNewData(mNineList)
                     }
+                    mGrideAdapter.setNewData(mNineList)
                 } else {
                     //新添加
+                    mNineList.removeAt(position)
+                    moment.images = mNineList
                     if (size < 9) {
-                        mNineList.removeAt(position)
-                        moment.images = mNineList
                         size = moment.images!!.size - 1
                         mGrideAdapter.setNewData(moment.images)
                     } else {
-                        mNineList.removeAt(position)
-                        moment.images = mNineList
                         size = moment.images!!.size
 //                        mNineList.addAll(mNineImage)
                         mNineList.add(mNineImage)
@@ -353,7 +348,6 @@ class CreateMomentsActivity : BaseActivity() {
 //                                moment.images!!.add(mNineImage)
                                 mFileList.add(mFile)
                                 addNineList.add(mNineImage)
-
                             }
                             if (size < 9) {
                                 mGrideAdapter.setNewData(mNineList)
@@ -407,21 +401,22 @@ class CreateMomentsActivity : BaseActivity() {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            mHandler.postDelayed(Runnable {
-                val nineImage = findPictureByFile(file!!)
+            mHandler.postDelayed({
                 dismissLoading()
+                val nineImage = findPictureByFile(file!!)
                 if (nineImage != null) {
+                    Logger.e("upload onSuccess = " + id)
                     nineImage.oss_id = id
                     nineImage.type = "0"
                 }
             }, 300)
-
         }
 
         override fun onFailure(file: File?, error: Error?) {
-            val nineImage = findPictureByFile(file!!)
             dismissLoading()
+            val nineImage = findPictureByFile(file!!)
             if (nineImage != null) {
+                Logger.e("upload onFailure = " + id)
                 nineImage.oss_id = id
                 nineImage.type = "2"
             }
@@ -433,7 +428,7 @@ class CreateMomentsActivity : BaseActivity() {
      */
     private fun findPictureByFile(file: File): NineImage? {
         if (id != 0.toLong()) {
-            if (addNineList != null) {
+            if (null != addNineList) {
                 for (item in addNineList) {
                     if (item.img_url == "file://${file.path}")
                         return item
