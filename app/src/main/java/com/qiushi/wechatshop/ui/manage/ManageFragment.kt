@@ -18,7 +18,6 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.*
-import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -75,12 +74,12 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
     /**
      * 头布局列表 manager
      */
-    private val mGrideManager by lazy {
+    private val mEntranceGridManager by lazy {
         GridLayoutManager(activity, 4)
     }
 
-    private val mGrideAdapter by lazy {
-        GrideAdapter(ArrayList())
+    private val mEntranceAdapter by lazy {
+        EntranceAdapter(ArrayList())
     }
 
     private var page = 1
@@ -117,9 +116,32 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         mAdapter.bindToRecyclerView(mRecyclerView)
 
-        headerView.mRecyclerView.layoutManager = mGrideManager
-        mGrideAdapter.bindToRecyclerView(headerView.mRecyclerView)
-        mGrideAdapter.onItemChildClickListener = mGrideItemClickListener
+        headerView.mRecyclerView.layoutManager = mEntranceGridManager
+        mEntranceAdapter.bindToRecyclerView(headerView.mRecyclerView)
+        mEntranceAdapter.setOnItemClickListener { adapter, _, position ->
+            val entrance = adapter.data[position] as Entrance
+            when (entrance.menu_id) {
+                1 -> startActivity(Intent(activity, TodoActivity::class.java))
+                2 -> goToOrderActivity(0)
+                3 -> startActivity(Intent(activity, MomentsActivity::class.java))
+                13 -> {
+                    ManagerMoreActivity.startManagerMoreActivity(this.context!!)
+                    if (mItemPosition != -1) {
+                        mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
+                    }
+                }
+                5 -> {
+                    //店铺装修
+                    if (mShop?.cover == null) {
+                        mShop?.cover = ""
+                    }
+                    DecorateActivity.startDecorateActivity(context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
+                }
+                else -> {//TODO
+                    ToastUtils.showError("敬请期待")
+                }
+            }
+        }
 
         mAdapter.onItemChildClickListener = itemChildClickListener
         mAdapter.setOnItemClickListener { adapter, _, position ->
@@ -176,7 +198,7 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                             mAdapter.removeAllHeaderView()
                             mAdapter.addHeaderView(headerView)
                             if (t.menu_list != null && t.menu_list.size > 0) {
-                                mGrideAdapter.setNewData(t.menu_list)
+                                mEntranceAdapter.setNewData(t.menu_list)
                             }
                             if (page == 1) {
                                 ImageHelper.loadAvatar(activity!!, iv_avaver, t.logo, 28)
@@ -283,38 +305,6 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
             }
             R.id.iv_edit -> {
                 AddGoodsActivity.startAddGoodsActivity(this.context!!, mData.id)
-            }
-        }
-    }
-
-    /**
-     * 更多管理 条目点击事件
-     */
-    private val mGrideItemClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        val data = adapter.getItem(position) as Function
-        when (view.id) {
-            R.id.item_name -> {
-                when (data.menu_id) {
-                    1 -> startActivity(Intent(activity, TodoActivity::class.java))
-                    2 -> goToOrderActivity(0)
-                    3 -> startActivity(Intent(activity, MomentsActivity::class.java))
-                    13 -> {
-                        ManagerMoreActivity.startManagerMoreActivity(this.context!!)
-                        if (mItemPosition != -1) {
-                            mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
-                        }
-                    }
-                    5 -> {
-                        //店铺装修
-                        if (mShop?.cover == null) {
-                            mShop?.cover = ""
-                        }
-                        DecorateActivity.startDecorateActivity(context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
-                    }
-                    else -> {//TODO
-                        ToastUtils.showError("敬请期待")
-                    }
-                }
             }
         }
     }

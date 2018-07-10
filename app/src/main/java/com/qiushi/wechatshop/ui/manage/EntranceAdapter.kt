@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.model.Function
+import com.qiushi.wechatshop.model.Entrance
 import com.qiushi.wechatshop.util.ImageHelper
 
-class GrideAdapter(data: List<Function>) : BaseQuickAdapter<Function, BaseViewHolder>(R.layout.manager_item_gride, data) {
+class EntranceAdapter(data: List<Entrance>) : BaseQuickAdapter<Entrance, BaseViewHolder>(R.layout.manager_item_gride, data) {
     @SuppressLint("CheckResult")
-    override fun convert(helper: BaseViewHolder, item: Function) {
+    override fun convert(helper: BaseViewHolder, item: Entrance) {
 
         ImageHelper.loadAvatar(mContext, helper.getView(R.id.icon), item.coin_url, 40)
         helper.setText(R.id.item_name, item.menu_name)
@@ -24,8 +24,5 @@ class GrideAdapter(data: List<Function>) : BaseQuickAdapter<Function, BaseViewHo
         } else {
             helper.setVisible(R.id.tv_count, false)
         }
-
-        //listener
-        helper.addOnClickListener(R.id.item_name)
     }
 }
