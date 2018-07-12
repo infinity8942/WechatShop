@@ -164,8 +164,16 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                     override fun onHandleSuccess(t: Shop) {
                         et.setText("")
                         ToastUtils.showMessage("添加成功")
-                        drag_flowLayout.dragItemManager.addItem(t)
-                        list.add(t)
+
+                        if (list.isNotEmpty() && list[0].name == "我的店") {
+                            drag_flowLayout.dragItemManager.addItem(1, t)
+                            list.add(1, t)
+                        } else {
+                            drag_flowLayout.dragItemManager.addItem(0, t)
+                            list.add(0, t)
+                        }
+
+
                         isChange = true
                     }
 
