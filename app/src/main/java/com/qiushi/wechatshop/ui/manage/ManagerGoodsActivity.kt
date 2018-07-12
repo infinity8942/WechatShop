@@ -43,7 +43,6 @@ class ManagerGoodsActivity : BaseActivity() {
     var mItemPosition: Int = -1
     var state: Int = -1
     var keyword: String = ""
-    var tv_header_title = "订单管理" //标题名
     private lateinit var mFilterDialog: BottomSheetDialog //底部Dialog
 
     private var tvAll: TextView? = null
@@ -58,6 +57,8 @@ class ManagerGoodsActivity : BaseActivity() {
     private var ivJf: ImageView? = null
     private var tvYhj: TextView? = null
     private var ivYhj: ImageView? = null
+    private var tvStock: TextView? = null
+    private var ivStock: ImageView? = null
     private var tvClose: TextView? = null
 
     private var allLayout: RelativeLayout? = null
@@ -66,6 +67,7 @@ class ManagerGoodsActivity : BaseActivity() {
     private var xjLayout: RelativeLayout? = null
     private var jfLayout: RelativeLayout? = null
     private var yhjLayout: RelativeLayout? = null
+    private var stockLayout: RelativeLayout? = null
     private var closeLyout: RelativeLayout? = null
 
     /**
@@ -106,7 +108,6 @@ class ManagerGoodsActivity : BaseActivity() {
             }
         })
 
-
         search_view.setOnItemClickListener { _, _, position, _ ->
             val suggestion = search_view.getSuggestionAtPosition(position)
             search_view.setQuery(suggestion, true)
@@ -143,15 +144,14 @@ class ManagerGoodsActivity : BaseActivity() {
         mRefreshLayout.setOnLoadMoreListener { getData() }
         setBottomSheet()
 
+        back.setOnClickListener(onclickListener)
         search_bar.setOnClickListener(onclickListener)
-
         tv_add.setOnClickListener(onclickListener)
-
         tv_filter.setOnClickListener(onclickListener)
     }
 
     override fun getData() {
-        mItemPosition=-1
+        mItemPosition = -1
         val subscribeWith: BaseObserver<List<Goods>> = RetrofitManager.service
                 .getMnagerGoods(User.getCurrent().shop_id, state, keyword, page)
                 .compose(SchedulerUtils.ioToMain())
@@ -168,7 +168,6 @@ class ManagerGoodsActivity : BaseActivity() {
                             mAdapter.emptyView = notDataView
                         }
                         if (t != null) {
-
                             if (t.size < Constants.PAGE_NUM) {
                                 mRefreshLayout.setNoMoreData(true)
                             } else {
@@ -179,7 +178,6 @@ class ManagerGoodsActivity : BaseActivity() {
                             mRefreshLayout.setNoMoreData(true)
                         }
                     }
-
 
                     override fun onHandleError(error: Error) {
                         if (page == 1) {
@@ -199,7 +197,6 @@ class ManagerGoodsActivity : BaseActivity() {
         addSubscription(subscribeWith)
     }
 
-
     override fun getParams(intent: Intent) {
         super.getParams(intent)
         state = intent.getIntExtra("state", -1)
@@ -207,17 +204,13 @@ class ManagerGoodsActivity : BaseActivity() {
 
     companion object {
         fun startManagerGoodsActivity(context: Context, state: Int) {
-            val intent = Intent()
-            //获取intent对象
+            val intent = Intent(context, ManagerGoodsActivity::class.java)
             intent.putExtra("state", state)
-            intent.setClass(context, ManagerGoodsActivity::class.java)
-            // 获取class是使用::反射
-            ContextCompat.startActivity(context, intent, null)
+            context.startActivity(intent)
         }
     }
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
-
         override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (mItemPosition != -1 && mAdapter != null) {
@@ -280,13 +273,10 @@ class ManagerGoodsActivity : BaseActivity() {
                 setVisible(position)
                 AddGoodsActivity.startAddGoodsActivity(this, mData.id)
             }
-
-
         }
     }
 
     private fun setVisible(position: Int) {
-
         if (mItemPosition != -1 && mAdapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape) != null) {
             mAdapter.getViewByPosition(mRecyclerView, position, R.id.layout_shape)?.visibility = View.GONE
         }
@@ -367,6 +357,8 @@ class ManagerGoodsActivity : BaseActivity() {
         ivJf = dialogView.findViewById(R.id.iv_jf)
         tvYhj = dialogView.findViewById(R.id.tv_yhj)
         ivYhj = dialogView.findViewById(R.id.iv_yhj)
+        tvStock = dialogView.findViewById(R.id.tv_stock)
+        ivStock = dialogView.findViewById(R.id.iv_stock)
         tvClose = dialogView.findViewById(R.id.tv_close)
 
         allLayout = dialogView.findViewById(R.id.all_layout)
@@ -375,21 +367,23 @@ class ManagerGoodsActivity : BaseActivity() {
         xjLayout = dialogView.findViewById(R.id.xj_layout)
         jfLayout = dialogView.findViewById(R.id.jf_layout)
         yhjLayout = dialogView.findViewById(R.id.yhj_layout)
+        stockLayout = dialogView.findViewById(R.id.stock_layout)
         closeLyout = dialogView.findViewById(R.id.close_layout)
 
-        allLayout!!.setOnClickListener(bottomsheetListener)
-        zdLayout!!.setOnClickListener(bottomsheetListener)
-        sjLayout!!.setOnClickListener(bottomsheetListener)
-        xjLayout!!.setOnClickListener(bottomsheetListener)
-        jfLayout!!.setOnClickListener(bottomsheetListener)
-        yhjLayout!!.setOnClickListener(bottomsheetListener)
-        closeLyout!!.setOnClickListener(bottomsheetListener)
+        allLayout!!.setOnClickListener(bottomSheetListener)
+        zdLayout!!.setOnClickListener(bottomSheetListener)
+        sjLayout!!.setOnClickListener(bottomSheetListener)
+        xjLayout!!.setOnClickListener(bottomSheetListener)
+        jfLayout!!.setOnClickListener(bottomSheetListener)
+        yhjLayout!!.setOnClickListener(bottomSheetListener)
+        stockLayout!!.setOnClickListener(bottomSheetListener)
+        closeLyout!!.setOnClickListener(bottomSheetListener)
 
         mFilterDialog = BottomSheetDialog(this)
         mFilterDialog.setContentView(dialogView)
     }
 
-    private val bottomsheetListener = View.OnClickListener { v ->
+    private val bottomSheetListener = View.OnClickListener { v ->
         when (v!!.id) {
             R.id.all_layout -> {
                 state = 0
@@ -420,18 +414,20 @@ class ManagerGoodsActivity : BaseActivity() {
                 mFilterDialog.dismiss()
                 page = 1
                 getData()
-
             }
             R.id.yhj_layout -> {
                 state = 5
                 mFilterDialog.dismiss()
                 page = 1
                 getData()
-
             }
-            R.id.close_layout -> {
+            R.id.stock_layout -> {
+                state = 6
                 mFilterDialog.dismiss()
+                page = 1
+                getData()
             }
+            R.id.close_layout -> mFilterDialog.dismiss()
         }
     }
 
@@ -439,123 +435,78 @@ class ManagerGoodsActivity : BaseActivity() {
         mFilterDialog.show()
         when (state) {
             0 -> {
-                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
-                ivAll!!.visibility = View.VISIBLE
-
-                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivZd!!.visibility = View.GONE
-
-                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivSj!!.visibility = View.GONE
-
-                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivXj!!.visibility = View.GONE
-
-                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivJf!!.visibility = View.GONE
-
-                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivYhj!!.visibility = View.GONE
+                changeSelectedStatus(false, tvYhj, ivYhj)
+                changeSelectedStatus(true, tvAll, ivAll)
+                changeSelectedStatus(false, tvZd, ivZd)
+                changeSelectedStatus(false, tvSj, ivSj)
+                changeSelectedStatus(false, tvXj, ivXj)
+                changeSelectedStatus(false, tvJf, ivJf)
+                changeSelectedStatus(false, tvStock, ivStock)
             }
             1 -> {
-                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
-                ivZd!!.visibility = View.VISIBLE
-
-                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivAll!!.visibility = View.GONE
-
-                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivSj!!.visibility = View.GONE
-
-                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivXj!!.visibility = View.GONE
-
-                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivJf!!.visibility = View.GONE
-
-                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivYhj!!.visibility = View.GONE
-
+                changeSelectedStatus(false, tvYhj, ivYhj)
+                changeSelectedStatus(false, tvAll, ivAll)
+                changeSelectedStatus(true, tvZd, ivZd)
+                changeSelectedStatus(false, tvSj, ivSj)
+                changeSelectedStatus(false, tvXj, ivXj)
+                changeSelectedStatus(false, tvJf, ivJf)
+                changeSelectedStatus(false, tvStock, ivStock)
             }
             2 -> {
-                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
-                ivSj!!.visibility = View.VISIBLE
-
-                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivAll!!.visibility = View.GONE
-
-                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivZd!!.visibility = View.GONE
-
-                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivXj!!.visibility = View.GONE
-
-                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivJf!!.visibility = View.GONE
-
-                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivYhj!!.visibility = View.GONE
-
+                changeSelectedStatus(false, tvYhj, ivYhj)
+                changeSelectedStatus(false, tvAll, ivAll)
+                changeSelectedStatus(false, tvZd, ivZd)
+                changeSelectedStatus(true, tvSj, ivSj)
+                changeSelectedStatus(false, tvXj, ivXj)
+                changeSelectedStatus(false, tvJf, ivJf)
+                changeSelectedStatus(false, tvStock, ivStock)
             }
             3 -> {
-                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
-                ivXj!!.visibility = View.VISIBLE
-
-                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivAll!!.visibility = View.GONE
-
-                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivZd!!.visibility = View.GONE
-
-                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivSj!!.visibility = View.GONE
-
-                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivJf!!.visibility = View.GONE
-
-                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivYhj!!.visibility = View.GONE
+                changeSelectedStatus(false, tvYhj, ivYhj)
+                changeSelectedStatus(false, tvAll, ivAll)
+                changeSelectedStatus(false, tvZd, ivZd)
+                changeSelectedStatus(false, tvSj, ivSj)
+                changeSelectedStatus(true, tvXj, ivXj)
+                changeSelectedStatus(false, tvJf, ivJf)
+                changeSelectedStatus(false, tvStock, ivStock)
             }
             4 -> {
-                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
-                ivJf!!.visibility = View.VISIBLE
-
-                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivAll!!.visibility = View.GONE
-
-                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivZd!!.visibility = View.GONE
-
-                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivSj!!.visibility = View.GONE
-
-                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivXj!!.visibility = View.GONE
-
-                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivYhj!!.visibility = View.GONE
-
+                changeSelectedStatus(false, tvYhj, ivYhj)
+                changeSelectedStatus(false, tvAll, ivAll)
+                changeSelectedStatus(false, tvZd, ivZd)
+                changeSelectedStatus(false, tvSj, ivSj)
+                changeSelectedStatus(false, tvXj, ivXj)
+                changeSelectedStatus(true, tvJf, ivJf)
+                changeSelectedStatus(false, tvStock, ivStock)
             }
             5 -> {
-                tvYhj!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
-                ivYhj!!.visibility = View.VISIBLE
-
-
-                tvAll!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivAll!!.visibility = View.GONE
-
-                tvZd!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivZd!!.visibility = View.GONE
-
-                tvSj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivSj!!.visibility = View.GONE
-
-                tvXj!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivXj!!.visibility = View.GONE
-
-                tvJf!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                ivJf!!.visibility = View.GONE
+                changeSelectedStatus(true, tvYhj, ivYhj)
+                changeSelectedStatus(false, tvAll, ivAll)
+                changeSelectedStatus(false, tvZd, ivZd)
+                changeSelectedStatus(false, tvSj, ivSj)
+                changeSelectedStatus(false, tvXj, ivXj)
+                changeSelectedStatus(false, tvJf, ivJf)
+                changeSelectedStatus(false, tvStock, ivStock)
             }
+            6 -> {
+                changeSelectedStatus(false, tvYhj, ivYhj)
+                changeSelectedStatus(false, tvAll, ivAll)
+                changeSelectedStatus(false, tvZd, ivZd)
+                changeSelectedStatus(false, tvSj, ivSj)
+                changeSelectedStatus(false, tvXj, ivXj)
+                changeSelectedStatus(false, tvJf, ivJf)
+                changeSelectedStatus(true, tvStock, ivStock)
+            }
+        }
+    }
+
+    private fun changeSelectedStatus(choosen: Boolean, tv: TextView?, iv: ImageView?) {
+        if (choosen) {
+            tv!!.setTextColor(ContextCompat.getColor(this, R.color.filter_color))
+            iv!!.visibility = View.VISIBLE
+        } else {
+            tv!!.setTextColor(ContextCompat.getColor(this, R.color.gray3))
+            iv!!.visibility = View.GONE
         }
     }
 
@@ -581,12 +532,9 @@ class ManagerGoodsActivity : BaseActivity() {
 
     private val onclickListener = View.OnClickListener { v ->
         when (v.id) {
-            R.id.search_bar -> {
-                search_view.openSearch()
-            }
-            R.id.tv_filter -> {
-                showBottomFilterDialog()
-            }
+            R.id.back -> finish()
+            R.id.search_bar -> search_view.openSearch()
+            R.id.tv_filter -> showBottomFilterDialog()
             R.id.tv_add -> {
                 setVisible(mItemPosition)
                 AddGoodsActivity.startAddGoodsActivity(this, 0)

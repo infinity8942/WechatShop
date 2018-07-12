@@ -8,7 +8,8 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.text.InputType
+import android.text.TextUtils
+import android.view.Gravity
 import android.view.View
 import android.widget.*
 import com.alipay.sdk.app.PayTask
@@ -69,7 +70,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         isManage = intent.getBooleanExtra("isManage", true)
 
         mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mAdapter = OrderGoodsAdapter(isManage)
+        mAdapter = OrderGoodsAdapter(false)
         mRecyclerView.adapter = mAdapter
 
         initPayDialog()
@@ -129,8 +130,27 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         } else {
             ImageHelper.loadAvatar(this@OrderDetailActivity, logo, t.shop.logo, 24)
             if (null != t.user) {
-                name.text = t.user.receiver + "  " + t.user.mobile
-                address.text = t.user.address
+                var nameStr = "暂无"
+                var mobileStr = "暂无"
+                if (!TextUtils.isEmpty(t.user.receiver)) {
+                    nameStr = t.user.receiver
+                }
+                if (!TextUtils.isEmpty(t.user.mobile)) {
+                    mobileStr = t.user.mobile
+                }
+                if (nameStr == "暂无" && mobileStr == "暂无") {
+                    name.text = "暂无"
+                } else if (nameStr == "暂无") {
+                    name.text = mobileStr
+                } else if (mobileStr == "暂无") {
+                    name.text = nameStr
+                } else {
+                    name.text = nameStr + "  " + mobileStr
+                }
+                address.text = if (!TextUtils.isEmpty(t.user.address)) t.user.address else "暂无"
+            } else {
+                name.text = "暂无"
+                address.text = "暂无"
             }
 
             message.text = "买家留言：" + t.content
@@ -149,9 +169,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         mAdapter.setNewData(t.goods)
 
         amount.text = "共计" + t.num + "件商品"
-        price.text = "￥" + t.price
+        price.text = "￥" + PriceUtil.doubleTrans(t.price)
         if (null != priceTv) {
-            priceTv!!.text = t.price.toString()
+            priceTv!!.text = PriceUtil.doubleTrans(t.price)
         }
         number.text = "订单编号：" + t.numbers
         create_time.text = "创建时间：" + DateUtil.getMillon(t.create_time)
@@ -420,8 +440,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
 
     private fun showEditPriceDialog(order_id: Long) {
         val et = EditText(this)
-        et.hint = "请输入价格"
-        et.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
+        et.gravity = Gravity.CENTER
+        et.inputType = Constants.TYPE_NUMBER_FLAG_DECIMAL
+        et.addTextChangedListener(PriceUtil.MoneyTextWatcher(et))
 
         val dialog = AlertDialog.Builder(this).setView(et)
                 .setPositiveButton("修改") { _, _ ->

@@ -2,7 +2,6 @@ package com.qiushi.wechatshop.ui.manage
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v4.content.ContextCompat
 import android.text.InputFilter
 import android.util.Log
 import android.view.View
@@ -21,12 +20,12 @@ import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_add_goods_next.*
 
-@Suppress("UNREACHABLE_CODE")
 class AddGoodsNextActivity : BaseActivity() {
+
     private var isSwitch: Boolean = false
     private var addGoods: AddGoods? = null
-    override fun getData() {
-    }
+
+    override fun layoutId(): Int = R.layout.activity_add_goods_next
 
     override fun getParams(intent: Intent) {
         super.getParams(intent)
@@ -34,8 +33,8 @@ class AddGoodsNextActivity : BaseActivity() {
     }
 
     override fun init() {
-        StatusBarUtil.immersive(this!!)
-        StatusBarUtil.setPaddingSmart(this!!, toolbar)
+        StatusBarUtil.immersive(this)
+        StatusBarUtil.setPaddingSmart(this, toolbar)
 
         et_bz.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(100))
         isSwitch = if (addGoods != null) {
@@ -55,7 +54,6 @@ class AddGoodsNextActivity : BaseActivity() {
             iv_switch.setImageResource(R.mipmap.ic_goods_open)
             line.visibility = View.VISIBLE
             countlayout.visibility = View.VISIBLE
-
         } else {
             line.visibility = View.GONE
             countlayout.visibility = View.GONE
@@ -65,20 +63,17 @@ class AddGoodsNextActivity : BaseActivity() {
         up_layout.setOnClickListener(onclickListener)
     }
 
-    override fun layoutId(): Int = R.layout.activity_add_goods_next
-
+    override fun getData() {
+    }
 
     companion object {
         private lateinit var mContext: Activity
 
         fun startAddGoodsNextActivity(context: Activity, addGoods: AddGoods) {
             this.mContext = context
-            val intent = Intent()
-            //获取intent对象
+            val intent = Intent(context, AddGoodsNextActivity::class.java)
             intent.putExtra("addGoods", addGoods)
-            intent.setClass(context, AddGoodsNextActivity::class.java)
-            // 获取class是使用::反射
-            ContextCompat.startActivity(context, intent, null)
+            context.startActivity(intent)
         }
     }
 
@@ -122,13 +117,20 @@ class AddGoodsNextActivity : BaseActivity() {
                 return
             }
         }
+
+        if (addGoods!!.is_todo) {
+            if (addGoods!!.left_todo >= addGoods!!.stock) {
+                ToastUtils.showError("库存提醒数量应小于库存量")
+                return
+            }
+        }
+
         //走接口
         putData()
     }
 
     private fun putData() {
-        var gson = Gson()
-        val toJson = gson.toJson(addGoods)
+        val toJson = Gson().toJson(addGoods)
         Log.e("tag", "toJson~~~~~~~~~~~~~~~~~$toJson")
         val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.postGoods(toJson)
                 .compose(SchedulerUtils.ioToMain())
@@ -142,7 +144,6 @@ class AddGoodsNextActivity : BaseActivity() {
                         } else {
                             ToastUtils.showError("上传失败")
                         }
-
                     }
 
                     override fun onHandleError(error: Error) {

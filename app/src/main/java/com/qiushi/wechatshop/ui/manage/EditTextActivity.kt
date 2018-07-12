@@ -10,7 +10,6 @@ import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_edit_text.*
 
-
 class EditTextActivity : BaseActivity() {
 
     private var mText: String = ""

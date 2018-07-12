@@ -13,6 +13,7 @@ import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
+import com.qiushi.wechatshop.util.PriceUtil
 import com.qiushi.wechatshop.util.web.WebActivity
 
 /**
@@ -60,7 +61,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                     helper.setText(R.id.status, "等待卖家发货").setText(R.id.action, if (order.remind_send == 0) "提醒发货" else "已提醒")
                     helper.setGone(R.id.numbers, false)
                 }
-                helper.setGone(R.id.action1, false).setGone(R.id.action2, false)
+                helper.setGone(R.id.action, true).setGone(R.id.action1, false).setGone(R.id.action2, false)
             }
             Constants.DELIVERED -> {
                 if (isManage) {
@@ -95,7 +96,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
         }
 
         helper.setText(R.id.amount, "共计" + order.num + "件商品")
-        helper.setText(R.id.price, "￥" + order.price)
+        helper.setText(R.id.price, "￥" + PriceUtil.doubleTrans(order.price))
 
         val recyclerView: RecyclerView = helper.getView(R.id.mRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(mContext)

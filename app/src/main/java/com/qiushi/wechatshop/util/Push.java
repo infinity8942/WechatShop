@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 import com.qiushi.wechatshop.Constants;
@@ -20,6 +19,7 @@ import com.umeng.message.entity.UMessage;
 import static android.os.Looper.getMainLooper;
 
 public class Push {
+
     private static String DeviceToken;
 
     public static String getDeviceToken() {
@@ -42,40 +42,20 @@ public class Push {
 
             @Override
             public void onFailure(String s, String s1) {
-                Logger.e("~~~~~~~~~~~~~~ PushAgent onFailure" + s + " " + s1);
+                Logger.e("~~~~~~~~~~~~~~ PushAgent onFailure" + s + "," + s1);
             }
         });
         mPushAgent.setMessageHandler(new UmengMessageHandler() {
             @Override
-            public Notification getNotification(Context context, UMessage msg) {
-                if (msg.extra != null) {
-                    if (msg.extra.get("type") != null) {
-                        Log.e("tag", msg.extra.get("type") + "");
-                        switch (msg.extra.get("type")) {
-                            case "1":
-                                //待发货订单 提醒卖家
-                                break;
-                            case "2":
-                                //库存紧缺（提醒卖家）
-                                RxBus.getInstance().post(new Notifycation(Constants.PUSH_KUCUN, 0L));
-                                break;
-                            case "3":
-                                //待支付订单（提醒卖家 十分钟自动提醒）
-                                break;
-                            case "4":
-                                //标记发货（提醒买家）
-                                break;
-                            case "5":
-                                //标记发货（提醒买家）
-                                break;
-                            case "6":
-                                //下架或删除时如果用户购物车中有该商品则推送一条
-                                break;
-                        }
-
+            public Notification getNotification(Context context, UMessage uMessage) {
+                if (uMessage.extra != null) {
+                    for (String key : uMessage.extra.keySet()) {
+                        Logger.e("~~~~~~~~~~~~~~ getNotification : " +
+                                key + "=" + uMessage.extra.get(key));
                     }
+
                 }
-                return super.getNotification(context, msg);
+                return super.getNotification(context, uMessage);
             }
 
             @Override
@@ -83,6 +63,10 @@ public class Push {
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
+                        for (String key : uMessage.extra.keySet()) {
+                            Logger.e("~~~~~~~~~~~~~~ dealWithCustomMessage : " +
+                                    key + "=" + uMessage.extra.get(key));
+                        }
                         //踢登录
                         RxBus.getInstance().post(new Notifycation(Constants.T_LOGIN, 2L));
                     }
@@ -94,19 +78,24 @@ public class Push {
             @Override
             public void openActivity(Context context, UMessage uMessage) {
                 if (uMessage.extra != null) {
-
+                    for (String key : uMessage.extra.keySet()) {
+                        Logger.e("~~~~~~~~~~~~~~ openActivity : " +
+                                key + "=" + uMessage.extra.get(key));
+                    }
                 }
             }
 
             @Override
             public void openUrl(Context context, final UMessage uMessage) {
                 if (uMessage.extra != null) {
-
+                    for (String key : uMessage.extra.keySet()) {
+                        Logger.e("~~~~~~~~~~~~~~ openUrl : " +
+                                key + "=" + uMessage.extra.get(key));
+                    }
                 }
             }
         });
     }
-
 
     public static void enable() {
         PushAgent.getInstance(WAppContext.context).enable(new IUmengCallback() {

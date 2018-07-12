@@ -24,6 +24,9 @@ object Constants {
     //每页请求数量
     const val PAGE_NUM = 15
 
+    //InputType
+    const val TYPE_NUMBER_FLAG_DECIMAL = 8194
+
     //手机号验证
     const val REGEX_MOBILE = "^1(3|4|5|7|8)\\d{9}$"
 
@@ -57,7 +60,8 @@ object Constants {
     const val DESCORA_REQUEST = 1011//店铺装修request
 
     const val ADD_IMG_REFRESH = 1012// 添加产品 刷新回调
-    const val OPEN_SHOP_OR_ZX = 1013//开店 或者 装修
+    const val OPEN_SHOP = 1013//开店 或者 装修
+    const val ZX_SHOP = 1017//开店 或者 装修
     const val MANAGER_GOODS = 1014//产品管理 置顶删除 等 刷新
     const val MOMENT_FRESH = 1015//素材刷新
     const val T_LOGIN = 1016//踢登录

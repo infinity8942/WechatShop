@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.text.InputType
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -22,6 +22,7 @@ import com.qiushi.wechatshop.net.exception.ErrorStatus
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
+import com.qiushi.wechatshop.util.PriceUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.SpaceItemDecoration
@@ -58,10 +59,9 @@ class OrderFragment : BaseFragment() {
 
         //Listener
         mRefreshLayout.setOnRefreshListener {
-            page = 1
             lazyLoad()
         }
-        mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
+        mRefreshLayout.setOnLoadMoreListener { getOrders() }
 
         mAdapter.setOnItemClickListener { adapter, _, position ->
             goToOrderDetails((adapter.data[position] as Order).id)
@@ -146,6 +146,7 @@ class OrderFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
+        page = 1
         getOrders()
     }
 
@@ -291,7 +292,7 @@ class OrderFragment : BaseFragment() {
                                 override fun onHandleSuccess(t: Boolean) {
                                     if (t) {
                                         ToastUtils.showMessage("交易完成")
-                                        getOrders()
+                                        lazyLoad()
                                     }
                                 }
 
@@ -308,10 +309,11 @@ class OrderFragment : BaseFragment() {
 
     private fun showEditPriceDialog(order_id: Long) {
         val et = EditText(context)
-        et.hint = "请输入价格"
-        et.inputType = InputType.TYPE_CLASS_NUMBER
+        et.gravity = Gravity.CENTER
+        et.inputType = Constants.TYPE_NUMBER_FLAG_DECIMAL
+        et.addTextChangedListener(PriceUtil.MoneyTextWatcher(et))
 
-        val dialog = AlertDialog.Builder(context!!).setView(et)
+        val dialog = AlertDialog.Builder(context!!).setView(et).setTitle("修改价格")
                 .setPositiveButton("修改") { _, _ ->
                     val price = et.text.toString().trim()
                     if (price.isEmpty()) {
@@ -336,7 +338,7 @@ class OrderFragment : BaseFragment() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
                             ToastUtils.showMessage("修改成功")
-                            getOrders()
+                            lazyLoad()
                         }
                     }
 
@@ -360,7 +362,7 @@ class OrderFragment : BaseFragment() {
                                 override fun onHandleSuccess(t: Boolean) {
                                     if (t) {
                                         ToastUtils.showMessage("删除成功")
-                                        getOrders()
+                                        lazyLoad()
                                     }
                                 }
 
@@ -388,7 +390,7 @@ class OrderFragment : BaseFragment() {
                                 override fun onHandleSuccess(t: Boolean) {
                                     if (t) {
                                         ToastUtils.showMessage("已取消")
-                                        getOrders()
+                                        lazyLoad()
                                     }
                                 }
 

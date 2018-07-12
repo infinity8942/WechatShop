@@ -22,15 +22,17 @@ import kotlinx.android.synthetic.main.activity_todo.*
  */
 class TodoActivity : BaseActivity(), View.OnClickListener {
 
-    override fun layoutId(): Int {
-        return R.layout.activity_todo
-    }
+    override fun layoutId(): Int = R.layout.activity_todo
 
     override fun init() {
         //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
 
+        mRefreshLayout.setEnableLoadMore(false)
+        mRefreshLayout.setOnRefreshListener {
+            getData()
+        }
         back.setOnClickListener(this)
         layout_deliver.setOnClickListener(this)
         layout_pay.setOnClickListener(this)
@@ -45,7 +47,7 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
             R.id.back -> finish()
             R.id.layout_deliver -> goToOrderActivity(2)//待发货
             R.id.layout_pay -> goToOrderActivity(1)//待付款
-            R.id.layout_amount -> ManagerGoodsActivity.startManagerGoodsActivity(this, 0)//库存量紧缺
+            R.id.layout_amount -> goToManagerGoodsActivity(6)//库存量紧缺
 //            R.id.layout_chat -> {//需沟通人员
 //
 //            }
@@ -63,22 +65,34 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Todo>() {
                     override fun onHandleSuccess(t: Todo) {
+                        mRefreshLayout.finishRefresh(true)
                         deliver.text = t.wait_send.toString()
                         pay.text = t.wait_pay.toString()
                         amount.text = t.num_notice.toString()
                     }
 
                     override fun onHandleError(error: Error) {
+                        mRefreshLayout.finishRefresh(false)
                         ToastUtils.showError(error.msg)
                     }
                 })
         addSubscription(disposable)
     }
 
+    /**
+     * 跳转订单列表页
+     */
     private fun goToOrderActivity(type: Int) {
         val intent = Intent(this, OrderActivity::class.java)
         intent.putExtra("isManage", true)
         intent.putExtra("type", type)
         startActivity(intent)
+    }
+
+    /**
+     * 跳转产品管理页
+     */
+    private fun goToManagerGoodsActivity(status: Int) {
+        ManagerGoodsActivity.startManagerGoodsActivity(this, status)
     }
 }

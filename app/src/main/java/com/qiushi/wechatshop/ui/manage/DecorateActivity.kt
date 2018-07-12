@@ -108,13 +108,12 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                             //开店, 保存到本地
                             User.editCurrent { u -> u!!.shop_id = t.toLong() }
                             ToastUtils.showMessage("开店铺成功")
-                            RxBus.getInstance().post(Notifycation(Constants.OPEN_SHOP_OR_ZX, 0L))
-                            finish()
+                            RxBus.getInstance().post(Notifycation(Constants.OPEN_SHOP, 0L))
                         } else {
                             ToastUtils.showMessage("装修店铺成功")
-                            RxBus.getInstance().post(Notifycation(Constants.OPEN_SHOP_OR_ZX, 0L))
-                            finish()
+                            RxBus.getInstance().post(Notifycation(Constants.ZX_SHOP, 0L))
                         }
+                        finish()
                     }
 
                     override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {

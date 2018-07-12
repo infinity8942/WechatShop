@@ -6,6 +6,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
+import com.qiushi.wechatshop.util.PriceUtil
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 /**
@@ -18,7 +19,7 @@ class ShopAdapter : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.item_shop_g
         ImageHelper.loadImageWithCorner(mContext, helper.getView(R.id.iv_cover_feed), goods.cover, 150, 150,
                 RoundedCornersTransformation(DensityUtils.dp2px(10f), 0, RoundedCornersTransformation.CornerType.TOP))
         helper.setText(R.id.tv_title, goods.name)
-        helper.setText(R.id.price, "￥" + goods.price)
+        helper.setText(R.id.price, "￥" + PriceUtil.doubleTrans(goods.price))
         helper.setText(R.id.amount, "已售" + goods.sold)
 
         helper.addOnClickListener(R.id.cart)

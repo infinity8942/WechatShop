@@ -39,6 +39,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
@@ -53,6 +54,7 @@ public class WebActivity extends SwipeBackActivity {
     public final static String PARAM_TITLE = "param_title";
     private SonicSession sonicSession;
     private WebView webView;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,7 @@ public class WebActivity extends SwipeBackActivity {
             SonicEngine.createInstance(new HostSonicRuntime(getApplication()), new SonicConfig.Builder().build());
         }
 
-        SonicSessionClientImpl sonicSessionClient;
+        SonicSessionClientImpl sonicSessionClient = null;
 
         // step 2: Create SonicSession
         Map<String, String> header = Utils.getHttpHeaders();
@@ -83,7 +85,8 @@ public class WebActivity extends SwipeBackActivity {
         } else {
             // this only happen when a same sonic session is already running,
             // u can comment following codes to feedback as a default mode.
-            throw new UnknownError("create session fail!");
+            Logger.e("!!!!!!!! create session fail !!!!!!!!");
+//            throw new UnknownError("create session fail!");
         }
 
         // step 3: BindWebView for sessionClient and bindClient for SonicSession
@@ -125,8 +128,8 @@ public class WebActivity extends SwipeBackActivity {
                 if (sonicSession != null) {
                     //step 6: Call sessionClient.requestResource when host allow the application
                     // to return the local data .
-                    Logger.e("shouldInterceptRequest = " + url);
-                    if (!url.isEmpty() && url.startsWith("local")) {
+                    Logger.e("InterceptRequest = " + url);
+                    if (!url.isEmpty() && url.contains("localApp")) {
                         getPayLocalData(url);
                     } else {
                         return (WebResourceResponse) sonicSession.getSessionClient().requestResource(url);
@@ -158,8 +161,12 @@ public class WebActivity extends SwipeBackActivity {
         webSettings.setLoadWithOverviewMode(true);
 
         // step 5: webview is ready now, just tell session client to bind
-        sonicSessionClient.bindWebView(webView);
-        sonicSessionClient.clientReady();
+        if (null != sonicSessionClient) {
+            sonicSessionClient.bindWebView(webView);
+            sonicSessionClient.clientReady();
+        } else {
+            webView.loadUrl(url);
+        }
     }
 
     /**
@@ -214,6 +221,7 @@ public class WebActivity extends SwipeBackActivity {
                         ToastUtils.showError(e.getMsg());
                     }
                 });
+        compositeDisposable.add(disposable);
     }
 
     /**
@@ -284,6 +292,7 @@ public class WebActivity extends SwipeBackActivity {
                     public void onComplete() {
                     }
                 });
+        compositeDisposable.add(disposable);
     }
 
     @Override
@@ -300,6 +309,9 @@ public class WebActivity extends SwipeBackActivity {
         if (null != sonicSession) {
             sonicSession.destroy();
             sonicSession = null;
+        }
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.clear();
         }
         super.onDestroy();
     }

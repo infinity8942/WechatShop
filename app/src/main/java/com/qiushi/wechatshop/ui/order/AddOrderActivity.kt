@@ -14,6 +14,7 @@ import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.goods.GoodsListActivity
 import com.qiushi.wechatshop.util.ImageHelper
+import com.qiushi.wechatshop.util.PriceUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_add_order.*
@@ -36,7 +37,12 @@ class AddOrderActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         back.setOnClickListener(this)
         add.setOnClickListener(this)
         commit.setOnClickListener(this)
-        et_price.addTextChangedListener(this)
+        et_price.addTextChangedListener(object : PriceUtil.MoneyTextWatcher(et_price) {
+            override fun afterTextChanged(s: Editable?) {
+                super.afterTextChanged(s)
+                calculatePirce()
+            }
+        })
         et_amount.addTextChangedListener(this)
     }
 
@@ -75,7 +81,7 @@ class AddOrderActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
         price = et_price.text.toString().trim().toDouble()
         amount = et_amount.text.toString().trim().toInt()
-        et_all.setText((price * amount).toString())
+        et_all.setText(PriceUtil.doubleTrans(price * amount))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -84,7 +90,7 @@ class AddOrderActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                 if (null != data) {
                     val goods = data.getSerializableExtra("goods") as Goods
                     ImageHelper.loadImageWithCorner(this@AddOrderActivity, add, goods.cover, 64, 64, 5.toFloat())
-                    et_price.setText(goods.price.toString())
+                    et_price.setText(PriceUtil.doubleTrans(goods.price))
                     calculatePirce()
                     goodsID = goods.id
                 }

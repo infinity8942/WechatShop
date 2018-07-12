@@ -45,6 +45,8 @@
     <color name="coupon_yellow">#FB983C</color>
     <color name="wx_green">#4DBE2E</color>
     <color name="star_red">#EC5E62</color>
+    <color name="stock_blue">#A2CCFF</color>
+    <color name="stock_red">#FF888E</color>
     <color name="edit_black">#151515</color>
     <color name="bg_toast">#99000000</color>
 

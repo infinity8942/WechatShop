@@ -47,11 +47,15 @@ class MainActivity : BaseActivity() {
     private var mExitTime: Long = 0
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (System.currentTimeMillis().minus(mExitTime) <= 2000) {
-                finish()
+            if (navigation.currentTab != 0) {
+                navigation.currentTab = 0
             } else {
-                mExitTime = System.currentTimeMillis()
-                ToastUtils.showMessage("再按一次退出程序")
+                if (System.currentTimeMillis().minus(mExitTime) <= 2000) {
+                    finish()
+                } else {
+                    mExitTime = System.currentTimeMillis()
+                    ToastUtils.showMessage("再按一次退出程序")
+                }
             }
             return true
         }

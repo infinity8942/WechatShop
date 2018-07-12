@@ -18,7 +18,6 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.*
-import com.qiushi.wechatshop.model.Function
 import com.qiushi.wechatshop.net.BaseResponse
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -29,6 +28,7 @@ import com.qiushi.wechatshop.ui.login.BindActivity
 import com.qiushi.wechatshop.ui.moments.MomentsActivity
 import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
+import com.qiushi.wechatshop.util.PriceUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
@@ -39,8 +39,7 @@ import kotlinx.android.synthetic.main.manager_item_icon.view.*
 /**
  * 我的店Fragment
  */
-class ManageFragment : BaseFragment() {
-
+class ManageFragment : BaseFragment(), View.OnClickListener {
 
     var mItemPosition: Int = -1
     var distance: Int = 0
@@ -75,13 +74,12 @@ class ManageFragment : BaseFragment() {
     /**
      * 头布局列表 manager
      */
-    private val mGrideManager by lazy {
+    private val mEntranceGridManager by lazy {
         GridLayoutManager(activity, 4)
     }
 
-
-    private val mGrideAdapter by lazy {
-        GrideAdapter(ArrayList())
+    private val mEntranceAdapter by lazy {
+        EntranceAdapter(ArrayList())
     }
 
     private var page = 1
@@ -114,23 +112,41 @@ class ManageFragment : BaseFragment() {
         headerView = layoutInflater.inflate(R.layout.manager_item_head, mRecyclerView.parent as ViewGroup, false)
 
         //设置name,头像
-
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
-        mRecyclerView.adapter = mAdapter
+        mAdapter.bindToRecyclerView(mRecyclerView)
 
-
-        headerView.mRecyclerView.layoutManager = mGrideManager
-        headerView.mRecyclerView.adapter = mGrideAdapter
-        mGrideAdapter.onItemChildClickListener = mGrideItemClickListener
-
-
-        mAdapter.onItemChildClickListener = itemChildClickListener
-
-        mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-            goToGoodsDetails(adapter.getItem(position) as Goods)
+        headerView.mRecyclerView.layoutManager = mEntranceGridManager
+        mEntranceAdapter.bindToRecyclerView(headerView.mRecyclerView)
+        mEntranceAdapter.setOnItemClickListener { adapter, _, position ->
+            val entrance = adapter.data[position] as Entrance
+            when (entrance.menu_id) {
+                1 -> startActivity(Intent(activity, TodoActivity::class.java))
+                2 -> goToOrderActivity(0)
+                3 -> startActivity(Intent(activity, MomentsActivity::class.java))
+                13 -> {
+                    ManagerMoreActivity.startManagerMoreActivity(this.context!!)
+                    if (mItemPosition != -1) {
+                        mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
+                    }
+                }
+                5 -> {
+                    //店铺装修
+                    if (mShop?.cover == null) {
+                        mShop?.cover = ""
+                    }
+                    DecorateActivity.startDecorateActivity(context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
+                }
+                else -> {//TODO
+                    ToastUtils.showError("敬请期待")
+                }
+            }
         }
 
+        mAdapter.onItemChildClickListener = itemChildClickListener
+        mAdapter.setOnItemClickListener { adapter, _, position ->
+            goToGoodsDetails(adapter.getItem(position) as Goods)
+        }
         mRecyclerView.addOnScrollListener(scrollListener)
 //        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         mRefreshLayout.setOnRefreshListener {
@@ -138,22 +154,32 @@ class ManageFragment : BaseFragment() {
             lazyLoad()
         }
         mRefreshLayout.setOnLoadMoreListener { lazyLoad() }
+
+        iv_avaver.setOnClickListener(this)
+        tv_header_title.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.iv_avaver, R.id.tv_header_title -> {
+                if (mShop?.cover == null) {
+                    mShop?.cover = ""
+                }
+                DecorateActivity.startDecorateActivity(context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
+            }
+        }
     }
 
     /**
      * 头布局 header
      */
     private fun getHeadView(t: Shop) {
-//        tv_header_title.text = mShop?.name
-//        ImageHelper.loadAvatar(activity!!, iv_avaver, Constants.GOOD0, 28)
-        //头布局数据
-
-        headerView.findViewById<TextView>(R.id.cash_all).text = (t.cash_all).toString()
-        headerView.findViewById<TextView>(R.id.cash_flow).text = t.cash_flow.toString()
-        headerView.findViewById<TextView>(R.id.cash_forzen).text = t.cash_forzen.toString()
+        headerView.findViewById<TextView>(R.id.cash_all).text = PriceUtil.doubleTrans(t.cash_all)
+        headerView.findViewById<TextView>(R.id.cash_flow).text = PriceUtil.doubleTrans(t.cash_flow)
+        headerView.findViewById<TextView>(R.id.cash_forzen).text = PriceUtil.doubleTrans(t.cash_frozen)
         headerView.shop_more.setOnClickListener({ _: View? ->
             //跳转 产品管理
-            ManagerGoodsActivity.startManagerGoodsActivity(this!!.context!!, 0)
+            ManagerGoodsActivity.startManagerGoodsActivity(this.context!!, 0)
         })
     }
 
@@ -171,8 +197,8 @@ class ManageFragment : BaseFragment() {
                             mShop = t
                             mAdapter.removeAllHeaderView()
                             mAdapter.addHeaderView(headerView)
-                            if (t?.menu_list != null && t.menu_list.size > 0) {
-                                mGrideAdapter.setNewData(t.menu_list)
+                            if (t.menu_list != null && t.menu_list.size > 0) {
+                                mEntranceAdapter.setNewData(t.menu_list)
                             }
                             if (page == 1) {
                                 ImageHelper.loadAvatar(activity!!, iv_avaver, t.logo, 28)
@@ -279,38 +305,6 @@ class ManageFragment : BaseFragment() {
             }
             R.id.iv_edit -> {
                 AddGoodsActivity.startAddGoodsActivity(this.context!!, mData.id)
-            }
-        }
-    }
-
-    /**
-     * 更多管理 条目点击事件
-     */
-    private val mGrideItemClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
-        val data = adapter.getItem(position) as Function
-        when (view.id) {
-            R.id.item_name -> {
-                when (data.menu_id) {
-                    1 -> startActivity(Intent(activity, TodoActivity::class.java))
-                    2 -> goToOrderActivity(0)
-                    3 -> startActivity(Intent(activity, MomentsActivity::class.java))
-                    13 -> {
-                        ManagerMoreActivity.startManagerMoreActivity(this.context!!)
-                        if (mItemPosition != -1) {
-                            mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
-                        }
-                    }
-                    5 -> {
-                        //店铺装修
-                        if (mShop?.cover == null) {
-                            mShop?.cover = ""
-                        }
-                        DecorateActivity.startDecorateActivity(context!!, mShop?.name!!, mShop!!.logo, mShop!!.cover)
-                    }
-                    else -> {//TODO
-                        ToastUtils.showError("敬请期待")
-                    }
-                }
             }
         }
     }
@@ -428,7 +422,7 @@ class ManageFragment : BaseFragment() {
                 page = 1
                 lazyLoad()
             }
-            Constants.OPEN_SHOP_OR_ZX -> {
+            Constants.OPEN_SHOP, Constants.ZX_SHOP -> {
                 page = 1
                 lazyLoad()
                 //开店或者装修回调
@@ -443,6 +437,4 @@ class ManageFragment : BaseFragment() {
             }
         }
     }
-
-
 }

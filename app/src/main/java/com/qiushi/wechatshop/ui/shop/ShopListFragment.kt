@@ -7,9 +7,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.orhanobut.logger.Logger
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.model.Shop
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -52,8 +55,13 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
             }
 
             override fun onPageSelected(position: Int) {
-                if (!shopList.isEmpty() && position < shopList.size)
-                    updateCover(shopList[position].cover)
+                if (!shopList.isEmpty() && position < shopList.size) {
+                    if (null != shopList[position].cover) {
+                        updateCover(shopList[position].cover)
+                    } else {
+                        Logger.e("ShopListFragment no cover")
+                    }
+                }
             }
         })
         btn_edit.setOnClickListener(this)
@@ -128,6 +136,14 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
     companion object {
         fun getInstance(): ShopListFragment {
             return ShopListFragment()
+        }
+    }
+
+    override fun accept(t: Notifycation?) {
+        super.accept(t)
+        when (t!!.code) {
+            Constants.OPEN_SHOP, Constants.ZX_SHOP ->
+                lazyLoad()
         }
     }
 

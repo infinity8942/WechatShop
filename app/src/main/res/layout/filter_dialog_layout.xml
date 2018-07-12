@@ -193,6 +193,37 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/stock_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/tv_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="库存不足产品"
+            android:textColor="@color/gray3"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/iv_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6.3dp"
+            android:layout_toLeftOf="@+id/tv_stock"
+            android:src="@mipmap/ic_filter"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/line" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/close_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp">
@@ -205,8 +236,5 @@
             android:text="取消"
             android:textColor="@color/gray3"
             android:textSize="14sp" />
-
     </RelativeLayout>
-
-
 </LinearLayout>

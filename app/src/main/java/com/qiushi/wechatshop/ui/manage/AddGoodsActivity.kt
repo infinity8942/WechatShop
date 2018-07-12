@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Environment
 import android.os.Handler
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
@@ -24,10 +23,7 @@ import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.util.DensityUtils
-import com.qiushi.wechatshop.util.ImageHelper
-import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.*
 import com.qiushi.wechatshop.util.oss.OnUploadListener
 import com.qiushi.wechatshop.util.oss.UploadManager
 import com.qiushi.wechatshop.util.permission.HiPermission
@@ -67,14 +63,16 @@ class AddGoodsActivity : BaseActivity() {
         StatusBarUtil.setPaddingSmart(this, toolbar)
         UploadManager.getInstance().register(uploadListener)
         mRecyclerView.layoutManager = linearLayoutManager
-        mRecyclerView.adapter = mAdapter
+        mAdapter.bindToRecyclerView(mRecyclerView)
 
-        mAdapter.onItemChildClickListener = itemchildListener
-        ic_bg.setOnClickListener(onclicklistener)
-        rl_next.setOnClickListener(onclicklistener)
+        mAdapter.onItemChildClickListener = itemChildListener
+        ic_bg.setOnClickListener(onClickListener)
+        back.setOnClickListener(onClickListener)
+        rl_next.setOnClickListener(onClickListener)
         et_brief.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(100))
         et_name.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
         et_brief.addTextChangedListener(textWatcherListener)
+        price.addTextChangedListener(PriceUtil.MoneyTextWatcher(price))
     }
 
     private fun isVisible() {
@@ -83,15 +81,15 @@ class AddGoodsActivity : BaseActivity() {
             fl_addlayout.visibility = View.GONE
             foot_layout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.VISIBLE
-            foot_add_img.setOnClickListener(onclicklistener)
-            foot_add_text.setOnClickListener(onclicklistener)
+            foot_add_img.setOnClickListener(onClickListener)
+            foot_add_text.setOnClickListener(onClickListener)
         } else {
             rl_layout.visibility = View.GONE
             foot_layout.visibility = View.GONE
             fl_addlayout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.GONE
-            item_add_img.setOnClickListener(onclicklistener)
-            item_add_text.setOnClickListener(onclicklistener)
+            item_add_img.setOnClickListener(onClickListener)
+            item_add_text.setOnClickListener(onClickListener)
         }
     }
 
@@ -128,11 +126,9 @@ class AddGoodsActivity : BaseActivity() {
 
     fun setData(addGoods: AddGoods) {
         if (addGoods.content != null) {
-            for (item in addGoods.content!!) {
-                if (item.content.isEmpty()) {
-                    size += 1
-                }
-            }
+            addGoods.content!!
+                    .filter { it.content.isEmpty() }
+                    .forEach { size += 1 }
         }
         //背景图
         if (addGoods.cover_url != null && addGoods.cover_url.isNotEmpty()) {
@@ -148,28 +144,26 @@ class AddGoodsActivity : BaseActivity() {
             et_brief.setText(addGoods.brief)
         }
         //单价
-        if (addGoods.price != null && addGoods.price != 0.toLong()) {
-            price.setText(addGoods.price.toString())
+        if (addGoods.price != null && addGoods.price != 0.toDouble()) {
+            price.setText(PriceUtil.doubleTrans(addGoods.price))
         }
         //库存
-        if (addGoods.stock != null && addGoods.stock != 0.toLong()) {
+        if (addGoods.stock != null && addGoods.stock != 0) {
             stock.setText(addGoods.stock.toString())
         }
     }
 
     companion object {
         fun startAddGoodsActivity(context: Context, goods_id: Long) {
-            val intent = Intent()
-            //获取intent对象
+            val intent = Intent(context, AddGoodsActivity::class.java)
             intent.putExtra("goods_id", goods_id)
-            intent.setClass(context, AddGoodsActivity::class.java)
-            // 获取class是使用::反射
-            ContextCompat.startActivity(context, intent, null)
+            context.startActivity(intent)
         }
     }
 
-    private val onclicklistener = View.OnClickListener { v: View? ->
-        when (v?.id) {
+    private val onClickListener = View.OnClickListener { v: View ->
+        when (v.id) {
+            R.id.back -> finish()
             R.id.foot_add_img -> {
                 //进入相册
                 if (size < 10) {
@@ -185,7 +179,6 @@ class AddGoodsActivity : BaseActivity() {
                 } else {
                     ToastUtils.showError("最多能上传10张图片")
                 }
-
             }
             R.id.item_add_text -> {
                 //跳转编辑文本 Activity
@@ -206,11 +199,9 @@ class AddGoodsActivity : BaseActivity() {
     }
 
     private fun isDataNull() {
-
         if (User.getCurrent() != null && User.getCurrent().shop_id != null) {
             addGoods.shop_id = User.getCurrent().shop_id
         }
-
         if (et_brief.text.toString().isNotEmpty()) {
             addGoods.brief = et_brief.text.toString()
         }
@@ -218,12 +209,11 @@ class AddGoodsActivity : BaseActivity() {
             addGoods.name = et_name.text.toString()
         }
         if (price.text.toString().isNotEmpty()) {
-            addGoods.price = price.text.toString().toDouble().toLong()
+            addGoods.price = price.text.toString().toDouble()
         }
         if (stock.text.toString().isNotEmpty()) {
-            addGoods.stock = stock.text.toString().toDouble().toLong()
+            addGoods.stock = stock.text.toString().toInt()
         }
-
         if (addGoods == null) {
             ToastUtils.showError("未填写数据")
             return
@@ -236,11 +226,11 @@ class AddGoodsActivity : BaseActivity() {
             ToastUtils.showError("封面图未上传")
             return
         }
-        if (addGoods.price == 0.toLong()) {
+        if (addGoods.price == 0.toDouble()) {
             ToastUtils.showError("单价未设置")
             return
         }
-        if (addGoods.stock == 0.toLong()) {
+        if (addGoods.stock == 0) {
             ToastUtils.showError("库存数量为设置")
             return
         }
@@ -254,17 +244,13 @@ class AddGoodsActivity : BaseActivity() {
                 ToastUtils.showError("产品详情未设置")
                 return
             }
-
         }
 
         if (goods_id != null && goods_id != 0.toLong() && addContentList != null && addContentList.size > 0) {
-            for (item in addContentList) {
-                if (addGoods != null && addGoods.content != null && !addGoods.content!!.contains(item)) {
-                    addGoods.content!!.add(item)
-                }
-            }
+            addContentList
+                    .filter { addGoods != null && addGoods.content != null && !addGoods.content!!.contains(it) }
+                    .forEach { addGoods.content!!.add(it) }
         }
-
 
         AddGoodsNextActivity.startAddGoodsNextActivity(this, addGoods)
     }
@@ -337,7 +323,7 @@ class AddGoodsActivity : BaseActivity() {
             }
             Constants.EDIT_TEXT_REQUEST -> {
                 val mText = data?.getStringExtra("text")
-                if (mText != null && !mText.equals("")) {
+                if (mText != null && mText != "") {
                     if (goods_id != 0.toLong()) {
                         val content = Content()
                         content.content = mText
@@ -383,7 +369,7 @@ class AddGoodsActivity : BaseActivity() {
         }
 
         override fun onSuccess(file: File?, id: Long) {
-            mHandler.postDelayed(Runnable {
+            mHandler.postDelayed({
                 dismissLoading()
                 if (isBg) {
                     addGoods.cover = id.toString()
@@ -393,7 +379,7 @@ class AddGoodsActivity : BaseActivity() {
                 } else {
                     if (goods_id != 0.toLong()) {
                         //编辑
-                        var content = Content()
+                        val content = Content()
                         content.oss_id = id
                         content.img = "file://" + file!!.path
                         contentList.add(content)
@@ -405,7 +391,7 @@ class AddGoodsActivity : BaseActivity() {
                             mAdapter.setNewData(contentList)
                         }
                     } else {
-                        var content = Content()
+                        val content = Content()
                         content.oss_id = id
                         content.img = "file://" + file!!.path
                         contentList.add(content)
@@ -422,7 +408,7 @@ class AddGoodsActivity : BaseActivity() {
         }
     }
 
-    val itemchildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+    private val itemChildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
         when (view?.id) {
             R.id.iv_remove -> {
                 if (goods_id != 0.toLong()) {
@@ -430,7 +416,7 @@ class AddGoodsActivity : BaseActivity() {
                     if (contentList != null && contentList.size > 0 && contentList.size > position) {
                         val removeAt = contentList.removeAt(position)
 
-                        if(addContentList.contains(removeAt)){
+                        if (addContentList.contains(removeAt)) {
                             addContentList.remove(removeAt)
                         }
 //                        for (item in addContentList) {
@@ -470,20 +456,20 @@ class AddGoodsActivity : BaseActivity() {
      * 编辑时候得展示盒影藏
      */
     private fun isVisibleEdit() {
-        if (contentList != null && contentList!!.size > 0) {
+        if (contentList != null && contentList.size > 0) {
             rl_layout.visibility = View.VISIBLE
             fl_addlayout.visibility = View.GONE
             foot_layout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.VISIBLE
-            foot_add_img.setOnClickListener(onclicklistener)
-            foot_add_text.setOnClickListener(onclicklistener)
+            foot_add_img.setOnClickListener(onClickListener)
+            foot_add_text.setOnClickListener(onClickListener)
         } else {
             rl_layout.visibility = View.GONE
             foot_layout.visibility = View.GONE
             fl_addlayout.visibility = View.VISIBLE
             mRecyclerView.visibility = View.GONE
-            item_add_img.setOnClickListener(onclicklistener)
-            item_add_text.setOnClickListener(onclicklistener)
+            item_add_img.setOnClickListener(onClickListener)
+            item_add_text.setOnClickListener(onClickListener)
         }
     }
 
@@ -498,7 +484,6 @@ class AddGoodsActivity : BaseActivity() {
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

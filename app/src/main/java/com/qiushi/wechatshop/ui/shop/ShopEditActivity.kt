@@ -31,10 +31,13 @@ import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
 
 /**
  * Created by Rylynn on 2018-06-13.
- */
+ *
+ *  店铺编辑页
+ *
+ *  */
 class ShopEditActivity : Activity(), View.OnClickListener {
 
-    private var isEdit = false
+    private var isEdit = false    //是否处于编辑状态
     private var isChange = false //是否修改过
     private var list = ArrayList<Shop>()
     private var compositeDisposable = CompositeDisposable()//订阅集合
@@ -107,46 +110,41 @@ class ShopEditActivity : Activity(), View.OnClickListener {
         drag_flowLayout.setOnItemClickListener(object : ClickToDeleteItemListenerImpl(R.id.close) {
             override fun onDeleteSuccess(dfl: DragFlowLayout?, child: View?, data: Any?) {
                 list.remove(data as Shop)
+                editShop()
+                if ((list.size == 0 || (list.size == 1 && !list[0].isDraggable))) {
+                    edit.text = "编辑"
+                    drag_flowLayout.finishDrag()
+                    isEdit = false
+                }
             }
         })
     }
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.edit -> {//编辑
-                isEdit = if (!isEdit) {
-                    edit.text = "完成"
-                    drag_flowLayout.beginDrag()
-                    true
-                } else {
-                    editShop()
-                    edit.text = "编辑"
-                    drag_flowLayout.finishDrag()
-                    false
-                }
+            R.id.edit -> changeEditStatus()
+            R.id.btn_close -> closeEdit()
+            R.id.commit -> addShop()
+        }
+    }
+
+    /**
+     * 开关编辑状态
+     */
+    private fun changeEditStatus() {
+        isEdit = if (!isEdit) {
+            if ((list.size == 0 || (list.size == 1 && !list[0].isDraggable))) {
+                ToastUtils.showWarning("暂无可编辑的店铺，请先关注新店铺")
+                false
+            } else {
+                edit.text = "完成"
+                drag_flowLayout.beginDrag()
+                true
             }
-            R.id.btn_close -> {
-                if (isEdit) {//确认关闭提示
-                    val dialog = AlertDialog.Builder(this@ShopEditActivity)
-                            .setMessage("正在编辑，您确定要现在退出吗？")
-                            .setPositiveButton("退出") { _, _ ->
-                                finish()
-                            }.setNegativeButton("取消", null).create()
-                    dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
-                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
-                } else {
-                    if (isChange) {
-                        val intent = Intent(this@ShopEditActivity, ShopListFragment::class.java)
-                        intent.putExtra("shops", list)
-                        setResult(RESULT_OK, intent)
-                    }
-                    finish()
-                }
-            }
-            R.id.commit -> {
-                addShop()
-            }
+        } else {
+            edit.text = "编辑"
+            drag_flowLayout.finishDrag()
+            false
         }
     }
 
@@ -166,13 +164,26 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                     override fun onHandleSuccess(t: Shop) {
                         et.setText("")
                         ToastUtils.showMessage("添加成功")
-                        drag_flowLayout.dragItemManager.addItem(t)
-                        list.add(t)
+
+                        if (list.isNotEmpty() && list[0].name == "我的店") {
+                            drag_flowLayout.dragItemManager.addItem(1, t)
+                            list.add(1, t)
+                        } else {
+                            drag_flowLayout.dragItemManager.addItem(0, t)
+                            list.add(0, t)
+                        }
+
+
                         isChange = true
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        if (error.msg == "店铺不存在") {
+                            et.setText("")
+                            ToastUtils.showError(code + "店铺不存在，请重新输入")
+                        } else {
+                            ToastUtils.showError(error.msg)
+                        }
                     }
                 })
         compositeDisposable.add(disposable)
@@ -194,7 +205,6 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
-                        ToastUtils.showMessage("修改成功")
                         isChange = true
                     }
 
@@ -203,6 +213,40 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                     }
                 })
         compositeDisposable.add(disposable)
+    }
+
+    /**
+     * 退出编辑页
+     */
+    private fun closeEdit() {
+        if (isEdit) {//确认关闭提示
+            val dialog = AlertDialog.Builder(this@ShopEditActivity)
+                    .setMessage("正在编辑，您确定要现在退出吗？")
+                    .setPositiveButton("退出") { _, _ ->
+                        returnShopData()
+                    }.setNegativeButton("取消", null).create()
+            dialog.show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.colorAccent))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
+        } else {
+            returnShopData()
+        }
+    }
+
+    /**
+     * 返回数据
+     */
+    private fun returnShopData() {
+        if (isChange) {
+            val intent = Intent(this@ShopEditActivity, ShopListFragment::class.java)
+            intent.putExtra("shops", list)
+            setResult(RESULT_OK, intent)
+        }
+        finish()
+    }
+
+    override fun onBackPressed() {
+        closeEdit()
     }
 
     override fun onDestroy() {
