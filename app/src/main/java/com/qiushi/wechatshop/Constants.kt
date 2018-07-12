@@ -61,4 +61,5 @@ object Constants {
     const val MANAGER_GOODS = 1014//产品管理 置顶删除 等 刷新
     const val MOMENT_FRESH = 1015//素材刷新
     const val T_LOGIN = 1016//踢登录
+    const val PUSH_KUCUN = 1017// 库存提醒
 }

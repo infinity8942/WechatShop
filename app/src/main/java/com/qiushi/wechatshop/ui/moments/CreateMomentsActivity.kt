@@ -48,6 +48,7 @@ class CreateMomentsActivity : BaseActivity() {
     private var mNineList = ArrayList<NineImage>()
     private var mFileList = ArrayList<File>()
     private var addNineList = ArrayList<NineImage>() //删除新加后的展示
+    private var itemList = ArrayList<NineImage>()
     var gson = Gson()
     var mJson: String = ""
     var mNineImage = NineImage()
@@ -399,7 +400,10 @@ class CreateMomentsActivity : BaseActivity() {
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
             val nineImage = findPictureByFile(file!!)
             if (nineImage != null) {
-                nineImage.type = "1"
+                for (item in nineImage) {
+                    item.type = "1"
+                }
+
             }
         }
 
@@ -408,8 +412,11 @@ class CreateMomentsActivity : BaseActivity() {
                 val nineImage = findPictureByFile(file!!)
                 dismissLoading()
                 if (nineImage != null) {
-                    nineImage.oss_id = id
-                    nineImage.type = "0"
+                    for (item in nineImage) {
+                        item.oss_id = id
+                        item.type = "0"
+                    }
+
                 }
             }, 300)
 
@@ -419,8 +426,11 @@ class CreateMomentsActivity : BaseActivity() {
             val nineImage = findPictureByFile(file!!)
             dismissLoading()
             if (nineImage != null) {
-                nineImage.oss_id = id
-                nineImage.type = "2"
+                for (item in nineImage) {
+                    item.oss_id = id
+                    item.type = "2"
+                }
+
             }
         }
     }
@@ -428,20 +438,27 @@ class CreateMomentsActivity : BaseActivity() {
     /**
      * 检查 是否是同一张图片  设置progress
      */
-    private fun findPictureByFile(file: File): NineImage? {
+    private fun findPictureByFile(file: File): ArrayList<NineImage>? {
         if (id != 0.toLong()) {
+            itemList.clear()
             if (addNineList != null) {
                 for (item in addNineList) {
-                    if (item.img_url == "file://${file.path}")
-                        return item
+                    if (item.img_url == "file://${file.path}") {
+                        itemList.add(item)
+                    }
                 }
+                return itemList
             }
         } else {
+            itemList.clear()
             val mData = mGrideAdapter.data
             for (item in mData) {
-                if (item.img_url == "file://${file.path}")
-                    return item
+                if (item.img_url == "file://${file.path}") {
+                    itemList.add(item)
+                }
+
             }
+            return itemList
         }
         return null
     }

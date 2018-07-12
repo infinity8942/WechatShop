@@ -27,6 +27,7 @@ class ManagerAdapter(data: List<Goods>) : BaseQuickAdapter<Goods, BaseViewHolder
         } else {
             helper.setText(R.id.tv_xj, "上架")
         }
+
         helper.addOnClickListener(R.id.iv_more)
                 .addOnClickListener(R.id.tv_zd)
                 .addOnClickListener(R.id.tv_delete)

@@ -25,6 +25,7 @@ import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.SpaceItemDecoration
+import kotlinx.android.synthetic.main.activity_shop_edit.view.*
 import kotlinx.android.synthetic.main.fragment_order.*
 
 
@@ -308,7 +309,7 @@ class OrderFragment : BaseFragment() {
     private fun showEditPriceDialog(order_id: Long) {
         val et = EditText(context)
         et.hint = "请输入价格"
-        et.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
+        et.inputType = InputType.TYPE_CLASS_NUMBER
 
         val dialog = AlertDialog.Builder(context!!).setView(et)
                 .setPositiveButton("修改") { _, _ ->

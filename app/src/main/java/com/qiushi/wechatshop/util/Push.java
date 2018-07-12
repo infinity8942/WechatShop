@@ -49,6 +49,31 @@ public class Push {
             @Override
             public Notification getNotification(Context context, UMessage msg) {
                 if (msg.extra != null) {
+                    if (msg.extra.get("type") != null) {
+                        Log.e("tag", msg.extra.get("type") + "");
+                        switch (msg.extra.get("type")) {
+                            case "1":
+                                //待发货订单 提醒卖家
+                                break;
+                            case "2":
+                                //库存紧缺（提醒卖家）
+                                RxBus.getInstance().post(new Notifycation(Constants.PUSH_KUCUN, 0L));
+                                break;
+                            case "3":
+                                //待支付订单（提醒卖家 十分钟自动提醒）
+                                break;
+                            case "4":
+                                //标记发货（提醒买家）
+                                break;
+                            case "5":
+                                //标记发货（提醒买家）
+                                break;
+                            case "6":
+                                //下架或删除时如果用户购物车中有该商品则推送一条
+                                break;
+                        }
+
+                    }
                 }
                 return super.getNotification(context, msg);
             }
@@ -69,7 +94,6 @@ public class Push {
             @Override
             public void openActivity(Context context, UMessage uMessage) {
                 if (uMessage.extra != null) {
-                    Log.e("tag", "ljl~~~~~id~~~~=" + uMessage.extra.get("aId"));
 
                 }
             }

@@ -126,6 +126,11 @@ class ManageFragment : BaseFragment() {
 
 
         mAdapter.onItemChildClickListener = itemChildClickListener
+
+        mAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+            goToGoodsDetails(adapter.getItem(position) as Goods)
+        }
+
         mRecyclerView.addOnScrollListener(scrollListener)
 //        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false)
         mRefreshLayout.setOnRefreshListener {
@@ -409,7 +414,7 @@ class ManageFragment : BaseFragment() {
         startActivity(intent)
     }
 
-    fun goToOrderActivity(type: Int) {
+    private fun goToOrderActivity(type: Int) {
         val intent = Intent(activity, OrderActivity::class.java)
         intent.putExtra("isManage", true)
         intent.putExtra("type", type)
@@ -428,7 +433,11 @@ class ManageFragment : BaseFragment() {
                 lazyLoad()
                 //开店或者装修回调
             }
-            Constants.MANAGER_GOODS->{
+            Constants.MANAGER_GOODS -> {
+                page = 1
+                lazyLoad()
+            }
+            Constants.PUSH_KUCUN -> {
                 page = 1
                 lazyLoad()
             }
