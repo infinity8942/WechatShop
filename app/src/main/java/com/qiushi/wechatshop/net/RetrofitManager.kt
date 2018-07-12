@@ -79,7 +79,7 @@ object RetrofitManager {
 
             val headers = Utils.getHttpHeaders()
             if (headers != null) {
-                for (entry in headers!!.entries) {
+                for (entry in headers.entries) {
                     requestBuilder.addHeader(entry.key, entry.value)
                 }
             }
