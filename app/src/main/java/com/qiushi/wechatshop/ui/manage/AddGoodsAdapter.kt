@@ -11,7 +11,7 @@ import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
-class AddGoodsAdapter(data: List<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(R.layout.addgoods_item, data) {
+class AddGoodsAdapter : BaseQuickAdapter<Content, BaseViewHolder>(R.layout.addgoods_item) {
     override fun convert(helper: BaseViewHolder, item: Content?) {
 
         if (item!!.content.isNotEmpty()) {

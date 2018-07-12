@@ -20,7 +20,7 @@ import com.qiushi.wechatshop.util.ImageHelper
  *
  * 素材Adapter
  */
-class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_moment, null) {
+class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_moment) {
 
     private val avatar = User.getCurrent().avatar
     private val shopName = User.getCurrent().nick

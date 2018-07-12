@@ -14,7 +14,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
  *
  * 串门店铺详情Adapter
  */
-class ShopAdapter : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.item_shop_goods, null) {
+class ShopAdapter : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.item_shop_goods) {
     override fun convert(helper: BaseViewHolder, goods: Goods) {
         ImageHelper.loadImageWithCorner(mContext, helper.getView(R.id.iv_cover_feed), goods.cover, 150, 150,
                 RoundedCornersTransformation(DensityUtils.dp2px(10f), 0, RoundedCornersTransformation.CornerType.TOP))

@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.MenuInfo
 
-class ToolsAlwayAdapter(data: List<MenuInfo>) : BaseQuickAdapter<MenuInfo, BaseViewHolder>(R.layout.tools_item_gride_remove, data) {
+class ToolsAlwayAdapter : BaseQuickAdapter<MenuInfo, BaseViewHolder>(R.layout.tools_item_gride_remove) {
     var isEdit: Boolean = false
     var isOnclick = true
     override fun convert(helper: BaseViewHolder, item: MenuInfo) {

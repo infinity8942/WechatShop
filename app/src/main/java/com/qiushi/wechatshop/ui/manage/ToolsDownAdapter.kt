@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.MenuInfo
 
-class ToolsDownAdapter(data: List<MenuInfo>) : BaseQuickAdapter<MenuInfo, BaseViewHolder>(R.layout.tools_item_gride, data) {
+class ToolsDownAdapter : BaseQuickAdapter<MenuInfo, BaseViewHolder>(R.layout.tools_item_gride) {
 
     private var isEdit: Boolean = false
     private var isOnclick = true

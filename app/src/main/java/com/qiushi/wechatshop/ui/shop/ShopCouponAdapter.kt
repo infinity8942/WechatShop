@@ -10,7 +10,7 @@ import com.qiushi.wechatshop.model.Coupon
  *
  * 串门店铺优惠券Adapter
  */
-class ShopCouponAdapter : BaseQuickAdapter<Coupon, BaseViewHolder>(R.layout.item_shop_coupon, null) {
+class ShopCouponAdapter : BaseQuickAdapter<Coupon, BaseViewHolder>(R.layout.item_shop_coupon) {
     override fun convert(helper: BaseViewHolder, item: Coupon?) {
         helper.setText(R.id.offset, "￥50")
         helper.setText(R.id.requirement, "指定商品满50.00使用")

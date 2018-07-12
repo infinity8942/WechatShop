@@ -31,7 +31,6 @@ import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.search.MaterialSearchView
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_manager_goods.*
-import java.util.*
 
 class ManagerGoodsActivity : BaseActivity() {
     var type = 0
@@ -75,7 +74,7 @@ class ManagerGoodsActivity : BaseActivity() {
      */
     private var page = 1
     private val mAdapter by lazy {
-        ManagerGoodsAdapter(ArrayList())
+        ManagerGoodsAdapter()
     }
     /**
      * 整体recyclerview manager

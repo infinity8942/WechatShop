@@ -12,6 +12,7 @@ import com.qiushi.wechatshop.ui.login.LoginActivity
 import com.qiushi.wechatshop.ui.manage.ManageFragment
 import com.qiushi.wechatshop.ui.shop.ShopListFragment
 import com.qiushi.wechatshop.ui.user.UserFragment
+import com.qiushi.wechatshop.util.CleanLeakUtils
 import com.qiushi.wechatshop.util.Push
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
@@ -95,5 +96,10 @@ class MainActivity : BaseActivity() {
                 finish()
             }
         }
+    }
+
+    override fun onDestroy() {
+        CleanLeakUtils.fixInputMethodManagerLeak(this@MainActivity)
+        super.onDestroy()
     }
 }

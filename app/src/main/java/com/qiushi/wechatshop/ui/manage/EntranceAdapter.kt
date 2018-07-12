@@ -7,7 +7,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.Entrance
 import com.qiushi.wechatshop.util.ImageHelper
 
-class EntranceAdapter(data: List<Entrance>) : BaseQuickAdapter<Entrance, BaseViewHolder>(R.layout.manager_item_gride, data) {
+class EntranceAdapter : BaseQuickAdapter<Entrance, BaseViewHolder>(R.layout.manager_item_gride) {
     @SuppressLint("CheckResult")
     override fun convert(helper: BaseViewHolder, item: Entrance) {
 

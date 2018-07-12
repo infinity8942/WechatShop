@@ -47,7 +47,7 @@ class AddGoodsActivity : BaseActivity() {
      * 整体recyclerview adapter
      */
     private val mAdapter by lazy {
-        AddGoodsAdapter(ArrayList())
+        AddGoodsAdapter()
     }
     /**
      * 整体recyclerview manager

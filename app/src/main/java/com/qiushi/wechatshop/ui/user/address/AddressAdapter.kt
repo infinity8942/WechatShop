@@ -10,7 +10,7 @@ import com.qiushi.wechatshop.model.Buyer
  *
  * 地址Adapter
  */
-class AddressAdapter : BaseQuickAdapter<Buyer, BaseViewHolder>(R.layout.item_address, null) {
+class AddressAdapter : BaseQuickAdapter<Buyer, BaseViewHolder>(R.layout.item_address) {
     override fun convert(helper: BaseViewHolder, address: Buyer) {
         helper.setText(R.id.name, address.receiver + "  " + address.mobile)
         if (address.is_default == 1)

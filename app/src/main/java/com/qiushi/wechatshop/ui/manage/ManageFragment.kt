@@ -62,7 +62,7 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
      * 整体recyclerview adapter
      */
     private val mAdapter by lazy {
-        ManagerAdapter(ArrayList())
+        ManagerAdapter()
     }
     /**
      * 整体recyclerview manager
@@ -79,7 +79,7 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
     }
 
     private val mEntranceAdapter by lazy {
-        EntranceAdapter(ArrayList())
+        EntranceAdapter()
     }
 
     private var page = 1

@@ -11,7 +11,7 @@ import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.PriceUtil
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
-class ManagerGoodsAdapter(data: List<Goods>) : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.manager_item_orther, data) {
+class ManagerGoodsAdapter : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.manager_item_orther) {
     override fun convert(helper: BaseViewHolder, item: Goods) {
         val view = helper.getView<ImageView>(R.id.iv_shop)
 

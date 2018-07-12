@@ -34,7 +34,7 @@ class GoodsListActivity : BaseActivity() {
     }
 
     private val mGrideAdapter by lazy {
-        GoodsAdapter(ArrayList())
+        GoodsAdapter()
     }
 
     override fun layoutId(): Int = R.layout.activity_order_list

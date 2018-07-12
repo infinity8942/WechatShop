@@ -1,7 +1,6 @@
 package com.qiushi.wechatshop.ui.shop
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -110,12 +109,6 @@ class ShopEditActivity : Activity(), View.OnClickListener {
         drag_flowLayout.setOnItemClickListener(object : ClickToDeleteItemListenerImpl(R.id.close) {
             override fun onDeleteSuccess(dfl: DragFlowLayout?, child: View?, data: Any?) {
                 list.remove(data as Shop)
-                editShop()
-                if ((list.size == 0 || (list.size == 1 && !list[0].isDraggable))) {
-                    edit.text = "编辑"
-                    drag_flowLayout.finishDrag()
-                    isEdit = false
-                }
             }
         })
     }
@@ -142,6 +135,7 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                 true
             }
         } else {
+            editShop()
             edit.text = "编辑"
             drag_flowLayout.finishDrag()
             false
@@ -173,6 +167,11 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                             list.add(0, t)
                         }
 
+                        if (isEdit) {
+                            edit.text = "编辑"
+                            drag_flowLayout.finishDrag()
+                            isEdit = false
+                        }
 
                         isChange = true
                     }
@@ -237,11 +236,8 @@ class ShopEditActivity : Activity(), View.OnClickListener {
      * 返回数据
      */
     private fun returnShopData() {
-        if (isChange) {
-            val intent = Intent(this@ShopEditActivity, ShopListFragment::class.java)
-            intent.putExtra("shops", list)
-            setResult(RESULT_OK, intent)
-        }
+        if (isChange)
+            setResult(RESULT_OK)
         finish()
     }
 

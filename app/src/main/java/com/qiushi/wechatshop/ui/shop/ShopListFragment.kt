@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.ui.shop
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
@@ -124,11 +125,10 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             1000 -> //编辑店铺返回
-                if (null != data) {
-                    shopList = data.getSerializableExtra("shops") as ArrayList<Shop>
+                if (resultCode == RESULT_OK) {
                     tabList.clear()
                     fragments.clear()
-                    setDatas()
+                    lazyLoad()
                 }
         }
     }

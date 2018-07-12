@@ -23,7 +23,7 @@ import com.qiushi.wechatshop.util.web.WebActivity
  *
  * isManage 是否为卖家的订单管理
  */
-class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, BaseViewHolder>(R.layout.item_order, null) {
+class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, BaseViewHolder>(R.layout.item_order) {
     override fun convert(helper: BaseViewHolder, order: Order) {
 
         if (order.type == 1) {

@@ -35,7 +35,6 @@ class ManagerMoreActivity : BaseActivity() {
         often_recycler.layoutManager = useGrideManager
         often_recycler.adapter = useGrideAdapter
 
-
         useGrideAdapter.onItemChildClickListener = useItemChildClickListener
 
         //如果接口返回的 不常用工具List为空，则隐藏
@@ -52,14 +51,14 @@ class ManagerMoreActivity : BaseActivity() {
     }
 
     private val useGrideAdapter by lazy {
-        ToolsAlwayAdapter(ArrayList())
+        ToolsAlwayAdapter()
     }
 
     private val noUserMnager by lazy {
         GridLayoutManager(this, 4)
     }
     private val noUserGrideAdapter by lazy {
-        ToolsDownAdapter(ArrayList())
+        ToolsDownAdapter()
     }
 
     /**
