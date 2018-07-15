@@ -28,7 +28,6 @@ import com.qiushi.wechatshop.ui.login.BindActivity
 import com.qiushi.wechatshop.ui.moments.MomentsActivity
 import com.qiushi.wechatshop.ui.order.OrderActivity
 import com.qiushi.wechatshop.util.ImageHelper
-import com.qiushi.wechatshop.util.PriceUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
@@ -174,9 +173,9 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
      * 头布局 header
      */
     private fun getHeadView(t: Shop) {
-        headerView.findViewById<TextView>(R.id.cash_all).text = PriceUtil.doubleTrans(t.cash_all)
-        headerView.findViewById<TextView>(R.id.cash_flow).text = PriceUtil.doubleTrans(t.cash_flow)
-        headerView.findViewById<TextView>(R.id.cash_forzen).text = PriceUtil.doubleTrans(t.cash_frozen)
+        headerView.findViewById<TextView>(R.id.cash_all).text = String.format("%.2f", t.cash_all)
+        headerView.findViewById<TextView>(R.id.cash_flow).text = String.format("%.2f", t.cash_flow)
+        headerView.findViewById<TextView>(R.id.cash_forzen).text = String.format("%.2f", t.cash_frozen)
         headerView.shop_more.setOnClickListener({ _: View? ->
             //跳转 产品管理
             ManagerGoodsActivity.startManagerGoodsActivity(this.context!!, 0)
