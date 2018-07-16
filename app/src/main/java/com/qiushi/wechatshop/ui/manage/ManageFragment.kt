@@ -208,8 +208,8 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                             mAdapter.emptyView = notDataView
                         }
 
-                        if (t.goods.isNotEmpty()) {
-                            if (t.goods.size < 6) {
+                        if (null != t.goods && t.goods.isNotEmpty()) {
+                            if (t.goods.size < Constants.PAGE_NUM) {
                                 mRefreshLayout.setEnableLoadMore(false)
                             } else {
                                 mRefreshLayout.setEnableLoadMore(true)

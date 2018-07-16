@@ -22,7 +22,7 @@ object Constants {
     val OssCallback = HOST + "Oss/app_response_call_back" //"http://192.168.1.82:81"
 
     //每页请求数量
-    const val PAGE_NUM = 15
+    const val PAGE_NUM = 12
 
     //InputType
     const val TYPE_NUMBER_FLAG_DECIMAL = 8194
