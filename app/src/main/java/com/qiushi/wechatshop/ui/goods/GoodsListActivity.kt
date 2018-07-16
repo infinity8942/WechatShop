@@ -80,14 +80,14 @@ class GoodsListActivity : BaseActivity() {
                             mRefreshLayout.finishRefresh(true)
                         }
                         if (t.goods_list != null) {
-                            if(t.goods_list!!.size<Constants.PAGE_NUM){
-                                mRefreshLayout.setNoMoreData(true)
-                            }else{
-                                mRefreshLayout.setNoMoreData(false)
+                            if (t.goods_list!!.size < Constants.PAGE_NUM) {
+                                mRefreshLayout.setEnableLoadMore(false)
+                            } else {
+                                mRefreshLayout.setEnableLoadMore(true)
                                 page++
                             }
                         } else {
-                            mRefreshLayout.setNoMoreData(true)
+                            mRefreshLayout.setEnableLoadMore(false)
                         }
                     }
 

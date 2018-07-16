@@ -20,7 +20,7 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("Shop/shop")
-    fun shopDetail(@Field("shop_id") page: Long): Observable<BaseResponse<Shop>>
+    fun shopDetail(@Field("shop_id") page: Long, @Field("start") start: Int, @Field("length") length: Int): Observable<BaseResponse<Shop>>
 
     /**
      * 关注新店铺

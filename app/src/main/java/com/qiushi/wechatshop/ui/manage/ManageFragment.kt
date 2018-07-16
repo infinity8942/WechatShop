@@ -211,13 +211,13 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                             }
                             if (t.goods != null) {
                                 if (t.goods.size < Constants.PAGE_NUM) {
-                                    mRefreshLayout.setNoMoreData(true)
+                                    mRefreshLayout.setEnableLoadMore(false)
                                 } else {
-                                    mRefreshLayout.setNoMoreData(false)
+                                    mRefreshLayout.setEnableLoadMore(true)
                                     page++
                                 }
                             } else {
-                                mRefreshLayout.setNoMoreData(true)
+                                mRefreshLayout.setEnableLoadMore(false)
                             }
                         }
                     }
@@ -302,9 +302,7 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                 setTop(mData.id, type, position + 1)
                 adapter.getViewByPosition(mRecyclerView, position + 1, R.id.layout_shape)?.visibility = View.GONE
             }
-            R.id.iv_edit -> {
-                AddGoodsActivity.startAddGoodsActivity(this.context!!, mData.id)
-            }
+            R.id.iv_edit -> AddGoodsActivity.startAddGoodsActivity(this.context!!, mData.id)
         }
     }
 

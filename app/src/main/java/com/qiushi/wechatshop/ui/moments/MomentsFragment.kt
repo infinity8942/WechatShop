@@ -149,16 +149,17 @@ class MomentsFragment : BaseFragment() {
                         //more
                         if (mAdapter.itemCount == 0) {
                             mAdapter.emptyView = notDataView
-                            return
                         }
 
                         if (t.isNotEmpty()) {
                             if (t.size < Constants.PAGE_NUM) {
-                                mRefreshLayout.setNoMoreData(true)
+                                mRefreshLayout.setEnableLoadMore(false)
                             } else {
-                                mRefreshLayout.setNoMoreData(false)
+                                mRefreshLayout.setEnableLoadMore(true)
                                 page++
                             }
+                        } else {
+                            mRefreshLayout.setEnableLoadMore(false)
                         }
                     }
 

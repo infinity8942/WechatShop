@@ -168,13 +168,13 @@ class ManagerGoodsActivity : BaseActivity() {
                         }
                         if (t != null) {
                             if (t.size < Constants.PAGE_NUM) {
-                                mRefreshLayout.setNoMoreData(true)
+                                mRefreshLayout.setEnableLoadMore(false)
                             } else {
-                                mRefreshLayout.setNoMoreData(false)
+                                mRefreshLayout.setEnableLoadMore(true)
                                 page++
                             }
                         } else {
-                            mRefreshLayout.setNoMoreData(true)
+                            mRefreshLayout.setEnableLoadMore(false)
                         }
                     }
 

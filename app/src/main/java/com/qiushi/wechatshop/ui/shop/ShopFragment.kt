@@ -78,7 +78,8 @@ class ShopFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        val disposable = RetrofitManager.service.shopDetail(shopID)
+        val disposable = RetrofitManager.service.shopDetail(shopID,
+                (page - 1) * Constants.PAGE_NUM, Constants.PAGE_NUM)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
@@ -94,16 +95,17 @@ class ShopFragment : BaseFragment() {
                         //more
                         if (mAdapter.itemCount == 0) {
                             mAdapter.emptyView = notDataView
-                            return
                         }
 
                         if (t.goods.isNotEmpty()) {
                             if (t.goods.size < Constants.PAGE_NUM) {
-                                mRefreshLayout.setNoMoreData(true)
+                                mRefreshLayout.setEnableLoadMore(false)
                             } else {
-                                mRefreshLayout.setNoMoreData(false)
+                                mRefreshLayout.setEnableLoadMore(true)
                                 page++
                             }
+                        } else {
+                            mRefreshLayout.setEnableLoadMore(false)
                         }
                     }
 

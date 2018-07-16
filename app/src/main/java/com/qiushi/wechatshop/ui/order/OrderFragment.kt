@@ -15,6 +15,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Goods
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.model.Order
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -23,10 +24,10 @@ import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.PriceUtil
+import com.qiushi.wechatshop.util.RxBus
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.SpaceItemDecoration
-import kotlinx.android.synthetic.main.activity_shop_edit.view.*
 import kotlinx.android.synthetic.main.fragment_order.*
 
 
@@ -174,16 +175,17 @@ class OrderFragment : BaseFragment() {
                         //more
                         if (mAdapter.itemCount == 0) {
                             mAdapter.emptyView = notDataView
-                            return
                         }
 
                         if (t.isNotEmpty()) {
                             if (t.size < Constants.PAGE_NUM) {
-                                mRefreshLayout.setNoMoreData(true)
+                                mRefreshLayout.setEnableLoadMore(false)
                             } else {
-                                mRefreshLayout.setNoMoreData(false)
+                                mRefreshLayout.setEnableLoadMore(true)
                                 page++
                             }
+                        } else {
+                            mRefreshLayout.setEnableLoadMore(false)
                         }
                     }
 
@@ -293,6 +295,7 @@ class OrderFragment : BaseFragment() {
                                     if (t) {
                                         ToastUtils.showMessage("交易完成")
                                         lazyLoad()
+                                        RxBus.getInstance().post(Notifycation(Constants.MARKASDONE, order_id))
                                     }
                                 }
 

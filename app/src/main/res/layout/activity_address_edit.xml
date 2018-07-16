@@ -164,8 +164,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:minHeight="20dp"
             android:orientation="horizontal">
 
             <TextView
@@ -179,9 +180,12 @@
             <EditText
                 android:id="@+id/address"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="center_vertical|right"
+                android:maxLength="30"
+                android:maxLines="5"
+                android:minHeight="20dp"
                 android:textColor="@color/color_item_text"
                 android:textSize="14sp" />
         </LinearLayout>

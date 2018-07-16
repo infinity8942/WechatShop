@@ -61,6 +61,7 @@ class AddGoodsNextActivity : BaseActivity() {
         }
         iv_switch.setOnClickListener(onclickListener)
         up_layout.setOnClickListener(onclickListener)
+        back.setOnClickListener(onclickListener)
     }
 
     override fun getData() {
@@ -93,9 +94,9 @@ class AddGoodsNextActivity : BaseActivity() {
                     iv_switch.setImageResource(R.mipmap.ic_goods_close)
                 }
             }
-            R.id.up_layout -> {
-                isDataNull()
-            }
+            R.id.up_layout -> isDataNull()
+            R.id.back -> finish()
+
         }
     }
 

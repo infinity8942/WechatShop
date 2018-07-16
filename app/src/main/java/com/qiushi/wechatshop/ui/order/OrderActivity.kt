@@ -10,10 +10,12 @@ import android.widget.EditText
 import android.widget.TextView
 import cn.qqtheme.framework.picker.DatePicker
 import cn.qqtheme.framework.util.ConvertUtils
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.base.BaseFragmentAdapter
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.ui.MainActivity
 import com.qiushi.wechatshop.util.DateUtil
@@ -393,6 +395,15 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
                     val shopID = data!!.getLongExtra("shop_id", -1)
                     returnToShop(shopID)
                 }
+        }
+    }
+
+    override fun accept(t: Notifycation?) {
+        super.accept(t)
+        when (t!!.code) {
+            Constants.MARKASDONE -> {
+                (fragments[4] as OrderFragment).getOrders()//刷新已完成订单
+            }
         }
     }
 
