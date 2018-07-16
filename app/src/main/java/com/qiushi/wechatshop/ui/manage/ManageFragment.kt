@@ -109,7 +109,7 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
         errorView.setOnClickListener { lazyLoad() }
 
         headerView = layoutInflater.inflate(R.layout.manager_item_head, mRecyclerView.parent as ViewGroup, false)
-
+        mAdapter.addHeaderView(headerView)
         //设置name,头像
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -188,37 +188,35 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Shop>() {
                     override fun onHandleSuccess(t: Shop) {
-                        if (t != null) {
-                            if (mAdapter.emptyView != null) {
-                                (mAdapter.emptyView as ViewGroup).removeAllViews()
-                            }
-
+                        if (page == 1) {
+                            ImageHelper.loadAvatar(activity!!, iv_avaver, t.logo, 28)
+                            tv_header_title.text = t.name
                             mShop = t
-                            mAdapter.removeAllHeaderView()
-                            mAdapter.addHeaderView(headerView)
-                            if (t.menu_list != null && t.menu_list.size > 0) {
+                            if (t.menu_list.isNotEmpty()) {
                                 mEntranceAdapter.setNewData(t.menu_list)
                             }
-                            if (page == 1) {
-                                ImageHelper.loadAvatar(activity!!, iv_avaver, t.logo, 28)
-                                tv_header_title.text = t.name
-                                getHeadView(t)
-                                mAdapter.setNewData(t.goods)
-                                mRefreshLayout.finishRefresh(true)
-                            } else {
-                                mAdapter.addData(t.goods)
-                                mRefreshLayout.finishRefresh(true)
-                            }
-                            if (t.goods != null) {
-                                if (t.goods.size < Constants.PAGE_NUM) {
-                                    mRefreshLayout.setEnableLoadMore(false)
-                                } else {
-                                    mRefreshLayout.setEnableLoadMore(true)
-                                    page++
-                                }
-                            } else {
+                            getHeadView(t)
+                            mAdapter.setNewData(t.goods)
+                            mRefreshLayout.finishRefresh(true)
+                        } else {
+                            mAdapter.addData(t.goods)
+                            mRefreshLayout.finishLoadMore(true)
+                        }
+
+                        //more
+                        if (mAdapter.itemCount == 0) {
+                            mAdapter.emptyView = notDataView
+                        }
+
+                        if (t.goods.isNotEmpty()) {
+                            if (t.goods.size < 6) {
                                 mRefreshLayout.setEnableLoadMore(false)
+                            } else {
+                                mRefreshLayout.setEnableLoadMore(true)
+                                page++
                             }
+                        } else {
+                            mRefreshLayout.setEnableLoadMore(false)
                         }
                     }
 

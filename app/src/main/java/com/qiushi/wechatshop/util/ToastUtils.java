@@ -1,5 +1,8 @@
 package com.qiushi.wechatshop.util;
 
+import android.os.Build;
+import android.provider.Settings;
+
 import com.qiushi.wechatshop.R;
 import com.qiushi.wechatshop.WAppContext;
 
@@ -34,6 +37,9 @@ public class ToastUtils {
      * @param type UNIVERSAL 普通，EMPHASIZE 居中强调，CLICKABLE 可点击
      */
     public static void showMessage(String msg, int type) {
+        if (!requestPermission()) {
+            return;
+        }
         if (msg == null)
             msg = DEFAULT_ERROR;
         UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
@@ -41,6 +47,9 @@ public class ToastUtils {
     }
 
     public static void showSuccess(String msg, int type) {
+        if (!requestPermission()) {
+            return;
+        }
         if (msg == null)
             msg = DEFAULT_ERROR;
         UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
@@ -48,6 +57,9 @@ public class ToastUtils {
     }
 
     public static void showError(String msg, int type) {
+        if (!requestPermission()) {
+            return;
+        }
         if (msg == null)
             msg = DEFAULT_ERROR;
         UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
@@ -55,9 +67,16 @@ public class ToastUtils {
     }
 
     public static void showWarning(String msg, int type) {
+        if (!requestPermission()) {
+            return;
+        }
         if (msg == null)
             msg = DEFAULT_ERROR;
         UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
                 .setColor(R.color.bg_toast).showWarning();
+    }
+
+    private static boolean requestPermission() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.O || Settings.canDrawOverlays(WAppContext.context);
     }
 }

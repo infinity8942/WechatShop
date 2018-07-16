@@ -2,6 +2,9 @@ package com.qiushi.wechatshop.ui.login
 
 import android.Manifest
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import cn.sharesdk.framework.Platform
@@ -28,6 +31,7 @@ import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import kotlinx.android.synthetic.main.activity_login.*
+import xyz.bboylin.universialtoast.UniversalToast
 import java.util.HashMap
 import kotlin.collections.ArrayList
 
@@ -94,16 +98,37 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onDeny(permission: String?, position: Int) {
-                        ToastUtils.showError("拒绝权限")
                     }
 
                     override fun onClose() {
-                        ToastUtils.showError("拒绝权限")
                     }
 
                     override fun onFinish() {
+                        requestAlertWindowPermission()
                     }
                 })
+    }
+
+    private fun requestAlertWindowPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                UniversalToast.makeText(this, "请允许悬浮窗权限", UniversalToast.LENGTH_SHORT).showWarning()
+                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName))
+                startActivityForResult(intent, 1000)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            1000 -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val text = if (Settings.canDrawOverlays(this)) "已获取悬浮窗权限" else "请打开悬浮窗权限"
+                    UniversalToast.makeText(this, text, UniversalToast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun loginWX() {

@@ -60,16 +60,13 @@ public class Push {
 
             @Override
             public void dealWithCustomMessage(final Context context, final UMessage uMessage) {
-                new Handler(getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (String key : uMessage.extra.keySet()) {
-                            Logger.e("~~~~~~~~~~~~~~ dealWithCustomMessage : " +
-                                    key + "=" + uMessage.extra.get(key));
-                        }
-                        //踢登录
-                        RxBus.getInstance().post(new Notifycation(Constants.T_LOGIN, 2L));
+                new Handler(getMainLooper()).post(() -> {
+                    for (String key : uMessage.extra.keySet()) {
+                        Logger.e("~~~~~~~~~~~~~~ dealWithCustomMessage : " +
+                                key + "=" + uMessage.extra.get(key));
                     }
+                    //踢登录
+                    RxBus.getInstance().post(new Notifycation(Constants.T_LOGIN, 2L));
                 });
             }
         });

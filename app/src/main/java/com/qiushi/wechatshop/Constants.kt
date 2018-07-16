@@ -37,6 +37,8 @@ object Constants {
     const val UMENG_APPKEY = "5b28cdddb27b0a532e000034"
     const val UMENG_SECRET = "17c7e39d636a0b8fba2fbeef778aee02"
     const val WX_ID = "wx5e51e01dcf0bf531"
+    const val FIR_APPID = "5b3602fd548b7a6d937d38b9"
+    const val FIR_APPTOKEN = "4db2b4508f554fa407bb3385f030a5cf"
 
     //Order Status
     const val READY_TO_PAY = 0  //待付款

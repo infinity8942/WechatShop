@@ -1,10 +1,12 @@
 package com.qiushi.wechatshop.ui.user.setting
 
 import android.view.View
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.Utils
+import com.sunfusheng.FirUpdater
 import kotlinx.android.synthetic.main.activity_about_us.*
 
 /**
@@ -24,8 +26,17 @@ class AboutUsActivity : BaseActivity(), View.OnClickListener {
         version.text = "当前版本号：v" + Utils.getVersionName()
 
         back.setOnClickListener(this)
+        if (Constants.IS_DEVELOPER)
+            logo.setOnClickListener(this)
     }
 
     override fun getData() {
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.back -> finish()
+            R.id.logo -> FirUpdater(this, Constants.FIR_APPTOKEN, Constants.FIR_APPID).checkVersion()
+        }
     }
 }
