@@ -28,6 +28,7 @@ import com.qiushi.wechatshop.util.RxBus
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.SpaceItemDecoration
+import io.github.xudaojie.qrcodelib.CaptureActivity
 import kotlinx.android.synthetic.main.fragment_order.*
 
 
@@ -142,6 +143,7 @@ class OrderFragment : BaseFragment() {
                                 goToExpress(order.id)
                             }
                     }
+                R.id.scan -> startActivityForResult(Intent(context, CaptureActivity::class.java), 3000)
             }
         }
     }

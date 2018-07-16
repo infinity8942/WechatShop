@@ -1,5 +1,6 @@
 package com.qiushi.wechatshop.ui.order
 
+import android.app.Activity
 import android.content.Intent
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
@@ -395,6 +396,12 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
                     val shopID = data!!.getLongExtra("shop_id", -1)
                     returnToShop(shopID)
                 }
+            3000 -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val result = data.getStringExtra("result")
+                    ToastUtils.showMessage(result)
+                }
+            }
         }
     }
 

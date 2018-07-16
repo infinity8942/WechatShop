@@ -69,6 +69,8 @@ object Constants {
     const val ZX_SHOP = 1017//开店 或者 装修
     const val PUSH_KUCUN = 1018// 库存提醒
 
+    const val PUSH_TODO = 1500// 待办事项提醒
+
     const val MARKASDONE = 2001//确认收货
 //    const val T_LOGIN = 1016//踢登录
 }

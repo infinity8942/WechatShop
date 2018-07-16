@@ -147,6 +147,18 @@
             android:textSize="13sp"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/scan"
+            android:layout_width="74dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8.5dp"
+            android:background="@drawable/bg_order_notify"
+            android:gravity="center"
+            android:text="扫一扫"
+            android:textColor="@color/coupon_yellow"
+            android:textSize="13sp" />
+
         <EditText
             android:id="@+id/numbers"
             android:layout_width="match_parent"
@@ -154,6 +166,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8.5dp"
             android:layout_toLeftOf="@id/action2"
+            android:layout_toRightOf="@id/scan"
             android:background="@drawable/bg_order_filter_input"
             android:gravity="center"
             android:hint="请填写物流单号"

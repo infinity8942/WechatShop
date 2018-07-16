@@ -4,6 +4,8 @@
     package="com.qiushi.wechatshop">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -142,6 +144,8 @@
             android:name=".util.permission.PermissionActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/CustomTheme_Dialog" />
+
+        <activity android:name="io.github.xudaojie.qrcodelib.CaptureActivity" />
         <!-- S8 S8+ -->
         <meta-data
             android:name="android.max_aspect"

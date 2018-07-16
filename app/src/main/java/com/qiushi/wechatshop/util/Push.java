@@ -53,7 +53,7 @@ public class Push {
                         Logger.e("~~~~~~~~~~~~~~ getNotification : " +
                                 key + "=" + uMessage.extra.get(key));
                     }
-
+                    RxBus.getInstance().post(new Notifycation(Constants.PUSH_TODO, Integer.parseInt(uMessage.extra.get("num"))));
                 }
                 return super.getNotification(context, uMessage);
             }

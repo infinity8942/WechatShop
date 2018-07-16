@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
@@ -60,9 +61,7 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
     /**
      * 整体recyclerview adapter
      */
-    private val mAdapter by lazy {
-        ManagerAdapter()
-    }
+    private val mAdapter by lazy { ManagerAdapter() }
     /**
      * 整体recyclerview manager
      */
@@ -73,13 +72,9 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
     /**
      * 头布局列表 manager
      */
-    private val mEntranceGridManager by lazy {
-        GridLayoutManager(activity, 4)
-    }
+    private val mEntranceGridManager by lazy { GridLayoutManager(activity, 4) }
 
-    private val mEntranceAdapter by lazy {
-        EntranceAdapter()
-    }
+    private val mEntranceAdapter by lazy { EntranceAdapter() }
 
     private var page = 1
 
@@ -417,10 +412,9 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                 page = 1
                 lazyLoad()
             }
-            Constants.OPEN_SHOP, Constants.ZX_SHOP -> {
+            Constants.OPEN_SHOP, Constants.ZX_SHOP -> {//开店或者装修回调
                 page = 1
                 lazyLoad()
-                //开店或者装修回调
             }
             Constants.MANAGER_GOODS -> {
                 page = 1
@@ -430,6 +424,17 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                 page = 1
                 lazyLoad()
             }
+            Constants.PUSH_TODO -> {
+                Logger.e("PUSH_TODO " + t.id.toInt())
+                updateTodoCount(t.id.toInt())
+            }
         }
+    }
+
+    private fun updateTodoCount(count: Int) {
+        mEntranceAdapter.data
+                .filter { it.menu_id == 1 }
+                .forEach { it.msg_count = count }
+        mEntranceAdapter.notifyDataSetChanged()
     }
 }

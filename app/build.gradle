@@ -143,4 +143,5 @@ dependencies {
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
     implementation files('libs/alipaySdk-20180601.jar')
     implementation files('libs/commons-codec-1.11.jar')
+    implementation 'com.github.XuDaojie:QRCode-Android:v0.4.2'
 }

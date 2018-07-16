@@ -51,15 +51,15 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                     helper.setGone(R.id.action1, true).setText(R.id.action1, "取消订单")
                             .setGone(R.id.action2, false)
                 }
-                helper.setGone(R.id.numbers, false)
+                helper.setGone(R.id.numbers, false).setGone(R.id.scan, false)
             }
             Constants.PAYED -> {
                 if (isManage) {
                     helper.setText(R.id.status, "买家已付款").setText(R.id.action, "确认发货")
-                            .setGone(R.id.numbers, true)
+                            .setGone(R.id.numbers, true).setGone(R.id.scan, true)
                 } else {
                     helper.setText(R.id.status, "等待卖家发货").setText(R.id.action, if (order.remind_send == 0) "提醒发货" else "已提醒")
-                    helper.setGone(R.id.numbers, false)
+                    helper.setGone(R.id.numbers, false).setGone(R.id.scan, false)
                 }
                 helper.setGone(R.id.action, true).setGone(R.id.action1, false).setGone(R.id.action2, false)
             }
@@ -72,6 +72,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                 }
                 helper.setGone(R.id.action1, true).setText(R.id.action1, "查看物流")
                         .setGone(R.id.action2, false).setGone(R.id.numbers, false)
+                        .setGone(R.id.scan, false)
             }
             Constants.DONE -> {
                 if (isManage) {
@@ -83,7 +84,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                     helper.setGone(R.id.action2, true).setText(R.id.action2, "查看物流")
                 }
                 helper.setText(R.id.status, "已完成").setGone(R.id.action1, true)
-                        .setGone(R.id.numbers, false)
+                        .setGone(R.id.numbers, false).setGone(R.id.scan, false)
             }
             Constants.CUSTOM -> {
                 if (isManage) {
@@ -92,6 +93,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
                             .setGone(R.id.action2, false)
                 }
                 helper.setText(R.id.status, "").setGone(R.id.numbers, false)
+                        .setGone(R.id.scan, false)
             }
         }
 
@@ -109,7 +111,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
         }
 
         helper.addOnClickListener(R.id.layout_shop).addOnClickListener(R.id.action)
-                .addOnClickListener(R.id.action1).addOnClickListener(R.id.action2)
+                .addOnClickListener(R.id.action1).addOnClickListener(R.id.action2).addOnClickListener(R.id.scan)
     }
 
     /**

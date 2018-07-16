@@ -20,6 +20,7 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.google.com/' }
         maven { url 'https://dl.bintray.com/sfsheng0322/maven' }
+        maven { url "http://repo1.maven.org/maven2" }
         google()
     }
 }
