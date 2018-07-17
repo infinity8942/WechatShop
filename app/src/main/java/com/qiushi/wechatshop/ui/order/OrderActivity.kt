@@ -399,7 +399,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
             3000 -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val result = data.getStringExtra("result")
-                    ToastUtils.showMessage(result)
+                    (fragments[viewpager.currentItem] as OrderFragment).setNumbers(result)
                 }
             }
         }

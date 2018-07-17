@@ -44,6 +44,8 @@ class OrderFragment : BaseFragment() {
     private var status = 100
     private var page = 1
 
+    private var mPositionScan = -1
+
     override fun getLayoutId(): Int = R.layout.fragment_order
 
     override fun initView() {
@@ -143,9 +145,17 @@ class OrderFragment : BaseFragment() {
                                 goToExpress(order.id)
                             }
                     }
-                R.id.scan -> startActivityForResult(Intent(context, CaptureActivity::class.java), 3000)
+                R.id.scan -> {
+                    mPositionScan = position
+                    (activity as OrderActivity).startActivityForResult(Intent(activity, CaptureActivity::class.java), 3000)
+                }
             }
         }
+    }
+
+    fun setNumbers(numbers: String) {
+        if (mPositionScan != -1)
+            (mAdapter.getViewByPosition(mPositionScan, R.id.numbers) as EditText).setText(numbers)
     }
 
     override fun lazyLoad() {

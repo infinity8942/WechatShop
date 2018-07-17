@@ -42,8 +42,11 @@ public class ToastUtils {
         }
         if (msg == null)
             msg = DEFAULT_ERROR;
-        UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
-                .setColor(R.color.bg_toast).show();
+        try {
+            UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
+                    .setColor(R.color.bg_toast).show();
+        } catch (Exception e) {
+        }
     }
 
     public static void showSuccess(String msg, int type) {
@@ -52,8 +55,11 @@ public class ToastUtils {
         }
         if (msg == null)
             msg = DEFAULT_ERROR;
-        UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
-                .setColor(R.color.bg_toast).showSuccess();
+        try {
+            UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
+                    .setColor(R.color.bg_toast).showSuccess();
+        } catch (Exception e) {
+        }
     }
 
     public static void showError(String msg, int type) {
@@ -62,8 +68,11 @@ public class ToastUtils {
         }
         if (msg == null)
             msg = DEFAULT_ERROR;
-        UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
-                .setColor(R.color.bg_toast).showError();
+        try {
+            UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
+                    .setColor(R.color.bg_toast).showError();
+        } catch (Exception e) {
+        }
     }
 
     public static void showWarning(String msg, int type) {
@@ -72,8 +81,11 @@ public class ToastUtils {
         }
         if (msg == null)
             msg = DEFAULT_ERROR;
-        UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
-                .setColor(R.color.bg_toast).showWarning();
+        try {
+            UniversalToast.makeText(WAppContext.context, msg, UniversalToast.LENGTH_SHORT, type)
+                    .setColor(R.color.bg_toast).showWarning();
+        } catch (Exception e) {
+        }
     }
 
     private static boolean requestPermission() {

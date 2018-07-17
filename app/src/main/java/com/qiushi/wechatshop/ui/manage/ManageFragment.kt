@@ -86,8 +86,10 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
         StatusBarUtil.setPaddingSmart(context!!, toolbar)
         color1 = ContextCompat.getColor(WAppContext.context, R.color.translate)
         color2 = ContextCompat.getColor(WAppContext.context, R.color.colorPrimaryDark)
-        //RecyclerView
 
+        showLoading()
+
+        //RecyclerView
         notShop = layoutInflater.inflate(R.layout.empty_shop_view, mRecyclerView.parent as ViewGroup, false)
         StatusBarUtil.setPaddingSmart(context!!, notShop)
         notShop.findViewById<Button>(R.id.empty_view_tv).setOnClickListener {
@@ -198,6 +200,8 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                             mRefreshLayout.finishLoadMore(true)
                         }
 
+                        dismissLoading()
+
                         //more
                         if (mAdapter.itemCount == 0) {
                             mAdapter.emptyView = notDataView
@@ -232,6 +236,8 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                                 }
                             }
                         }
+                        dismissLoading()
+
                     }
                 })
         addSubscription(subscribeWith)

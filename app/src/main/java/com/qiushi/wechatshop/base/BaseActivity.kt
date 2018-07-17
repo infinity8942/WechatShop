@@ -62,15 +62,13 @@ abstract class BaseActivity : SwipeBackActivity(), View.OnClickListener, Consume
         } else {
             loadingDialog!!.setText(msg)
         }
-        if (!loadingDialog!!.isShowing) {
+        if (!loadingDialog!!.isShowing)
             loadingDialog!!.show()
-        }
     }
 
     protected fun dismissLoading() {
-        if (loadingDialog != null && loadingDialog!!.isShowing) {
+        if (loadingDialog != null && loadingDialog!!.isShowing)
             loadingDialog!!.dismiss()
-        }
     }
 
     fun addSubscription(disposable: Disposable) {
