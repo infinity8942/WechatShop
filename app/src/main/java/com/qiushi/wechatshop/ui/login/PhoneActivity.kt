@@ -37,7 +37,9 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
     private var authCode = "" //验证码
     private val INTERVAL = 60//验证码倒计时
     private var interval = INTERVAL
+
     override fun layoutId(): Int = R.layout.activity_phone
+
     val tHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
@@ -55,7 +57,9 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
     override fun init() {
         setSwipeBackEnable(false)
         StatusBarUtil.immersive(this)
+        StatusBarUtil.setPaddingSmart(this, toolbar)
 
+        back.setOnClickListener(this)
         auth.setOnClickListener(this)
         login.setOnClickListener(this)
         protocol.setOnClickListener(this)
@@ -72,6 +76,7 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
+            R.id.back -> finish()
             R.id.auth -> {
                 if (canSendCode()) {
                     getAuthCode()

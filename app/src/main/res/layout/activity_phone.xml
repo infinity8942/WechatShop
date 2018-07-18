@@ -5,6 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.login.PhoneActivity">
 
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/padding_tab_layout_top"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_back_black" />
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/logo"
         android:layout_width="90dp"

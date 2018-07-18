@@ -29,6 +29,15 @@
             android:text="用户地址"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/del"
+            android:layout_width="@dimen/padding_tab_layout_top"
+            android:layout_height="@dimen/padding_tab_layout_top"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_back"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout
