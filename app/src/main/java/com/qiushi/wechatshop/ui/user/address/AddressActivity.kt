@@ -46,7 +46,7 @@ class AddressActivity : BaseActivity(), View.OnClickListener {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mAdapter = AddressAdapter()
         mAdapter.openLoadAnimation()
-        mRecyclerView.addItemDecoration(SpaceItemDecoration(0, DensityUtils.dp2px(8.toFloat())))
+        mRecyclerView.addItemDecoration(SpaceItemDecoration(0, DensityUtils.dp2px(12.toFloat())))
         mAdapter.bindToRecyclerView(mRecyclerView)
 
         notDataView = layoutInflater.inflate(R.layout.empty_content_view, mRecyclerView.parent as ViewGroup, false)

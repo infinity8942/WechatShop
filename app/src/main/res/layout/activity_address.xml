@@ -29,26 +29,19 @@
             android:textSize="18sp" />
     </RelativeLayout>
 
-    <LinearLayout
+    <TextView
         android:id="@+id/layout_add"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/bg_orange_commit"
         android:gravity="center"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_orange_commit"
-            android:gravity="center"
-            android:text="添加新地址"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
-    </LinearLayout>
+        android:text="添加"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/mRefreshLayout"
@@ -63,7 +56,6 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:paddingLeft="16dp"
-            android:paddingTop="16dp"
             android:paddingRight="16dp" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </RelativeLayout>
