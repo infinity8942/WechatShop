@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_next"
     android:layout_width="match_parent"
-    android:layout_marginTop="36dp"
     android:layout_height="40dp"
     android:layout_marginLeft="20dp"
+    android:layout_marginTop="36dp"
     android:layout_marginRight="20dp"
     android:background="@drawable/add_goods_yellow_shape">
 
     <TextView
+        android:id="@+id/step1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="28dp"
-        android:text="1/2"
+        android:text="1"
         android:textColor="@color/title"
         android:textSize="16sp" />
 
+    <TextView
+        android:id="@+id/step2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/step1"
+        android:text="/2"
+        android:textColor="@color/black_70"
+        android:textSize="16sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,6 +44,5 @@
         android:layout_marginRight="25.3dp"
         android:padding="3dp"
         android:src="@mipmap/ic_next" />
-
 </RelativeLayout>
 
