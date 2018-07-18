@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="《微商圈协议》"
+            android:text="《微圈儿协议》"
             android:textColor="@color/coupon_yellow"
             android:textSize="12sp" />
     </LinearLayout>

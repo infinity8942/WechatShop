@@ -2,9 +2,6 @@ package com.qiushi.wechatshop.ui.login
 
 import android.Manifest
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
-import android.provider.Settings
 import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import cn.sharesdk.framework.Platform
@@ -13,7 +10,6 @@ import cn.sharesdk.framework.ShareSDK
 import cn.sharesdk.wechat.friends.Wechat
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.WAppLike
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
@@ -29,7 +25,6 @@ import com.qiushi.wechatshop.util.permission.PermissionCallback
 import com.qiushi.wechatshop.util.permission.PermissionItem
 import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
-import com.tencent.mm.opensdk.modelmsg.SendAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.HashMap
 import kotlin.collections.ArrayList
@@ -73,16 +68,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun loginWXX() {
-        if (!WAppLike.mWxApi.isWXAppInstalled) {
-            ToastUtils.showMessage("您还未安装微信客户端")
-            return
-        }
-        val req = SendAuth.Req()
-        req.scope = "snsapi_userinfo"
-        req.state = "diandi_wx_login"
-        WAppLike.mWxApi.sendReq(req)
-    }
+//    private fun loginWXX() {
+//        if (!WAppLike.mWxApi.isWXAppInstalled) {
+//            ToastUtils.showMessage("您还未安装微信客户端")
+//            return
+//        }
+//        val req = SendAuth.Req()
+//        req.scope = "snsapi_userinfo"
+//        req.state = "diandi_wx_login"
+//        WAppLike.mWxApi.sendReq(req)
+//    }
 
     private fun getPermission() {
         val permissionItems = ArrayList<PermissionItem>()
@@ -103,30 +98,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onFinish() {
-                        requestAlertWindowPermission()
                     }
                 })
-    }
-
-    private fun requestAlertWindowPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                ToastUtils.showMessage("请允许悬浮窗权限")
-                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName))
-                startActivityForResult(intent, 1000)
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            1000 -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    ToastUtils.showMessage(if (Settings.canDrawOverlays(this)) "已获取悬浮窗权限" else "请打开悬浮窗权限")
-                }
-            }
-        }
     }
 
     private fun loginWX() {
@@ -140,16 +113,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         platform.SSOSetting(false)
         platform.platformActionListener = object : PlatformActionListener {
             override fun onComplete(platform: Platform, i: Int, hashMap: HashMap<String, Any>) {
-                val platDB = platform.db
-//                val params = HashMap<String, String>()
-//                params["push"] = Push.getDeviceToken()
-//                params["token"] = platDB.token
-////                params["username"] = platDB.userName
-//                params["uid"] = platDB.userId
-//                params["brand"] = "2"
-//                params["type"] = "weixin"
-
-                val disposable = RetrofitManager.service.loginWX(platDB.token, platDB.userId, "", Push.getDeviceToken(), 1)
+                val disposable = RetrofitManager.service.loginWX(platform.db.token, platform.db.userId, "", Push.getDeviceToken(), 1)
                         .compose(SchedulerUtils.ioToMain())
                         .subscribeWith(object : BaseObserver<User>() {
                             override fun onHandleSuccess(t: User) {
