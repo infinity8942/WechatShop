@@ -89,11 +89,37 @@ android {
     aaptOptions {
         cruncherEnabled = false
     }
+
+    task debugToFir {
+        dependsOn 'assembleDebug'
+        doLast {
+            def appName = "微圈儿"
+            def changeLog = ""
+            def bundleId = project.android.defaultConfig.applicationId
+            def buildNumber = project.android.defaultConfig.versionCode
+            def verName = project.android.defaultConfig.versionName
+            def upUrl = "http://api.fir.im/apps"
+            def apiToken = "4db2b4508f554fa407bb3385f030a5cf"
+            def iconPath = "D:/Workspace/WechatShop/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
+            def apkPath = "D:/Workspace/WechatShop/app/build/outputs/apk/qiushi/debug/app-qiushi-debug.apk"
+            def process = "python upToFir.py ${upUrl} ${appName} ${bundleId} ${verName} ${apiToken} ${iconPath} ${apkPath} ${buildNumber} ${changeLog}".execute()
+            println("开始上传")
+            ByteArrayOutputStream result = new ByteArrayOutputStream()
+            def inputStream = process.getInputStream()
+            byte[] buffer = new byte[1024]
+            int length
+            while ((length = inputStream.read(buffer)) != -1) {
+                result.write(buffer, 0, length)
+            }
+            println(result.toString("UTF-8"))
+            println "上传结束 "
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.30'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41'
     implementation 'com.android.support:support-annotations:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:support-vector-drawable:27.1.1'
@@ -121,7 +147,6 @@ dependencies {
     implementation 'com.badoo.mobile:android-weak-handler:1.1'
     implementation 'com.orhanobut:logger:2.1.1'
     implementation 'com.tencent.sonic:sdk:3.0.0'
-    implementation 'com.sunfusheng:FirUpdater:1.1.0'
     /**
      *   View
      */

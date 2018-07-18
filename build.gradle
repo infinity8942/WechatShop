@@ -5,8 +5,8 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-alpha06'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.21'
+        classpath 'com.android.tools.build:gradle:3.3.0-alpha03'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.50'
         classpath 'io.realm:realm-gradle-plugin:4.3.3'
         classpath 'com.meituan.android.walle:plugin:1.1.6'
         classpath 'com.tencent.bugly:tinker-support:1.1.1'
@@ -19,7 +19,6 @@ allprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.google.com/' }
-        maven { url 'https://dl.bintray.com/sfsheng0322/maven' }
         maven { url "http://repo1.maven.org/maven2" }
         google()
     }

@@ -45,7 +45,7 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
                 (DensityUtils.getScreenWidth() * 0.48).toInt())
         cover.layoutParams = lpCover
         mask.layoutParams = lpCover
-        viewpager.offscreenPageLimit = 5
+        viewpager.offscreenPageLimit = 10
 
         //Listener
         viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -59,6 +59,7 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
                 if (!shopList.isEmpty() && position < shopList.size) {
                     if (null != shopList[position].cover) {
                         updateCover(shopList[position].cover)
+                        (fragments[viewpager.currentItem] as ShopFragment).lazyLoad()
                     } else {
                         Logger.e("ShopListFragment no cover")
                     }
@@ -160,6 +161,10 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
     fun selectShop(shopID: Long) {
         shopList.indices
                 .filter { shopID == shopList[it].id }
-                .forEach { viewpager.currentItem = it }
+                .forEach {
+                    viewpager.currentItem = it
+                    updateCover(shopList[it].cover)
+                    (fragments[viewpager.currentItem] as ShopFragment).lazyLoad()
+                }
     }
 }
