@@ -297,9 +297,9 @@ class ManagerGoodsActivity : BaseActivity() {
                         when (type) {
                             TYPE_ZD -> {
                                 if (t) {
-                                    ToastUtils.showSuccess("置顶成功")
+                                    ToastUtils.showMessage("置顶成功")
                                 } else {
-                                    ToastUtils.showSuccess("取消置顶")
+                                    ToastUtils.showMessage("取消置顶")
                                 }
                                 page = 1
                                 getData()
@@ -308,9 +308,9 @@ class ManagerGoodsActivity : BaseActivity() {
                             }
                             TYPE_XJ -> {
                                 if (t) {
-                                    ToastUtils.showSuccess("下架成功")
+                                    ToastUtils.showMessage("下架成功")
                                 } else {
-                                    ToastUtils.showSuccess("上架成功")
+                                    ToastUtils.showMessage("上架成功")
                                 }
                                 page = 1
                                 getData()
@@ -319,9 +319,9 @@ class ManagerGoodsActivity : BaseActivity() {
                             }
                             else -> {
                                 if (t) {
-                                    ToastUtils.showSuccess("删除成功")
+                                    ToastUtils.showMessage("删除成功")
                                 } else {
-                                    ToastUtils.showSuccess("删除失败")
+                                    ToastUtils.showMessage("删除失败")
                                 }
                                 page = 1
                                 getData()
@@ -332,7 +332,7 @@ class ManagerGoodsActivity : BaseActivity() {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)

@@ -86,14 +86,14 @@ class OrderFragment : BaseFragment() {
 //                                if (order.remind_pay == 0) {
 //                                    notifyToPay(order.id, position)
 //                                } else {
-//                                    ToastUtils.showWarning("已发出过提醒，请等待买家支付")
+//                                    ToastUtils.showMessage("已发出过提醒，请等待买家支付")
 //                                }
                             }
                         Constants.PAYED ->
                             if ((activity as OrderActivity).isManage) {//标记发货
                                 val numbers = (mAdapter.getViewByPosition(position, R.id.numbers) as EditText).text.toString().trim()
                                 if (numbers.isEmpty()) {
-                                    ToastUtils.showError("请填写运单号")
+                                    ToastUtils.showMessage("请填写运单号")
                                 } else {
                                     markAsDeliver(order.id, numbers)
                                 }
@@ -101,7 +101,7 @@ class OrderFragment : BaseFragment() {
                                 if (order.remind_send == 0) {
                                     notifyToDeliver(order.id, position)
                                 } else {
-                                    ToastUtils.showWarning("已发出过提醒，请等待卖家发货")
+                                    ToastUtils.showMessage("已发出过提醒，请等待卖家发货")
                                 }
                             }
                         Constants.DELIVERED ->
@@ -202,7 +202,7 @@ class OrderFragment : BaseFragment() {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                         if (page == 1) {
                             mRefreshLayout.finishRefresh(false)
                         } else {
@@ -235,7 +235,7 @@ class OrderFragment : BaseFragment() {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)
@@ -257,7 +257,7 @@ class OrderFragment : BaseFragment() {
 //                    }
 //
 //                    override fun onHandleError(error: Error) {
-//                        ToastUtils.showError(error.msg)
+//                        ToastUtils.showMessage(error.msg)
 //                        if (error.code == 1004) {
 //                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
 //                            (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
@@ -283,7 +283,7 @@ class OrderFragment : BaseFragment() {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                         if (error.code == 1004) {
                             (mAdapter.getViewByPosition(position, R.id.action) as TextView).text = "已提醒"
                             (mAdapter.getViewByPosition(position, R.id.action) as TextView).isEnabled = false
@@ -312,7 +312,7 @@ class OrderFragment : BaseFragment() {
                                 }
 
                                 override fun onHandleError(error: Error) {
-                                    ToastUtils.showError(error.msg)
+                                    ToastUtils.showMessage(error.msg)
                                 }
                             })
                     addSubscription(disposable)
@@ -332,7 +332,7 @@ class OrderFragment : BaseFragment() {
                 .setPositiveButton("修改") { _, _ ->
                     val price = et.text.toString().trim()
                     if (price.isEmpty()) {
-                        ToastUtils.showError("请填写更改后的价格")
+                        ToastUtils.showMessage("请填写更改后的价格")
                     } else {
                         editOrderPrice(order_id, price.toDouble())
                     }
@@ -358,7 +358,7 @@ class OrderFragment : BaseFragment() {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)
@@ -382,7 +382,7 @@ class OrderFragment : BaseFragment() {
                                 }
 
                                 override fun onHandleError(error: Error) {
-                                    ToastUtils.showError(error.msg)
+                                    ToastUtils.showMessage(error.msg)
                                 }
                             })
                     addSubscription(disposable)
@@ -410,7 +410,7 @@ class OrderFragment : BaseFragment() {
                                 }
 
                                 override fun onHandleError(error: Error) {
-                                    ToastUtils.showError(error.msg)
+                                    ToastUtils.showMessage(error.msg)
                                 }
                             })
                     addSubscription(disposable)

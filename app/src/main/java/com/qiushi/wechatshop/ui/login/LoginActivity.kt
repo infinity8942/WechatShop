@@ -31,7 +31,6 @@ import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import kotlinx.android.synthetic.main.activity_login.*
-import xyz.bboylin.universialtoast.UniversalToast
 import java.util.HashMap
 import kotlin.collections.ArrayList
 
@@ -76,7 +75,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private fun loginWXX() {
         if (!WAppLike.mWxApi.isWXAppInstalled) {
-            ToastUtils.showError("您还未安装微信客户端")
+            ToastUtils.showMessage("您还未安装微信客户端")
             return
         }
         val req = SendAuth.Req()
@@ -112,7 +111,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private fun requestAlertWindowPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
-                UniversalToast.makeText(this, "请允许悬浮窗权限", UniversalToast.LENGTH_SHORT).showWarning()
+                ToastUtils.showMessage("请允许悬浮窗权限")
                 val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName))
                 startActivityForResult(intent, 1000)
             }
@@ -124,8 +123,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         when (requestCode) {
             1000 -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    val text = if (Settings.canDrawOverlays(this)) "已获取悬浮窗权限" else "请打开悬浮窗权限"
-                    UniversalToast.makeText(this, text, UniversalToast.LENGTH_SHORT).show()
+                    ToastUtils.showMessage(if (Settings.canDrawOverlays(this)) "已获取悬浮窗权限" else "请打开悬浮窗权限")
                 }
             }
         }
@@ -196,7 +194,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         override fun onFail(error: String) {
             dismissLoading()
-            ToastUtils.showError(error)
+            ToastUtils.showMessage(error)
         }
     }
 }

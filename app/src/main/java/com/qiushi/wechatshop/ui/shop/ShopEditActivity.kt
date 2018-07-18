@@ -127,7 +127,7 @@ class ShopEditActivity : Activity(), View.OnClickListener {
     private fun changeEditStatus() {
         isEdit = if (!isEdit) {
             if ((list.size == 0 || (list.size == 1 && !list[0].isDraggable))) {
-                ToastUtils.showWarning("暂无可编辑的店铺，请先关注新店铺")
+                ToastUtils.showMessage("暂无可编辑的店铺，请先关注新店铺")
                 false
             } else {
                 edit.text = "完成"
@@ -148,7 +148,7 @@ class ShopEditActivity : Activity(), View.OnClickListener {
     private fun addShop() {
         val code = et.text.toString().trim()
         if (TextUtils.isEmpty(code)) {
-            ToastUtils.showWarning("请填写邀请码")
+            ToastUtils.showMessage("请填写邀请码")
             return
         }
         UIUtil.hideKeyboard(this@ShopEditActivity)
@@ -179,9 +179,9 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                     override fun onHandleError(error: Error) {
                         if (error.msg == "店铺不存在") {
                             et.setText("")
-                            ToastUtils.showError(code + "店铺不存在，请重新输入")
+                            ToastUtils.showMessage(code + "店铺不存在，请重新输入")
                         } else {
-                            ToastUtils.showError(error.msg)
+                            ToastUtils.showMessage(error.msg)
                         }
                     }
                 })
@@ -208,7 +208,7 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         compositeDisposable.add(disposable)

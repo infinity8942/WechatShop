@@ -92,11 +92,11 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
     private fun edit() {
         val name = name.text.toString().trim()
         if (TextUtils.isEmpty(name)) {
-            ToastUtils.showWarning("店铺名不能为空")
+            ToastUtils.showMessage("店铺名不能为空")
             return
         }
         if (name == "我的店" || name == "我的店铺" || name == "My Shop" || name == "MyShop") {
-            ToastUtils.showWarning("店铺名不合法，请重新输入")
+            ToastUtils.showMessage("店铺名不合法，请重新输入")
             return
         }
 
@@ -117,7 +117,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         compositeDisposable.add(disposable)
@@ -224,11 +224,11 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onDeny(permission: String?, position: Int) {
-                        ToastUtils.showError("拒绝权限")
+                        ToastUtils.showMessage("拒绝权限")
                     }
 
                     override fun onClose() {
-                        ToastUtils.showError("拒绝权限")
+                        ToastUtils.showMessage("拒绝权限")
                     }
 
                     override fun onFinish() {

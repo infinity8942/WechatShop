@@ -337,7 +337,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
                 if (end_time!!.text.toString().isNotEmpty() && DateUtil.getMillis(DateUtil.str2Date(end_time!!.text.toString(), DateUtil.FORMAT_YMD)) < DateUtil.getMillis(DateUtil.str2Date(
                                 picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay,
                                 DateUtil.FORMAT_YMD))) {
-                    ToastUtils.showError("开始日期不能晚于结束日期")
+                    ToastUtils.showMessage("开始日期不能晚于结束日期")
                 } else {
                     picker.dismiss()
                     start_time!!.text = picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay
@@ -350,7 +350,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
                 if (start_time!!.text.toString().isNotEmpty() && DateUtil.getMillis(DateUtil.str2Date(start_time!!.text.toString(), DateUtil.FORMAT_YMD)) > DateUtil.getMillis(DateUtil.str2Date(
                                 picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay,
                                 DateUtil.FORMAT_YMD))) {
-                    ToastUtils.showError("结束日期不能早于开始日期")
+                    ToastUtils.showMessage("结束日期不能早于开始日期")
                 } else {
                     picker.dismiss()
                     end_time!!.text = picker.selectedYear + "-" + picker.selectedMonth + "-" + picker.selectedDay

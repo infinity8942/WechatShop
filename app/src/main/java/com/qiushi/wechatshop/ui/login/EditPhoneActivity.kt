@@ -54,7 +54,7 @@ class EditPhoneActivity : BaseActivity(), View.OnClickListener {
 
     private fun getAuthCode() {
         if (TextUtils.isEmpty(phone.text.toString().trim())) {
-            ToastUtils.showWarning("请填写手机号")
+            ToastUtils.showMessage("请填写手机号")
             return
         }
 
@@ -69,7 +69,7 @@ class EditPhoneActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)
@@ -77,7 +77,7 @@ class EditPhoneActivity : BaseActivity(), View.OnClickListener {
 
     private fun loginPhone() {
         if (TextUtils.isEmpty(password.text.toString().trim())) {
-            ToastUtils.showWarning("请填写验证码")
+            ToastUtils.showMessage("请填写验证码")
             return
         }
 
@@ -94,7 +94,7 @@ class EditPhoneActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)

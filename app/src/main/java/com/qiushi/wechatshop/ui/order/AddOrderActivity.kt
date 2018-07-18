@@ -103,27 +103,27 @@ class AddOrderActivity : BaseActivity(), View.OnClickListener, TextWatcher {
      */
     private fun addOrder() {
         if (goodsID == 0L) {
-            ToastUtils.showWarning("请选择产品")
+            ToastUtils.showMessage("请选择产品")
             return
         }
 
         if (TextUtils.isEmpty(et_price.text.toString().trim())) {
-            ToastUtils.showWarning("请填写单价")
+            ToastUtils.showMessage("请填写单价")
             return
         }
 
         if (price == 0.00) {
-            ToastUtils.showWarning("单价不能为0")
+            ToastUtils.showMessage("单价不能为0")
             return
         }
 
         if (TextUtils.isEmpty(et_amount.text.toString().trim())) {
-            ToastUtils.showWarning("请填写产品数量")
+            ToastUtils.showMessage("请填写产品数量")
             return
         }
 
         if (amount == 0) {
-            ToastUtils.showWarning("产品数量不能为0")
+            ToastUtils.showMessage("产品数量不能为0")
             return
         }
         val disposable = RetrofitManager.service.addOrder(
@@ -141,7 +141,7 @@ class AddOrderActivity : BaseActivity(), View.OnClickListener, TextWatcher {
                     }
 
                     override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)

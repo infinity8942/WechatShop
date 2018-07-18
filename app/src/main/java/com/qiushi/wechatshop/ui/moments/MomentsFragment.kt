@@ -164,7 +164,7 @@ class MomentsFragment : BaseFragment() {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                         if (page == 1) {
                             mRefreshLayout.finishRefresh(false)
                         } else {
@@ -197,7 +197,7 @@ class MomentsFragment : BaseFragment() {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)

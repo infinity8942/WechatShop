@@ -101,7 +101,7 @@ class GoodsListActivity : BaseActivity() {
                         if (error.code == -1001) {
                             mGrideAdapter.emptyView = notDataView
                         } else {
-                            ToastUtils.showError(error.msg)
+                            ToastUtils.showMessage(error.msg)
                         }
                     }
                 })

@@ -192,10 +192,10 @@ public class WebActivity extends SwipeBackActivity {
                     Logger.e("getPayLocalData  Wrong pay_type");
                 }
             } else {
-                ToastUtils.showError("支付信息出错，请重新下单");
+                ToastUtils.showMessage("支付信息出错，请重新下单");
             }
         } else {
-            ToastUtils.showError("支付信息出错，请重新下单");
+            ToastUtils.showMessage("支付信息出错，请重新下单");
         }
     }
 
@@ -211,14 +211,14 @@ public class WebActivity extends SwipeBackActivity {
                     protected void onHandleSuccess(PayReq payReq) {
                         if (null != payReq) {
                             if (!WXPayEntryActivity.pay(getApplicationContext(), payReq)) {
-                                ToastUtils.showWarning("未安装微信客户端");
+                                ToastUtils.showMessage("未安装微信客户端");
                             }
                         }
                     }
 
                     @Override
                     protected void onHandleError(@NotNull Error e) {
-                        ToastUtils.showError(e.getMsg());
+                        ToastUtils.showMessage(e.getMsg());
                     }
                 });
         compositeDisposable.add(disposable);
@@ -253,7 +253,7 @@ public class WebActivity extends SwipeBackActivity {
                                 break;
                             case "8000":
                             case "6004":
-                                ToastUtils.showError("支付状态异常");
+                                ToastUtils.showMessage("支付状态异常");
                                 startActivity(new Intent(WebActivity.this, PayResultActivity.class));
                                 //PayResultActivity.FAILED
                                 break;
@@ -262,16 +262,16 @@ public class WebActivity extends SwipeBackActivity {
                                 //PayResultActivity.FAILED
                                 break;
                             case "5000":
-                                ToastUtils.showWarning("重复请求");
+                                ToastUtils.showMessage("重复请求");
                                 break;
                             case "6001":
-                                ToastUtils.showWarning("您已取消支付");
+                                ToastUtils.showMessage("您已取消支付");
                                 break;
                             case "6002":
-                                ToastUtils.showError("网络错误");
+                                ToastUtils.showMessage("网络错误");
                                 break;
                             default:
-                                ToastUtils.showError("支付错误");
+                                ToastUtils.showMessage("支付错误");
                                 startActivity(new Intent(WebActivity.this, PayResultActivity.class));
                                 //PayResultActivity.FAILED
                                 break;
@@ -282,9 +282,9 @@ public class WebActivity extends SwipeBackActivity {
                     public void onError(Throwable e) {
                         if (e != null) {
                             e.printStackTrace();
-                            ToastUtils.showError(e.getMessage());
+                            ToastUtils.showMessage(e.getMessage());
                         } else {
-                            ToastUtils.showError("获取订单信息失败，请重试");
+                            ToastUtils.showMessage("获取订单信息失败，请重试");
                         }
                     }
 

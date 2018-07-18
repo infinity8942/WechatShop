@@ -26,7 +26,7 @@ class EditTextActivity : BaseActivity() {
 
         commit.setOnClickListener({
             if (et_text.text.toString().isEmpty()) {
-                ToastUtils.showError("请编辑")
+                ToastUtils.showMessage("请编辑")
             } else {
                 val intent = Intent()
                 intent.putExtra("text", et_text.text.toString())

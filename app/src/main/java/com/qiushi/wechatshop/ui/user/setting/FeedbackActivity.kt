@@ -56,7 +56,7 @@ class FeedbackActivity : BaseActivity(), View.OnClickListener {
 
     private fun feedback() {
         if (TextUtils.isEmpty(content.text.toString().trim())) {
-            ToastUtils.showWarning("请填写您的宝贵意见")
+            ToastUtils.showMessage("请填写您的宝贵意见")
             return
         }
         val disposable = RetrofitManager.service.feedback(type,
@@ -71,7 +71,7 @@ class FeedbackActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)

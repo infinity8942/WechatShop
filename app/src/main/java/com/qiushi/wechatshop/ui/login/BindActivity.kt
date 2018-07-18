@@ -77,7 +77,7 @@ class BindActivity : BaseActivity(), View.OnClickListener {
 
     private fun getAuthCode() {
         if (TextUtils.isEmpty(phone.text.toString().trim())) {
-            ToastUtils.showWarning("请填写手机号")
+            ToastUtils.showMessage("请填写手机号")
             return
         }
 
@@ -93,7 +93,7 @@ class BindActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)
@@ -101,7 +101,7 @@ class BindActivity : BaseActivity(), View.OnClickListener {
 
     private fun bindPhone() {
         if (TextUtils.isEmpty(password.text.toString().trim())) {
-            ToastUtils.showWarning("请填写验证码")
+            ToastUtils.showMessage("请填写验证码")
             return
         }
 
@@ -121,7 +121,7 @@ class BindActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)
@@ -132,16 +132,16 @@ class BindActivity : BaseActivity(), View.OnClickListener {
      */
     private fun canSendCode(): Boolean {
         if (interval != INTERVAL) {
-            ToastUtils.showWarning(String.format("%sS后可重新发送验证码", interval))
+            ToastUtils.showMessage(String.format("%sS后可重新发送验证码", interval))
             return false
         }
         val account = phone.text.toString().trim()
         if (TextUtils.isEmpty(account)) {
-            ToastUtils.showWarning("请输入手机号")
+            ToastUtils.showMessage("请输入手机号")
             return false
         }
         if (!Pattern.matches(Constants.REGEX_MOBILE, phone.text.toString().trim())) {
-            ToastUtils.showWarning("手机号输入不正确")
+            ToastUtils.showMessage("手机号输入不正确")
             return false
         }
         return true

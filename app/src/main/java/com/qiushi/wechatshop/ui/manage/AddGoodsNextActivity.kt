@@ -108,20 +108,20 @@ class AddGoodsNextActivity : BaseActivity() {
             addGoods!!.left_todo = et_count.text.toString().toInt()
         }
         if (addGoods == null) {
-            ToastUtils.showError("产品数据未填写，请返回填写")
+            ToastUtils.showMessage("产品数据未填写，请返回填写")
             return
         }
 
         if (addGoods!!.is_todo) {
             if (addGoods!!.left_todo == 0) {
-                ToastUtils.showError("库存提醒数量未填写")
+                ToastUtils.showMessage("库存提醒数量未填写")
                 return
             }
         }
 
         if (addGoods!!.is_todo) {
             if (addGoods!!.left_todo >= addGoods!!.stock) {
-                ToastUtils.showError("库存提醒数量应小于库存量")
+                ToastUtils.showMessage("库存提醒数量应小于库存量")
                 return
             }
         }
@@ -138,17 +138,17 @@ class AddGoodsNextActivity : BaseActivity() {
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
-                            ToastUtils.showSuccess("上传成功")
+                            ToastUtils.showMessage("上传成功")
                             RxBus.getInstance().post(Notifycation(Constants.ADD_IMG_REFRESH, 0L))
                             mContext.finish()
                             finish()
                         } else {
-                            ToastUtils.showError("上传失败")
+                            ToastUtils.showMessage("上传失败")
                         }
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError("上传失败")
+                        ToastUtils.showMessage("上传失败")
                     }
                 })
         addSubscription(subscribeWith)

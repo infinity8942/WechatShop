@@ -169,7 +169,7 @@ class AddGoodsActivity : BaseActivity() {
                 if (size < 10) {
                     choicePhotoWrapper(1, Constants.ADDIMG_RESUALT)
                 } else {
-                    ToastUtils.showError("最多能上传10张图片")
+                    ToastUtils.showMessage("最多能上传10张图片")
                 }
 
             }
@@ -177,7 +177,7 @@ class AddGoodsActivity : BaseActivity() {
                 if (size < 10) {
                     choicePhotoWrapper(1, Constants.ADDIMG_ITEM_REQUEST)
                 } else {
-                    ToastUtils.showError("最多能上传10张图片")
+                    ToastUtils.showMessage("最多能上传10张图片")
                 }
             }
             R.id.item_add_text -> {
@@ -215,33 +215,33 @@ class AddGoodsActivity : BaseActivity() {
             addGoods.stock = stock.text.toString().toInt()
         }
         if (addGoods == null) {
-            ToastUtils.showError("未填写数据")
+            ToastUtils.showMessage("未填写数据")
             return
         }
         if (addGoods.name.isEmpty()) {
-            ToastUtils.showError("产品名称未写")
+            ToastUtils.showMessage("产品名称未写")
             return
         }
         if (addGoods.cover_url.isEmpty() && addGoods.cover.isEmpty()) {
-            ToastUtils.showError("封面图未上传")
+            ToastUtils.showMessage("封面图未上传")
             return
         }
         if (addGoods.price == 0.toDouble()) {
-            ToastUtils.showError("单价未设置")
+            ToastUtils.showMessage("单价未设置")
             return
         }
         if (addGoods.stock == 0) {
-            ToastUtils.showError("库存数量为设置")
+            ToastUtils.showMessage("库存数量为设置")
             return
         }
         if (goods_id != null && goods_id != 0.toLong()) {
             if (contentList == null || contentList.size <= 0) {
-                ToastUtils.showError("产品详情未设置")
+                ToastUtils.showMessage("产品详情未设置")
                 return
             }
         } else {
             if (addGoods.content == null || addGoods.content!!.size <= 0) {
-                ToastUtils.showError("产品详情未设置")
+                ToastUtils.showMessage("产品详情未设置")
                 return
             }
         }
@@ -282,11 +282,11 @@ class AddGoodsActivity : BaseActivity() {
                     }
 
                     override fun onDeny(permission: String?, position: Int) {
-                        ToastUtils.showError("拒绝权限")
+                        ToastUtils.showMessage("拒绝权限")
                     }
 
                     override fun onClose() {
-                        ToastUtils.showError("拒绝权限")
+                        ToastUtils.showMessage("拒绝权限")
                     }
 
                     override fun onFinish() {
@@ -479,7 +479,7 @@ class AddGoodsActivity : BaseActivity() {
 //                tv_count.text = "描述(" + s.toString().length.toString() + "/100)"
 //            } else {
 //                tv_count.text = "描述(" + 100 + "/100)"
-//                ToastUtils.showError("最多只能输入100个字")
+//                ToastUtils.showMessage("最多只能输入100个字")
 //            }
         }
 
@@ -491,7 +491,7 @@ class AddGoodsActivity : BaseActivity() {
                 tv_count.text = "描述(" + s.toString().length.toString() + "/100)"
             } else {
                 tv_count.text = "描述(" + 100 + "/100)"
-                ToastUtils.showError("最多只能输入100个字")
+                ToastUtils.showMessage("最多只能输入100个字")
             }
         }
     }

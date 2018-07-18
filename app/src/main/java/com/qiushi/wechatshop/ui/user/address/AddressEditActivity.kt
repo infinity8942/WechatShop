@@ -84,7 +84,7 @@ class AddressEditActivity : BaseActivity(), View.OnClickListener {
     private fun showAddressPicker() {
         AddressInitTask(this, object : AddressInitTask.InitCallback {
             override fun onDataInitFailure() {
-                ToastUtils.showError("获取地址失败，请检查网络")
+                ToastUtils.showMessage("获取地址失败，请检查网络")
             }
 
             override fun onDataInitSuccess(provinces: ArrayList<Province>?) {
@@ -124,19 +124,19 @@ class AddressEditActivity : BaseActivity(), View.OnClickListener {
      */
     private fun saveAddress() {
         if (TextUtils.isEmpty(name.text.toString().trim())) {
-            ToastUtils.showWarning("请填写收货人姓名")
+            ToastUtils.showMessage("请填写收货人姓名")
             return
         }
         if (TextUtils.isEmpty(phone.text.toString().trim())) {
-            ToastUtils.showWarning("请填写手机号码")
+            ToastUtils.showMessage("请填写手机号码")
             return
         }
         if (TextUtils.isEmpty(area.text.toString().trim())) {
-            ToastUtils.showWarning("请选择地区")
+            ToastUtils.showMessage("请选择地区")
             return
         }
         if (TextUtils.isEmpty(address.text.toString().trim())) {
-            ToastUtils.showWarning("请填写详细地址")
+            ToastUtils.showMessage("请填写详细地址")
             return
         }
 
@@ -159,7 +159,7 @@ class AddressEditActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)

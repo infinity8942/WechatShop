@@ -18,7 +18,6 @@ import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.tab.listener.CustomTabEntity
 import com.qiushi.wechatshop.view.tab.listener.TabEntity
 import kotlinx.android.synthetic.main.activity_main.*
-import xyz.bboylin.universialtoast.UniversalToast
 import java.util.*
 
 class MainActivity : BaseActivity() {
@@ -90,7 +89,7 @@ class MainActivity : BaseActivity() {
         super.accept(t)
         when (t!!.code) {
             Constants.T_LOGIN -> {
-                ToastUtils.showWarning("您的账号已在其它设备登录，请重新登录", UniversalToast.EMPHASIZE)
+                ToastUtils.showMessage("您的账号已在其它设备登录，请重新登录")
                 startActivityForResult(Intent(this, LoginActivity::class.java), 100)
                 User.logout()
                 finish()

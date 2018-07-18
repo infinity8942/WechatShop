@@ -85,7 +85,7 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
                             StatusBarUtil.setPaddingSmart(context!!, empty_view)
                             empty_view.visibility = View.VISIBLE
                         } else {
-                            ToastUtils.showError(error.msg)
+                            ToastUtils.showMessage(error.msg)
                         }
                     }
                 })

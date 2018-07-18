@@ -101,7 +101,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: com.qiushi.wechatshop.net.exception.Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)
@@ -254,14 +254,14 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
 //                            if (order!!.remind_pay == 0) {
 //                                notifyToPay(order!!.id)
 //                            } else {
-//                                ToastUtils.showWarning("已发出过提醒，请等待买家支付")
+//                                ToastUtils.showMessage("已发出过提醒，请等待买家支付")
 //                            }
                         }
                     Constants.PAYED ->
                         if (isManage) {//标记发货
                             val numbers = numbers.text.toString().trim()
                             if (numbers.isEmpty()) {
-                                ToastUtils.showError("请填写运单号")
+                                ToastUtils.showMessage("请填写运单号")
                             } else {
                                 markAsDeliver(order!!.id, numbers)
                             }
@@ -269,7 +269,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                             if (order!!.remind_send == 0) {
                                 notifyToDeliver(order!!.id)
                             } else {
-                                ToastUtils.showWarning("已发出过提醒，请等待卖家发货")
+                                ToastUtils.showMessage("已发出过提醒，请等待卖家发货")
                             }
                         }
                     Constants.DELIVERED ->
@@ -352,7 +352,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)
@@ -374,7 +374,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
 //                    }
 //
 //                    override fun onHandleError(error: Error) {
-//                        ToastUtils.showError(error.msg)
+//                        ToastUtils.showMessage(error.msg)
 //                        if (error.code == 1004) {
 //                            action.text = "已提醒"
 //                            action.isEnabled = false
@@ -400,7 +400,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                         if (error.code == 1004) {
                             action.text = "已提醒"
                             action.isEnabled = false
@@ -428,7 +428,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                                 }
 
                                 override fun onHandleError(error: Error) {
-                                    ToastUtils.showError(error.msg)
+                                    ToastUtils.showMessage(error.msg)
                                 }
                             })
                     addSubscription(disposable)
@@ -448,7 +448,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 .setPositiveButton("修改") { _, _ ->
                     val price = et.text.toString().trim()
                     if (price.isEmpty()) {
-                        ToastUtils.showError("请填写更改后的价格")
+                        ToastUtils.showMessage("请填写更改后的价格")
                     } else {
                         editOrderPrice(order_id, price.toDouble())
                     }
@@ -474,7 +474,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onHandleError(error: Error) {
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)
@@ -498,7 +498,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                                 }
 
                                 override fun onHandleError(error: Error) {
-                                    ToastUtils.showError(error.msg)
+                                    ToastUtils.showMessage(error.msg)
                                 }
                             })
                     addSubscription(disposable)
@@ -526,7 +526,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                                 }
 
                                 override fun onHandleError(error: Error) {
-                                    ToastUtils.showError(error.msg)
+                                    ToastUtils.showMessage(error.msg)
                                 }
                             })
                     addSubscription(disposable)
@@ -570,13 +570,13 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     override fun onHandleSuccess(payReq: PayReq) {
                         if (null != payReq) {
                             if (!WXPayEntryActivity.pay(applicationContext, payReq)) {
-                                ToastUtils.showWarning("未安装微信客户端")
+                                ToastUtils.showMessage("未安装微信客户端")
                             }
                         }
                     }
 
                     override fun onHandleError(e: Error) {
-                        ToastUtils.showError(e.msg)
+                        ToastUtils.showMessage(e.msg)
                     }
                 })
         addSubscription(disposable)
@@ -603,15 +603,15 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                         when (map["resultStatus"]) {
                             "9000" -> startActivity(Intent(this@OrderDetailActivity, PayResultActivity::class.java))
                             "8000", "6004" -> {
-                                ToastUtils.showError("支付状态异常")
+                                ToastUtils.showMessage("支付状态异常")
                                 startActivity(Intent(this@OrderDetailActivity, PayResultActivity::class.java))
                             }
                             "4000" -> startActivity(Intent(this@OrderDetailActivity, PayResultActivity::class.java))
-                            "5000" -> ToastUtils.showWarning("重复请求")
-                            "6001" -> ToastUtils.showWarning("您已取消支付")
-                            "6002" -> ToastUtils.showError("网络错误")
+                            "5000" -> ToastUtils.showMessage("重复请求")
+                            "6001" -> ToastUtils.showMessage("您已取消支付")
+                            "6002" -> ToastUtils.showMessage("网络错误")
                             else -> {
-                                ToastUtils.showError("支付错误")
+                                ToastUtils.showMessage("支付错误")
                                 startActivity(Intent(this@OrderDetailActivity, PayResultActivity::class.java))
                             }
                         }//PayResultActivity.SUCCESS
@@ -623,9 +623,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     override fun onError(e: Throwable) {
                         if (e != null) {
                             e.printStackTrace()
-                            ToastUtils.showError(e.message)
+                            ToastUtils.showMessage(e.message)
                         } else {
-                            ToastUtils.showError("获取订单信息失败，请重试")
+                            ToastUtils.showMessage("获取订单信息失败，请重试")
                         }
                     }
 

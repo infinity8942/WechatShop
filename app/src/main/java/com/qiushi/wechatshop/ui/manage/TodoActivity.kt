@@ -73,7 +73,7 @@ class TodoActivity : BaseActivity(), View.OnClickListener {
 
                     override fun onHandleError(error: Error) {
                         mRefreshLayout.finishRefresh(false)
-                        ToastUtils.showError(error.msg)
+                        ToastUtils.showMessage(error.msg)
                     }
                 })
         addSubscription(disposable)

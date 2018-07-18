@@ -11,7 +11,6 @@ import android.view.View
 import cnn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.gson.Gson
-import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
@@ -126,19 +125,19 @@ class CreateMomentsActivity : BaseActivity() {
                 when (type) {
                     1 -> {
                         if (moment.content.isEmpty()) {
-                            ToastUtils.showError("未填写产品描述")
+                            ToastUtils.showMessage("未填写产品描述")
                             return
                         }
                     }
                     2 -> {
                         if (moment.content.isEmpty()) {
-                            ToastUtils.showError("未填写鸡汤描述")
+                            ToastUtils.showMessage("未填写鸡汤描述")
                             return
                         }
                     }
                 }
                 if (size == 0) {
-                    ToastUtils.showError("未添加图片")
+                    ToastUtils.showMessage("未添加图片")
                     return
                 }
 
@@ -147,11 +146,11 @@ class CreateMomentsActivity : BaseActivity() {
                         for (item in moment.images!!) {
                             when (item.type) {
                                 "1" -> {
-                                    ToastUtils.showError("还有图片正在上传，请稍候")
+                                    ToastUtils.showMessage("还有图片正在上传，请稍候")
                                     return
                                 }
                                 "2" -> {
-                                    ToastUtils.showError("还有图片上传失败，是否重新上传")
+                                    ToastUtils.showMessage("还有图片上传失败，是否重新上传")
                                     return
                                 }
                             }
@@ -161,11 +160,11 @@ class CreateMomentsActivity : BaseActivity() {
                     for (item in mNineList) {
                         when (item.type) {
                             "1" -> {
-                                ToastUtils.showError("还有图片正在上传，请稍候")
+                                ToastUtils.showMessage("还有图片正在上传，请稍候")
                                 return
                             }
                             "2" -> {
-                                ToastUtils.showError("还有图片上传失败，是否重新上传")
+                                ToastUtils.showMessage("还有图片上传失败，是否重新上传")
                                 return
                             }
                         }
@@ -204,12 +203,12 @@ class CreateMomentsActivity : BaseActivity() {
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {
                         if (t) {
-                            ToastUtils.showSuccess("发布成功")
+                            ToastUtils.showMessage("发布成功")
 //                            setResult(RESULT_OK)
                             RxBus.getInstance().post(Notifycation(Constants.MOMENT_FRESH, type.toLong()))
                             finish()
                         } else {
-                            ToastUtils.showError("发布失败")
+                            ToastUtils.showMessage("发布失败")
                             finish()
                         }
                     }
@@ -317,11 +316,11 @@ class CreateMomentsActivity : BaseActivity() {
                     }
 
                     override fun onDeny(permission: String?, position: Int) {
-                        ToastUtils.showError("拒绝权限")
+                        ToastUtils.showMessage("拒绝权限")
                     }
 
                     override fun onClose() {
-                        ToastUtils.showError("拒绝权限")
+                        ToastUtils.showMessage("拒绝权限")
                     }
 
                     override fun onFinish() {
