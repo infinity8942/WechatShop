@@ -25,6 +25,7 @@ import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.activity_phone.*
 import java.util.*
 import java.util.regex.Pattern
@@ -143,6 +144,8 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
                                     callback.onSuccess(t)
                                 }
                             }
+
+                            MobclickAgent.onProfileSignIn(t.id.toString())
                         }
                     }
 

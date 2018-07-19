@@ -23,6 +23,7 @@ import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_shop_list.*
 
 /**
@@ -166,5 +167,15 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
                     updateCover(shopList[it].cover)
                     (fragments[viewpager.currentItem] as ShopFragment).lazyLoad()
                 }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart("ShopListFragment")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPageEnd("ShopListFragment")
     }
 }

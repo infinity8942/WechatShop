@@ -30,6 +30,7 @@ import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.view.SpaceItemDecoration
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_moments.*
 import java.util.*
 
@@ -264,5 +265,15 @@ class MomentsFragment : BaseFragment() {
         if (!hidden) {
             dismissLoading()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart("MomentsFragment")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPageEnd("MomentsFragment")
     }
 }

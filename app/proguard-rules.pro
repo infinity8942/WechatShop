@@ -36,6 +36,18 @@
 -keep class cn.qqtheme.framework.entity.** { *;}
 
 #umeng
+-keep class com.umeng.** {*;}
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep public class com.qiushi.wechatshop.R$*{
+public static final int *;
+}
+
 -dontwarn com.umeng.**
 -dontwarn com.taobao.**
 -dontwarn anet.channel.**

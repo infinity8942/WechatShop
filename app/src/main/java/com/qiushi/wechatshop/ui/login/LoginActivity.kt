@@ -25,6 +25,7 @@ import com.qiushi.wechatshop.util.permission.PermissionCallback
 import com.qiushi.wechatshop.util.permission.PermissionItem
 import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.HashMap
 import kotlin.collections.ArrayList
@@ -118,6 +119,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         .subscribeWith(object : BaseObserver<User>() {
                             override fun onHandleSuccess(t: User) {
                                 User.setCurrent(t)
+                                MobclickAgent.onProfileSignIn(t.id.toString())
                                 callback.onSuccess(t)
                             }
 

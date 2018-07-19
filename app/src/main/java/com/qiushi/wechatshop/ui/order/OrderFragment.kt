@@ -28,9 +28,9 @@ import com.qiushi.wechatshop.util.RxBus
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.SpaceItemDecoration
+import com.umeng.analytics.MobclickAgent
 import io.github.xudaojie.qrcodelib.CaptureActivity
 import kotlinx.android.synthetic.main.fragment_order.*
-
 
 /**
  * 订单Fragment
@@ -466,5 +466,15 @@ class OrderFragment : BaseFragment() {
             fragment.status = status
             return fragment
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart("OrderFragment")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPageEnd("OrderFragment")
     }
 }

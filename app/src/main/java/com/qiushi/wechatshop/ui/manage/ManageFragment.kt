@@ -32,6 +32,7 @@ import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
+import com.umeng.analytics.MobclickAgent
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.manager_item_icon.view.*
@@ -442,5 +443,15 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                 .filter { it.menu_id == 1 }
                 .forEach { it.msg_count = count }
         mEntranceAdapter.notifyDataSetChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart("ManageFragment")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPageEnd("ManageFragment")
     }
 }

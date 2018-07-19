@@ -13,6 +13,7 @@ import com.qiushi.wechatshop.ui.user.setting.SettingActivity
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.web.WebActivity
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_user.*
 
 /**
@@ -82,5 +83,15 @@ class UserFragment : BaseFragment(), View.OnClickListener {
             fragment.arguments = bundle
             return fragment
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart("UserFragment")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPageEnd("UserFragment")
     }
 }

@@ -22,6 +22,7 @@ import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.qiushi.wechatshop.view.GridSpaceItemDecoration
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_shop.*
 
 /**
@@ -183,5 +184,15 @@ class ShopFragment : BaseFragment() {
             fragment.shopID = shopID
             return fragment
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart("ShopFragment")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPageEnd("ShopFragment")
     }
 }
