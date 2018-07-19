@@ -29,8 +29,8 @@ class MomentsAdapter : BaseQuickAdapter<Moment, BaseViewHolder>(R.layout.item_mo
         ImageHelper.loadAvatar(mContext, helper.getView(R.id.logo), avatar, 42)
         helper.setText(R.id.name, shopName)
         when (moment.type) {
-            3 -> helper.setVisible(R.id.content, false)
-            else -> helper.setVisible(R.id.content, true).setText(R.id.content, moment.content)
+            3 -> helper.setGone(R.id.content, false)
+            else -> helper.setGone(R.id.content, true).setText(R.id.content, moment.content)
         }
 
         val nineGrid = helper.getView<NineGridImageView<NineImage>>(R.id.nine_grid)

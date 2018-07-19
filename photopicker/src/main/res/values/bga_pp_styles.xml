@@ -10,7 +10,7 @@
         <item name="android:navigationBarColor" tools:targetApi="lollipop">
             @color/bga_pp_navigationBarColor
         </item>
-        <item name="colorControlNormal">@color/textBlack</item>
+        <item name="colorControlNormal">@color/white</item>
     </style>
 
     <style name="BGADialog">

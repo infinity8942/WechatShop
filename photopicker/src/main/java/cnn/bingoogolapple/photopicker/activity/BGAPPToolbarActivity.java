@@ -1,7 +1,6 @@
 package cnn.bingoogolapple.photopicker.activity;
 
 import android.annotation.SuppressLint;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -62,7 +61,6 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Drawable upArrow = getResources().getDrawable(R.mipmap.ic_back);
-        upArrow.setColorFilter(getResources().getColor(R.color.textBlack), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         ViewStubCompat viewStub = findViewById(R.id.viewStub);
@@ -81,7 +79,6 @@ public abstract class BGAPPToolbarActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Drawable upArrow = getResources().getDrawable(R.mipmap.ic_back);
-        upArrow.setColorFilter(getResources().getColor(R.color.textBlack), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         ViewStubCompat viewStub = findViewById(R.id.viewStub);
