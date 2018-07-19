@@ -94,6 +94,7 @@ class ShopEditActivity : Activity(), View.OnClickListener {
         }
         drag_flowLayout.setOnDragStateChangeListener { _, dragState ->
             if (dragState == DragFlowLayout.DRAG_STATE_DRAGGING) {
+                tv_title.text = "拖拽调整顺序"
                 edit.text = "完成"
                 isEdit = true
                 UIUtil.hideKeyboard(this@ShopEditActivity)
@@ -130,12 +131,14 @@ class ShopEditActivity : Activity(), View.OnClickListener {
                 ToastUtils.showMessage("暂无可编辑的店铺，请先关注新店铺")
                 false
             } else {
+                tv_title.text = "拖拽调整顺序"
                 edit.text = "完成"
                 drag_flowLayout.beginDrag()
                 true
             }
         } else {
             editShop()
+            tv_title.text = "我的浏览店铺"
             edit.text = "编辑"
             drag_flowLayout.finishDrag()
             false

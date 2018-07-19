@@ -45,3 +45,6 @@
 -dontwarn com.xiaomi.**
 -dontwarn com.huawei.**
 -dontwarn com.meizu.**
+
+#blur
+-keep class android.support.v8.renderscript.** { *; }
