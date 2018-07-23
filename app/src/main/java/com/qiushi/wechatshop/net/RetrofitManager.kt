@@ -52,7 +52,7 @@ object RetrofitManager {
                     }
                 }
                 val content = responseBody.string()
-                Logger.d("Response = " + content)
+                Logger.d("Response = $content")
                 response = response.newBuilder()
                         .body(okhttp3.ResponseBody.create(responseBody.contentType(), content))
                         .build()

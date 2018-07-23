@@ -21,7 +21,7 @@ import java.util.Map;
  * Created by Rylynn on 2018-06-15.
  */
 public class HostSonicRuntime extends SonicRuntime {
-    HostSonicRuntime(Context context) {
+    public HostSonicRuntime(Context context) {
         super(context);
     }
 

@@ -16,6 +16,7 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.model.MyGlideUrl
 import jp.wasabeef.glide.transformations.BlurTransformation
+import jp.wasabeef.glide.transformations.GrayscaleTransformation
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 /**
@@ -83,6 +84,24 @@ object ImageHelper {
                     .error(PLACEHOLDER)
                     .placeholder(R.color.translate)
                     .transforms(CenterCrop(),
+                            RoundedCornersTransformation(DensityUtils.dp2px(radius), 0))
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(view)
+        } else {
+            GlideApp.with(ctx).load(PLACEHOLDER).transforms(CenterCrop(),
+                    RoundedCornersTransformation(DensityUtils.dp2px(radius), 0))
+                    .dontAnimate().into(view)
+        }
+    }
+
+    fun loadImageWithCornerAndGray(ctx: Context, view: ImageView, url: String, width: Int,
+                                   height: Int, radius: Float) {
+        if (url.isNotEmpty()) {
+            GlideApp.with(ctx).load(MyGlideUrl(url))
+                    .override(DensityUtils.dp2px(width.toFloat()), DensityUtils.dp2px(height.toFloat()))
+                    .error(PLACEHOLDER)
+                    .placeholder(R.color.translate)
+                    .transforms(CenterCrop(), GrayscaleTransformation(),
                             RoundedCornersTransformation(DensityUtils.dp2px(radius), 0))
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(view)

@@ -27,7 +27,6 @@ import com.qiushi.wechatshop.util.ToastUtils;
 import com.qiushi.wechatshop.util.Utils;
 import com.qiushi.wechatshop.wxapi.WXPayEntryActivity;
 import com.tencent.mm.opensdk.modelpay.PayReq;
-import com.tencent.sonic.sdk.SonicConfig;
 import com.tencent.sonic.sdk.SonicEngine;
 import com.tencent.sonic.sdk.SonicSession;
 import com.tencent.sonic.sdk.SonicSessionConfig;
@@ -69,9 +68,9 @@ public class WebActivity extends SwipeBackActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
         // step 1: Initialize sonic engine if necessary, or maybe u can do this when application created
-        if (!SonicEngine.isGetInstanceAllowed()) {
-            SonicEngine.createInstance(new HostSonicRuntime(getApplication()), new SonicConfig.Builder().build());
-        }
+//        if (!SonicEngine.isGetInstanceAllowed()) {
+//            SonicEngine.createInstance(new HostSonicRuntime(getApplication()), new SonicConfig.Builder().build());
+//        }
 
         SonicSessionClientImpl sonicSessionClient = null;
 

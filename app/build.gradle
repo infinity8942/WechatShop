@@ -144,6 +144,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     kapt 'com.github.bumptech.glide:compiler:4.7.1'
+    implementation 'jp.wasabeef:glide-transformations:3.3.0'
     implementation 'com.badoo.mobile:android-weak-handler:1.1'
     implementation 'com.orhanobut:logger:2.1.1'
     implementation 'com.tencent.sonic:sdk:3.0.0'

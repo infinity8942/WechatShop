@@ -5,8 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
@@ -20,13 +20,9 @@ import com.qiushi.wechatshop.ui.MainActivity;
 import com.qiushi.wechatshop.util.NineImageLoader;
 import com.qiushi.wechatshop.util.Push;
 import com.qiushi.wechatshop.util.Utils;
+import com.qiushi.wechatshop.util.web.HostSonicRuntime;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
-import com.scwang.smartrefresh.layout.api.RefreshFooter;
-import com.scwang.smartrefresh.layout.api.RefreshHeader;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
@@ -34,6 +30,8 @@ import com.tencent.bugly.beta.interfaces.BetaPatchListener;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.sonic.sdk.SonicConfig;
+import com.tencent.sonic.sdk.SonicEngine;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -86,6 +84,8 @@ public class WAppLike extends DefaultApplicationLike {
         registToWX();
         if (WAppContext.application.getPackageName().equals(Utils.getProcessName()))
             init();
+
+        initSonic();
     }
 
     /**
@@ -172,25 +172,21 @@ public class WAppLike extends DefaultApplicationLike {
 //        Bugly.setUserId(WAppContext.context, User.getCurrent() == null ? "0" : String.valueOf(User.getCurrent().getId()));
 
         //Refresh Header
-        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
-            @NonNull
-            @Override
-            public RefreshHeader createRefreshHeader(@NonNull Context context, @NonNull RefreshLayout layout) {
-                MaterialHeader header = new MaterialHeader(context);
-                header.setColorSchemeColors(R.color.colorPrimary);
-                return header;
-            }
+        SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> {
+            MaterialHeader header = new MaterialHeader(context);
+            header.setColorSchemeColors(ContextCompat.getColor(context, R.color.colorPrimary));
+            return header;
         });
-        SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
-            @NonNull
-            @Override
-            public RefreshFooter createRefreshFooter(@NonNull Context context, @NonNull RefreshLayout layout) {
-                return new ClassicsFooter(context).setDrawableSize(15);
-            }
-        });
+        SmartRefreshLayout.setDefaultRefreshFooterCreator((context, layout) -> new ClassicsFooter(context).setDrawableSize(15));
 
         //
         ZoomMediaLoader.getInstance().init(new NineImageLoader());
+    }
+
+    private void initSonic() {
+        if (!SonicEngine.isGetInstanceAllowed()) {
+            SonicEngine.createInstance(new HostSonicRuntime(getApplication()), new SonicConfig.Builder().build());
+        }
     }
 
     @Override

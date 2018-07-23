@@ -4,7 +4,6 @@ package com.qiushi.wechatshop
  * Created by Rylynn on 2018-05-18.
  */
 object Constants {
-
     const val IS_DEVELOPER = true //TODO 开发模式开关,发版时置为false
     const val DEBUG = true //是否测试环境
     @JvmField
@@ -70,5 +69,5 @@ object Constants {
     const val PUSH_TODO = 1500// 待办事项提醒
 
     const val MARKASDONE = 2001//确认收货
-//    const val T_LOGIN = 1016//踢登录
+    //    const val T_LOGIN = 1016//踢登录
 }

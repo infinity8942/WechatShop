@@ -44,14 +44,12 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
 //                            .setText(R.id.action, if (order.remind_pay == 0) "提醒支付" else "已提醒")
                     helper.setGone(R.id.action, false)
                     helper.setGone(R.id.action1, true).setText(R.id.action1, "修改价格")
-                            .setGone(R.id.action2, true).setText(R.id.action2, "删除订单")
                 } else {
                     helper.setText(R.id.status, "等待付款")
                     helper.setGone(R.id.action, true).setText(R.id.action, "立即付款")
                     helper.setGone(R.id.action1, true).setText(R.id.action1, "取消订单")
-                            .setGone(R.id.action2, false)
                 }
-                helper.setGone(R.id.numbers, false).setGone(R.id.scan, false)
+                helper.setGone(R.id.numbers, false).setGone(R.id.scan, false).setGone(R.id.action2, false)
             }
             Constants.PAYED -> {
                 if (isManage) {
@@ -102,7 +100,7 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
 
         val recyclerView: RecyclerView = helper.getView(R.id.mRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(mContext)
-        val mAdapterGoods = OrderGoodsAdapter(isManage)
+        val mAdapterGoods = OrderGoodsAdapter(isManage, order.pass)
         recyclerView.adapter = mAdapterGoods
         mAdapterGoods.setNewData(order.goods)
 

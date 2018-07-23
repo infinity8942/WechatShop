@@ -107,7 +107,7 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
         errorView.setOnClickListener { lazyLoad() }
 
         headerView = layoutInflater.inflate(R.layout.manager_item_head, mRecyclerView.parent as ViewGroup, false)
-        mAdapter.addHeaderView(headerView)
+
         //设置name,头像
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -174,10 +174,10 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
         headerView.findViewById<TextView>(R.id.cash_all).text = String.format("%.2f", t.cash_all)
         headerView.findViewById<TextView>(R.id.cash_flow).text = String.format("%.2f", t.cash_flow)
         headerView.findViewById<TextView>(R.id.cash_forzen).text = String.format("%.2f", t.cash_frozen)
-        headerView.shop_more.setOnClickListener({ _: View? ->
+        headerView.shop_more.setOnClickListener { _: View? ->
             //跳转 产品管理
             ManagerGoodsActivity.startManagerGoodsActivity(this.context!!, 0)
-        })
+        }
     }
 
     override fun lazyLoad() {
@@ -189,6 +189,10 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                         if (page == 1) {
                             ImageHelper.loadAvatar(activity!!, iv_avaver, t.logo, 28)
                             tv_header_title.text = t.name
+
+                            mAdapter.removeAllHeaderView()
+                            mAdapter.addHeaderView(headerView)
+
                             mShop = t
                             if (t.menu_list.isNotEmpty()) {
                                 mEntranceAdapter.setNewData(t.menu_list)
@@ -229,6 +233,8 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                         if (mAdapter.itemCount == 0) {
                             if (error.code == ErrorStatus.NETWORK_ERROR) {
                                 mAdapter.emptyView = errorView
+                            } else if (error.code == -1001) {
+                                mAdapter.emptyView = notShop
                             } else {
                                 if (User.getCurrent() != null && (User.getCurrent().phone.isEmpty() || (User.getCurrent().shop_id == null || User.getCurrent().shop_id == 0L))) {
                                     mAdapter.emptyView = notShop

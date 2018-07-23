@@ -136,10 +136,10 @@ class OrderFragment : BaseFragment() {
                     }
                 R.id.action2 ->
                     when (order.status) {
-                        Constants.READY_TO_PAY ->
-                            if ((activity as OrderActivity).isManage) {//删除订单
-                                delOrder(order.id)
-                            }
+//                        Constants.READY_TO_PAY ->
+//                            if ((activity as OrderActivity).isManage) {//删除订单
+//                                delOrder(order.id)
+//                            }
                         Constants.DONE ->
                             if (!(activity as OrderActivity).isManage) {//查看物流
                                 goToExpress(order.id)

@@ -45,7 +45,7 @@ import kotlinx.android.synthetic.main.activity_order_detail.*
  */
 class OrderDetailActivity : BaseActivity(), View.OnClickListener {
 
-    var isManage: Boolean = true //true店铺订单管理,false用户订单
+    private var isManage: Boolean = true //true店铺订单管理,false用户订单
     private var order: Order? = null
     private var orderID: Long = 0
     private lateinit var mAdapter: OrderGoodsAdapter
@@ -70,7 +70,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         isManage = intent.getBooleanExtra("isManage", true)
 
         mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mAdapter = OrderGoodsAdapter(false)
+        mAdapter = OrderGoodsAdapter(false, true)
         mRecyclerView.adapter = mAdapter
 
         initPayDialog()
@@ -166,6 +166,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
 
         shop.text = t.shop.name
 
+        mAdapter.setIsPass(t.pass)
         mAdapter.setNewData(t.goods)
 
         amount.text = "共计" + t.num + "件商品"
@@ -183,8 +184,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     action.visibility = View.GONE
                     action1.visibility = View.VISIBLE
                     action1.text = "修改价格"
-                    action2.visibility = View.VISIBLE
-                    action2.text = "删除订单"
+//                    action2.visibility = View.VISIBLE
+//                    action2.text = "删除订单"
                 } else {
                     status.text = "等待付款"
                     action.text = "立即付款"
@@ -307,10 +308,10 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                 }
             R.id.action2 ->
                 when (order!!.status) {
-                    Constants.READY_TO_PAY ->
-                        if (isManage) {//删除订单
-                            delOrder(order!!.id)
-                        }
+//                    Constants.READY_TO_PAY ->
+//                        if (isManage) {//删除订单
+//                            delOrder(order!!.id)
+//                        }
                     Constants.DONE ->
                         if (!isManage) {//查看物流
                             goToExpress(order!!.id)

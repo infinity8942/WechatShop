@@ -98,6 +98,8 @@ class ManagerGoodsActivity : BaseActivity() {
                 if (search_view.currentQuery.isEmpty()) {
                     keyword = ""
                     getData()
+                } else {
+                    tv_header_title.text = "产品管理"
                 }
                 search_view.setShouldAnimate(true)
             }
@@ -118,6 +120,7 @@ class ManagerGoodsActivity : BaseActivity() {
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 keyword = query
+                tv_header_title.text = query
                 getData()
                 return false
             }
