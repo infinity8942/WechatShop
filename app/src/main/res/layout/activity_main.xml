@@ -13,9 +13,9 @@
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
         tl:tl_iconGravity="TOP"
-        tl:tl_iconHeight="20dp"
+        tl:tl_iconHeight="24dp"
         tl:tl_iconMargin="2dp"
-        tl:tl_iconWidth="20dp"
+        tl:tl_iconWidth="24dp"
         tl:tl_textSelectColor="@color/coupon_yellow"
         tl:tl_textUnselectColor="@color/gray2"
         tl:tl_textsize="10sp" />

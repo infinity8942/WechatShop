@@ -25,7 +25,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/step1"
         android:text="/2"
-        android:textColor="@color/black_70"
+        android:textColor="@color/white_70"
         android:textSize="16sp" />
 
     <TextView
