@@ -156,10 +156,6 @@ class ShopListFragment : BaseFragment(), View.OnClickListener {
         ImageHelper.loadImage(context, cover, img)
     }
 
-    fun setBackgroundColor(color: Int) {
-        toolbar.setBackgroundColor(color)
-    }
-
     /**
      * 跳转置顶店铺页面
      */

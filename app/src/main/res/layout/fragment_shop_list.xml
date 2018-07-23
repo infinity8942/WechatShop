@@ -34,7 +34,7 @@
             android:layout_height="@dimen/padding_tab_layout_top"
             android:layout_alignParentRight="true"
             android:scaleType="centerInside"
-            android:src="@mipmap/ic_more" />
+            android:src="@mipmap/ic_more_white" />
 
         <com.qiushi.wechatshop.view.tab.SlidingTabLayout
             android:id="@+id/tab"

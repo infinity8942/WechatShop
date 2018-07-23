@@ -1,17 +1,13 @@
 package com.qiushi.wechatshop.ui.shop
 
-import android.animation.ArgbEvaluator
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
-import com.qiushi.wechatshop.WAppContext
 import com.qiushi.wechatshop.base.BaseFragment
 import com.qiushi.wechatshop.model.Goods
 import com.qiushi.wechatshop.model.Shop
@@ -25,7 +21,6 @@ import com.qiushi.wechatshop.util.DensityUtils
 import com.qiushi.wechatshop.util.ImageHelper
 import com.qiushi.wechatshop.util.ToastUtils
 import com.qiushi.wechatshop.util.web.WebActivity
-import com.qiushi.wechatshop.view.GridSpaceItemDecoration
 import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_shop.*
 
@@ -44,27 +39,14 @@ class ShopFragment : BaseFragment() {
     private var page = 1
     private var isFirst = true
 
-    //
-    var mItemPosition: Int = -1
-    var distance: Int = 0
-    var argbEvaluator = ArgbEvaluator()
-    var color1 = 0
-    var color2 = 0
-    var color0 = 0
-
     override fun getLayoutId(): Int = R.layout.fragment_shop
 
     override fun initView() {
-
-        color0 = ContextCompat.getColor(WAppContext.context, R.color.translate)
-        color1 = ContextCompat.getColor(WAppContext.context, R.color.translate)
-        color2 = ContextCompat.getColor(WAppContext.context, R.color.colorPrimaryDark)
-
         //RecyclerView
         mRecyclerView.layoutManager = GridLayoutManager(context, 2)
         mAdapter = ShopAdapter()
         mAdapter.openLoadAnimation()
-        mRecyclerView.addItemDecoration(GridSpaceItemDecoration(DensityUtils.dp2px(9.toFloat()), DensityUtils.dp2px(8.toFloat())))
+//        mRecyclerView.addItemDecoration(GridSpaceItemDecoration(DensityUtils.dp2px(9.toFloat()), DensityUtils.dp2px(8.toFloat())))
         mAdapter.bindToRecyclerView(mRecyclerView)
 
         mRecyclerView.setPadding(0, (DensityUtils.getScreenWidth() * 0.48).toInt() - DensityUtils.dp2px(123.toFloat()), 0, 0)
@@ -79,7 +61,6 @@ class ShopFragment : BaseFragment() {
         mAdapter.addHeaderView(headerView)
 
         //Listener
-        mRecyclerView.addOnScrollListener(scrollListener)
         mRefreshLayout.setOnRefreshListener {
             page = 1
             lazyLoad()
@@ -194,32 +175,6 @@ class ShopFragment : BaseFragment() {
         intent.putExtra(WebActivity.PARAM_TITLE, goods.name)
         intent.putExtra(WebActivity.PARAM_URL, Constants.GOODS_DETAIL + goods.id)
         startActivity(intent)
-    }
-
-    /**
-     * recyclerview滑动事件
-     */
-    private val scrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            distance = mRecyclerView.computeVerticalScrollOffset()
-
-            if (distance == 0) {
-                color0 = ContextCompat.getColor(WAppContext.context, R.color.translate)
-            }
-            color0 = if (distance < 500) {
-                if (dy > 0) {
-                    //往上滑动  、、渐变
-                    argbEvaluator.evaluate(Math.abs(distance / 500).toFloat(), color2, color1) as Int
-                } else {
-                    //往下滑动
-                    argbEvaluator.evaluate(Math.abs(distance / 500).toFloat(), color1, color2) as Int
-                }
-            } else {
-                color2
-            }
-            (activity as MainActivity).setBackgroundColor(color0)
-        }
     }
 
     companion object {

@@ -85,10 +85,6 @@ class MainActivity : BaseActivity() {
         (mFragments[1] as ShopListFragment).updateCover(img)
     }
 
-    fun setBackgroundColor(color: Int) {
-        (mFragments[1] as ShopListFragment).setBackgroundColor(color)
-    }
-
     override fun accept(t: Notifycation?) {
         super.accept(t)
         when (t!!.code) {
