@@ -170,4 +170,5 @@ dependencies {
     implementation files('libs/alipaySdk-20180601.jar')
     implementation files('libs/commons-codec-1.11.jar')
     implementation 'com.github.XuDaojie:QRCode-Android:v0.4.2'
+    implementation 'top.zibin:Luban:1.1.8'
 }

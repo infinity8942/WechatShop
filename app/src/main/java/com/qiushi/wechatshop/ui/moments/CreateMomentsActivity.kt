@@ -6,11 +6,13 @@ import android.os.Environment
 import android.os.Handler
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.GridLayoutManager
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import cnn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.gson.Gson
+import com.orhanobut.logger.Logger
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
@@ -21,16 +23,20 @@ import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
-import com.qiushi.wechatshop.util.RxBus
-import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.*
 import com.qiushi.wechatshop.util.oss.Error
 import com.qiushi.wechatshop.util.oss.OnUploadListener
 import com.qiushi.wechatshop.util.oss.UploadManager
 import com.qiushi.wechatshop.util.permission.HiPermission
 import com.qiushi.wechatshop.util.permission.PermissionCallback
 import com.qiushi.wechatshop.util.permission.PermissionItem
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_moments_create.*
+import top.zibin.luban.Luban
 import java.io.File
 
 /**
@@ -53,6 +59,9 @@ class CreateMomentsActivity : BaseActivity() {
     var mJson: String = ""
     var mNineImage = NineImage()
     private var mHandler = Handler()
+
+    val CACHE_FOLDER = FileUtil.getUploadTempFolder().path
+
     private val mGrideManager by lazy {
         GridLayoutManager(this, 3)
     }
@@ -335,12 +344,45 @@ class CreateMomentsActivity : BaseActivity() {
                 if (data != null) {
                     val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
+
+                        //compress
+                        showLoading("压缩中，请稍候...")
+                        compress(selected)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 压缩、上传
+     */
+    private fun compress(photos: ArrayList<String>) {
+        Observable.just(photos)
+                .observeOn(Schedulers.io())
+                .map { t ->
+                    Luban.with(this@CreateMomentsActivity).ignoreBy(Constants.MAX_UPLOAD_SIZE).setTargetDir(CACHE_FOLDER).load(t)
+                            .filter { path -> !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif")) }.get()
+                }.observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<List<File>> {
+                    override fun onSubscribe(d: Disposable) {
+                    }
+
+                    override fun onComplete() {
+                        dismissLoading()
+                    }
+
+                    override fun onNext(t: List<File>) {
+                        if (NetworkUtil.isWifi()) {
+                            ToastUtils.showMessage("WIFI下自动上传")
+                        }
+
                         if (id != 0.toLong()) {
                             //编辑
-                            size += selected.size
+                            size += t.size
                             mFileList.clear()
-                            for (item in selected) {
-                                val mFile = File(item)
+                            for (item in t) {
+                                val mFile = File(item.path)
                                 val mNineImage = NineImage()
                                 mNineImage.size = 1
                                 mNineImage.img_url = "file://$item"
@@ -355,13 +397,12 @@ class CreateMomentsActivity : BaseActivity() {
                                 mNineList.removeAt(mNineList.size - 1)
                                 mGrideAdapter.setNewData(mNineList)
                             }
-                            Log.e("tag", "momentsize1======" + moment.images!!.size)
                         } else {
                             //新添加
-                            size += selected.size
+                            size += t.size
                             mFileList.clear()
-                            for (item in selected) {
-                                val mFile = File(item)
+                            for (item in t) {
+                                val mFile = File(item.path)
                                 val mNineImage = NineImage()
                                 mNineImage.size = 1
                                 mNineImage.img_url = "file://$item"
@@ -381,12 +422,14 @@ class CreateMomentsActivity : BaseActivity() {
                                 mGrideAdapter.setNewData(moment.images)
                             }
                         }
-                        showLoading("正在上传中...请稍候")
                         UploadManager.getInstance().add(mFileList)
                     }
-                }
-            }
-        }
+
+                    override fun onError(t: Throwable) {
+                        dismissLoading()
+                        Logger.e(t, "!!! compress onError = ", t.message)
+                    }
+                })
     }
 
     /**
@@ -399,33 +442,28 @@ class CreateMomentsActivity : BaseActivity() {
                 for (item in nineImage) {
                     item.type = "1"
                 }
-
             }
         }
 
         override fun onSuccess(file: File?, id: Long) {
             mHandler.postDelayed({
-                dismissLoading()
                 val nineImage = findPictureByFile(file!!)
                 if (nineImage != null) {
                     for (item in nineImage) {
                         item.oss_id = id
                         item.type = "0"
                     }
-
                 }
             }, 300)
         }
 
         override fun onFailure(file: File?, error: Error?) {
-            dismissLoading()
             val nineImage = findPictureByFile(file!!)
             if (nineImage != null) {
                 for (item in nineImage) {
                     item.oss_id = id
                     item.type = "2"
                 }
-
             }
         }
     }
@@ -451,7 +489,6 @@ class CreateMomentsActivity : BaseActivity() {
                 if (item.img_url == "file://${file.path}") {
                     itemList.add(item)
                 }
-
             }
             return itemList
         }

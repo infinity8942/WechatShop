@@ -19,6 +19,7 @@ object Constants {
     const val OssEndPoint = "http://oss-cn-beijing.aliyuncs.com"
     @JvmField
     val OssCallback = HOST + "Oss/app_response_call_back" //"http://192.168.1.82:81"
+    const val MAX_UPLOAD_SIZE = 500//最大上传图片大小kb
 
     //每页请求数量
     const val PAGE_NUM = 12

@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.telephony.TelephonyManager
+import com.qiushi.wechatshop.WAppContext
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.NetworkInterface
@@ -89,8 +90,8 @@ class NetworkUtil {
          * @return boolean
          */
         @JvmStatic
-        fun is3G(context: Context): Boolean {
-            val connectivityManager = context
+        fun is3G(): Boolean {
+            val connectivityManager = WAppContext.context
                     .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetInfo = connectivityManager.activeNetworkInfo
             return activeNetInfo != null && activeNetInfo.type == ConnectivityManager.TYPE_MOBILE
@@ -103,8 +104,8 @@ class NetworkUtil {
          * @return boolean
          */
         @JvmStatic
-        fun isWifi(context: Context): Boolean {
-            val connectivityManager = context
+        fun isWifi(): Boolean {
+            val connectivityManager = WAppContext.context
                     .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetInfo = connectivityManager.activeNetworkInfo
             return activeNetInfo != null && activeNetInfo.type == ConnectivityManager.TYPE_WIFI
@@ -117,8 +118,8 @@ class NetworkUtil {
          * @return boolean
          */
         @JvmStatic
-        fun is2G(context: Context): Boolean {
-            val connectivityManager = context
+        fun is2G(): Boolean {
+            val connectivityManager = WAppContext.context
                     .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetInfo = connectivityManager.activeNetworkInfo
             return activeNetInfo != null && (activeNetInfo.subtype == TelephonyManager.NETWORK_TYPE_EDGE
@@ -130,10 +131,10 @@ class NetworkUtil {
          * is wifi on
          */
         @JvmStatic
-        fun isWifiEnabled(context: Context): Boolean {
-            val mgrConn = context
+        fun isWifiEnabled(): Boolean {
+            val mgrConn = WAppContext.context
                     .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val mgrTel = context
+            val mgrTel = WAppContext.context
                     .getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             return mgrConn.activeNetworkInfo != null && mgrConn
                     .activeNetworkInfo.state == NetworkInfo.State.CONNECTED || mgrTel
