@@ -7,8 +7,10 @@ import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.model.MenuInfo
 
 class ToolsAlwayAdapter : BaseQuickAdapter<MenuInfo, BaseViewHolder>(R.layout.tools_item_gride_remove) {
+
     var isEdit: Boolean = false
     var isOnclick = true
+
     override fun convert(helper: BaseViewHolder, item: MenuInfo) {
         helper.setText(R.id.item_name, item.menu_name)
         if (item.is_mark.isNotEmpty() && item.is_mark == "0") {

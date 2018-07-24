@@ -13,10 +13,11 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class ManagerGoodsAdapter : BaseQuickAdapter<Goods, BaseViewHolder>(R.layout.manager_item_orther) {
     override fun convert(helper: BaseViewHolder, item: Goods) {
-        val view = helper.getView<ImageView>(R.id.iv_shop)
 
+        val view = helper.getView<ImageView>(R.id.iv_shop)
         ImageHelper.loadImageWithCorner(mContext, view, item.cover, 93, 94,
                 RoundedCornersTransformation(DensityUtils.dp2px(10.toFloat()), 0, RoundedCornersTransformation.CornerType.LEFT))
+
         helper.setText(R.id.tv_shop_name, item.name)
         helper.setText(R.id.views, item.views.toString() + "人已浏览")
         helper.setText(R.id.stock, item.stock.toString() + "库存")

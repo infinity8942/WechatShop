@@ -44,24 +44,6 @@ class MainActivity : BaseActivity() {
     override fun getData() {
     }
 
-    private var mExitTime: Long = 0
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (navigation.currentTab != 0) {
-                navigation.currentTab = 0
-            } else {
-                if (System.currentTimeMillis().minus(mExitTime) <= 2000) {
-                    finish()
-                } else {
-                    mExitTime = System.currentTimeMillis()
-                    ToastUtils.showMessage("再按一次退出程序")
-                }
-            }
-            return true
-        }
-        return super.onKeyDown(keyCode, event)
-    }
-
     override fun onNewIntent(intent: Intent?) {
         if (null != intent) {
             if (intent.hasExtra("jumpToShop")) {//跳转“串门”店铺页
@@ -95,6 +77,24 @@ class MainActivity : BaseActivity() {
                 finish()
             }
         }
+    }
+
+    private var mExitTime: Long = 0
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (navigation.currentTab != 0) {
+                navigation.currentTab = 0
+            } else {
+                if (System.currentTimeMillis().minus(mExitTime) <= 2000) {
+                    finish()
+                } else {
+                    mExitTime = System.currentTimeMillis()
+                    ToastUtils.showMessage("再按一次退出程序")
+                }
+            }
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun onDestroy() {

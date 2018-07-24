@@ -15,20 +15,15 @@ class NetworkUtil {
 
     companion object {
 
-        var NET_CNNT_BAIDU_OK = 1 // NetworkAvailable
-        var NET_CNNT_BAIDU_TIMEOUT = 2 // no NetworkAvailable
-        var NET_NOT_PREPARE = 3 // Net no ready
-        var NET_ERROR = 4 //net error
-        private val TIMEOUT = 3000 // TIMEOUT
+        private const val TIMEOUT = 3000 // TIMEOUT
         /**
          * check NetworkAvailable
          *
-         * @param context
          * @return
          */
         @JvmStatic
-        fun isNetworkAvailable(context: Context): Boolean {
-            val manager = context.applicationContext.getSystemService(
+        fun isNetworkAvailable(): Boolean {
+            val manager = WAppContext.context.getSystemService(
                     Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val info = manager.activeNetworkInfo
             return !(null == info || !info.isAvailable)
@@ -86,7 +81,6 @@ class NetworkUtil {
         /**
          * check is3G
          *
-         * @param context
          * @return boolean
          */
         @JvmStatic
@@ -100,7 +94,6 @@ class NetworkUtil {
         /**
          * isWifi
          *
-         * @param context
          * @return boolean
          */
         @JvmStatic
@@ -114,7 +107,6 @@ class NetworkUtil {
         /**
          * is2G
          *
-         * @param context
          * @return boolean
          */
         @JvmStatic

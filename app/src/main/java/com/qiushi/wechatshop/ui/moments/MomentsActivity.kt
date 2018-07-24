@@ -29,7 +29,6 @@ class MomentsActivity : BaseActivity(), View.OnClickListener {
     override fun layoutId(): Int = R.layout.activity_moments
 
     override fun init() {
-        //状态栏透明和间距处理
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
 
@@ -86,9 +85,7 @@ class MomentsActivity : BaseActivity(), View.OnClickListener {
     override fun accept(t: Notifycation?) {
         super.accept(t)
         when (t!!.code) {
-            Constants.MOMENT_FRESH -> {
-                viewpager.currentItem = t.id.toInt() - 1
-            }
+            Constants.MOMENT_FRESH -> viewpager.currentItem = t.id.toInt() - 1
         }
     }
 }

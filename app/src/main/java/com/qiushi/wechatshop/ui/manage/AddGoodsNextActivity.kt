@@ -3,7 +3,6 @@ package com.qiushi.wechatshop.ui.manage
 import android.app.Activity
 import android.content.Intent
 import android.text.InputFilter
-import android.util.Log
 import android.view.View
 import com.google.gson.Gson
 import com.qiushi.wechatshop.Constants
@@ -96,7 +95,6 @@ class AddGoodsNextActivity : BaseActivity() {
             }
             R.id.up_layout -> isDataNull()
             R.id.back -> finish()
-
         }
     }
 
@@ -126,14 +124,11 @@ class AddGoodsNextActivity : BaseActivity() {
             }
         }
 
-        //走接口
         putData()
     }
 
     private fun putData() {
-        val toJson = Gson().toJson(addGoods)
-        Log.e("tag", "toJson~~~~~~~~~~~~~~~~~$toJson")
-        val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.postGoods(toJson)
+        val subscribeWith: BaseObserver<Boolean> = RetrofitManager.service.postGoods(Gson().toJson(addGoods))
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<Boolean>() {
                     override fun onHandleSuccess(t: Boolean) {

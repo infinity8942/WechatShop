@@ -24,7 +24,7 @@ class EditTextActivity : BaseActivity() {
             et_text.setText(mText)
         }
 
-        commit.setOnClickListener({
+        commit.setOnClickListener {
             if (et_text.text.toString().isEmpty()) {
                 ToastUtils.showMessage("请编辑")
             } else {
@@ -33,7 +33,7 @@ class EditTextActivity : BaseActivity() {
                 setResult(1, Intent(intent))
                 finish()
             }
-        })
+        }
         back.setOnClickListener(this)
     }
 

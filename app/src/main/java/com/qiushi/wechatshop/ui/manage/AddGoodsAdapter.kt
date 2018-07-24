@@ -13,7 +13,6 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class AddGoodsAdapter : BaseQuickAdapter<Content, BaseViewHolder>(R.layout.addgoods_item) {
     override fun convert(helper: BaseViewHolder, item: Content?) {
-
         if (item!!.content.isNotEmpty()) {
             helper.getView<TextView>(R.id.tv_text)?.visibility = View.VISIBLE
             helper.getView<ImageView>(R.id.iv_img)?.visibility = View.GONE

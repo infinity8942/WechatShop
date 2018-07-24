@@ -24,9 +24,11 @@ import kotlinx.android.synthetic.main.activity_manager_more.*
 class ManagerMoreActivity : BaseActivity() {
 
     var isEdit: Boolean = false
-    override fun layoutId(): Int = R.layout.activity_manager_more
     var onList = ArrayList<MenuInfo>()
     var offList = ArrayList<MenuInfo>()
+
+    override fun layoutId(): Int = R.layout.activity_manager_more
+
     override fun init() {
         StatusBarUtil.immersive(this)
         StatusBarUtil.setPaddingSmart(this, toolbar1)
@@ -104,12 +106,10 @@ class ManagerMoreActivity : BaseActivity() {
             R.id.tv_edit -> {
                 isEdit = !isEdit
                 if (tv_edit.text == "编辑") {
-                    //编辑
                     tv_edit.text = "完成"
                     noUserGrideAdapter.setBackgroud(true)
                     useGrideAdapter.setBackground(true)
                 } else if (tv_edit.text == "完成") {
-                    //完成
                     finish()
                 }
             }
@@ -139,7 +139,6 @@ class ManagerMoreActivity : BaseActivity() {
                 val data = adapter.getItem(position) as MenuInfo
                 when (view.id) {
                     R.id.iv_add -> {
-//                        ToastUtils.showSuccess("拼接id(增加)")
                         noUserGrideAdapter.setIsOnclick(false)
                         menuMore(User.getCurrent().shop_id, data.menu_id, "1")
                     }
@@ -156,7 +155,6 @@ class ManagerMoreActivity : BaseActivity() {
                     override fun onHandleSuccess(t: Boolean) {
                         getData()
                         if (t) {
-                            //刷新主页界面
                             RxBus.getInstance().post(Notifycation(Constants.ZX_SHOP, 0L))
                         }
                     }

@@ -1,6 +1,5 @@
 package com.qiushi.wechatshop.ui.manage
 
-import android.annotation.SuppressLint
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.qiushi.wechatshop.R
@@ -8,9 +7,7 @@ import com.qiushi.wechatshop.model.Entrance
 import com.qiushi.wechatshop.util.ImageHelper
 
 class EntranceAdapter : BaseQuickAdapter<Entrance, BaseViewHolder>(R.layout.manager_item_gride) {
-    @SuppressLint("CheckResult")
     override fun convert(helper: BaseViewHolder, item: Entrance) {
-
         ImageHelper.loadAvatar(mContext, helper.getView(R.id.icon), item.coin_url, 40)
         helper.setText(R.id.item_name, item.menu_name)
 

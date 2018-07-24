@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import cn.sharesdk.framework.Platform
@@ -82,35 +81,7 @@ class MomentsFragment : BaseFragment() {
                     dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(WAppContext.context, R.color.color_more))
                 }
                 R.id.share -> {
-                    //分享图片
-
-//                    PosterXQImgCache.getInstance().removeImgCache() //先清空路径缓存
-//                    ImgFileUtils.deleteDir()//删除本地缓存的图片
                     if (moment.images != null && moment.images!!.size > 0) {
-
-//                        for (item in moment.images!!) {
-//                            GlideApp.with(this)
-//                                    .asBitmap()
-//                                    .load(item.oss_url)
-//                                    .into(object : SimpleTarget<Bitmap>() {
-//                                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-//                                            ImgFileUtils.saveBitmap(context, resource, DateUtil.getTimeString())
-//                                        }
-//
-//                                    })
-//                        }
-//
-//                        mHandler.postDelayed(Runnable {
-//                            var imgCache = PosterXQImgCache.getInstance().imgCache
-//                            val uris = arrayOfNulls<Uri>(imgCache.size)
-//                            for (i in 0 until imgCache.size) {
-//                                uris[i] = Uri.fromFile(File(imgCache[i]))
-//                            }
-//                            var shareUtils = ShareUtils(context, "")
-//                            shareUtils.shareweipyqSomeImg(context, uris)
-//
-//                        }, 500)
-
                         if (moment.type != 3) {
                             ToastUtils.showMessage("素材内容已复制到剪贴板，可以在微信中进行粘贴")
                             val cm: ClipboardManager = activity!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -238,8 +209,6 @@ class MomentsFragment : BaseFragment() {
         val sp = Platform.ShareParams()
         sp.shareType = Platform.SHARE_IMAGE
         sp.imageArray = imgArrayList
-//        sp.imageUrl=Constants.GOODS_DETAIL
-//        sp.title = "df"
         return sp
     }
 
@@ -261,7 +230,6 @@ class MomentsFragment : BaseFragment() {
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        Log.e("tag", "hiden$hidden")
         if (!hidden) {
             dismissLoading()
         }
