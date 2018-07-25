@@ -45,6 +45,7 @@
     <color name="white_100">#FFFFFFFF</color>
 
     <color name="coupon_yellow">#FB983C</color>
+    <color name="coupon_yellow_disable">#80FB983C</color>
     <color name="wx_green">#4DBE2E</color>
     <color name="star_red">#EC5E62</color>
     <color name="stock_blue">#A2CCFF</color>
@@ -52,9 +53,10 @@
     <color name="edit_black">#151515</color>
     <color name="bg_toast">#99000000</color>
 
-    <color name="gray3">#FF707070</color>
     <color name="gray1">#707070</color>
     <color name="gray2">#C1C1C1</color>
+    <color name="gray3">#FF707070</color>
+    <color name="gray4">#C5C5C5</color>
     <color name="color_title_bg">#CCFFFFFF</color>
     <color name="color_light_black">#5000</color>
     <color name="clolor_yellow">#FFC125</color>

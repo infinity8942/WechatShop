@@ -6,7 +6,6 @@ import android.os.Message
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
 import com.qiushi.wechatshop.model.User
@@ -15,11 +14,11 @@ import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.manage.DecorateActivity
+import com.qiushi.wechatshop.util.CheckPhoneUtil
 import com.qiushi.wechatshop.util.StatusBarUtil
 import com.qiushi.wechatshop.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_bind.*
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil
-import java.util.regex.Pattern
 
 /**
  * 手机号绑定
@@ -135,13 +134,13 @@ class BindActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showMessage(String.format("%sS后可重新发送验证码", interval))
             return false
         }
-        val account = phone.text.toString().trim()
-        if (TextUtils.isEmpty(account)) {
+        val phoneNumber = phone.text.toString().trim()
+        if (TextUtils.isEmpty(phoneNumber)) {
             ToastUtils.showMessage("请输入手机号")
             return false
         }
-        if (!Pattern.matches(Constants.REGEX_MOBILE, phone.text.toString().trim())) {
-            ToastUtils.showMessage("手机号输入不正确")
+        if (!CheckPhoneUtil.isPhone(phoneNumber)) {
+            ToastUtils.showMessage("手机号格式不正确")
             return false
         }
         return true

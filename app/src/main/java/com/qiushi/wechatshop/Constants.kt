@@ -27,9 +27,6 @@ object Constants {
     //InputType
     const val TYPE_NUMBER_FLAG_DECIMAL = 8194
 
-    //手机号验证
-    const val REGEX_MOBILE = "^1(3|4|5|7|8)\\d{9}$"
-
     //Key
     const val ALI_OSS_APPKEY = "rCbpsTRroEUuf4hS"
     const val ALI_OSS_SECRET = "GvK8xfPJJjiq9eIdpwbJiXoFkOuzbk"

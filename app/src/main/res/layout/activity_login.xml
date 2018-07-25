@@ -23,14 +23,16 @@
         android:layout_marginTop="5dp"
         android:text="微商圈"
         android:textColor="@color/coupon_yellow"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/logo"
         android:layout_marginLeft="36dp"
+        android:layout_marginTop="80dp"
         android:layout_marginRight="36dp"
         android:background="@drawable/bg_login_wx"
         android:gravity="center"
@@ -47,17 +49,50 @@
             android:layout_marginLeft="8dp"
             android:gravity="center"
             android:text="微信登录"
-            android:textColor="@color/wx_green"
+            android:textColor="@android:color/white"
             android:textSize="18sp" />
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_or"
+        android:layout_width="match_parent"
+        android:layout_height="17dp"
+        android:layout_below="@id/login"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/or"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_centerInParent="true"
+            android:text="或"
+            android:textColor="@color/gray4"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="0.5dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/or"
+            android:background="@color/imageBackground" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="0.5dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/or"
+            android:background="@color/imageBackground" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/phone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login"
+        android:layout_height="36dp"
+        android:layout_below="@+id/layout_or"
         android:layout_centerHorizontal="true"
-        android:padding="12dp"
+        android:gravity="center"
         android:text="短信验证码登录"
         android:textColor="@color/gray1"
         android:textSize="14sp" />

@@ -22,8 +22,9 @@
         android:id="@+id/logo"
         android:layout_width="90dp"
         android:layout_height="90dp"
+        android:layout_below="@id/toolbar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="60dp"
         android:scaleType="centerInside"
         android:src="@mipmap/ic_logo" />
 
@@ -31,22 +32,35 @@
         android:id="@+id/layout_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="36dp"
-        android:layout_marginRight="36dp">
+        android:layout_below="@id/logo"
+        android:layout_marginLeft="36.5dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginRight="34dp">
+
+        <ImageView
+            android:id="@+id/clear_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_clear_phone"
+            android:visibility="invisible" />
 
         <EditText
             android:id="@+id/phone"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="46dp"
+            android:layout_toLeftOf="@id/clear_phone"
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="请输入手机号"
             android:imeOptions="actionNext"
             android:inputType="number"
+            android:maxLength="11"
+            android:textColor="@android:color/black"
             android:textColorHint="@color/color_more"
             android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <View
             android:id="@+id/line1"
@@ -55,33 +69,48 @@
             android:layout_below="@id/phone"
             android:background="@color/line" />
 
-        <TextView
+        <Button
             android:id="@+id/auth"
             android:layout_width="98dp"
             android:layout_height="32dp"
             android:layout_below="@+id/line1"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_orange_commit"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_login"
+            android:enabled="false"
             android:gravity="center"
             android:text="获取验证码"
             android:textColor="@android:color/white"
             android:textSize="13sp" />
 
+        <ImageView
+            android:id="@+id/clear_pass"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_below="@+id/line1"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/auth"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_clear_phone"
+            android:visibility="invisible" />
+
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="46dp"
             android:layout_below="@id/line1"
-            android:layout_toLeftOf="@id/auth"
+            android:layout_marginTop="14dp"
+            android:layout_toLeftOf="@id/clear_pass"
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="请输入验证码"
             android:imeOptions="actionDone"
             android:singleLine="true"
+            android:textColor="@android:color/black"
             android:textColorHint="@color/color_more"
             android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <View
             android:id="@+id/line2"
@@ -91,7 +120,7 @@
             android:background="@color/line" />
     </RelativeLayout>
 
-    <TextView
+    <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -99,7 +128,8 @@
         android:layout_marginLeft="36dp"
         android:layout_marginTop="60dp"
         android:layout_marginRight="36dp"
-        android:background="@drawable/bg_orange_commit"
+        android:background="@drawable/bg_login"
+        android:enabled="false"
         android:gravity="center"
         android:text="登录"
         android:textColor="@android:color/white"
