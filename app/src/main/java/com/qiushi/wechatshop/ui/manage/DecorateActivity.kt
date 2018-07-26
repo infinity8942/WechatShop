@@ -6,10 +6,9 @@ import android.content.Intent
 import android.os.Environment
 import android.os.Handler
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
+import android.widget.RelativeLayout
 import cnn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
@@ -37,42 +36,53 @@ import java.io.File
  */
 class DecorateActivity : BaseActivity(), View.OnClickListener {
 
-    private var shop_name: String = ""
+    private var shopName: String = ""
     private var bgUrl: String = ""
     private var logoUrl: String = ""
-    private var isLogo: Boolean = false
-    private var shop_id: Long = 0
-    private var oss_id = ""
-    private var bg_oss_id = ""
+    private var shopId: Long = 0
+    private var ossId = ""
+    private var bgOssId = ""
     private var mHandler = Handler()
+
+    private var logoPath = ""
+    private var coverPath = ""
+
 
     override fun layoutId(): Int = R.layout.activity_decorate
 
     override fun init() {
         StatusBarUtil.immersive(this, R.color.colorPrimaryDark)
         StatusBarUtil.setPaddingSmart(this, toolbar)
+
         UploadManager.getInstance().register(uploadListener)
+
         back.setOnClickListener(this)
         logo.setOnClickListener(this)
         cover.setOnClickListener(this)
         commit.setOnClickListener(this)
 
-        if (shop_name.isNotEmpty()) {
-            name.setText(shop_name)
-            name.setSelection(shop_name.length)
-        }
-        if (bgUrl.isNotEmpty()) {
-            ImageHelper.loadImageWithCorner(application, cover, bgUrl, 343, 178,
-                    RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
-
-        }
         if (logoUrl.isNotEmpty()) {
             ImageHelper.loadImageWithCorner(application, logo, logoUrl, 64, 64,
                     RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
         }
 
+        val width = DensityUtils.getScreenWidth() - DensityUtils.dp2px(32.toFloat())
+        val lp = RelativeLayout.LayoutParams(width, (width * 0.52).toInt())
+        lp.addRule(RelativeLayout.BELOW, R.id.star3)
+        lp.topMargin = DensityUtils.dp2px(8.toFloat())
+        cover.layoutParams = lp
+        if (bgUrl.isNotEmpty()) {
+            ImageHelper.loadImageWithCorner(application, cover, bgUrl, 343, 178,
+                    RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+        }
+
+        if (shopName.isNotEmpty()) {
+            name.setText(shopName)
+            name.setSelection(shopName.length)
+        }
+
         if (User.getCurrent() != null && User.getCurrent().shop_id != null) {
-            shop_id = User.getCurrent().shop_id
+            shopId = User.getCurrent().shop_id
         }
     }
 
@@ -99,7 +109,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        val disposable = RetrofitManager.service.editShop(name, oss_id, shop_id, bg_oss_id)
+        val disposable = RetrofitManager.service.editShop(name, ossId, shopId, bgOssId)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribeWith(object : BaseObserver<String>() {
                     override fun onHandleSuccess(t: String) {
@@ -127,10 +137,12 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
         when (requestCode) {
             Constants.ADDIMG_LOGO -> {
                 if (data != null) {
-                    isLogo = true
                     val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
                         val mFile = File(selected[0])
+                        logoPath = mFile.path
+                        ImageHelper.loadImageWithCorner(application, logo, ("file://$logoPath"), 64, 64,
+                                RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
                         UploadManager.getInstance().add(mFile)
                         showLoading("正在上传,请等待....")
                     }
@@ -138,10 +150,12 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
             }
             Constants.ADDIMG_GOODS_BG -> {
                 if (data != null) {
-                    isLogo = false
                     val selected = BGAPhotoPickerActivity.getSelectedPhotos(data)
                     if (selected != null && selected.size > 0) {
                         val mFile = File(selected[0])
+                        coverPath = mFile.path
+                        ImageHelper.loadImageWithCorner(application, cover, ("file://$coverPath"), 343, 178,
+                                RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
                         UploadManager.getInstance().add(mFile)
                         showLoading("正在上传,请等待....")
                     }
@@ -154,21 +168,15 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
         override fun onProgress(file: File?, currentSize: Long, totalSize: Long) {
         }
 
-        override fun onSuccess(file: File?, id: Long) {
+        override fun onSuccess(file: File, id: Long) {
             mHandler.postDelayed({
                 dismissLoading()
-                when (isLogo) {
-                    false -> {
-                        Log.e("tag", file!!.path + "~~is~~~")
-                        bg_oss_id = id.toString()
-                        ImageHelper.loadImageWithCorner(application, cover, ("file://" + file!!.path), 343, 178,
-                                RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+                when (file.path) {
+                    logoPath -> {
+                        ossId = id.toString()
                     }
-                    true -> {
-                        Log.e("tag", file!!.path)
-                        oss_id = id.toString()
-                        ImageHelper.loadImageWithCorner(application, logo, ("file://" + file!!.path), 64, 64,
-                                RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
+                    coverPath -> {
+                        bgOssId = id.toString()
                     }
                 }
             }, 300)
@@ -181,7 +189,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
 
     override fun getParams(intent: Intent) {
         super.getParams(intent)
-        shop_name = intent.getStringExtra("shop_name")
+        shopName = intent.getStringExtra("shopName")
         logoUrl = intent.getStringExtra("logo")
         bgUrl = intent.getStringExtra("bg")
     }
@@ -189,7 +197,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
     companion object {
         fun startDecorateActivity(context: Context, shop_name: String, logo: String, bg: String) {
             val intent = Intent(context, DecorateActivity::class.java)
-            intent.putExtra("shop_name", shop_name)
+            intent.putExtra("shopName", shop_name)
             intent.putExtra("logo", logo)
             intent.putExtra("bg", bg)
             ContextCompat.startActivity(context, intent, null)
@@ -216,8 +224,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
         val permissionItems = ArrayList<PermissionItem>()
         permissionItems.add(PermissionItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera))
         permissionItems.add(PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, "存储", R.drawable.permission_ic_storage))
-        HiPermission.create(this).permissions(permissionItems).title("权限申请")
-                .filterColor(ResourcesCompat.getColor(resources, R.color.colorPrimary, theme))
+        HiPermission.create(this).permissions(permissionItems)
                 .checkMutiPermission(object : PermissionCallback {
                     override fun onGuarantee(permission: String?, position: Int) {
                     }

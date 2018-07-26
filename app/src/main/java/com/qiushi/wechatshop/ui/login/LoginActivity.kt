@@ -69,17 +69,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-//    private fun loginWXX() {
-//        if (!WAppLike.mWxApi.isWXAppInstalled) {
-//            ToastUtils.showMessage("您还未安装微信客户端")
-//            return
-//        }
-//        val req = SendAuth.Req()
-//        req.scope = "snsapi_userinfo"
-//        req.state = "diandi_wx_login"
-//        WAppLike.mWxApi.sendReq(req)
-//    }
-
     private fun getPermission() {
         val permissionItems = ArrayList<PermissionItem>()
         permissionItems.add(PermissionItem(Manifest.permission.READ_PHONE_STATE, "读取手机", R.drawable.permission_ic_phone))
