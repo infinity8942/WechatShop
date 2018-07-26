@@ -112,10 +112,11 @@
                 android:background="@color/colorPrimaryDark">
 
                 <ImageView
+                    android:id="@+id/cover"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/bg_express" />
+                    android:background="@mipmap/bg_order_shouhuo"
+                    android:scaleType="fitXY" />
 
                 <TextView
                     android:id="@+id/status"

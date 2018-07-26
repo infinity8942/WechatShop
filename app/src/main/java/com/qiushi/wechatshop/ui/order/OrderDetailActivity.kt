@@ -177,7 +177,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         number.text = "订单编号：" + t.numbers
         create_time.text = "创建时间：" + DateUtil.getMillon(t.create_time)
         when (t.status) {
-            Constants.READY_TO_PAY ->
+            Constants.READY_TO_PAY -> {
                 if (isManage) {
                     status.text = "等待买家付款"
 //                    action.text = "提醒支付"
@@ -192,7 +192,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     action1.visibility = View.VISIBLE
                     action1.text = "取消订单"
                 }
-            Constants.PAYED ->
+                cover.setBackgroundResource(R.mipmap.bg_order_fukuan)
+            }
+            Constants.PAYED -> {
                 if (isManage) {
                     status.text = "买家已付款"
                     action.text = "确认发货"
@@ -201,7 +203,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     status.text = "等待卖家发货"
                     action.text = "提醒发货"
                 }
-            Constants.DELIVERED ->
+                cover.setBackgroundResource(R.mipmap.bg_order_shouhuo)
+            }
+            Constants.DELIVERED -> {
                 if (isManage) {
                     status.text = "等待买家收货"
                     action.visibility = View.GONE
@@ -213,7 +217,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     action1.visibility = View.VISIBLE
                     action1.text = "查看物流"
                 }
-            Constants.DONE ->
+                cover.setBackgroundResource(R.mipmap.bg_order_shouhuo)
+            }
+            Constants.DONE -> {
                 if (isManage) {
                     status.text = "已完成"
                     action.visibility = View.GONE
@@ -227,6 +233,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     action2.visibility = View.VISIBLE
                     action2.text = "查看物流"
                 }
+                cover.setBackgroundResource(R.mipmap.bg_order_finish)
+            }
         }
     }
 
