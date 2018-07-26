@@ -88,7 +88,7 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         tv_title.text = title
 
         tabList.add("全部")
-        tabList.add("待付款")
+        tabList.add("待支付")
         tabList.add("待发货")
         tabList.add("已发货")
         tabList.add("已完成")
