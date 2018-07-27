@@ -95,6 +95,12 @@ class OrderAdapter(private val isManage: Boolean) : BaseQuickAdapter<Order, Base
             }
         }
 
+        if (isManage) {
+            helper.setGone(R.id.enter, true)
+        } else {
+            helper.setGone(R.id.enter, false)
+        }
+
         helper.setText(R.id.amount, "共计" + order.num + "件商品")
         helper.setText(R.id.price, "￥" + PriceUtil.doubleTrans(order.price))
 
