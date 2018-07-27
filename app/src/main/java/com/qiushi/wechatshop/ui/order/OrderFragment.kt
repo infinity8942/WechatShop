@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
@@ -45,6 +47,8 @@ class OrderFragment : BaseFragment() {
     private var page = 1
 
     private var mPositionScan = -1
+    private var distance: Int = 0
+    private var visible = true
 
     override fun getLayoutId(): Int = R.layout.fragment_order
 
@@ -66,6 +70,27 @@ class OrderFragment : BaseFragment() {
             lazyLoad()
         }
         mRefreshLayout.setOnLoadMoreListener { getOrders() }
+
+        if ((activity as OrderActivity).isManage) {
+            mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (distance < -ViewConfiguration.get(context).scaledTouchSlop && !visible) {
+                        //显示fab
+                        (activity as OrderActivity).toggleFilter(true)
+                        distance = 0
+                        visible = true
+                    } else if (distance > ViewConfiguration.get(context).scaledTouchSlop && visible) {
+                        //隐藏
+                        (activity as OrderActivity).toggleFilter(false)
+                        distance = 0
+                        visible = false
+                    }
+                    if ((dy > 0 && visible) || (dy < 0 && !visible))
+                        distance += dy
+                }
+            })
+        }
 
         mAdapter.setOnItemClickListener { adapter, _, position ->
             goToOrderDetails((adapter.data[position] as Order).id)

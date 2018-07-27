@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
+import android.view.animation.AlphaAnimation
 import android.widget.EditText
 import android.widget.TextView
 import cn.qqtheme.framework.picker.DatePicker
@@ -26,6 +27,7 @@ import com.qiushi.wechatshop.view.search.MaterialSearchView
 import com.qiushi.wechatshop.view.tab.listener.OnTabSelectListener
 import kotlinx.android.synthetic.main.activity_order.*
 import java.util.*
+
 
 /**
  * Created by Rylynn on 2018-06-12.
@@ -61,6 +63,9 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
     var endTime: Long = 0
     var orderNumber: String = ""
     var keywords: String = ""
+
+    var mShowAnim: AlphaAnimation = AlphaAnimation(0.0f, 1.0f)
+    var mHiddenAmin: AlphaAnimation = AlphaAnimation(1.0f, 0.0f)
 
     override fun layoutId(): Int = R.layout.activity_order
 
@@ -100,6 +105,9 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         if (isManage) {
             tabList.add("自建订单")
             fragments.add(OrderFragment.getInstance(5))
+
+            mShowAnim.duration = 300
+            mHiddenAmin.duration = 300
         }
 
         viewpager.offscreenPageLimit = 6
@@ -422,6 +430,18 @@ class OrderActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra("jumpToShop", shop_id)
         startActivity(intent)
         finish()
+    }
+
+    fun toggleFilter(show: Boolean) {
+        if (show) {
+            layout_order.startAnimation(mShowAnim)
+            layout_order.visibility = View.VISIBLE
+        } else {
+            if (layout_order.visibility == View.VISIBLE) {
+                layout_order.startAnimation(mHiddenAmin)
+                layout_order.visibility = View.INVISIBLE
+            }
+        }
     }
 
     override fun onBackPressed() {

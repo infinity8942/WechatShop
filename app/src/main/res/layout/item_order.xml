@@ -82,7 +82,7 @@
             android:layout_alignBottom="@id/price"
             android:layout_marginLeft="10dp"
             android:layout_toLeftOf="@id/price"
-            android:text="实付总额："
+            android:text="应付总额："
             android:textColor="@color/gray1"
             android:textSize="12sp" />
 

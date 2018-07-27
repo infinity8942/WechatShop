@@ -7,7 +7,9 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -69,6 +71,12 @@ class ManagerGoodsActivity : BaseActivity() {
     private var stockLayout: RelativeLayout? = null
     private var closeLyout: RelativeLayout? = null
 
+    private var distance: Int = 0
+    private var isViewVisible = true
+
+    var mShowAnim: AlphaAnimation = AlphaAnimation(0.0f, 1.0f)
+    var mHiddenAmin: AlphaAnimation = AlphaAnimation(1.0f, 0.0f)
+
     /**
      * 整体recyclerview adapter
      */
@@ -89,6 +97,9 @@ class ManagerGoodsActivity : BaseActivity() {
         StatusBarUtil.immersive(this)
         StatusBarUtil.setPaddingSmart(this, toolbar)
         StatusBarUtil.setPaddingSmart(this, search_view)
+
+        mShowAnim.duration = 300
+        mHiddenAmin.duration = 300
 
         search_view.adjustTintAlpha(0.8f)
         search_view.setCloseOnTintClick(true)
@@ -213,12 +224,29 @@ class ManagerGoodsActivity : BaseActivity() {
     }
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (mItemPosition != -1 && mAdapter != null) {
                 mAdapter.getViewByPosition(mRecyclerView, mItemPosition, R.id.layout_shape)!!.visibility = View.GONE
                 mItemPosition = -1
             }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if (distance < -ViewConfiguration.get(this@ManagerGoodsActivity).scaledTouchSlop && !isViewVisible) {
+                //显示fab
+                toggleFilter(true)
+                distance = 0
+                isViewVisible = true
+            } else if (distance > ViewConfiguration.get(this@ManagerGoodsActivity).scaledTouchSlop && isViewVisible) {
+                //隐藏
+                toggleFilter(false)
+                distance = 0
+                isViewVisible = false
+            }
+            if ((dy > 0 && isViewVisible) || (dy < 0 && !isViewVisible))
+                distance += dy
         }
     }
 
@@ -520,6 +548,18 @@ class ManagerGoodsActivity : BaseActivity() {
         intent.putExtra(WebActivity.PARAM_TITLE, goods.name)
         intent.putExtra(WebActivity.PARAM_URL, Constants.GOODS_DETAIL + goods.id)
         startActivity(intent)
+    }
+
+    private fun toggleFilter(show: Boolean) {
+        if (show) {
+            layout_filter.startAnimation(mShowAnim)
+            layout_filter.visibility = View.VISIBLE
+        } else {
+            if (layout_filter.visibility == View.VISIBLE) {
+                layout_filter.startAnimation(mHiddenAmin)
+                layout_filter.visibility = View.INVISIBLE
+            }
+        }
     }
 
     override fun accept(t: Notifycation?) {

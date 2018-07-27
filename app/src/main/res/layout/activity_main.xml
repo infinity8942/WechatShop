@@ -12,6 +12,7 @@
         android:layout_height="@dimen/padding_tab_layout_bottom"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
+        android:elevation="5dp"
         tl:tl_iconGravity="TOP"
         tl:tl_iconHeight="24dp"
         tl:tl_iconMargin="2dp"

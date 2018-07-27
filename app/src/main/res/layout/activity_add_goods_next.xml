@@ -119,7 +119,8 @@
         android:lineSpacingExtra="4dp"
         android:text="您未开启积分抵扣，该产品买家将享受不到购物即可获得积分的权益"
         android:textColor="@color/color_add_goods"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/et_bz"
@@ -158,12 +159,22 @@
         android:background="@drawable/add_goods_yellow_shape">
 
         <TextView
+            android:id="@+id/step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="28dp"
-            android:text="2/2"
+            android:text="2"
             android:textColor="@color/title"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/step"
+            android:text="/2"
+            android:textColor="@color/white_70"
             android:textSize="16sp" />
 
         <TextView

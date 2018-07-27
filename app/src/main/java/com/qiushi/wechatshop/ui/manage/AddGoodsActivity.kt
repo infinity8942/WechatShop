@@ -340,7 +340,6 @@ class AddGoodsActivity : BaseActivity() {
                         isVisible()
                         mAdapter.setNewData(addGoods.content)
                     }
-
                 }
             }
             Constants.ADDIMG_BG -> {
