@@ -189,7 +189,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
 
     override fun getParams(intent: Intent) {
         super.getParams(intent)
-        shopName = intent.getStringExtra("shopName")
+        shopName = intent.getStringExtra("shop_name")
         logoUrl = intent.getStringExtra("logo")
         bgUrl = intent.getStringExtra("bg")
     }
@@ -197,7 +197,7 @@ class DecorateActivity : BaseActivity(), View.OnClickListener {
     companion object {
         fun startDecorateActivity(context: Context, shop_name: String, logo: String, bg: String) {
             val intent = Intent(context, DecorateActivity::class.java)
-            intent.putExtra("shopName", shop_name)
+            intent.putExtra("shop_name", shop_name)
             intent.putExtra("logo", logo)
             intent.putExtra("bg", bg)
             ContextCompat.startActivity(context, intent, null)

@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.next_layout.*
 import java.io.File
 
 class AddGoodsActivity : BaseActivity() {
-    var goods_id: Long = 0
+    var goodsID: Long = 0
     var isBg: Boolean = false
     var addGoods = AddGoods()
     var addContentList = ArrayList<Content>()
@@ -95,12 +95,12 @@ class AddGoodsActivity : BaseActivity() {
 
     override fun getParams(intent: Intent) {
         super.getParams(intent)
-        goods_id = intent.getLongExtra("goods_id", 0)
+        goodsID = intent.getLongExtra("goods_id", 0)
     }
 
     override fun getData() {
-        if (goods_id != null && goods_id != 0.toLong()) {
-            val subscribeWith: BaseObserver<AddGoods> = RetrofitManager.service.getGoods(goods_id)
+        if (goodsID != null && goodsID != 0.toLong()) {
+            val subscribeWith: BaseObserver<AddGoods> = RetrofitManager.service.getGoods(goodsID)
                     .compose(SchedulerUtils.ioToMain())
                     .subscribeWith(object : BaseObserver<AddGoods>() {
                         override fun onHandleSuccess(t: AddGoods) {
@@ -234,7 +234,7 @@ class AddGoodsActivity : BaseActivity() {
             ToastUtils.showMessage("库存数量为设置")
             return
         }
-        if (goods_id != null && goods_id != 0.toLong()) {
+        if (goodsID != null && goodsID != 0.toLong()) {
             if (contentList == null || contentList.size <= 0) {
                 ToastUtils.showMessage("产品详情未设置")
                 return
@@ -246,7 +246,7 @@ class AddGoodsActivity : BaseActivity() {
             }
         }
 
-        if (goods_id != null && goods_id != 0.toLong() && addContentList != null && addContentList.size > 0) {
+        if (goodsID != null && goodsID != 0.toLong() && addContentList != null && addContentList.size > 0) {
             addContentList
                     .filter { addGoods != null && addGoods.content != null && !addGoods.content!!.contains(it) }
                     .forEach { addGoods.content!!.add(it) }
@@ -324,7 +324,7 @@ class AddGoodsActivity : BaseActivity() {
             Constants.EDIT_TEXT_REQUEST -> {
                 val mText = data?.getStringExtra("text")
                 if (mText != null && mText != "") {
-                    if (goods_id != 0.toLong()) {
+                    if (goodsID != 0.toLong()) {
                         val content = Content()
                         content.content = mText
                         contentList.add(content)
@@ -376,7 +376,7 @@ class AddGoodsActivity : BaseActivity() {
                     ImageHelper.loadImageWithCorner(application, ic_bg, ("file://" + file!!.path), 94, 94,
                             RoundedCornersTransformation(DensityUtils.dp2px(5.toFloat()), 0, RoundedCornersTransformation.CornerType.ALL))
                 } else {
-                    if (goods_id != 0.toLong()) {
+                    if (goodsID != 0.toLong()) {
                         //编辑
                         val content = Content()
                         content.oss_id = id
@@ -410,7 +410,7 @@ class AddGoodsActivity : BaseActivity() {
     private val itemChildListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
         when (view?.id) {
             R.id.iv_remove -> {
-                if (goods_id != 0.toLong()) {
+                if (goodsID != 0.toLong()) {
                     //编辑
                     if (contentList != null && contentList.size > 0 && contentList.size > position) {
                         val removeAt = contentList.removeAt(position)

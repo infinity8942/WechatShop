@@ -112,6 +112,7 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         mAdapter.bindToRecyclerView(mRecyclerView)
+        mAdapter.setHeaderAndEmpty(true)
 
         headerView.mRecyclerView.layoutManager = mEntranceGridManager
         mEntranceAdapter.bindToRecyclerView(headerView.mRecyclerView)
@@ -234,6 +235,7 @@ class ManageFragment : BaseFragment(), View.OnClickListener {
                             if (error.code == ErrorStatus.NETWORK_ERROR) {
                                 mAdapter.emptyView = errorView
                             } else if (error.code == -1001) {
+                                mRefreshLayout.setEnableLoadMore(false)
                                 mAdapter.emptyView = notShop
                             } else {
                                 if (User.getCurrent() != null && (User.getCurrent().phone.isEmpty() || (User.getCurrent().shop_id == null || User.getCurrent().shop_id == 0L))) {
