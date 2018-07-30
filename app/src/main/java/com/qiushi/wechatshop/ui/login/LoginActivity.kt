@@ -11,6 +11,7 @@ import cn.sharesdk.wechat.friends.Wechat
 import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
@@ -150,6 +151,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         override fun onFail(error: String) {
             dismissLoading()
             ToastUtils.showMessage(error)
+        }
+    }
+
+    override fun accept(t: Notifycation?) {
+        super.accept(t)
+        when (t!!.code) {
+            Constants.LOGIN_PHONE_SUCESS -> {
+                finish()
+            }
         }
     }
 }

@@ -13,18 +13,17 @@ import cn.sharesdk.framework.Platform
 import cn.sharesdk.framework.PlatformActionListener
 import cn.sharesdk.framework.ShareSDK
 import cn.sharesdk.wechat.friends.Wechat
+import com.qiushi.wechatshop.Constants
 import com.qiushi.wechatshop.R
 import com.qiushi.wechatshop.base.BaseActivity
+import com.qiushi.wechatshop.model.Notifycation
 import com.qiushi.wechatshop.model.User
 import com.qiushi.wechatshop.net.RetrofitManager
 import com.qiushi.wechatshop.net.exception.Error
 import com.qiushi.wechatshop.rx.BaseObserver
 import com.qiushi.wechatshop.rx.SchedulerUtils
 import com.qiushi.wechatshop.ui.MainActivity
-import com.qiushi.wechatshop.util.CheckPhoneUtil
-import com.qiushi.wechatshop.util.Push
-import com.qiushi.wechatshop.util.StatusBarUtil
-import com.qiushi.wechatshop.util.ToastUtils
+import com.qiushi.wechatshop.util.*
 import com.qiushi.wechatshop.util.share.Callback
 import com.qiushi.wechatshop.util.web.WebActivity
 import com.umeng.analytics.MobclickAgent
@@ -278,6 +277,7 @@ class PhoneActivity : BaseActivity(), View.OnClickListener {
         }
 
         override fun onSuccess(user: User) {
+            RxBus.getInstance().post(Notifycation(Constants.LOGIN_PHONE_SUCESS, 0))
             dismissLoading()
             startActivity(Intent(this@PhoneActivity, MainActivity::class.java))
             finish()
